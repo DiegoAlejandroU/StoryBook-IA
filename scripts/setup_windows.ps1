@@ -88,7 +88,7 @@ function Paso-Git {
     } else {
         Escribir "El repositorio git ya existe; se reutiliza." "DarkGray"
     }
-    Ejecutar "git" @("config", "core.autocrlf", "true") | Out-Null
+    Ejecutar "git" @("config", "core.autocrlf", "false") | Out-Null
 
     $remoto = (& git remote 2>$null)
     if ($remoto -notcontains "origin") {
@@ -122,7 +122,8 @@ function Paso-Git {
 
     $pendiente = (& git status --porcelain 2>$null)
     if ($pendiente) {
-        $titulo = "chore: estructura inicial del proyecto (Fase 0)"
+        & git rev-parse --verify HEAD 2>$null | Out-Null
+        if ($LASTEXITCODE -eq 0) { $titulo = "chore: actualizar archivos del proyecto" } else { $titulo = "chore: estructura inicial del proyecto (Fase 0)" }
         $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
         if ((Ejecutar "git" @("commit", "-m", $titulo, "-m", $coautor)) -ne 0) { return 1 }
     } else {
@@ -148,8 +149,9 @@ function Paso-Entorno {
     if (Test-Path $smi) { Remove-Item $smi }
     if ((Ejecutar "nvidia-smi" @() $smi) -ne 0) { return 1 }
     $texto = Get-Content $smi -Raw
-    $m = [regex]::Match($texto, "CUDA Version:\s*([0-9]+)\.([0-9]+)")
-    if (-not $m.Success) { Escribir "No se pudo leer 'CUDA Version' de nvidia-smi." "Red"; return 1 }
+    # Drivers antiguos: "CUDA Version: 13.2"; drivers recientes (6xx): "CUDA UMD Version: 13.4".
+    $m = [regex]::Match($texto, "CUDA(?:\s+UMD)?\s+Version:\s*([0-9]+)\.([0-9]+)")
+    if (-not $m.Success) { Escribir "No se pudo leer la version de CUDA de nvidia-smi." "Red"; return 1 }
     $cuda = [double]("{0}.{1}" -f $m.Groups[1].Value, $m.Groups[2].Value)
     Escribir ("Version maxima de CUDA del driver: {0}" -f $cuda) "Green"
     if ($cuda -lt 13.2) {
@@ -267,10 +269,38 @@ function Paso-Modelos {
 }
 
 # ---------------------------------------------------------------------------------------
+# Commit de evidencias (uv.lock, docs/evidencias, registro de modelos) al final de cada paso
+# ---------------------------------------------------------------------------------------
+function Guardar-Evidencias([string]$Mensaje) {
+    if (-not (Test-Path ".git")) { return 0 }
+    if (-not (Get-Command "git" -ErrorAction SilentlyContinue)) { return 0 }
+    $rutas = @("docs/evidencias", "uv.lock", "docs/models_registry.json") | Where-Object { Test-Path $_ }
+    if (-not $rutas) { return 0 }
+    & git add -- @rutas 2>$null | Out-Null
+    & git diff --cached --quiet 2>$null
+    if ($LASTEXITCODE -eq 0) { return 0 }
+    Titulo "Guardando evidencias en git"
+    $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    if ((Ejecutar "git" @("commit", "-m", $Mensaje, "-m", $coautor)) -ne 0) { return 1 }
+    if ((Ejecutar "git" @("push")) -ne 0) {
+        Escribir "AVISO: el push de evidencias fallo; quedaron en un commit local." "Yellow"
+    }
+    return 0
+}
+
+# ---------------------------------------------------------------------------------------
 Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
 if ($Paso -in @("todo", "git")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
-if ($Paso -in @("todo", "entorno")) { $codigo = Paso-Entorno; if ($codigo -ne 0) { Fin $codigo } }
-if ($Paso -in @("todo", "modelos")) { $codigo = Paso-Modelos; if ($codigo -ne 0) { Fin $codigo } }
+if ($Paso -in @("todo", "entorno")) {
+    $codigo = Paso-Entorno
+    Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -in @("todo", "modelos")) {
+    $codigo = Paso-Modelos
+    Guardar-Evidencias "chore: evidencias de modelos y prueba por modalidad (tarea 0.6)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
 Fin 0
