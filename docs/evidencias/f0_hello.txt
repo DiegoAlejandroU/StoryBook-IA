@@ -1,0 +1,34 @@
+﻿17:13:56 INFO    f0_hello | f0_inicio  paso=all perfil=rapido salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_171356
+17:24:01 INFO    storybook.gpu | etapa_medida  etapa=llm_bible segundos=600.012 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
+17:24:01 ERROR   f0_hello | paso_fallido  paso=llm causa="Tiempo de espera agotado llamando a /api/chat"
+17:24:27 ERROR   f0_hello | paso_fallido  paso=image causa="'Lykon/dreamshaper-8' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+17:24:29 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=1.843 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
+17:24:31 INFO    storybook.gpu | etapa_medida  etapa=voz_sintesis segundos=2.644 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
+17:24:31 WARNING f0_hello | sonido_no_descargado  backend=sa3 repo=stabilityai/stable-audio-3-small-sfx
+17:24:31 WARNING f0_hello | sonido_no_descargado  backend=audioldm repo=cvssp/audioldm
+17:24:31 ERROR   f0_hello | paso_fallido  paso=sound causa="Ningún backend generativo de sonido funcionó: {'sa3': {'estado': 'no_descargado', 'detalle': "'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"}, 'audioldm': {'estado': 'no_descargado', 'detalle': "'cvssp/audioldm' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"}}"
+17:24:34 INFO    storybook.gpu | etapa_medida  etapa=eval_whisper_carga segundos=2.826 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
+17:24:34 INFO    storybook.gpu | etapa_medida  etapa=eval_wer segundos=0.003 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
+17:24:34 ERROR   f0_hello | paso_fallido  paso=eval
+Traceback (most recent call last):
+  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 653, in main
+    funciones[paso](cfg, ses, args)
+  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 540, in paso_eval
+    resultado = checker.evaluar(Path(voz["wav"]), voz["texto"])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\src\storybook\evaluation\asr_check.py", line 78, in evaluar
+    transcripcion, duracion = self.transcribir(wav)
+                              ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\src\storybook\evaluation\asr_check.py", line 71, in transcribir
+    segmentos, info = self._modelo.transcribe(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\faster_whisper\transcribe.py", line 876, in transcribe
+    audio = decode_audio(audio, sampling_rate=sampling_rate)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\faster_whisper\audio.py", line 46, in decode_audio
+    with av.open(input_file, mode="r", metadata_errors="ignore") as container:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "av/container/core.py", line 479, in av.container.core.open
+    def open(
+TypeError: open() got an unexpected keyword argument 'metadata_errors'
+17:24:34 INFO    f0_hello | f0_fin  total_s=638 fallidos="['llm', 'image', 'sound', 'eval']" resumen=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_171356\resumen.md
