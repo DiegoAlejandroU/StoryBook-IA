@@ -1,119 +1,96 @@
-﻿17:35:09 INFO    f0_hello | f0_inicio  paso=all perfil=rapido salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_173509
-17:40:34 INFO    storybook.gpu | etapa_medida  etapa=llm_bible segundos=319.403 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
-17:40:34 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
-17:40:34 ERROR   f0_hello | paso_fallido  paso=llm causa="Respuesta truncada por longitud (num_ctx=8192, num_predict=5120). Si el JSON quedó incompleto, aumenta num_predict; si se repetía, revisa el prompt."
+﻿17:50:02 INFO    f0_hello | f0_inicio  paso=all perfil=rapido salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_175002
+17:53:42 INFO    storybook.gpu | etapa_medida  etapa=llm_bible segundos=215.955 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096 extra.tokens_salida=4096 extra.tokens_por_s=19.5 extra.salida_parcial=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_175002\llm_raw_truncado.txt
+17:53:42 INFO    f0_hello | llm_en_gpu  fraccion=0.663 vram_mb=2557
+17:53:42 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+17:53:42 ERROR   f0_hello | paso_fallido  paso=llm causa="Respuesta truncada por longitud (num_ctx=8192, num_predict=4096). Si el JSON quedó incompleto, aumenta num_predict; si se repetía, revisa el prompt."
 C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
   deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
 System.Management.Automation.RemoteException
-Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
-System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  17%|█▋        | 33/196 [00:00<00:00, 312.57it/s][A
-Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1122.28it/s]
+Loading weights:  20%|██        | 40/196 [00:00<00:00, 376.89it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1125.27it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  4.04it/s]
-Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  4.22it/s]
-Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  5.01it/s]
-Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  5.12it/s]
-Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.37it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  2.20it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  5.21it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  7.97it/s]
 No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
 The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
-17:40:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=5.837 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2332.5 vram_gpu_total_mb=4096
-17:40:50 INFO    storybook.gpu | etapa_medida  etapa=imagen_gen_1 segundos=4.95 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=2416.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096 extra.pasos=6 extra.seed=1234 extra.scheduler=lcm
-17:40:54 INFO    storybook.gpu | etapa_medida  etapa=imagen_gen_2 segundos=3.728 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=3780.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096 extra.pasos=6 extra.seed=1235 extra.scheduler=lcm
+17:53:54 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=5.473 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2332.5 vram_gpu_total_mb=4096
+17:53:58 INFO    storybook.gpu | etapa_medida  etapa=imagen_gen_1 segundos=4.01 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2416.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096 extra.pasos=6 extra.seed=1234 extra.scheduler=lcm
+17:54:01 INFO    storybook.gpu | etapa_medida  etapa=imagen_gen_2 segundos=2.857 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4076.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096 extra.pasos=6 extra.seed=1235 extra.scheduler=lcm
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
-Loading weights:   2%|▏         | 9/520 [00:00<00:07, 66.09it/s]
-Loading weights:   3%|▎         | 16/520 [00:00<00:07, 68.04it/s]
-Loading weights:   4%|▍         | 23/520 [00:00<00:07, 68.56it/s]
-Loading weights:   6%|▌         | 30/520 [00:00<00:10, 46.18it/s]
-Loading weights:   7%|▋         | 38/520 [00:00<00:08, 53.61it/s]
-Loading weights:   9%|▉         | 46/520 [00:00<00:07, 60.60it/s]
-Loading weights:  12%|█▏        | 63/520 [00:00<00:05, 90.77it/s]
-Loading weights:  14%|█▍        | 74/520 [00:00<00:04, 95.26it/s]
-Loading weights:  16%|█▋        | 85/520 [00:01<00:05, 83.25it/s]
-Loading weights:  19%|█▉        | 98/520 [00:01<00:04, 92.66it/s]
-Loading weights:  21%|██        | 110/520 [00:01<00:04, 86.54it/s]
-Loading weights:  23%|██▎       | 120/520 [00:01<00:05, 79.48it/s]
-Loading weights:  26%|██▋       | 137/520 [00:01<00:04, 94.46it/s]
-Loading weights:  29%|██▉       | 152/520 [00:01<00:03, 106.61it/s]
-Loading weights:  32%|███▏      | 168/520 [00:01<00:03, 111.57it/s]
-Loading weights:  35%|███▍      | 180/520 [00:02<00:03, 100.35it/s]
-Loading weights:  37%|███▋      | 191/520 [00:02<00:03, 86.76it/s] 
-Loading weights:  39%|███▊      | 201/520 [00:02<00:03, 88.82it/s]
-Loading weights:  41%|████      | 211/520 [00:02<00:04, 66.53it/s]
-Loading weights:  43%|████▎     | 223/520 [00:02<00:04, 73.24it/s]
-Loading weights:  47%|████▋     | 242/520 [00:02<00:02, 94.31it/s]
-Loading weights:  50%|████▉     | 258/520 [00:02<00:02, 108.79it/s]
-Loading weights: 100%|██████████| 520/520 [00:03<00:00, 173.26it/s]
-17:40:58 INFO    storybook.gpu | etapa_medida  etapa=ip_adapter_embeds_cpu segundos=4.417 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=3780.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096
+Loading weights:   2%|▏         | 10/520 [00:00<00:05, 96.54it/s]
+Loading weights:   4%|▍         | 22/520 [00:00<00:04, 107.28it/s]
+Loading weights:   6%|▋         | 33/520 [00:00<00:06, 79.22it/s] 
+Loading weights:   8%|▊         | 42/520 [00:00<00:07, 63.76it/s]
+Loading weights:  10%|▉         | 50/520 [00:00<00:07, 61.44it/s]
+Loading weights:  11%|█         | 57/520 [00:00<00:08, 57.16it/s]
+Loading weights:  13%|█▎        | 69/520 [00:00<00:06, 67.76it/s]
+Loading weights:  15%|█▍        | 77/520 [00:01<00:06, 66.75it/s]
+Loading weights:  17%|█▋        | 87/520 [00:01<00:05, 73.46it/s]
+Loading weights:  18%|█▊        | 95/520 [00:01<00:06, 65.21it/s]
+Loading weights:  20%|█▉        | 102/520 [00:01<00:06, 65.72it/s]
+Loading weights:  22%|██▏       | 114/520 [00:01<00:05, 77.27it/s]
+Loading weights:  25%|██▍       | 129/520 [00:01<00:04, 90.54it/s]
+Loading weights:  28%|██▊       | 145/520 [00:01<00:03, 99.57it/s]
+Loading weights:  30%|███       | 156/520 [00:02<00:05, 71.74it/s]
+Loading weights:  32%|███▏      | 165/520 [00:02<00:04, 72.95it/s]
+Loading weights:  34%|███▍      | 179/520 [00:02<00:04, 83.93it/s]
+Loading weights:  36%|███▋      | 189/520 [00:02<00:04, 69.61it/s]
+Loading weights:  40%|████      | 208/520 [00:02<00:03, 91.02it/s]
+Loading weights:  44%|████▎     | 227/520 [00:02<00:02, 107.13it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 179.45it/s]
+17:54:05 INFO    storybook.gpu | etapa_medida  etapa=ip_adapter_embeds_cpu segundos=4.485 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4076.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096
 image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
-17:40:59 INFO    storybook.gpu | etapa_medida  etapa=ip_adapter_carga segundos=0.031 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=3780.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096
-17:40:59 ERROR   f0_hello | paso_fallido  paso=image
-Traceback (most recent call last):
-  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 669, in main
-    funciones[paso](cfg, ses, args)
-  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 290, in paso_imagen
-    metricas += _probar_ip_adapter(cfg, pipe, rutas[0], prompt_ip, negativo, seed, ses)
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 335, in _probar_ip_adapter
-    pipe.load_ip_adapter(
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
-    return fn(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\loaders\ip_adapter.py", line 245, in load_ip_adapter
-    unet._load_ip_adapter_weights(state_dicts, low_cpu_mem_usage=low_cpu_mem_usage)
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\loaders\unet.py", line 712, in _load_ip_adapter_weights
-    attn_procs = self._convert_ip_adapter_attn_to_diffusers(state_dicts, low_cpu_mem_usage=low_cpu_mem_usage)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\loaders\unet.py", line 641, in _convert_ip_adapter_attn_to_diffusers
-    attn_procs[name] = attn_processor_class()
-                       ^^^^^^^^^^^^^^^^^^^^^^
-TypeError: SlicedAttnProcessor.__init__() missing 1 required positional argument: 'slice_size'
-17:41:01 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=2.103 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=2444.5 vram_gpu_pico_mb=2444.5 vram_gpu_total_mb=4096
-17:41:02 INFO    storybook.gpu | etapa_medida  etapa=voz_sintesis segundos=1.272 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=2444.5 vram_gpu_pico_mb=2444.5 vram_gpu_total_mb=4096
-17:41:02 WARNING f0_hello | sonido_no_descargado  backend=sa3 repo=stabilityai/stable-audio-3-small-sfx
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+17:54:06 INFO    storybook.gpu | etapa_medida  etapa=ip_adapter_carga segundos=0.402 dispositivo=cuda vram_torch_pico_mb=2240.9 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4076.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096
+17:54:10 INFO    storybook.gpu | etapa_medida  etapa=imagen_gen_ip_adapter segundos=4.01 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=2478.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.ip_scale=0.6 extra.seed=1234
+17:54:12 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=1.809 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096
+17:54:13 INFO    storybook.gpu | etapa_medida  etapa=voz_sintesis segundos=1.313 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096
+17:54:13 WARNING f0_hello | sonido_no_descargado  backend=sa3 repo=stabilityai/stable-audio-3-small-sfx
 System.Management.Automation.RemoteException
 Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
 System.Management.Automation.RemoteException
-Loading weights:   3%|▎         | 7/205 [00:00<00:09, 20.65it/s][A
-Loading weights: 100%|██████████| 205/205 [00:00<00:00, 584.78it/s]
+Loading weights:   3%|▎         | 7/205 [00:00<00:06, 31.60it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 664.15it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  2.06it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  2.37it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 2319.22it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  5.05it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
 Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
 System.Management.Automation.RemoteException
-Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.70it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.25it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
 Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
 System.Management.Automation.RemoteException
-Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.52it/s]
-Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.49it/s]
-17:41:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=1.75 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=2444.5 vram_gpu_pico_mb=2444.5 vram_gpu_total_mb=4096
-17:41:04 ERROR   f0_hello | sonido_error  backend=audioldm
-Traceback (most recent call last):
-  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 488, in paso_sonido
-    pipe = Pipeline.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
-    return fn(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\pipelines\pipeline_utils.py", line 1044, in from_pretrained
-    loaded_sub_model = load_sub_model(
-                       ^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\pipelines\pipeline_loading_utils.py", line 926, in load_sub_model
-    loaded_sub_model = load_method(cached_folder, **loading_kwargs)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\transformers\modeling_utils.py", line 4251, in from_pretrained
-    checkpoint_files, sharded_metadata = _get_resolved_checkpoint_files(
-                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\transformers\modeling_utils.py", line 627, in _get_resolved_checkpoint_files
-    raise OSError(
-OSError: Error no file named model.safetensors, or pytorch_model.bin, found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f.
-17:41:04 ERROR   f0_hello | paso_fallido  paso=sound causa="Ningún backend generativo de sonido funcionó: {'sa3': {'estado': 'no_descargado', 'detalle': "'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"}, 'audioldm': {'estado': 'error', 'detalle': 'OSError: Error no file named model.safetensors, or pytorch_model.bin, found in directory C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf\\hub\\models--cvssp--audioldm\\snapshots\\8ed5f6437581a2fee9c662842d7cb13459914b0f.'}}"
-17:41:06 INFO    storybook.gpu | etapa_medida  etapa=eval_whisper_carga segundos=1.493 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096
-17:41:13 INFO    storybook.gpu | etapa_medida  etapa=eval_wer segundos=6.981 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096 extra.wer=0.075
-17:41:13 WARNING f0_hello | eval_sin_imagenes  accion="ejecuta antes el paso image"
-17:41:13 INFO    f0_hello | f0_fin  total_s=363.4 fallidos="['llm', 'image', 'sound']" resumen=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_173509\resumen.md
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  2.57it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  3.17it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  2.99it/s]
+The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
+17:54:16 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=2.955 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=972.5 vram_gpu_total_mb=4096
+17:54:18 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_gen_1 segundos=1.614 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1064.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+17:54:19 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_gen_2 segundos=1.219 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+17:54:21 INFO    storybook.gpu | etapa_medida  etapa=eval_whisper_carga segundos=1.574 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+17:54:28 INFO    storybook.gpu | etapa_medida  etapa=eval_wer segundos=7.209 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.wer=0.056
+17:54:29 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
+17:54:29 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
+17:54:29 INFO    open_clip.factory | Instantiating model architecture: CLIP
+17:54:30 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
+17:54:30 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
+17:54:30 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
+17:54:30 INFO    open_clip.factory | Parsing tokenizer identifier. Schema: None, Identifier: ViT-B-32
+17:54:30 INFO    open_clip.factory | Attempting to load config from built-in: ViT-B-32
+17:54:30 INFO    open_clip.factory | Using default SimpleTokenizer.
+17:54:30 INFO    storybook.gpu | etapa_medida  etapa=eval_clip_carga segundos=2.246 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+17:54:31 INFO    storybook.gpu | etapa_medida  etapa=eval_clip segundos=0.27 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.clip_imagen_texto=0.408
+17:54:31 INFO    f0_hello | f0_fin  total_s=269.2 fallidos=['llm'] resumen=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_175002\resumen.md
