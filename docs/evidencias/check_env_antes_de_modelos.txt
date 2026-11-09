@@ -1,0 +1,28 @@
+﻿16:44:02 INFO    check_env | check_env_inicio  perfil=rapido raiz=C:\Users\diego\Documents\StoryBook-IA
+16:44:03 INFO    check_env | [INFO] sistema / SO: Windows 11 (build 26200) AMD64
+16:44:03 WARNING check_env | [AVISO] sistema / Python: 3.12.10 (venv) en C:\Users\diego\Documents\StoryBook-IA\.venv\Scripts\python.exe
+16:44:03 INFO    check_env | [INFO] hardware / CPU: 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz - 6 núcleos / 12 hilos
+16:44:03 INFO    check_env | [OK] hardware / RAM: 23.7 GB total, 10.3 GB disponibles
+16:44:03 INFO    check_env | [OK] energia / Alimentación: Conectado a la corriente (80 %). Usa modo Turbo/Rendimiento en Armoury Crate.
+16:44:03 INFO    check_env | [OK] hardware / Disco: 266.6 GB libres en la unidad del proyecto (mínimo recomendado 25.0 GB)
+16:44:03 INFO    check_env | [OK] gpu / GPU: NVIDIA GeForce RTX 3050 Laptop GPU - 4096 MB VRAM (134.0 MB en uso)
+16:44:03 INFO    check_env | [INFO] gpu / Driver: Driver 617.42 - soporta CUDA hasta 13.4
+16:44:03 INFO    check_env | [INFO] gpu / Estado: P-state P0, límite 75.0 W, 48 °C
+16:44:05 INFO    check_env | [INFO] pytorch / Versión: torch 2.15.0+cu132 (CUDA runtime 13.2)
+16:44:06 INFO    check_env | [OK] pytorch / torch.cuda.is_available(): True - NVIDIA GeForce RTX 3050 Laptop GPU, compute capability 8.6, 4096 MB
+16:44:06 INFO    check_env | [OK] pytorch / fp16: matmul fp16 correcto - ~1.2 TFLOPS
+16:44:06 INFO    check_env | [INFO] librerias / Versiones: torch=2.15.0+cu132, torchvision=0.29.2+cu132, diffusers=0.42.1, transformers=5.22.2, accelerate=1.15.0, peft=0.21.2, safetensors=0.8.0, huggingface-hub=2.4.0, piper-tts=1.8.0, onnxruntime=1.31.1, faster-whisper=1.2.1, ctranslate2=4.8.5, open-clip-torch=4.2.1, jiwer=4.0.0, streamlit=1.67.0, pydantic=2.14.3, numpy=2.5.4, scipy=1.18.1, soundfile=0.14.0, pyloudnorm=0.2.0, nvidia-ml-py=13.615.71, httpx=0.28.1
+16:44:06 INFO    check_env | [OK] modelos / Modo offline: HF_HUB_OFFLINE=1 - HF_HOME=C:\Users\diego\Documents\StoryBook-IA\models\hf
+16:44:07 INFO    check_env | [INFO] modelos / Caché HF: 0 repos, 0.0 GB en C:\Users\diego\Documents\StoryBook-IA\models\hf
+16:44:07 ERROR   check_env | [FALLO] modelos / Lykon/dreamshaper-8: imagen: falta
+16:44:07 ERROR   check_env | [FALLO] modelos / latent-consistency/lcm-lora-sdv1-5: imagen (LCM): falta
+16:44:07 ERROR   check_env | [FALLO] modelos / h94/IP-Adapter: imagen (IP-Adapter): falta
+16:44:07 ERROR   check_env | [FALLO] modelos / Systran/faster-whisper-small: evaluación (WER): falta
+16:44:07 WARNING check_env | [AVISO] modelos / stabilityai/stable-audio-3-small-sfx: sonido (sa3): falta (gated). Habrá fallback
+16:44:07 WARNING check_env | [AVISO] modelos / cvssp/audioldm: sonido (audioldm): falta. Habrá fallback
+16:44:07 ERROR   check_env | [FALLO] modelos / Piper es_MX-claude-high: falta la voz (download_models.py)
+16:44:10 INFO    check_env | [OK] ollama / Servidor: Ollama 0.40.15 en http://localhost:11434
+16:44:10 ERROR   check_env | [FALLO] ollama / qwen3:4b-instruct-2507-q4_K_M: falta: ollama pull qwen3:4b-instruct-2507-q4_K_M
+16:44:10 INFO    check_env | [INFO] ollama / OLLAMA_FLASH_ATTENTION: no definida (recomendado 1: reduce la VRAM del KV cache)
+16:44:10 INFO    check_env | [INFO] ollama / OLLAMA_KV_CACHE_TYPE: no definida (recomendado q8_0: reduce la VRAM del KV cache)
+16:44:10 INFO    check_env | check_env_fin  ok=8 avisos=3 fallos=6 reporte=C:\Users\diego\Documents\StoryBook-IA\outputs\env\env_report.json
