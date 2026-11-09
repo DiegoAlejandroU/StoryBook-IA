@@ -30,6 +30,7 @@ _COMPONENTES_DIFFUSERS = (
     "duration_embedder",
 )
 _EXT_CONFIG = (".json", ".txt", ".model", ".tiktoken")
+_EXCLUIDOS = frozenset({"safety_checker"})
 _COMANDO_DESCARGA = "uv run python scripts/download_models.py"
 
 
@@ -93,7 +94,13 @@ def seleccionar_archivos_diffusers(archivos: list[str]) -> list[str]:
       ``safety_checker`` (se omite para ahorrar ~600 MB de VRAM; ver informe, ética).
     """
     seleccion = ["model_index.json"] if "model_index.json" in archivos else []
-    for componente in _COMPONENTES_DIFFUSERS:
+    # Componentes conocidos + cualquier carpeta con archivos de configuración (p. ej. el
+    # "vocoder" de AudioLDM), salvo el safety_checker.
+    carpetas_con_config = {
+        a.split("/", 1)[0] for a in archivos if "/" in a and a.endswith(_EXT_CONFIG)
+    }
+    componentes = sorted((set(_COMPONENTES_DIFFUSERS) | carpetas_con_config) - _EXCLUIDOS)
+    for componente in componentes:
         propios = [a for a in archivos if a.startswith(f"{componente}/")]
         if not propios:
             continue

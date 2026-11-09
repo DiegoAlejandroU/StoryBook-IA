@@ -254,7 +254,7 @@ Flujo:
   - Antes de generar, validar con el tokenizer que no se superen los **77 tokens de CLIP**; si se superan, recortar con prioridad (personajes > acción > estilo) o usar compel. Registrar los truncamientos.
   - Negative prompt común, seed fija y parámetros constantes. Resolución 768×512 (horizontal).
   - IP-Adapter con una "character sheet" del protagonista generada primero.
-  - Memoria: attention slicing y VAE slicing; `enable_model_cpu_offload()` si IP-Adapter + encoder de imagen superan los 4 GB.
+  - Memoria: VAE slicing y la atención SDPA de torch 2.x. **No usar attention slicing**: con IP-Adapter falla en diffusers 0.42 y con SDPA no aporta. `enable_model_cpu_offload()` si IP-Adapter + encoder superan los 4 GB. Medido en F0: SD 1.5 + LCM a 768×512, 6 pasos, unos 4–5 s por imagen y 3,8 GB de VRAM pico.
 - **Voz (CPU):**
   - Una voz narradora fija para toda la historia, con parámetros constantes (length_scale, noise_scale).
   - Salida en WAV, con la duración registrada.

@@ -6,7 +6,7 @@ llm:
   model: qwen3:4b-instruct-2507-q4_K_M   # ~2,5 GB Q4_K_M: cabe completo en 4 GB de VRAM
   think: false                           # Qwen3: sin razonamiento (más rápido, JSON directo)
   num_ctx: 8192                          # >= 6144 para no truncar la Bible; vigilar KV cache
-  num_predict: 5120                      # tope de salida (~3000 tokens esperados para la Bible)
+  num_predict: 4096                      # tope de salida (~3000 tokens esperados para la Bible)
   temperature_narrativa: 0.7
   temperature_auditor: 0.2
   max_reintentos: 3
@@ -26,7 +26,7 @@ image:
   width: 768
   height: 512
   negative_prompt_base: "lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore"
-  attention_slicing: true
+  attention_slicing: false               # con SDPA (torch 2.x) no hace falta e impide IP-Adapter
   vae_slicing: true
   cpu_offload: false
   ip_adapter:

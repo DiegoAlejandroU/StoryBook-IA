@@ -41,7 +41,19 @@ class LLMModelNotFoundError(LLMError):
 
 
 class LLMResponseError(LLMError):
-    """Respuesta vacía, truncada o con error del servidor."""
+    """Respuesta vacía, truncada o con error del servidor.
+
+    En truncamientos conserva la salida parcial y los tokens para diagnosticar (bucles,
+    campos demasiado largos).
+    """
+
+    def __init__(
+        self, mensaje: str, *, contenido: str = "", output_tokens: int = 0, eval_s: float = 0.0
+    ) -> None:
+        super().__init__(mensaje)
+        self.contenido = contenido
+        self.output_tokens = output_tokens
+        self.eval_s = eval_s
 
 
 class LLMValidationError(LLMError):
@@ -228,7 +240,11 @@ class OllamaClient:
         if razon == "length":
             raise LLMResponseError(
                 f"Respuesta truncada por longitud (num_ctx={num_ctx}, num_predict={num_predict}). "
-                "Si el JSON quedó incompleto, aumenta num_predict; si se repetía, revisa el prompt."
+                "Si el JSON quedó incompleto, aumenta num_predict; si se repetía, "
+                "revisa el prompt.",
+                contenido=contenido,
+                output_tokens=int(datos.get("eval_count", 0)),
+                eval_s=round(datos.get("eval_duration", 0) / _NS, 3),
             )
         return ChatResult(
             content=contenido,

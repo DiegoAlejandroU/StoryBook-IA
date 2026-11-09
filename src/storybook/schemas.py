@@ -472,7 +472,9 @@ class StoryBible(_Base):
     escenario: Escenario
     personajes: list[Personaje] = Field(min_length=1, max_length=MAX_PERSONAJES)
     escenas: list[Escena] = Field(min_length=NUM_ESCENAS, max_length=NUM_ESCENAS)
-    canon: list[Hecho] = Field(
+    # Fuera del esquema del LLM: el validador lo construye con los hechos_nuevos de cada
+    # escena. Si el modelo lo escribe, duplica todos los hechos y agota num_predict (F0).
+    canon: SkipJsonSchema[list[Hecho]] = Field(
         default_factory=list,
         max_length=40,
         description="Hechos establecidos que ninguna escena posterior puede contradecir.",

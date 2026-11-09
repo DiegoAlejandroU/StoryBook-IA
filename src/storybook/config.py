@@ -110,7 +110,7 @@ class LLMConfig(_Strict):
     )
     num_ctx: int = Field(default=8192, ge=2048, le=32768)
     num_predict: int = Field(
-        default=5120,
+        default=4096,
         ge=256,
         le=16384,
         description="Tope de tokens generados: evita bucles infinitos (p. ej. espacios en JSON).",

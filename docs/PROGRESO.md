@@ -192,3 +192,18 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   Se reconstruyeron a partir de sus 29 tests y del planificador y el auditor, y se integró `num_predict` en el cliente, el planificador y el auditor. Verificación: **112 tests en verde**, ruff limpio.
   **Regla para todas las sesiones:** antes de copiar archivos a esta carpeta, comprobar que no cambiaron desde que se leyeron (mtime o hash) y hacer commit en Windows con frecuencia.
 
+### 2026-11-09 17:55 · Windows (2.ª corrida de setup) + correcciones · 0.6 (parcial)
+- Medido en GPU:
+  - Imagen: DreamShaper 8 + LCM a 768×512, 6 pasos → **4,95 s y 3,73 s por imagen**, VRAM pico 3,78 GB (torch 3,11 GB); carga 5,8 s.
+  - Voz: Piper RTF 0,031.
+  - **WER de la narración: 0,075.**
+- Fallos y correcciones:
+  1. LLM: 319 s y truncado a 5120 tokens (~16 tok/s).
+     - El esquema permitía que el modelo escribiera `canon` (hasta 40 hechos), que el validador ya construye: ahora `canon` es `SkipJsonSchema`.
+     - `num_predict` baja a 4096.
+     - Se guarda `llm_raw_truncado.txt` si se trunca, y se registra la fracción del modelo en GPU aunque falle. Los ~16 tok/s sugieren offload parcial a CPU: verificar con el log `llm_en_gpu`.
+  2. IP-Adapter: `SlicedAttnProcessor` sin `slice_size`, por ser incompatible con attention slicing.
+     - `attention_slicing: false` (SDPA) y `disable_attention_slicing()` antes de `load_ip_adapter`.
+  3. AudioLDM: faltaba el componente `vocoder`. `seleccionar_archivos_diffusers` ahora incluye cualquier carpeta con configuración, salvo `safety_checker`. Se descarga en la próxima corrida.
+- Verificación sin GPU: 115 tests en verde, ruff limpio.
+

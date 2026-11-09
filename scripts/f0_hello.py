@@ -40,7 +40,7 @@ from storybook.hub import (
 )
 from storybook.logging_utils import get_logger, kv, setup_logging
 from storybook.schemas import StoryBible, esquema_json_llm, validar_entrada
-from storybook.story.llm_client import LLMError, OllamaClient
+from storybook.story.llm_client import LLMError, LLMResponseError, OllamaClient
 from storybook.story.prompts import mensajes_bible
 
 log = get_logger("f0_hello")
@@ -118,30 +118,50 @@ def paso_llm(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) -> No
     with OllamaClient(cfg.llm.host, cfg.llm.timeout_s) as cliente:
         if not cliente.has_model(cfg.llm.model):
             raise ModelNotDownloadedError(f"Falta el modelo. Ejecuta: ollama pull {cfg.llm.model}")
+        fraccion_gpu: float | None = None
+        vram_cargado: float | None = None
         try:
             with track_stage("llm_bible") as metrica:
-                resultado = cliente.chat_json(
-                    model=cfg.llm.model,
-                    messages=mensajes_bible(solicitud),
-                    schema=esquema,
-                    temperature=cfg.llm.temperature_narrativa,
-                    num_ctx=cfg.llm.num_ctx,
-                    think=cfg.llm.think,
-                    keep_alive=cfg.llm.keep_alive_etapa,
-                    seed=cfg.llm.seed,
-                    num_predict=cfg.llm.num_predict,
-                )
+                try:
+                    resultado = cliente.chat_json(
+                        model=cfg.llm.model,
+                        messages=mensajes_bible(solicitud),
+                        schema=esquema,
+                        temperature=cfg.llm.temperature_narrativa,
+                        num_ctx=cfg.llm.num_ctx,
+                        think=cfg.llm.think,
+                        keep_alive=cfg.llm.keep_alive_etapa,
+                        seed=cfg.llm.seed,
+                        num_predict=cfg.llm.num_predict,
+                    )
+                except LLMResponseError as exc:
+                    if exc.contenido:
+                        parcial = ses.dir / "llm_raw_truncado.txt"
+                        parcial.write_text(exc.contenido, encoding="utf-8")
+                        metrica.extra.update(
+                            tokens_salida=exc.output_tokens,
+                            tokens_por_s=round(exc.output_tokens / exc.eval_s, 2)
+                            if exc.eval_s
+                            else 0.0,
+                            salida_parcial=str(parcial),
+                        )
+                    raise
                 metrica.extra.update(
                     tokens_prompt=resultado.prompt_tokens,
                     tokens_salida=resultado.output_tokens,
                     tokens_por_s=resultado.tokens_por_s,
                     carga_modelo_s=resultado.load_s,
                 )
-            fraccion_gpu = cliente.gpu_fraction(cfg.llm.model)
-            vram_cargado = gpu_used_mb()
         finally:
-            # Liberar la VRAM aunque la generación falle: si el modelo queda cargado, las
+            # Medir cuánto del modelo quedó en GPU (Ollama hace offload a CPU si no cabe) y
+            # liberar la VRAM aunque la generación falle: si el modelo queda cargado, las
             # etapas de imagen y sonido se quedan sin memoria en 4 GB.
+            try:
+                fraccion_gpu = cliente.gpu_fraction(cfg.llm.model)
+                vram_cargado = gpu_used_mb()
+                log.info("llm_en_gpu", extra=kv(fraccion=fraccion_gpu, vram_mb=vram_cargado))
+            except LLMError as exc:
+                log.warning("ollama_ps_fallido", extra=kv(error=str(exc)))
             try:
                 cliente.unload(cfg.llm.model)
                 _esperar_descarga(cliente, cfg.llm.model)
@@ -332,6 +352,9 @@ def _probar_ip_adapter(
     metricas.append(m_emb.as_dict())
 
     with track_stage("ip_adapter_carga") as m_carga:
+        # IP-Adapter reemplaza los procesadores de atención; con attention slicing activo
+        # diffusers 0.42 falla (SlicedAttnProcessor sin slice_size). Con SDPA no hace falta.
+        pipe.disable_attention_slicing()
         pipe.load_ip_adapter(
             str(snapshot_ip),
             subfolder=ipc.subfolder,
