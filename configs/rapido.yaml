@@ -1,0 +1,10 @@
+# Perfil de la sustentación: objetivo < 5 min por historia (a validar con mediciones de F0).
+extends: default
+
+image:
+  scheduler: lcm
+  steps: 6
+  guidance_scale: 1.5
+
+sound:
+  backends: [sa3, audioldm, library, procedural]   # SAO 1.0 es lento con offload: solo en "calidad"

@@ -1,0 +1,11 @@
+# C1 - Línea base: prompts independientes, seed aleatoria, sin Story Bible ni IP-Adapter.
+extends: rapido
+
+consistency:
+  use_bible: false
+  fixed_seed: false
+  seed_policy: por_escena
+
+image:
+  ip_adapter:
+    enabled: false

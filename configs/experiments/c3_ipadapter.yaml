@@ -1,0 +1,12 @@
+# C3 - C2 + IP-Adapter con la "character sheet" del protagonista.
+extends: rapido
+
+consistency:
+  use_bible: true
+  fixed_seed: true
+  seed_policy: compartida
+
+image:
+  ip_adapter:
+    enabled: true
+    scale: 0.6

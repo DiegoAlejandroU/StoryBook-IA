@@ -1,0 +1,11 @@
+# C2 - Story Bible + descriptor fijo + seed fija, sin IP-Adapter.
+extends: rapido
+
+consistency:
+  use_bible: true
+  fixed_seed: true
+  seed_policy: compartida
+
+image:
+  ip_adapter:
+    enabled: false

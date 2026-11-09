@@ -1,0 +1,106 @@
+[project]
+name = "storybook-ia"
+version = "0.1.0"
+description = "StoryBook: generación local de cuentos ilustrados de 5 escenas con narración y ambientación sonora."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Diego Alejandro Urbano Pira" }]
+requires-python = ">=3.11"
+dependencies = [
+    # --- Núcleo de inferencia (GPU) -------------------------------------------------
+    # torch/torchvision se resuelven desde el índice de PyTorch declarado abajo.
+    # torchaudio NO se usa: quedó congelado en 2.11.x y el audio se maneja con soundfile/scipy.
+    "torch>=2.15",
+    "torchvision>=0.29",
+    "diffusers>=0.42",            # SD 1.5, LCM, IP-Adapter, StableAudioPipeline, StableAudio3Pipeline
+    "transformers>=5.0",
+    "accelerate>=1.10",           # enable_model_cpu_offload
+    "peft>=0.17",                 # requerido por load_lora_weights (LCM-LoRA)
+    "safetensors>=0.6",
+    "huggingface-hub>=1.32",
+    "sentencepiece>=0.2",         # tokenizadores T5 de Stable Audio
+    # --- Configuración, validación y utilidades -----------------------------------
+    "pydantic>=2.11",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.1",
+    "httpx>=0.28",                # cliente HTTP para Ollama (solo localhost)
+    "psutil>=7.0",
+    "nvidia-ml-py>=12.570",       # NVML: VRAM usada/pico (módulo pynvml)
+    # --- Audio (sin ffmpeg) -----------------------------------------------------------
+    "numpy>=2.0",
+    "scipy>=1.14",
+    "soundfile>=0.13",
+    "pyloudnorm>=0.1.1",
+    # --- Imagen ---------------------------------------------------------------------------
+    "pillow>=11.0",
+    # --- Voz (CPU) ------------------------------------------------------------------------
+    "piper-tts>=1.8",             # GPL-3.0; espeak-ng embebido, sin dependencias de sistema
+    # --- Evaluación (CPU) ---------------------------------------------------------------
+    "faster-whisper>=1.2",
+    "jiwer>=4.0",
+    "open-clip-torch>=3.0",
+    # --- Interfaz --------------------------------------------------------------------------
+    "streamlit>=1.50",
+]
+
+[project.optional-dependencies]
+# Alternativa de voz para el experimento Piper vs Kokoro (opcional, recortable).
+kokoro = ["kokoro>=0.9.4"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4",
+    "ruff>=0.12",
+]
+
+# -----------------------------------------------------------------------------------------
+# PyTorch con CUDA en Windows
+# PyTorch 2.15 solo publica ruedas CUDA 13.x (cu132, cu134); cu12x terminó en 2.14.
+# Elegir según la línea "CUDA Version" de `nvidia-smi`:
+#   * CUDA Version >= 13.2  -> dejar este bloque tal cual (torch 2.15 + cu132).
+#   * CUDA Version 12.x     -> actualizar el driver con NVIDIA App (recomendado) o usar el
+#                              bloque alternativo comentado (torch 2.14 + cu126).
+# -----------------------------------------------------------------------------------------
+[[tool.uv.index]]
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu132", marker = "sys_platform == 'win32' or sys_platform == 'linux'" }]
+torchvision = [{ index = "pytorch-cu132", marker = "sys_platform == 'win32' or sys_platform == 'linux'" }]
+
+# --- Alternativa para drivers con CUDA 12.x (cambiar también torch>=2.15 por "torch>=2.14,<2.15") ---
+# [[tool.uv.index]]
+# name = "pytorch-cu126"
+# url = "https://download.pytorch.org/whl/cu126"
+# explicit = true
+#
+# [tool.uv.sources]
+# torch = [{ index = "pytorch-cu126", marker = "sys_platform == 'win32' or sys_platform == 'linux'" }]
+# torchvision = [{ index = "pytorch-cu126", marker = "sys_platform == 'win32' or sys_platform == 'linux'" }]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/storybook"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "scripts", "tests", "app"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "T20", "RUF"]
+# RUF001-003: el español usa caracteres que ruff considera "ambiguos" (–, ¿, ¡).
+ignore = ["RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["storybook"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"

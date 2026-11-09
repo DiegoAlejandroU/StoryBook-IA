@@ -1,0 +1,50 @@
+# --- Entorno Python ---
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+build/
+dist/
+
+# --- Secretos y configuración local ---
+.env
+.env.*
+!.env.example
+
+# --- Pesos y cachés de modelos (nunca al repositorio) ---
+models/
+*.safetensors
+*.gguf
+*.onnx
+*.onnx.json
+*.ckpt
+*.pt
+*.pth
+*.bin
+
+# --- Salidas generadas ---
+outputs/
+!samples/
+experiments/runs/
+
+# --- Audio de trabajo (los SFX versionados viven en assets/sfx con su licencia) ---
+*.wav
+!assets/sfx/**/*.wav
+!samples/**/*.wav
+
+# --- Sistema operativo y editores ---
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# --- Archivos locales de trabajo (no van al repositorio) ---
+docs/enunciado/
+.cache/
+_to_delete/
+*.zip

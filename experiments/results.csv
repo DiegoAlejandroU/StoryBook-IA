@@ -1,0 +1,1 @@
+id,fecha,idea,genero,configuracion,perfil,llm,imagen,voz,sonido,seed_base,t_llm_s,t_imagen_s,t_voz_s,t_sonido_s,t_mezcla_s,t_total_s,vram_pico_mb,clip_img_img_media,clip_img_img_min,clip_img_txt_media,wer_medio,narrativa_1a5,visual_1a5,audio_1a5,funcionamiento_1a5,escenas_completas,fallbacks,fallos,cambios

@@ -1,0 +1,15 @@
+# Perfil de calidad: objetivo < 12 min por historia. LLM 8B con offload parcial a CPU.
+extends: default
+
+llm:
+  model: qwen3:8b                         # ~5,2 GB Q4_K_M: Ollama reparte capas GPU/CPU
+  num_ctx: 8192
+
+image:
+  scheduler: dpmpp_2m_karras
+  steps: 25
+  guidance_scale: 7.0
+
+sound:
+  backends: [sa3, sao, audioldm, library, procedural]
+  sao_steps: 100

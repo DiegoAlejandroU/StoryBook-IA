@@ -1,0 +1,72 @@
+# Configuración base de StoryBook. Los perfiles (rapido, calidad, experimentos) heredan de
+# aquí con "extends" y solo sobrescriben lo que cambian. Valores medidos en F0 y F6.
+
+llm:
+  host: http://localhost:11434
+  model: qwen3:4b-instruct-2507-q4_K_M   # ~2,5 GB Q4_K_M: cabe completo en 4 GB de VRAM
+  think: false                           # Qwen3: sin razonamiento (más rápido, JSON directo)
+  num_ctx: 8192                          # >= 6144 para no truncar la Bible; vigilar KV cache
+  temperature_narrativa: 0.7
+  temperature_auditor: 0.2
+  max_reintentos: 3
+  seed: 42
+  timeout_s: 600
+  keep_alive_etapa: 5m                   # al terminar la etapa se fuerza keep_alive=0
+
+image:
+  model_id: Lykon/dreamshaper-8          # fine-tune ilustrativo de SD 1.5 (CreativeML OpenRAIL-M)
+  scheduler: lcm                         # lcm (6-8 pasos) | dpmpp_2m_karras (20-25 pasos)
+  lcm_lora_id: latent-consistency/lcm-lora-sdv1-5
+  steps: 6
+  guidance_scale: 1.5                    # LCM trabaja con CFG bajo (1.0-2.0)
+  width: 768
+  height: 512
+  negative_prompt_base: "lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore"
+  attention_slicing: true
+  vae_slicing: true
+  cpu_offload: false
+  ip_adapter:
+    enabled: true
+    repo_id: h94/IP-Adapter
+    subfolder: models
+    weight_name: ip-adapter_sd15.safetensors
+    image_encoder_subfolder: models/image_encoder
+    scale: 0.6
+
+voice:
+  backend: piper
+  piper_voice: es_MX-claude-high         # verificar licencia en su MODEL_CARD tras descargar
+  length_scale: 1.0
+  noise_scale: 0.667
+  noise_w_scale: 0.8
+  kokoro_voice: ef_dora
+  kokoro_lang_code: e
+
+sound:
+  backends: [sa3, sao, audioldm, library, procedural]   # orden de fallback automático
+  sa3_repo_id: stabilityai/stable-audio-3-small-sfx
+  sa3_steps: null                             # null = pasos por defecto del scheduler
+  sao_repo_id: stabilityai/stable-audio-open-1.0
+  sao_steps: 50
+  sao_guidance: 7.0
+  audioldm_repo_id: cvssp/audioldm             # sugerido en clase; no es gated (CC BY-NC-SA 4.0)
+  audioldm_steps: 25
+  audioldm_guidance: 2.5
+  duration_s: 8.0                             # el mezclador hace loop + crossfade hasta la voz
+  negative_prompt: "low quality, speech, voice, singing, music"
+  cpu_offload: true
+
+evaluation:
+  whisper_model: small
+  whisper_repo_id: Systran/faster-whisper-small
+  whisper_compute_type: int8
+  whisper_language: es
+  clip_model: ViT-B-32
+  clip_pretrained: laion2b_s34b_b79k
+  cpu_threads: 0
+
+consistency:
+  use_bible: true
+  fixed_seed: true
+  seed_policy: compartida
+  base_seed: 1234
