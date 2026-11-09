@@ -1,197 +1,59 @@
-﻿16:44:45 WARNING download_models | sin_hf_token  efecto="los modelos gated (Stable Audio) fallarán"
-16:44:49 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=0%
-16:44:57 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=10%
-16:45:08 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=20%
-16:45:17 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=30%
-16:45:27 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=40%
-16:45:36 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=50%
-16:45:44 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=60%
-16:45:53 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=70%
-16:46:03 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=80%
-16:46:13 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=90%
-16:46:24 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:4b-instruct-2507-q4_K_M estado="pulling 85e4a5b7b8ef" progreso=100%
-16:46:31 INFO    storybook.story.llm_client | ollama_pull_ok  modelo=qwen3:4b-instruct-2507-q4_K_M
-16:46:32 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=0%
-16:46:41 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=10%
-16:46:51 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=20%
-16:47:00 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=30%
-16:47:09 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=40%
-16:47:18 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=50%
-16:47:28 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=60%
-16:47:39 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=70%
-16:47:48 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=80%
-16:47:58 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=90%
-16:48:08 INFO    storybook.story.llm_client | ollama_pull  modelo=qwen3:8b estado="pulling a3de86cd1c13" progreso=100%
-16:48:19 INFO    storybook.story.llm_client | ollama_pull_ok  modelo=qwen3:8b
-16:48:20 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
-16:48:20 INFO    download_models | descargando  repo=Lykon/dreamshaper-8 archivos=13
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8/revision/main "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8/tree/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917?recursive=true&expand=false "HTTP/1.1 200 OK"
+﻿17:34:50 WARNING download_models | sin_hf_token  efecto="los modelos gated (Stable Audio) fallarán"
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+17:34:53 INFO    download_models | descargando  repo=Lykon/dreamshaper-8 archivos=13
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8/revision/main "HTTP/1.1 200 OK"
 System.Management.Automation.RemoteException
-Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer/merges.txt "HTTP/1.1 307 Temporary Redirect"
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]
+Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 2166.39it/s]
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8 "HTTP/1.1 200 OK"
+17:34:53 INFO    download_models | descargando  repo=latent-consistency/lcm-lora-sdv1-5 patrones="['*.safetensors', '*.json']"
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5/revision/main "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]
+Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00, 1051.73it/s]
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5 "HTTP/1.1 200 OK"
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+17:34:53 INFO    download_models | descargando  repo=h94/IP-Adapter patrones="['models/ip-adapter_sd15.safetensors', 'models/image_encoder/config.json', 'models/image_encoder/model.safetensors']"
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/revision/main "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]
+Fetching 3 files: 100%|██████████| 3/3 [00:00<00:00, 1502.80it/s]
+17:34:53 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter "HTTP/1.1 200 OK"
+17:34:54 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx "HTTP/1.1 302 Found"
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-16:48:21 WARNING huggingface_hub.utils._http | Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Fmerges.txt?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Fmerges.txt=&etag=%2276e821f1b6f0a9709293c3b6b51ed90980b3166b%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Fmerges.txt?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Fmerges.txt=&etag=%2276e821f1b6f0a9709293c3b6b51ed90980b3166b%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/text_encoder/config.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Ftokenizer_config.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Ftokenizer_config.json=&etag=%222e8612a429492973fe60635b3f44a28b065cfac0%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/text_encoder%2Fconfig.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftext_encoder%2Fconfig.json=&etag=%228500de75f41891f1ebdf7c9e55aca67f39f6ddfe%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Ftokenizer_config.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Ftokenizer_config.json=&etag=%222e8612a429492973fe60635b3f44a28b065cfac0%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/feature_extractor/preprocessor_config.json "HTTP/1.1 307 Temporary Redirect"
+17:34:54 WARNING huggingface_hub.utils._http | Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+17:34:54 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx.json "HTTP/1.1 307 Temporary Redirect"
+17:34:54 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/cf910fb59f1d79ab3b625a63993a108751c6c25d/es%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json=&etag=%224a98b7593bd91a1522f893b66d5bab1f517d5068%22 "HTTP/1.1 200 OK"
+17:34:54 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/MODEL_CARD "HTTP/1.1 307 Temporary Redirect"
+17:34:54 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/cf910fb59f1d79ab3b625a63993a108751c6c25d/es%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD=&etag=%226f5160c4d63ec36f9f50012f789274505b556807%22 "HTTP/1.1 200 OK"
+17:34:54 INFO    download_models | piper_model_card  voz=es_MX-claude-high extracto="# Model card for claude (high)  * Language: es_MX (Spanish, Mexico) * Speakers: 1 * Quality: high * Samplerate: 22,050Hz  ## Dataset  * URL: https://huggingface.co/spaces/HirCoir/Piper-TTS-Spanish * License: apache-2.0  ## Training  See URL above "
+17:34:54 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+17:34:54 INFO    download_models | descargando  repo=cvssp/audioldm archivos=13
+17:34:54 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/revision/main "HTTP/1.1 200 OK"
 System.Management.Automation.RemoteException
-Fetching 13 files:   8%|▊         | 1/13 [00:00<00:02,  4.90it/s]16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/text_encoder%2Fconfig.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftext_encoder%2Fconfig.json=&etag=%228500de75f41891f1ebdf7c9e55aca67f39f6ddfe%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/feature_extractor%2Fpreprocessor_config.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ffeature_extractor%2Fpreprocessor_config.json=&etag=%22e0675735fd0052745f2f7b7291e4aa7859389998%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/model_index.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/scheduler/scheduler_config.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/model_index.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Fmodel_index.json=&etag=%229584de47e940a1cff5abd39f6348ea76895ca004%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/feature_extractor%2Fpreprocessor_config.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ffeature_extractor%2Fpreprocessor_config.json=&etag=%22e0675735fd0052745f2f7b7291e4aa7859389998%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/scheduler%2Fscheduler_config.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Fscheduler%2Fscheduler_config.json=&etag=%22a63f334bd6446e1cd3d49f32dac82fd45d0fff53%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8/xet-read-token/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/model_index.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Fmodel_index.json=&etag=%229584de47e940a1cff5abd39f6348ea76895ca004%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/scheduler%2Fscheduler_config.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Fscheduler%2Fscheduler_config.json=&etag=%22a63f334bd6446e1cd3d49f32dac82fd45d0fff53%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer/special_tokens_map.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/unet/config.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer/vocab.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Fspecial_tokens_map.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Fspecial_tokens_map.json=&etag=%222c2130b544c0c5a72d5d00da071ba130a9800fb2%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/unet%2Fconfig.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Funet%2Fconfig.json=&etag=%22f56ddd2e37ddc89a5b759fafd3f61b494088a087%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Fvocab.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Fvocab.json=&etag=%22469be27c5c010538f845f518c4f5e8574c78f7c8%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Fvocab.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Fvocab.json=&etag=%22469be27c5c010538f845f518c4f5e8574c78f7c8%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/tokenizer%2Fspecial_tokens_map.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Ftokenizer%2Fspecial_tokens_map.json=&etag=%222c2130b544c0c5a72d5d00da071ba130a9800fb2%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/unet%2Fconfig.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Funet%2Fconfig.json=&etag=%22f56ddd2e37ddc89a5b759fafd3f61b494088a087%22 "HTTP/1.1 200 OK"
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]
+Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 2166.91it/s]
+17:34:54 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm "HTTP/1.1 200 OK"
+17:34:54 INFO    download_models | descargando  repo=Systran/faster-whisper-small patrones=['*']
+17:34:54 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-small/revision/main "HTTP/1.1 200 OK"
 System.Management.Automation.RemoteException
-Fetching 13 files:  54%|█████▍    | 7/13 [00:00<00:00, 23.27it/s]16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Lykon/dreamshaper-8/resolve/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/vae/config.json "HTTP/1.1 307 Temporary Redirect"
-16:48:21 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/vae%2Fconfig.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Fvae%2Fconfig.json=&etag=%22784a450cb1ee4cd0d8e71e6a5c21eddb9016779e%22 "HTTP/1.1 200 OK"
-16:48:21 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Lykon/dreamshaper-8/a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917/vae%2Fconfig.json?%2FLykon%2Fdreamshaper-8%2Fresolve%2Fa7e52b98680b1ba8ff7bce97c7f9f2e2e5337917%2Fvae%2Fconfig.json=&etag=%22784a450cb1ee4cd0d8e71e6a5c21eddb9016779e%22 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 13 files:  77%|███████▋  | 10/13 [00:20<00:00, 23.27it/s]
-Fetching 13 files:  85%|████████▍ | 11/13 [00:37<00:08,  4.30s/it]
-Fetching 13 files:  92%|█████████▏| 12/13 [02:10<00:16, 16.84s/it]
-Fetching 13 files: 100%|██████████| 13/13 [02:39<00:00, 18.82s/it]
-Fetching 13 files: 100%|██████████| 13/13 [02:39<00:00, 12.25s/it]
-16:51:00 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Lykon/dreamshaper-8 "HTTP/1.1 200 OK"
-16:51:00 INFO    download_models | descargando  repo=latent-consistency/lcm-lora-sdv1-5 patrones="['*.safetensors', '*.json']"
-16:51:00 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5/revision/main "HTTP/1.1 200 OK"
-16:51:00 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5/tree/cf2fced511dbe7e26c8d1d397e728fbab875db4b?recursive=true&expand=false "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]16:51:01 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5/xet-read-token/cf2fced511dbe7e26c8d1d397e728fbab875db4b "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 1 files: 100%|██████████| 1/1 [00:33<00:00, 33.38s/it]
-Fetching 1 files: 100%|██████████| 1/1 [00:33<00:00, 33.38s/it]
-16:51:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5 "HTTP/1.1 200 OK"
-16:51:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
-16:51:34 INFO    download_models | descargando  repo=h94/IP-Adapter patrones="['models/ip-adapter_sd15.safetensors', 'models/image_encoder/config.json', 'models/image_encoder/model.safetensors']"
-16:51:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/revision/main "HTTP/1.1 200 OK"
-16:51:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/tree/018e402774aeeddd60609b4ecdb7e298259dc729?recursive=true&expand=false "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]16:51:34 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/h94/IP-Adapter/resolve/018e402774aeeddd60609b4ecdb7e298259dc729/models/image_encoder/config.json "HTTP/1.1 307 Temporary Redirect"
-16:51:34 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/h94/IP-Adapter/018e402774aeeddd60609b4ecdb7e298259dc729/models%2Fimage_encoder%2Fconfig.json?%2Fh94%2FIP-Adapter%2Fresolve%2F018e402774aeeddd60609b4ecdb7e298259dc729%2Fmodels%2Fimage_encoder%2Fconfig.json=&etag=%229c841dd0314e27141ed01a24df1734e407a95c4a%22 "HTTP/1.1 200 OK"
-16:51:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/h94/IP-Adapter/018e402774aeeddd60609b4ecdb7e298259dc729/models%2Fimage_encoder%2Fconfig.json?%2Fh94%2FIP-Adapter%2Fresolve%2F018e402774aeeddd60609b4ecdb7e298259dc729%2Fmodels%2Fimage_encoder%2Fconfig.json=&etag=%229c841dd0314e27141ed01a24df1734e407a95c4a%22 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 3 files:  33%|███▎      | 1/3 [00:00<00:00,  7.11it/s]16:51:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/xet-read-token/018e402774aeeddd60609b4ecdb7e298259dc729 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 3 files:  67%|██████▋   | 2/3 [00:33<00:19, 19.87s/it]
-Fetching 3 files: 100%|██████████| 3/3 [13:36<00:00, 368.16s/it]
-Fetching 3 files: 100%|██████████| 3/3 [13:36<00:00, 272.15s/it]
-17:05:11 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter "HTTP/1.1 200 OK"
-17:05:11 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx "HTTP/1.1 302 Found"
-17:05:11 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/rhasspy/piper-voices/xet-read-token/cf910fb59f1d79ab3b625a63993a108751c6c25d "HTTP/1.1 200 OK"
-17:05:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx.json "HTTP/1.1 307 Temporary Redirect"
-17:05:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/cf910fb59f1d79ab3b625a63993a108751c6c25d/es%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json=&etag=%224a98b7593bd91a1522f893b66d5bab1f517d5068%22 "HTTP/1.1 200 OK"
-17:05:42 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/cf910fb59f1d79ab3b625a63993a108751c6c25d/es%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json=&etag=%224a98b7593bd91a1522f893b66d5bab1f517d5068%22 "HTTP/1.1 200 OK"
-17:05:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/MODEL_CARD "HTTP/1.1 307 Temporary Redirect"
-17:05:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/cf910fb59f1d79ab3b625a63993a108751c6c25d/es%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD=&etag=%226f5160c4d63ec36f9f50012f789274505b556807%22 "HTTP/1.1 200 OK"
-17:05:42 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/cf910fb59f1d79ab3b625a63993a108751c6c25d/es%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD=&etag=%226f5160c4d63ec36f9f50012f789274505b556807%22 "HTTP/1.1 200 OK"
-17:05:42 INFO    download_models | piper_model_card  voz=es_MX-claude-high extracto="# Model card for claude (high)  * Language: es_MX (Spanish, Mexico) * Speakers: 1 * Quality: high * Samplerate: 22,050Hz  ## Dataset  * URL: https://huggingface.co/spaces/HirCoir/Piper-TTS-Spanish * License: apache-2.0  ## Training  See URL above "
-17:05:42 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
-17:05:42 INFO    download_models | descargando  repo=cvssp/audioldm archivos=13
-17:05:42 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/revision/main "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/tree/8ed5f6437581a2fee9c662842d7cb13459914b0f?recursive=true&expand=false "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/model_index.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer/tokenizer.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer/merges.txt "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/model_index.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Fmodel_index.json=&etag=%22bd99c758d708c59c2333893147933ea114caf099%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer/special_tokens_map.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Ftokenizer_config.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Ftokenizer_config.json=&etag=%22058e2e071e2a76af9dc9a10940053477ce8329d3%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/xet-read-token/8ed5f6437581a2fee9c662842d7cb13459914b0f "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Ftokenizer.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Ftokenizer.json=&etag=%2299f518e1ee65361b4d772c6f805508dbf30cfd8b%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/text_encoder/config.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Fmerges.txt?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Fmerges.txt=&etag=%226636bda4a1fd7a63653dffb22683b8162c8de956%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/model_index.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Fmodel_index.json=&etag=%22bd99c758d708c59c2333893147933ea114caf099%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Fspecial_tokens_map.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Fspecial_tokens_map.json=&etag=%22d5698132694f4f1bcff08fa7d937b1701812598e%22 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 13 files:   8%|▊         | 1/13 [00:00<00:03,  3.50it/s]17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/scheduler/scheduler_config.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/text_encoder%2Fconfig.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftext_encoder%2Fconfig.json=&etag=%221cbc2f73872d77eb43104cd091b0f2e4509ce0e9%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Ftokenizer_config.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Ftokenizer_config.json=&etag=%22058e2e071e2a76af9dc9a10940053477ce8329d3%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Ftokenizer.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Ftokenizer.json=&etag=%2299f518e1ee65361b4d772c6f805508dbf30cfd8b%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Fmerges.txt?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Fmerges.txt=&etag=%226636bda4a1fd7a63653dffb22683b8162c8de956%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/scheduler%2Fscheduler_config.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Fscheduler%2Fscheduler_config.json=&etag=%2245298671c2495364ffcc5b17bab99aecbabbc752%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer/vocab.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Fspecial_tokens_map.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Fspecial_tokens_map.json=&etag=%22d5698132694f4f1bcff08fa7d937b1701812598e%22 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 13 files:  23%|██▎       | 3/13 [00:00<00:01,  8.89it/s]17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/unet/config.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/text_encoder%2Fconfig.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftext_encoder%2Fconfig.json=&etag=%221cbc2f73872d77eb43104cd091b0f2e4509ce0e9%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/scheduler%2Fscheduler_config.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Fscheduler%2Fscheduler_config.json=&etag=%2245298671c2495364ffcc5b17bab99aecbabbc752%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Fvocab.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Fvocab.json=&etag=%224ebe4bb3f3114daf2e4cc349f24873a1175a35d7%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/cvssp/audioldm/resolve/8ed5f6437581a2fee9c662842d7cb13459914b0f/vae/config.json "HTTP/1.1 307 Temporary Redirect"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/unet%2Fconfig.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Funet%2Fconfig.json=&etag=%2211210b8578ec095b2320f9ccd00a04d883e62189%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/tokenizer%2Fvocab.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Ftokenizer%2Fvocab.json=&etag=%224ebe4bb3f3114daf2e4cc349f24873a1175a35d7%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/vae%2Fconfig.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Fvae%2Fconfig.json=&etag=%22cd3111fe6f2d6eef995c793f87f4d3ab3201ccf8%22 "HTTP/1.1 200 OK"
-17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/unet%2Fconfig.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Funet%2Fconfig.json=&etag=%2211210b8578ec095b2320f9ccd00a04d883e62189%22 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 13 files:  62%|██████▏   | 8/13 [00:00<00:00, 15.16it/s]17:05:43 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/cvssp/audioldm/8ed5f6437581a2fee9c662842d7cb13459914b0f/vae%2Fconfig.json?%2Fcvssp%2Faudioldm%2Fresolve%2F8ed5f6437581a2fee9c662842d7cb13459914b0f%2Fvae%2Fconfig.json=&etag=%22cd3111fe6f2d6eef995c793f87f4d3ab3201ccf8%22 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 13 files:  77%|███████▋  | 10/13 [00:00<00:00, 15.05it/s]
-Fetching 13 files:  77%|███████▋  | 10/13 [00:18<00:00, 15.05it/s]
-Fetching 13 files:  85%|████████▍ | 11/13 [04:08<01:25, 42.87s/it]
-Fetching 13 files:  92%|█████████▏| 12/13 [05:25<00:49, 49.63s/it]
-Fetching 13 files: 100%|██████████| 13/13 [05:58<00:00, 46.02s/it]
-Fetching 13 files: 100%|██████████| 13/13 [05:58<00:00, 27.56s/it]
-17:11:41 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm "HTTP/1.1 200 OK"
-17:11:41 INFO    download_models | descargando  repo=Systran/faster-whisper-small patrones=['*']
-17:11:41 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-small/revision/main "HTTP/1.1 200 OK"
-17:11:41 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-small/tree/536b0662742c02347bc0e980a01041f333bce120?recursive=true&expand=false "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s]17:11:41 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/README.md "HTTP/1.1 307 Temporary Redirect"
-17:11:41 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/README.md?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2FREADME.md=&etag=%2216511f6106ead2fbc3a1480957a217c2661a5a98%22 "HTTP/1.1 200 OK"
-17:11:41 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/README.md?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2FREADME.md=&etag=%2216511f6106ead2fbc3a1480957a217c2661a5a98%22 "HTTP/1.1 200 OK"
-17:11:41 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-small/xet-read-token/536b0662742c02347bc0e980a01041f333bce120 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 6 files:  17%|█▋        | 1/6 [00:00<00:00,  7.47it/s]17:11:41 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/vocabulary.txt "HTTP/1.1 307 Temporary Redirect"
-17:11:41 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/vocabulary.txt?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2Fvocabulary.txt=&etag=%22c9074644d9d1205686f16d411564729461324b75%22 "HTTP/1.1 200 OK"
-17:11:41 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/tokenizer.json "HTTP/1.1 307 Temporary Redirect"
-17:11:41 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/tokenizer.json?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2Ftokenizer.json=&etag=%227818adb6de9fa3064d3ff81226fdd675be1f6344%22 "HTTP/1.1 200 OK"
-17:11:41 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/vocabulary.txt?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2Fvocabulary.txt=&etag=%22c9074644d9d1205686f16d411564729461324b75%22 "HTTP/1.1 200 OK"
-17:11:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/config.json "HTTP/1.1 307 Temporary Redirect"
-17:11:42 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/tokenizer.json?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2Ftokenizer.json=&etag=%227818adb6de9fa3064d3ff81226fdd675be1f6344%22 "HTTP/1.1 200 OK"
-17:11:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/config.json?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2Fconfig.json=&etag=%22e5047537059bd8f182d9ca64c470201585015187%22 "HTTP/1.1 200 OK"
-17:11:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/Systran/faster-whisper-small/resolve/536b0662742c02347bc0e980a01041f333bce120/.gitattributes "HTTP/1.1 307 Temporary Redirect"
-17:11:42 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/.gitattributes?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2F.gitattributes=&etag=%22c7d9f3332a950355d5a77d85000f05e6f45435ea%22 "HTTP/1.1 200 OK"
-17:11:42 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/config.json?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2Fconfig.json=&etag=%22e5047537059bd8f182d9ca64c470201585015187%22 "HTTP/1.1 200 OK"
-17:11:42 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Systran/faster-whisper-small/536b0662742c02347bc0e980a01041f333bce120/.gitattributes?%2FSystran%2Ffaster-whisper-small%2Fresolve%2F536b0662742c02347bc0e980a01041f333bce120%2F.gitattributes=&etag=%22c7d9f3332a950355d5a77d85000f05e6f45435ea%22 "HTTP/1.1 200 OK"
-System.Management.Automation.RemoteException
-Fetching 6 files:  67%|██████▋   | 4/6 [00:00<00:00, 18.06it/s]
-Fetching 6 files:  83%|████████▎ | 5/6 [00:10<00:00, 18.06it/s]
-Fetching 6 files: 100%|██████████| 6/6 [00:42<00:00,  9.18s/it]
-Fetching 6 files: 100%|██████████| 6/6 [00:42<00:00,  7.04s/it]
-17:12:24 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-small "HTTP/1.1 200 OK"
-17:13:05 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
-17:13:05 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
-17:13:05 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/laion/CLIP-ViT-B-32-laion2B-s34B-b79K/resolve/main/open_clip_model.safetensors "HTTP/1.1 302 Found"
-17:13:05 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/laion/CLIP-ViT-B-32-laion2B-s34B-b79K/xet-read-token/1a25a446712ba5ee05982a381eed697ef9b435cf "HTTP/1.1 200 OK"
-17:13:46 INFO    open_clip.factory | Instantiating model architecture: CLIP
-17:13:47 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
-17:13:47 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
-17:13:47 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
-17:13:47 INFO    download_models | resumen  repo=ollama:qwen3:4b-instruct-2507-q4_K_M estado=ok mb=None licencia="Apache-2.0 (Qwen3)"
-17:13:47 INFO    download_models | resumen  repo=ollama:qwen3:8b estado=ok mb=None licencia="Apache-2.0 (Qwen3)"
-17:13:47 INFO    download_models | resumen  repo=Lykon/dreamshaper-8 estado=ok mb=2035.3 licencia=creativeml-openrail-m
-17:13:47 INFO    download_models | resumen  repo=latent-consistency/lcm-lora-sdv1-5 estado=ok mb=128.4 licencia=openrail++
-17:13:47 INFO    download_models | resumen  repo=h94/IP-Adapter estado=ok mb=2453.8 licencia=apache-2.0
-17:13:47 INFO    download_models | resumen  repo=rhasspy/piper-voices:es_MX-claude-high estado=ok mb=60.2 licencia="voz: ver MODEL_CARD; código piper-tts: GPL-3.0-or-later"
-17:13:47 INFO    download_models | resumen  repo=cvssp/audioldm estado=ok mb=1398.7 licencia=cc-by-nc-sa-4.0
-17:13:47 INFO    download_models | resumen  repo=Systran/faster-whisper-small estado=ok mb=463.7 licencia=mit
-17:13:47 INFO    download_models | resumen  repo=open_clip:ViT-B-32/laion2b_s34b_b79k estado=ok mb=None licencia="MIT (open_clip y pesos LAION)"
-17:13:47 INFO    download_models | descarga_fin  total=9 criticos=0 registro=C:\Users\diego\Documents\StoryBook-IA\docs\models_registry.json
+Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s]
+Fetching 6 files: 100%|██████████| 6/6 [00:00<00:00, 1998.40it/s]
+17:34:54 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-small "HTTP/1.1 200 OK"
+17:35:00 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
+17:35:00 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
+17:35:00 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/laion/CLIP-ViT-B-32-laion2B-s34B-b79K/resolve/main/open_clip_model.safetensors "HTTP/1.1 302 Found"
+17:35:00 INFO    open_clip.factory | Instantiating model architecture: CLIP
+17:35:01 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
+17:35:01 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
+17:35:01 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
+17:35:01 INFO    download_models | resumen  repo=ollama:qwen3:4b-instruct-2507-q4_K_M estado=ok mb=None licencia="Apache-2.0 (Qwen3)"
+17:35:01 INFO    download_models | resumen  repo=ollama:qwen3:8b estado=ok mb=None licencia="Apache-2.0 (Qwen3)"
+17:35:01 INFO    download_models | resumen  repo=Lykon/dreamshaper-8 estado=ok mb=2035.3 licencia=creativeml-openrail-m
+17:35:01 INFO    download_models | resumen  repo=latent-consistency/lcm-lora-sdv1-5 estado=ok mb=128.4 licencia=openrail++
+17:35:01 INFO    download_models | resumen  repo=h94/IP-Adapter estado=ok mb=2453.8 licencia=apache-2.0
+17:35:01 INFO    download_models | resumen  repo=rhasspy/piper-voices:es_MX-claude-high estado=ok mb=60.2 licencia="voz: ver MODEL_CARD; código piper-tts: GPL-3.0-or-later"
+17:35:01 INFO    download_models | resumen  repo=cvssp/audioldm estado=ok mb=1398.7 licencia=cc-by-nc-sa-4.0
+17:35:01 INFO    download_models | resumen  repo=Systran/faster-whisper-small estado=ok mb=463.7 licencia=mit
+17:35:01 INFO    download_models | resumen  repo=open_clip:ViT-B-32/laion2b_s34b_b79k estado=ok mb=None licencia="MIT (open_clip y pesos LAION)"
+17:35:01 INFO    download_models | descarga_fin  total=9 criticos=0 registro=C:\Users\diego\Documents\StoryBook-IA\docs\models_registry.json

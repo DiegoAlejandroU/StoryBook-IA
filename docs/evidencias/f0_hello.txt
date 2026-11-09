@@ -1,34 +1,119 @@
-﻿17:13:56 INFO    f0_hello | f0_inicio  paso=all perfil=rapido salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_171356
-17:24:01 INFO    storybook.gpu | etapa_medida  etapa=llm_bible segundos=600.012 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
-17:24:01 ERROR   f0_hello | paso_fallido  paso=llm causa="Tiempo de espera agotado llamando a /api/chat"
-17:24:27 ERROR   f0_hello | paso_fallido  paso=image causa="'Lykon/dreamshaper-8' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
-17:24:29 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=1.843 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
-17:24:31 INFO    storybook.gpu | etapa_medida  etapa=voz_sintesis segundos=2.644 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
-17:24:31 WARNING f0_hello | sonido_no_descargado  backend=sa3 repo=stabilityai/stable-audio-3-small-sfx
-17:24:31 WARNING f0_hello | sonido_no_descargado  backend=audioldm repo=cvssp/audioldm
-17:24:31 ERROR   f0_hello | paso_fallido  paso=sound causa="Ningún backend generativo de sonido funcionó: {'sa3': {'estado': 'no_descargado', 'detalle': "'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"}, 'audioldm': {'estado': 'no_descargado', 'detalle': "'cvssp/audioldm' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"}}"
-17:24:34 INFO    storybook.gpu | etapa_medida  etapa=eval_whisper_carga segundos=2.826 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
-17:24:34 INFO    storybook.gpu | etapa_medida  etapa=eval_wer segundos=0.003 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=2557 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
-17:24:34 ERROR   f0_hello | paso_fallido  paso=eval
+﻿17:35:09 INFO    f0_hello | f0_inicio  paso=all perfil=rapido salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_173509
+17:40:34 INFO    storybook.gpu | etapa_medida  etapa=llm_bible segundos=319.403 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2557 vram_gpu_total_mb=4096
+17:40:34 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+17:40:34 ERROR   f0_hello | paso_fallido  paso=llm causa="Respuesta truncada por longitud (num_ctx=8192, num_predict=5120). Si el JSON quedó incompleto, aumenta num_predict; si se repetía, revisa el prompt."
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  17%|█▋        | 33/196 [00:00<00:00, 312.57it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1122.28it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  4.04it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  4.22it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  5.01it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  5.12it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.37it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+17:40:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=5.837 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2332.5 vram_gpu_total_mb=4096
+17:40:50 INFO    storybook.gpu | etapa_medida  etapa=imagen_gen_1 segundos=4.95 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=2416.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096 extra.pasos=6 extra.seed=1234 extra.scheduler=lcm
+17:40:54 INFO    storybook.gpu | etapa_medida  etapa=imagen_gen_2 segundos=3.728 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=3780.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096 extra.pasos=6 extra.seed=1235 extra.scheduler=lcm
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 9/520 [00:00<00:07, 66.09it/s]
+Loading weights:   3%|▎         | 16/520 [00:00<00:07, 68.04it/s]
+Loading weights:   4%|▍         | 23/520 [00:00<00:07, 68.56it/s]
+Loading weights:   6%|▌         | 30/520 [00:00<00:10, 46.18it/s]
+Loading weights:   7%|▋         | 38/520 [00:00<00:08, 53.61it/s]
+Loading weights:   9%|▉         | 46/520 [00:00<00:07, 60.60it/s]
+Loading weights:  12%|█▏        | 63/520 [00:00<00:05, 90.77it/s]
+Loading weights:  14%|█▍        | 74/520 [00:00<00:04, 95.26it/s]
+Loading weights:  16%|█▋        | 85/520 [00:01<00:05, 83.25it/s]
+Loading weights:  19%|█▉        | 98/520 [00:01<00:04, 92.66it/s]
+Loading weights:  21%|██        | 110/520 [00:01<00:04, 86.54it/s]
+Loading weights:  23%|██▎       | 120/520 [00:01<00:05, 79.48it/s]
+Loading weights:  26%|██▋       | 137/520 [00:01<00:04, 94.46it/s]
+Loading weights:  29%|██▉       | 152/520 [00:01<00:03, 106.61it/s]
+Loading weights:  32%|███▏      | 168/520 [00:01<00:03, 111.57it/s]
+Loading weights:  35%|███▍      | 180/520 [00:02<00:03, 100.35it/s]
+Loading weights:  37%|███▋      | 191/520 [00:02<00:03, 86.76it/s] 
+Loading weights:  39%|███▊      | 201/520 [00:02<00:03, 88.82it/s]
+Loading weights:  41%|████      | 211/520 [00:02<00:04, 66.53it/s]
+Loading weights:  43%|████▎     | 223/520 [00:02<00:04, 73.24it/s]
+Loading weights:  47%|████▋     | 242/520 [00:02<00:02, 94.31it/s]
+Loading weights:  50%|████▉     | 258/520 [00:02<00:02, 108.79it/s]
+Loading weights: 100%|██████████| 520/520 [00:03<00:00, 173.26it/s]
+17:40:58 INFO    storybook.gpu | etapa_medida  etapa=ip_adapter_embeds_cpu segundos=4.417 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=3780.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+17:40:59 INFO    storybook.gpu | etapa_medida  etapa=ip_adapter_carga segundos=0.031 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=3556 vram_gpu_base_mb=3780.5 vram_gpu_pico_mb=3780.5 vram_gpu_total_mb=4096
+17:40:59 ERROR   f0_hello | paso_fallido  paso=image
 Traceback (most recent call last):
-  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 653, in main
+  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 669, in main
     funciones[paso](cfg, ses, args)
-  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 540, in paso_eval
-    resultado = checker.evaluar(Path(voz["wav"]), voz["texto"])
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\src\storybook\evaluation\asr_check.py", line 78, in evaluar
-    transcripcion, duracion = self.transcribir(wav)
-                              ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\src\storybook\evaluation\asr_check.py", line 71, in transcribir
-    segmentos, info = self._modelo.transcribe(
-                      ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\faster_whisper\transcribe.py", line 876, in transcribe
-    audio = decode_audio(audio, sampling_rate=sampling_rate)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\faster_whisper\audio.py", line 46, in decode_audio
-    with av.open(input_file, mode="r", metadata_errors="ignore") as container:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "av/container/core.py", line 479, in av.container.core.open
-    def open(
-TypeError: open() got an unexpected keyword argument 'metadata_errors'
-17:24:34 INFO    f0_hello | f0_fin  total_s=638 fallidos="['llm', 'image', 'sound', 'eval']" resumen=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_171356\resumen.md
+  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 290, in paso_imagen
+    metricas += _probar_ip_adapter(cfg, pipe, rutas[0], prompt_ip, negativo, seed, ses)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 335, in _probar_ip_adapter
+    pipe.load_ip_adapter(
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\loaders\ip_adapter.py", line 245, in load_ip_adapter
+    unet._load_ip_adapter_weights(state_dicts, low_cpu_mem_usage=low_cpu_mem_usage)
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\loaders\unet.py", line 712, in _load_ip_adapter_weights
+    attn_procs = self._convert_ip_adapter_attn_to_diffusers(state_dicts, low_cpu_mem_usage=low_cpu_mem_usage)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\loaders\unet.py", line 641, in _convert_ip_adapter_attn_to_diffusers
+    attn_procs[name] = attn_processor_class()
+                       ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SlicedAttnProcessor.__init__() missing 1 required positional argument: 'slice_size'
+17:41:01 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=2.103 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=2444.5 vram_gpu_pico_mb=2444.5 vram_gpu_total_mb=4096
+17:41:02 INFO    storybook.gpu | etapa_medida  etapa=voz_sintesis segundos=1.272 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=2444.5 vram_gpu_pico_mb=2444.5 vram_gpu_total_mb=4096
+17:41:02 WARNING f0_hello | sonido_no_descargado  backend=sa3 repo=stabilityai/stable-audio-3-small-sfx
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:   3%|▎         | 7/205 [00:00<00:09, 20.65it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 584.78it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  2.06it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.70it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.52it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.49it/s]
+17:41:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=1.75 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=2444.5 vram_gpu_pico_mb=2444.5 vram_gpu_total_mb=4096
+17:41:04 ERROR   f0_hello | sonido_error  backend=audioldm
+Traceback (most recent call last):
+  File "C:\Users\diego\Documents\StoryBook-IA\scripts\f0_hello.py", line 488, in paso_sonido
+    pipe = Pipeline.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\pipelines\pipeline_utils.py", line 1044, in from_pretrained
+    loaded_sub_model = load_sub_model(
+                       ^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\pipelines\pipeline_loading_utils.py", line 926, in load_sub_model
+    loaded_sub_model = load_method(cached_folder, **loading_kwargs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\transformers\modeling_utils.py", line 4251, in from_pretrained
+    checkpoint_files, sharded_metadata = _get_resolved_checkpoint_files(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\transformers\modeling_utils.py", line 627, in _get_resolved_checkpoint_files
+    raise OSError(
+OSError: Error no file named model.safetensors, or pytorch_model.bin, found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f.
+17:41:04 ERROR   f0_hello | paso_fallido  paso=sound causa="Ningún backend generativo de sonido funcionó: {'sa3': {'estado': 'no_descargado', 'detalle': "'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"}, 'audioldm': {'estado': 'error', 'detalle': 'OSError: Error no file named model.safetensors, or pytorch_model.bin, found in directory C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf\\hub\\models--cvssp--audioldm\\snapshots\\8ed5f6437581a2fee9c662842d7cb13459914b0f.'}}"
+17:41:06 INFO    storybook.gpu | etapa_medida  etapa=eval_whisper_carga segundos=1.493 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096
+17:41:13 INFO    storybook.gpu | etapa_medida  etapa=eval_wer segundos=6.981 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096 extra.wer=0.075
+17:41:13 WARNING f0_hello | eval_sin_imagenes  accion="ejecuta antes el paso image"
+17:41:13 INFO    f0_hello | f0_fin  total_s=363.4 fallidos="['llm', 'image', 'sound']" resumen=C:\Users\diego\Documents\StoryBook-IA\outputs\f0\20261109_173509\resumen.md
