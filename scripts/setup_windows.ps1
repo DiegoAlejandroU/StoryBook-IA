@@ -180,8 +180,19 @@ function Paso-Entorno {
     $py = "import torch; print('torch', torch.__version__); print('cuda', torch.version.cuda); print('gpu', torch.cuda.is_available()); print('nombre', torch.cuda.get_device_name(0) if torch.cuda.is_available() else '-')"
     Ejecutar "uv" @("run", "python", "-c", $py) $torch | Out-Null
     $t = Get-Content $torch -Raw
+    if ($t -match "4551" -or $t -match "Control de aplicaciones" -or $t -match "Application Control") {
+        Escribir "Windows bloqueo las DLL de PyTorch: el Control inteligente de aplicaciones esta activado." "Red"
+        Escribir "Desactivalo en: Seguridad de Windows > Control de aplicaciones y navegador >" "Red"
+        Escribir "  Configuracion de Control inteligente de aplicaciones > Desactivado. Luego ejecuta:" "Red"
+        Escribir "  powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso entorno" "Red"
+        return 1
+    }
     if ($t -notmatch "gpu True") {
-        Escribir "PyTorch NO ve la GPU (quedo una version solo CPU). No se continua." "Red"
+        if ($t -match "cuda None") {
+            Escribir "Se instalo una version de PyTorch solo CPU (cuda None). Revisa el indice de PyTorch en pyproject.toml." "Red"
+        } else {
+            Escribir "PyTorch no pudo usar la GPU. Revisa docs\evidencias\torch_cuda.txt." "Red"
+        }
         return 1
     }
     Escribir "PyTorch ve la GPU con CUDA." "Green"
