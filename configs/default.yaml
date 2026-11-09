@@ -6,12 +6,16 @@ llm:
   model: qwen3:4b-instruct-2507-q4_K_M   # ~2,5 GB Q4_K_M: cabe completo en 4 GB de VRAM
   think: false                           # Qwen3: sin razonamiento (más rápido, JSON directo)
   num_ctx: 8192                          # >= 6144 para no truncar la Bible; vigilar KV cache
+  num_predict: 5120                      # tope de salida (~3000 tokens esperados para la Bible)
   temperature_narrativa: 0.7
   temperature_auditor: 0.2
   max_reintentos: 3
   seed: 42
   timeout_s: 600
   keep_alive_etapa: 5m                   # al terminar la etapa se fuerza keep_alive=0
+  estrategia: una_llamada                # (a) una_llamada | (b) por_etapas (experimento F6)
+  auditar: true                          # segunda pasada que detecta contradicciones
+  max_rondas_auditor: 1                  # 0 = solo auditar, sin regenerar escenas
 
 image:
   model_id: Lykon/dreamshaper-8          # fine-tune ilustrativo de SD 1.5 (CreativeML OpenRAIL-M)

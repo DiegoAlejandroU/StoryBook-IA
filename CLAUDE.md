@@ -66,6 +66,7 @@ cd "$P" && "$PY" -m pytest -q -p no:cacheprovider \
 1. Lee `docs/PROGRESO.md` completo.
 2. Toma la primera tarea pendiente (`[ ]`) que sea apta para tu entorno y cuyas dependencias estén cumplidas. En el shell Linux, solo tareas `[AUTO]`.
 3. Impleméntala con archivos completos y ejecutables. Sin `...` ni `TODO` vacíos.
+   - **Antes de sobrescribir un archivo existente**, comprueba que no cambió desde que lo leíste (mtime o hash): otra sesión (Windows, la tarea automática o la conversación del proyecto) pudo modificarlo. Si cambió, vuelve a leerlo e integra los cambios; nunca lo reemplaces con una copia vieja.
 4. Verifica antes de marcarla como hecha:
    - En Windows: `uv run ruff check .`, `uv run ruff format --check .` y `uv run pytest -q`.
    - En Linux: `"$PY" -m pytest -q`, `"$PY" -m ruff check .` y `"$PY" -m ruff format --check .` (ver §2).

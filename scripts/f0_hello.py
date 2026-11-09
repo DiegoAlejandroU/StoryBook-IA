@@ -35,6 +35,7 @@ from storybook.hub import (
     diffusers_variant,
     is_diffusers_repo,
     local_snapshot,
+    lora_weight_name,
     require_piper_voice,
 )
 from storybook.logging_utils import get_logger, kv, setup_logging
@@ -117,27 +118,35 @@ def paso_llm(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) -> No
     with OllamaClient(cfg.llm.host, cfg.llm.timeout_s) as cliente:
         if not cliente.has_model(cfg.llm.model):
             raise ModelNotDownloadedError(f"Falta el modelo. Ejecuta: ollama pull {cfg.llm.model}")
-        with track_stage("llm_bible") as metrica:
-            resultado = cliente.chat_json(
-                model=cfg.llm.model,
-                messages=mensajes_bible(solicitud),
-                schema=esquema,
-                temperature=cfg.llm.temperature_narrativa,
-                num_ctx=cfg.llm.num_ctx,
-                think=cfg.llm.think,
-                keep_alive=cfg.llm.keep_alive_etapa,
-                seed=cfg.llm.seed,
-            )
-            metrica.extra.update(
-                tokens_prompt=resultado.prompt_tokens,
-                tokens_salida=resultado.output_tokens,
-                tokens_por_s=resultado.tokens_por_s,
-                carga_modelo_s=resultado.load_s,
-            )
-        fraccion_gpu = cliente.gpu_fraction(cfg.llm.model)
-        vram_cargado = gpu_used_mb()
-        cliente.unload(cfg.llm.model)
-        _esperar_descarga(cliente, cfg.llm.model)
+        try:
+            with track_stage("llm_bible") as metrica:
+                resultado = cliente.chat_json(
+                    model=cfg.llm.model,
+                    messages=mensajes_bible(solicitud),
+                    schema=esquema,
+                    temperature=cfg.llm.temperature_narrativa,
+                    num_ctx=cfg.llm.num_ctx,
+                    think=cfg.llm.think,
+                    keep_alive=cfg.llm.keep_alive_etapa,
+                    seed=cfg.llm.seed,
+                    num_predict=cfg.llm.num_predict,
+                )
+                metrica.extra.update(
+                    tokens_prompt=resultado.prompt_tokens,
+                    tokens_salida=resultado.output_tokens,
+                    tokens_por_s=resultado.tokens_por_s,
+                    carga_modelo_s=resultado.load_s,
+                )
+            fraccion_gpu = cliente.gpu_fraction(cfg.llm.model)
+            vram_cargado = gpu_used_mb()
+        finally:
+            # Liberar la VRAM aunque la generación falle: si el modelo queda cargado, las
+            # etapas de imagen y sonido se quedan sin memoria en 4 GB.
+            try:
+                cliente.unload(cfg.llm.model)
+                _esperar_descarga(cliente, cfg.llm.model)
+            except LLMError as exc:
+                log.warning("ollama_unload_fallido", extra=kv(error=str(exc)))
         vram_liberado = gpu_used_mb()
 
     (ses.dir / "llm_raw.json").write_text(resultado.content, encoding="utf-8")
@@ -213,7 +222,8 @@ def paso_imagen(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) ->
     if not torch.cuda.is_available():
         raise GPUError("CUDA no disponible: revisa scripts/check_env.py")
     icfg = cfg.image
-    variante = diffusers_variant(local_snapshot(icfg.model_id))
+    snapshot_modelo = local_snapshot(icfg.model_id)
+    variante = diffusers_variant(snapshot_modelo)
     prompt, prompt_ip, negativo, seed = _prompts_imagen(cfg, ses)
     metricas: list[dict[str, Any]] = []
     rutas: list[Path] = []
@@ -222,14 +232,19 @@ def paso_imagen(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) ->
     try:
         with track_stage("imagen_carga") as m_carga:
             pipe = StableDiffusionPipeline.from_pretrained(
-                icfg.model_id,
+                str(snapshot_modelo),
                 torch_dtype=torch.float16,
                 variant=variante,
                 safety_checker=None,
                 requires_safety_checker=False,
             )
             if icfg.scheduler == "lcm":
-                pipe.load_lora_weights(icfg.lcm_lora_id, adapter_name="lcm")
+                snapshot_lora = local_snapshot(icfg.lcm_lora_id)
+                pipe.load_lora_weights(
+                    str(snapshot_lora),
+                    weight_name=lora_weight_name(snapshot_lora),
+                    adapter_name="lcm",
+                )
                 pipe.scheduler = LCMScheduler.from_config(pipe.scheduler.config)
             else:
                 pipe.scheduler = DPMSolverMultistepScheduler.from_config(
@@ -302,10 +317,11 @@ def _probar_ip_adapter(
     from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection
 
     ipc = cfg.image.ip_adapter
+    snapshot_ip = local_snapshot(ipc.repo_id)
     metricas: list[dict[str, Any]] = []
     with track_stage("ip_adapter_embeds_cpu") as m_emb:
         encoder = CLIPVisionModelWithProjection.from_pretrained(
-            ipc.repo_id, subfolder=ipc.image_encoder_subfolder, torch_dtype=torch.float32
+            str(snapshot_ip), subfolder=ipc.image_encoder_subfolder, torch_dtype=torch.float32
         )
         pixeles = CLIPImageProcessor()(
             images=Image.open(referencia).convert("RGB"), return_tensors="pt"
@@ -317,7 +333,7 @@ def _probar_ip_adapter(
 
     with track_stage("ip_adapter_carga") as m_carga:
         pipe.load_ip_adapter(
-            ipc.repo_id,
+            str(snapshot_ip),
             subfolder=ipc.subfolder,
             weight_name=ipc.weight_name,
             image_encoder_folder=None,
@@ -470,7 +486,7 @@ def paso_sonido(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) ->
                 else:
                     from diffusers import StableAudioPipeline as Pipeline
                 pipe = Pipeline.from_pretrained(
-                    repo, torch_dtype=torch.float16, variant=diffusers_variant(snapshot)
+                    str(snapshot), torch_dtype=torch.float16, variant=diffusers_variant(snapshot)
                 )
                 # AudioLDM (421M) cabe entero en 4 GB; Stable Audio necesita offload.
                 if cfg.sound.cpu_offload and backend != "audioldm":

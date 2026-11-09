@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -94,3 +95,26 @@ def test_audioldm_en_la_cadena_de_sonido() -> None:
         assert backends.index("sa3") < backends.index("audioldm") < backends.index("library")
         assert backends[-1] == "procedural"
     assert config.load_config("rapido").sound.audioldm_repo_id == "cvssp/audioldm"
+
+
+def test_local_snapshot_lee_la_cache_sin_red(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from storybook.hub import ModelNotDownloadedError, local_snapshot, lora_weight_name
+
+    monkeypatch.setenv("HF_HUB_CACHE", str(tmp_path))
+    repo = tmp_path / "models--org--modelo"
+    (repo / "refs").mkdir(parents=True)
+    (repo / "refs" / "main").write_text("abc123", encoding="utf-8")
+    snapshot = repo / "snapshots" / "abc123"
+    snapshot.mkdir(parents=True)
+    (snapshot / "pytorch_lora_weights.safetensors").write_bytes(b"x")
+
+    assert local_snapshot("org/modelo") == snapshot
+    assert lora_weight_name(snapshot) == "pytorch_lora_weights.safetensors"
+    with pytest.raises(ModelNotDownloadedError):
+        local_snapshot("org/no-existe")
+
+
+def test_num_predict_en_perfiles() -> None:
+    assert config.load_config("rapido").llm.num_predict < config.load_config("rapido").llm.num_ctx

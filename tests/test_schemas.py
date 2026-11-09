@@ -205,3 +205,14 @@ def test_auditoria_escenas_criticas() -> None:
 def test_utilidades_de_conteo() -> None:
     assert contar_palabras("Hola, ¿qué tal? Bien-estar y d'Artagnan") == 6
     assert estimar_tokens_clip("girl, red hair") == 4
+
+
+def test_esquema_llm_relajado_sin_limites_de_texto() -> None:
+    """La gramática de Ollama no lleva minLength/maxLength/pattern (se validan con Pydantic)."""
+    relajado = json.dumps(esquema_json_llm(StoryBible))
+    for clave in ("minLength", "maxLength", "pattern"):
+        assert clave not in relajado
+    completo = json.dumps(esquema_json_llm(StoryBible, relajado=False))
+    assert "maxLength" in completo
+    escenas = esquema_json_llm(StoryBible)["properties"]["escenas"]
+    assert escenas["minItems"] == NUM_ESCENAS == escenas["maxItems"]

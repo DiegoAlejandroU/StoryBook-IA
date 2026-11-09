@@ -6,6 +6,7 @@ el comando de instalación en lugar de intentar descargarlo.
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -36,17 +37,41 @@ class ModelNotDownloadedError(FileNotFoundError):
     """El modelo no está en la caché local."""
 
 
-def local_snapshot(repo_id: str) -> Path:
-    """Ruta local del snapshot de un repo de Hugging Face, sin usar la red."""
-    from huggingface_hub import snapshot_download
-    from huggingface_hub.errors import LocalEntryNotFoundError
+def cache_repo_dir(repo_id: str) -> Path:
+    """Carpeta del repo en la caché de Hugging Face (``<HF_HOME>/hub/models--org--nombre``)."""
+    raiz = Path(os.environ.get("HF_HUB_CACHE") or (config.HF_HOME_DIR / "hub"))
+    return raiz / ("models--" + repo_id.replace("/", "--"))
 
-    try:
-        return Path(snapshot_download(repo_id, local_files_only=True))
-    except LocalEntryNotFoundError as exc:
-        raise ModelNotDownloadedError(
-            f"'{repo_id}' no está descargado en {config.HF_HOME_DIR}. Ejecuta: {_COMANDO_DESCARGA}"
-        ) from exc
+
+def local_snapshot(repo_id: str, revision: str = "main") -> Path:
+    """Ruta local del snapshot de un repo de Hugging Face, sin usar la red.
+
+    No usa ``snapshot_download(local_files_only=True)``: desde huggingface_hub 2.x esa función
+    compara el snapshot con el listado completo del repositorio y rechaza las descargas
+    parciales, y aquí se descargan a propósito solo los archivos necesarios (fp16, sin
+    safety checker). Se resuelve con la estructura documentada de la caché:
+    ``refs/<revision>`` -> ``snapshots/<commit>``.
+    """
+    carpeta = cache_repo_dir(repo_id)
+    ref = carpeta / "refs" / revision
+    if ref.is_file():
+        snapshot = carpeta / "snapshots" / ref.read_text(encoding="utf-8").strip()
+        if snapshot.is_dir() and any(snapshot.iterdir()):
+            return snapshot
+    raise ModelNotDownloadedError(
+        f"'{repo_id}' no está descargado en {config.HF_HOME_DIR}. Ejecuta: {_COMANDO_DESCARGA}"
+    )
+
+
+def lora_weight_name(snapshot: Path) -> str:
+    """Archivo de pesos de un repo LoRA (prefiere ``pytorch_lora_weights.safetensors``)."""
+    preferido = snapshot / "pytorch_lora_weights.safetensors"
+    if preferido.is_file():
+        return preferido.name
+    candidatos = sorted(p.name for p in snapshot.glob("*.safetensors"))
+    if not candidatos:
+        raise ModelNotDownloadedError(f"No hay pesos .safetensors en {snapshot}")
+    return candidatos[0]
 
 
 def is_diffusers_repo(snapshot: Path) -> bool:

@@ -12,17 +12,17 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## F0 · Setup
-- [ ] 0.1 [WINDOWS] Inicializar git en esta carpeta (`git init -b main`), conectar `origin` (https://github.com/DiegoAlejandroU/StoryBook-IA.git) y hacer el primer commit con todo lo que no está en `.gitignore`. Push.
+- [x] 0.1 [WINDOWS] Inicializar git en esta carpeta (`git init -b main`), conectar `origin` (https://github.com/DiegoAlejandroU/StoryBook-IA.git) y hacer el primer commit con todo lo que no está en `.gitignore`. Push.
 - [x] 0.2 [AUTO] Esqueleto del proyecto: `pyproject.toml`, `.gitignore`, `.env.example`, `.python-version`, `LICENSE`, `.streamlit/config.toml`, estructura de `src/storybook/`, `tests/`, `configs/`, `assets/`, `samples/` y `experiments/`. (ZIP F0)
 - [x] 0.3 [AUTO] `config.py` (perfiles YAML con `extends`, modo offline, `HF_HOME`), `configs/*.yaml`, `logging_utils.py` y `hub.py`, con tests en `test_config_hub.py`. (ZIP F0)
 - [x] 0.4 [AUTO] `scripts/check_env.py`, `scripts/download_models.py` (registra revisión y licencia en `docs/models_registry.json`) y `scripts/f0_hello.py` (prueba por modalidad con tiempos y VRAM). (ZIP F0)
-- [ ] 0.5 [WINDOWS] Instalar el entorno (ver README):
+- [x] 0.5 [WINDOWS] Instalar el entorno (ver README):
   1. Ejecutar `nvidia-smi` y anotar el "CUDA Version". Si es menor a 13.2, actualizar el driver con la NVIDIA App.
   2. `uv venv --python-preference only-system --python 3.12` y luego `uv sync`.
   3. Confirmar que torch ve la GPU: `torch.version.cuda` no es `None` y `torch.cuda.is_available()` es `True`.
   4. `uv run pytest` en verde.
   5. `uv run python scripts/check_env.py` sin FALLO. Guardar su salida en `docs/evidencias/`. (dep: 0.2, 0.4)
-- [ ] 0.6 [WINDOWS] Descargar modelos y hacer la prueba por modalidad:
+- [ ] 0.6 [WINDOWS] Descargar modelos y hacer la prueba por modalidad (descargas OK; repetir `f0_hello` tras las correcciones del 9-nov 17:45):
   1. Fijar `OLLAMA_FLASH_ATTENTION=1` y `OLLAMA_KV_CACHE_TYPE=q8_0` y reiniciar Ollama.
   2. Aceptar en Hugging Face las licencias de `stabilityai/stable-audio-3-small-sfx` y `stabilityai/stable-audio-open-1.0`, y poner `HF_TOKEN` en `.env`.
   3. `uv run python scripts/download_models.py`.
@@ -31,7 +31,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 
 ## F1 · Historia (texto)
 - [x] 1.1 [AUTO] `schemas.py`: Story Bible en Pydantic v2 con validadores (exactamente 5 escenas, fases, ids de personajes, longitudes, límites de tokens), `StoryRequest` con la validación de entrada y JSON Schema para Ollama. Tests en `test_schemas.py` y `test_input_validation.py`. (ZIP F0)
-- [ ] 1.2 [AUTO] Ya existe `story/llm_client.py` (ZIP F0). Falta `tests/test_llm_client.py` con transporte HTTP simulado (`httpx.MockTransport`), que cubra:
+- [x] 1.2 [AUTO] Ya existe `story/llm_client.py` (ZIP F0). Falta `tests/test_llm_client.py` con transporte HTTP simulado (`httpx.MockTransport`), que cubra:
   - respuesta válida;
   - JSON inválido;
   - 4 y 6 escenas;
@@ -40,14 +40,14 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - errores de conexión y de modelo no encontrado.
 
   Corregir el cliente si los tests revelan fallos. (dep: 1.1)
-- [ ] 1.3 [AUTO] Ya existe `story/prompts.py`. Falta:
+- [x] 1.3 [AUTO] Ya existe `story/prompts.py`. Falta:
   - `story/planner.py` con la estrategia (a), una llamada, y la (b), plan y luego escenas con canon y resúmenes;
   - `story/auditor.py`, que detecta contradicciones y regenera la escena afectada;
   - tests con un LLM falso. (dep: 1.2)
 - [ ] 1.4 [WINDOWS] 10 generaciones reales con 4B y con 8B: tasa de JSON válido, tiempos, revisión de la calidad del español. (dep: 0.6, 1.3)
 
 ## F2 · Imágenes y consistencia visual
-- [ ] 2.1 [AUTO] `image/prompt_builder.py`: compone estilo + personajes presentes + acción, controla el límite de 77 tokens con un tokenizer inyectable (estimador heurístico en tests), recorta por prioridad y registra los truncamientos. Tests. (dep: 1.1)
+- [x] 2.1 [AUTO] `image/prompt_builder.py`: compone estilo + personajes presentes + acción, controla el límite de 77 tokens con un tokenizer inyectable (estimador heurístico en tests), recorta por prioridad y registra los truncamientos. Tests. (dep: 1.1)
 - [ ] 2.2 [AUTO] Ya existe `gpu.py` (carga, liberación y medición de VRAM). Falta:
   - `image/generator.py`: diffusers con DreamShaper 8 + LCM-LoRA + IP-Adapter según `configs/`, imports perezosos y `hub.local_snapshot` para cargar offline;
   - `image/consistency.py`: character sheet del protagonista;
@@ -139,4 +139,56 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - Archivos: `config.py`, `configs/*.yaml`, `download_models.py` (se descarga aunque falte `HF_TOKEN`), `check_env.py`, `f0_hello.py` (`--sound-backends audioldm`) y `setup_windows.ps1`.
 - `MODELS.md`: nueva sección "Relación con el resumen de modelos entregado en clase", con el uso o descarte de cada modelo y su motivo. SDXL, FLUX y XTTS-v2 quedan descartados por los 4 GB de VRAM; MusicGen queda como trabajo futuro.
 - Verificación sin GPU: 44 tests en verde, ruff limpio.
+
+### 2026-11-09 17:26 · automático (Linux) · 1.2, 1.3, 2.1
+- **1.2 · Cliente Ollama.** Faltaban la inyección de transporte y la lógica de reintentos que pedía la tarea, así que se completó `story/llm_client.py` sin reescribirlo:
+  - `OllamaClient(transport=...)` para usar `httpx.MockTransport` en los tests.
+  - `generar_validado()`: pide JSON con el esquema de Pydantic, lo valida y, si falla, devuelve al modelo su respuesta y los errores (`mensaje_reparacion`) hasta `max_reintentos`. Solo se conserva el último intento fallido para no desbordar `num_ctx`. Devuelve `GeneracionValidada` con intentos y errores (para el manifest); si se agotan los intentos lanza `LLMValidationError`.
+  - Correcciones: `httpx.TransportError` (conexión cortada) → `LLMConnectionError`; un cuerpo HTTP que no es JSON → `LLMResponseError`.
+  - `tests/test_llm_client.py` (29 tests): respuesta válida, JSON inválido, 4 y 6 escenas, reintentos con el error de validación, `think=false` y `keep_alive` en el payload, conexión rechazada o cortada, timeout, modelo no encontrado (404, no se reintenta), respuesta vacía o truncada, hosts no locales rechazados, `unload` con `keep_alive=0`.
+- **1.3 · Planificador y auditor.**
+  - `story/planner.py`: `Planificador` con las estrategias (a) `una_llamada` y (b) `por_etapas` (plan → 5 escenas, cada una con el canon acumulado y los resúmenes previos). El número, la fase y los personajes presentes de cada escena los fija el plan, no el LLM (`alinear_escena_con_plan`). Registra cada llamada (`RegistroLlamada`: intentos, segundos, tokens) y tiene `liberar()` para descargar el modelo de la VRAM.
+  - `story/auditor.py`: `Auditor.auditar_y_corregir()` audita a la temperatura del auditor, regenera solo las escenas con contradicciones críticas (conserva fase, personajes y seeds, y recalcula el canon) y vuelve a auditar hasta `max_rondas_auditor`. Si una regeneración falla, conserva la escena original y registra el error como fallback.
+  - `story/prompts.py` (ya existía; solo se añadieron funciones): `mensajes_plan`, `mensajes_escena`, `mensajes_auditor` y `mensajes_regenerar_escena`. `mensaje_reparacion` acepta el nombre del objeto que se repara; el valor por defecto mantiene el comportamiento anterior.
+  - Configuración: se agregaron `llm.estrategia` (`una_llamada`), `llm.auditar` (`true`) y `llm.max_rondas_auditor` (`1`) en `config.py` y `configs/default.yaml`. No cambia ningún modelo ni versión; son las perillas del experimento (a) vs (b).
+  - Tests: `tests/fake_llm.py` (LLM falso), `tests/test_planner.py` (10) y `tests/test_auditor.py` (8).
+- **2.1 · Prompt de imagen.**
+  - `image/prompt_builder.py`: estilo + personajes presentes (protagonista primero) + acción, con un presupuesto de 75 tokens útiles (77 menos los 2 especiales de CLIP).
+  - El contador es inyectable: `contador_desde_tokenizer(pipe.tokenizer)` en producción y `estimar_tokens_clip` en los tests.
+  - Recorta frases completas en este orden: estilo → acción → secundarios → protagonista. Se conserva un mínimo por bloque y, como último recurso, se recortan palabras.
+  - Negative prompt común: el de la Bible más `negative_prompt_base`, sin duplicados y también limitado.
+  - Registra cada truncamiento (`PromptImagen.a_dict()` para el manifest). Con `usar_bible=False` se obtiene la línea base C1.
+  - `tests/test_prompt_builder.py` (16 tests).
+- **Verificación:** 107 tests en verde (antes 44); `ruff check` sin errores; `ruff format --check` con 38 archivos formateados.
+- **Ningún archivo pidió acciones distintas a CLAUDE.md.**
+- **Por validar en Windows/GPU:**
+  - 1.4: tasa de JSON válido real y número de reintentos con Qwen3 4B y 8B, y comparar (a) frente a (b). Comprobar que el auditor no marca falsos positivos críticos con el 4B; si los marca, bajar `max_rondas_auditor` a 0.
+  - 2.3: contar con el tokenizer real (`pipe.tokenizer`) cuántos prompts de una historia se truncan.
+- **Siguiente [AUTO] disponible:** 2.2 (dep: 0.3 y 2.1 ya hechas), 3.1, 3.2 y 4.1.
+
+### 2026-11-09 17:45 · Windows (setup_windows.ps1) + correcciones · 0.1, 0.5 (hechas), 0.6 (parcial)
+- 0.1: repositorio en GitHub (`main`), `.gitattributes` con finales de línea LF.
+- 0.5:
+  - Driver 617.42 (CUDA 13.4).
+  - **torch 2.15.0+cu132, CUDA 13.2, GPU True** (RTX 3050 Laptop).
+  - 44 tests en verde en Windows.
+  - Fue necesario desactivar el Control inteligente de aplicaciones de Windows, que bloqueaba `c10.dll`. Desde abril de 2026 se puede reactivar sin reinstalar.
+- 0.6, descargas: todas OK y `check_env` con 0 fallos. Sin `HF_TOKEN`, Stable Audio quedó pendiente.
+  - Tamaños: Qwen3 4B y 8B (Ollama), DreamShaper 8 2,0 GB, LCM-LoRA 0,1 GB, IP-Adapter 2,5 GB, Piper 60 MB, AudioLDM 1,4 GB, Whisper small 0,5 GB, OpenCLIP.
+- 0.6, `f0_hello`: solo la voz funcionó (Piper RTF 0,064: 41 s de audio en 2,6 s). Fallos y correcciones:
+  1. LLM: timeout de 600 s. La gramática JSON con `minLength`/`maxLength` en textos largos vuelve muy lenta la generación de llama.cpp y no había tope de tokens.
+     - Corrección: esquema relajado para Ollama (las longitudes se validan con Pydantic) y `num_predict=5120`.
+     - Además, el modelo se queda en la VRAM si falla; ahora se libera en un `finally`.
+  2. Imagen y sonido marcados "no descargado": `huggingface_hub` 2.4 rechaza snapshots parciales en `snapshot_download(local_files_only=True)`.
+     - Corrección: `hub.local_snapshot` lee `refs/main` → `snapshots/<commit>`, y los modelos se cargan desde la ruta local (pipeline, LCM-LoRA, IP-Adapter, sonido).
+  3. Evaluación: faster-whisper 1.2.1 usa `av.open(metadata_errors=...)`, eliminado en PyAV 19.
+     - Corrección: `asr_check.cargar_audio_16k` lee el WAV con soundfile y remuestrea a 16 kHz.
+- Verificación sin GPU: 49 tests en verde, ruff limpio. Pendiente: repetir `setup_windows.ps1` para validar en GPU.
+- **Corrección posterior (17:35):** al copiar estas correcciones se sobrescribieron por error tres archivos que la ejecución automática de las 17:26 había modificado sin commit:
+  - `story/llm_client.py` (transporte inyectable, `generar_validado`, `GeneracionValidada`, `LLMValidationError`, `errores_validacion`, manejo de `TransportError` y de cuerpos no JSON);
+  - `config.py` (`llm.estrategia`, `llm.auditar`, `llm.max_rondas_auditor`);
+  - `configs/default.yaml` (las mismas tres claves).
+
+  Se reconstruyeron a partir de sus 29 tests y del planificador y el auditor, y se integró `num_predict` en el cliente, el planificador y el auditor. Verificación: **112 tests en verde**, ruff limpio.
+  **Regla para todas las sesiones:** antes de copiar archivos a esta carpeta, comprobar que no cambiaron desde que se leyeron (mtime o hash) y hacer commit en Windows con frecuencia.
 

@@ -14,6 +14,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import jiwer
+import numpy as np
+
+FRECUENCIA_WHISPER = 16_000
 
 
 class ASRError(Exception):
@@ -37,6 +40,25 @@ def calcular_wer(referencia: str, hipotesis: str) -> float:
     if not ref:
         raise ASRError("La referencia está vacía tras normalizar")
     return round(float(jiwer.wer(ref, hip)), 4)
+
+
+def cargar_audio_16k(ruta: Path) -> np.ndarray:
+    """Lee un WAV con soundfile y lo deja mono, float32 y a 16 kHz (lo que espera Whisper).
+
+    Se evita el decodificador interno de faster-whisper (PyAV): faster-whisper 1.2.1 llama a
+    ``av.open(..., metadata_errors=...)``, argumento que PyAV 19 eliminó.
+    """
+    from math import gcd
+
+    import soundfile as sf
+    from scipy.signal import resample_poly
+
+    datos, frecuencia = sf.read(str(ruta), dtype="float32", always_2d=True)
+    mono = datos.mean(axis=1)
+    if frecuencia != FRECUENCIA_WHISPER:
+        divisor = gcd(int(frecuencia), FRECUENCIA_WHISPER)
+        mono = resample_poly(mono, FRECUENCIA_WHISPER // divisor, int(frecuencia) // divisor)
+    return np.ascontiguousarray(mono, dtype=np.float32)
 
 
 @dataclass(frozen=True)
@@ -69,7 +91,7 @@ class WhisperChecker:
 
     def transcribir(self, wav: Path) -> tuple[str, float]:
         segmentos, info = self._modelo.transcribe(
-            str(wav), language=self.idioma, beam_size=5, vad_filter=False
+            cargar_audio_16k(wav), language=self.idioma, beam_size=5, vad_filter=False
         )
         texto = " ".join(s.text.strip() for s in segmentos)
         return texto.strip(), float(info.duration)

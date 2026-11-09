@@ -109,12 +109,28 @@ class LLMConfig(_Strict):
         description="False desactiva el razonamiento (Qwen3). None no envía el parámetro.",
     )
     num_ctx: int = Field(default=8192, ge=2048, le=32768)
+    num_predict: int = Field(
+        default=5120,
+        ge=256,
+        le=16384,
+        description="Tope de tokens generados: evita bucles infinitos (p. ej. espacios en JSON).",
+    )
     temperature_narrativa: float = Field(default=0.7, ge=0.0, le=2.0)
     temperature_auditor: float = Field(default=0.2, ge=0.0, le=2.0)
     max_reintentos: int = Field(default=3, ge=0, le=10)
     seed: int = 42
     timeout_s: float = Field(default=600.0, gt=0)
     keep_alive_etapa: str = "5m"
+    estrategia: Literal["una_llamada", "por_etapas"] = Field(
+        default="una_llamada",
+        description="Planificador: (a) una sola llamada o (b) plan y luego escena por escena.",
+    )
+    auditar: bool = Field(
+        default=True, description="Segunda pasada del LLM que detecta contradicciones."
+    )
+    max_rondas_auditor: int = Field(
+        default=1, ge=0, le=5, description="Rondas de auditoría y regeneración (0 = solo auditar)."
+    )
 
 
 class IPAdapterConfig(_Strict):

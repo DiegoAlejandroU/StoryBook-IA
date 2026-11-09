@@ -634,12 +634,33 @@ def _inline_refs(nodo: Any, defs: dict[str, Any]) -> Any:
     return nodo
 
 
-def esquema_json_llm(modelo: type[BaseModel]) -> dict[str, Any]:
+_CLAVES_LONGITUD = frozenset({"minLength", "maxLength", "pattern"})
+
+
+def _sin_restricciones_de_texto(nodo: Any) -> Any:
+    if isinstance(nodo, dict):
+        return {
+            k: _sin_restricciones_de_texto(v) for k, v in nodo.items() if k not in _CLAVES_LONGITUD
+        }
+    if isinstance(nodo, list):
+        return [_sin_restricciones_de_texto(v) for v in nodo]
+    return nodo
+
+
+def esquema_json_llm(modelo: type[BaseModel], relajado: bool = True) -> dict[str, Any]:
     """JSON Schema autocontenido (sin ``$ref``) para el parámetro ``format`` de Ollama.
+
+    Con ``relajado=True`` (por defecto) se quitan ``minLength``, ``maxLength`` y ``pattern``:
+    llama.cpp convierte cada límite de longitud en una repetición expandida de la gramática y,
+    con textos de cientos de caracteres, la generación se vuelve extremadamente lenta (en F0 se
+    agotaron 600 s sin terminar). Las longitudes se siguen validando con Pydantic al recibir la
+    respuesta, y los errores se devuelven al modelo en el reintento. Se conservan la estructura,
+    ``required``, ``enum``, ``const`` y ``minItems``/``maxItems`` (exactamente 5 escenas).
 
     Se expanden las referencias porque la conversión de JSON Schema a gramática de
     algunos motores no resuelve ``$defs`` de forma fiable.
     """
     esquema = modelo.model_json_schema()
     defs = esquema.get("$defs", {})
-    return _inline_refs(esquema, defs)
+    completo = _inline_refs(esquema, defs)
+    return _sin_restricciones_de_texto(completo) if relajado else completo
