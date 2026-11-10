@@ -51,6 +51,9 @@ RMS_MINIMO: Final = 1e-4
 # fuerte, se reintenta con otra seed y, si sigue igual, la escena pasa al siguiente backend.
 UMBRAL_HUECO_DB: Final = 20.0
 FRACCION_HUECO_MAX: Final = 0.4
+# Nivel absoluto mínimo de un clip generativo. En la corrida de ejemplos (5.4) AudioLDM dio
+# clips a -72 dBFS ("soft wind… birds sing gently"): en la mezcla el ambiente no se oía.
+NIVEL_MINIMO_DBFS: Final = -45.0
 VENTANA_HUECO_S: Final = 0.05
 DESFASE_SEED_REINTENTO: Final = 1000
 SUBTIPO_WAV: Final = "PCM_16"
@@ -104,6 +107,22 @@ def fraccion_en_silencio(
     rms = np.sqrt(np.mean(np.square(audio[: n * ventana].reshape(n, ventana)), axis=1))
     db = 20 * np.log10(np.maximum(rms, 1e-9))
     return float(np.mean(db < db.max() - umbral_db))
+
+
+def nivel_dbfs(audio: np.ndarray) -> float:
+    rms = float(np.sqrt(np.mean(np.square(audio)))) if audio.size else 0.0
+    return 20 * float(np.log10(max(rms, 1e-12)))
+
+
+def problema_de_ambiente(audio: np.ndarray, frecuencia: int) -> str | None:
+    """Motivo por el que un clip generativo no sirve como ambiente, o None si sirve."""
+    nivel = nivel_dbfs(audio)
+    if nivel < NIVEL_MINIMO_DBFS:
+        return f"clip demasiado bajo ({nivel:.0f} dBFS)"
+    silencio = fraccion_en_silencio(audio, frecuencia)
+    if silencio > FRACCION_HUECO_MAX:
+        return f"clip casi en silencio el {silencio:.0%} del tiempo"
+    return None
 
 
 def validar_audio(audio: np.ndarray, frecuencia: int) -> None:
@@ -264,18 +283,20 @@ class GeneradorSonido:
                 validar_audio(audio, frecuencia)
                 if backend.nombre not in GENERATIVOS:
                     break
-                silencio = fraccion_en_silencio(audio, frecuencia)
-                detalle.update(intentos=intento, fraccion_silencio=round(silencio, 3))
-                if silencio <= FRACCION_HUECO_MAX:
+                problema = problema_de_ambiente(audio, frecuencia)
+                detalle.update(
+                    intentos=intento,
+                    fraccion_silencio=round(fraccion_en_silencio(audio, frecuencia), 3),
+                    nivel_dbfs=round(nivel_dbfs(audio), 1),
+                )
+                if problema is None:
                     break
                 logger.warning(
-                    "sonido_clip_con_huecos",
-                    extra=kv(escena=escena.numero, backend=backend.nombre, silencio=silencio),
+                    "sonido_clip_no_apto",
+                    extra=kv(escena=escena.numero, backend=backend.nombre, problema=problema),
                 )
                 if intento == 2:
-                    raise SoundError(
-                        f"clip casi en silencio el {silencio:.0%} del tiempo (2 intentos)"
-                    )
+                    raise SoundError(f"{problema} (2 intentos)")
                 seed += DESFASE_SEED_REINTENTO
             segundos = time.perf_counter() - inicio
             ruta = carpeta / nombre_archivo_sonido(escena.numero)

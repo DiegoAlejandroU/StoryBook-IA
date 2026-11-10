@@ -382,3 +382,23 @@ def test_clip_siempre_con_huecos_pasa_a_procedural(bible: StoryBible, tmp_path: 
     etapa = _generador(falsos, ["audioldm", "procedural"]).generar(bible, tmp_path, numeros=[2])  # type: ignore[arg-type]
     assert etapa.por_escena(2).backend == "procedural"
     assert any("casi en silencio" in e for e in etapa.errores)
+
+
+def test_clip_generativo_demasiado_bajo_se_rechaza(bible: StoryBible, tmp_path: Path) -> None:
+    """AudioLDM dio clips a -72 dBFS en la tarea 5.4: el ambiente no se oía."""
+
+    class Mudo(FakeSonido):
+        def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
+            audio = np.random.default_rng(seed).standard_normal(int(duracion_s * 16_000))
+            return (audio * 10 ** (-72 / 20)).astype(np.float32), 16_000
+
+    falsos = {"audioldm": Mudo("audioldm"), "procedural": ProceduralBackend()}
+    etapa = _generador(falsos, ["audioldm", "procedural"]).generar(bible, tmp_path, numeros=[1])  # type: ignore[arg-type]
+    assert etapa.por_escena(1).backend == "procedural"
+    assert any("demasiado bajo" in e for e in etapa.errores)
+
+
+def test_medir_lufs_bajo_la_compuerta_absoluta() -> None:
+    muy_bajo = np.random.default_rng(0).standard_normal(44_100 * 3) * 10 ** (-80 / 20)
+    valor = medir_lufs(muy_bajo, 44_100)
+    assert math.isfinite(valor) and valor < -70

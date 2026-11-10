@@ -152,7 +152,8 @@ def _audio(etiqueta: str, ruta: Path | None) -> None:
     if ruta is None:
         st.caption("No disponible")
     else:
-        st.audio(ruta.read_bytes(), format="audio/wav")
+        formato = "audio/ogg" if ruta.suffix == ".ogg" else "audio/wav"
+        st.audio(ruta.read_bytes(), format=formato)
 
 
 def visor(historia: HistoriaGuardada) -> None:
@@ -198,7 +199,8 @@ def visor(historia: HistoriaGuardada) -> None:
     with mezcla:
         _audio("Voz + ambiente", archivos.mezcla)
 
-    if st.button("Regenerar ilustración y ambiente de esta escena"):
+    es_muestra = config.SAMPLES_DIR in historia.carpeta.parents
+    if not es_muestra and st.button("Regenerar ilustración y ambiente de esta escena"):
         perfil = str(historia.manifest.get("perfil") or "rapido")
         nueva = _con_progreso(
             f"Regenerando la escena {numero}",

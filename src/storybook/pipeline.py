@@ -297,6 +297,56 @@ class Pipeline:
         )
         return cargar_historia(carpeta)
 
+    def rehacer_sonido(
+        self,
+        carpeta: Path,
+        numeros: list[int] | None = None,
+        progreso: Progreso | None = None,
+    ) -> HistoriaGuardada:
+        """Nuevo ambiente (y nueva mezcla) para las escenas ``numeros``, sin tocar el texto,
+        las imágenes ni la voz. Sirve para reparar ambientes débiles de historias ya hechas."""
+        from storybook.sound.mixer import mezclar_historia
+
+        bible = cargar_bible(carpeta)
+        manifest = cargar_manifest(carpeta)
+        numeros = sorted(set(numeros or [e.numero for e in bible.escenas]))
+        regeneraciones = manifest.setdefault("regeneraciones", [])
+        vez = 1 + sum(1 for r in regeneraciones if r.get("tipo") == "sonido")
+        self._avisar(progreso, "sonido", 0.1, f"Nuevo ambiente de las escenas {numeros}")
+        temporal: dict[str, Any] = {"etapas": {}, "fallbacks": [], "errores": []}
+        etapa = self._sonido(bible, carpeta, temporal, numeros, desfase_seed=vez * 211)
+        voces = {n: carpeta / f"voice_{n}.wav" for n in numeros}
+        voces = {n: ruta for n, ruta in voces.items() if ruta.is_file()}
+        mezclas: dict[int, dict[str, Any]] = {}
+        if voces:
+            self._avisar(progreso, "mezcla", 0.8, "Mezclando")
+            sonidos = {s.escena: (s.ruta, s.backend) for s in etapa.sonidos if s.escena in voces}
+            mezcla = mezclar_historia(voces, sonidos, carpeta, self.cfg.mix)
+            mezclas = {m.escena: m.a_dict() for m in mezcla.mezclas}
+
+        etapas = manifest.setdefault("etapas", {})
+        nuevos = {s.escena: s.a_dict() for s in etapa.sonidos}
+        for clave, lista, nuevas in (
+            ("sonido", "sonidos", nuevos),
+            ("mezcla", "mezclas", mezclas),
+        ):
+            bloque = etapas.setdefault(clave, {})
+            actuales = {int(x["escena"]): x for x in bloque.get(lista, []) if "escena" in x}
+            actuales.update(nuevas)
+            bloque[lista] = [actuales[n] for n in sorted(actuales)]
+        regeneraciones.append(
+            {
+                "tipo": "sonido",
+                "escenas": numeros,
+                "fecha": datetime.now().isoformat(timespec="seconds"),
+                "backends": {s.escena: s.backend for s in etapa.sonidos},
+                "fallbacks": temporal["fallbacks"],
+            }
+        )
+        guardar_json(carpeta / ARCHIVO_MANIFEST, manifest)
+        self._avisar(progreso, "listo", 1.0, "Ambiente rehecho")
+        return cargar_historia(carpeta)
+
     def regenerar_escena(
         self, carpeta: Path, numero: int, progreso: Progreso | None = None
     ) -> HistoriaGuardada:

@@ -284,6 +284,8 @@ Flujo:
     - Procedural nunca falla: una receta numpy/scipy por etiqueta del esquema.
     - Mezcla a 44,1 kHz: voz a −18 LUFS y ambiente 12 dB por debajo (18 dB mientras se habla, por el ducking de 6 dB).
     - `ambience_N.wav` va sin ducking, para el reproductor separado; `mix_N.wav` con ducking.
+    - Control de los clips generativos (`problema_de_ambiente`): máximo 40 % del clip 20 dB bajo su parte más fuerte y nivel mínimo de −45 dBFS. Si un clip falla, se reintenta con seed +1000 y luego se pasa al siguiente backend. En la prueba 5.4 AudioLDM dio clips a −72 dBFS.
+    - `Pipeline.rehacer_sonido` rehace el ambiente y la mezcla de escenas concretas sin tocar texto, imágenes ni voz. Lo usa `scripts/exportar_muestras.py`.
   - Integración (5.1–5.3, 10 nov):
     - `pipeline.Pipeline` (texto → imagen → voz → sonido → mezcla, con fallbacks y manifest incluso si falla) y `storage`.
     - `mock.dependencias_simuladas()` para la UI sin GPU y los tests.
@@ -291,6 +293,7 @@ Flujo:
     - Lanzador `StoryBook.cmd`. `.streamlit/config.toml` lleva headless (sin la pregunta del correo) y sin telemetría.
     - "Regenerar escena" cambia la seed de la imagen y del sonido; el texto y la voz no cambian.
     - `scripts/verify_offline.py` bloquea y registra toda conexión que no sea a localhost.
+    - `samples/` guarda los audios en OGG Vorbis (`storage.exportar_muestra`), escritos por bloques: en Windows, escribir un OGG largo de una vez desborda la pila (0xC00000FD).
   - Voz elegida por Diego al escucharlas (3.3): `es_MX-claude-high`. WER mediano del 8,3 % con Whisper small; los errores son sobre todo de nombres propios.
 - **Voz (CPU):**
   - Una voz narradora fija para toda la historia, con parámetros constantes (length_scale, noise_scale).

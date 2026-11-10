@@ -13,7 +13,6 @@ Uso (PowerShell, desde la carpeta del proyecto):
 from __future__ import annotations
 
 import argparse
-import shutil
 import socket
 import sys
 from collections.abc import Iterator
@@ -106,9 +105,10 @@ def generar_historias(
 
 
 def copiar_a_samples(carpeta: Path, destino: Path | None = None) -> Path:
-    destino = (destino or config.SAMPLES_DIR) / carpeta.name
-    shutil.copytree(carpeta, destino, dirs_exist_ok=True)
-    return destino
+    """Exporta la historia a ``samples/`` con los audios en OGG (ver storage.exportar_muestra)."""
+    from storybook.storage import exportar_muestra
+
+    return exportar_muestra(carpeta, destino)
 
 
 def main(argv: list[str] | None = None) -> int:

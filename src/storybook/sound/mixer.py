@@ -101,7 +101,11 @@ def medir_lufs(audio: np.ndarray, sr: int) -> float:
     if audio.size < int(medidor.block_size * sr) + 1:
         rms = float(np.sqrt(np.mean(np.square(audio))))
         return 20 * math.log10(rms) - 0.691 if rms > 0 else float("-inf")
-    return float(medidor.integrated_loudness(audio))
+    valor = float(medidor.integrated_loudness(audio))
+    if not math.isfinite(valor):  # todo bajo la compuerta absoluta (-70 LUFS): se estima por RMS
+        rms = float(np.sqrt(np.mean(np.square(audio))))
+        return 20 * math.log10(rms) - 0.691 if rms > 0 else float("-inf")
+    return valor
 
 
 def ajustar_lufs(audio: np.ndarray, sr: int, objetivo: float) -> tuple[np.ndarray, float]:

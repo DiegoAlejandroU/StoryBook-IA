@@ -19,6 +19,8 @@
   Tarea 5.4 (historia completa real sin Internet; apagar el Wi-Fi antes):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso offline
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso offline -Muestras
+  Tarea 5.4 (rehacer ambientes debiles de las 3 ultimas historias y exportarlas a samples/; con Internet):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso muestras
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -27,7 +29,7 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [int]$NumGpu = -1,
@@ -147,6 +149,7 @@ function Paso-Git {
         if ($Paso -eq "f2") { $titulo = "chore: codigo usado en las pruebas reales de imagen y voz (tareas 2.3 y 3.3)" }
         if ($Paso -eq "f2v") { $titulo = "chore: codigo usado en las variantes de imagen (tarea 2.3)" }
         if ($Paso -eq "f4") { $titulo = "chore: codigo usado en la prueba real de sonido y mezcla (tarea 4.4)" }
+        if ($Paso -eq "muestras") { $titulo = "chore: codigo para rehacer ambientes y exportar ejemplos (tarea 5.4)" }
         # Sin "Co-Authored-By" ni menciones a asistentes: el unico autor es Diego (pedido explicito).
         if ((Ejecutar "git" @("commit", "-m", $titulo)) -ne 0) { return 1 }
     } else {
@@ -326,7 +329,7 @@ Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
 # f1 y f2 tambien hacen commit del codigo antes de generar: la evidencia debe corresponder a un commit.
-if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4", "muestras")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -391,7 +394,21 @@ if ($Paso -eq "offline") {
     $salidaOff = Join-Path $Evid "verify_offline.txt"
     if (Test-Path $salidaOff) { Remove-Item $salidaOff }
     $codigo = Ejecutar "uv" $argsOff $salidaOff
-    Guardar-Evidencias "chore: evidencias de la prueba sin Internet (tarea 5.4)" | Out-Null
+    # Las historias de ejemplo (audios en OGG, ~7 MB cada una) se versionan con las evidencias.
+    if ($Muestras -and (Test-Path "samples")) { & git add -- samples 2>$null | Out-Null }
+    Guardar-Evidencias "chore: evidencias de la prueba sin Internet y ejemplos (tarea 5.4)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "muestras") {
+    Titulo "Tarea 5.4 - Rehacer ambientes debiles y exportar las historias de ejemplo a samples/"
+    $perfilMu = if ($Perfil -eq "llm_8b") { "experiments/llm_8b" } else { $Perfil }
+    $argsMu = @("run", "python", "scripts/exportar_muestras.py", "--perfil", $perfilMu)
+    $salidaMu = Join-Path $Evid "exportar_muestras.txt"
+    if (Test-Path $salidaMu) { Remove-Item $salidaMu }
+    $codigo = Ejecutar "uv" $argsMu $salidaMu
+    # Las historias de ejemplo (audios en OGG, ~7 MB cada una) se versionan con las evidencias.
+    if (Test-Path "samples") { & git add -- samples 2>$null | Out-Null }
+    Guardar-Evidencias "chore: historias de ejemplo en samples (tarea 5.4)" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 if ($Paso -eq "f4") {

@@ -112,16 +112,74 @@ def _si_existe(ruta: Path) -> Path | None:
     return ruta if ruta.is_file() else None
 
 
+# Las historias de outputs/ guardan WAV; las de samples/ (versionadas en git) usan OGG Vorbis,
+# unas 10 veces más livianas (ver exportar_muestra).
+EXTENSIONES_AUDIO: Final = (".wav", ".ogg")
+
+
+def _audio(carpeta: Path, base: str) -> Path | None:
+    for extension in EXTENSIONES_AUDIO:
+        ruta = carpeta / f"{base}{extension}"
+        if ruta.is_file():
+            return ruta
+    return None
+
+
 def archivos_escena(carpeta: Path, numero: int) -> ArchivosEscena:
-    ambiente = _si_existe(carpeta / f"ambience_{numero}.wav") or _si_existe(
-        carpeta / f"sfx_{numero}.wav"
-    )
     return ArchivosEscena(
         imagen=_si_existe(carpeta / f"scene_{numero}.png"),
-        voz=_si_existe(carpeta / f"voice_{numero}.wav"),
-        ambiente=ambiente,
-        mezcla=_si_existe(carpeta / f"mix_{numero}.wav"),
+        voz=_audio(carpeta, f"voice_{numero}"),
+        ambiente=_audio(carpeta, f"ambience_{numero}") or _audio(carpeta, f"sfx_{numero}"),
+        mezcla=_audio(carpeta, f"mix_{numero}"),
     )
+
+
+def exportar_muestra(carpeta: Path, destino: Path | None = None) -> Path:
+    """Copia una historia a ``samples/`` para versionarla: Bible, manifest, imágenes y los
+    audios de narración, ambiente y mezcla convertidos a OGG Vorbis.
+
+    En WAV una historia pesa ~55 MB; en OGG, unos 6-8 MB. Los clips ``sfx_N`` (intermedios)
+    no se copian.
+    """
+    import shutil
+
+    destino = (destino or config.SAMPLES_DIR) / carpeta.name
+    destino.mkdir(parents=True, exist_ok=True)
+    for nombre in (ARCHIVO_BIBLE, ARCHIVO_MANIFEST, "character_sheet.png"):
+        if (carpeta / nombre).is_file():
+            shutil.copy2(carpeta / nombre, destino / nombre)
+    for numero in range(1, NUM_ESCENAS + 1):
+        imagen = carpeta / f"scene_{numero}.png"
+        if imagen.is_file():
+            shutil.copy2(imagen, destino / imagen.name)
+        for base in (f"voice_{numero}", f"ambience_{numero}", f"mix_{numero}"):
+            wav = carpeta / f"{base}.wav"
+            if wav.is_file():
+                _wav_a_ogg(wav, destino / f"{base}.ogg")
+    return destino
+
+
+# Se escribe por bloques: en Windows, escribir un OGG largo de una sola vez desborda la pila
+# del codificador Vorbis de libsndfile (el proceso terminó con 0xC00000FD en la tarea 5.4).
+BLOQUE_OGG: Final = 16_384
+
+
+def _wav_a_ogg(origen: Path, destino: Path) -> None:
+    import soundfile as sf
+
+    with (
+        sf.SoundFile(str(origen)) as entrada,
+        sf.SoundFile(
+            str(destino),
+            "w",
+            samplerate=entrada.samplerate,
+            channels=entrada.channels,
+            format="OGG",
+            subtype="VORBIS",
+        ) as salida,
+    ):
+        for bloque in entrada.blocks(blocksize=BLOQUE_OGG, dtype="float32"):
+            salida.write(bloque)
 
 
 @dataclass

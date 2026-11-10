@@ -57,4 +57,13 @@ def test_pipeline_simulado_sin_conexiones(tmp_path: Path) -> None:
     (historia,) = historias
     assert historia.completa
     destino = vo.copiar_a_samples(historia.carpeta, tmp_path / "samples")
-    assert (destino / "story.json").is_file() and (destino / "mix_5.wav").is_file()
+    assert (destino / "story.json").is_file() and (destino / "mix_5.ogg").is_file()
+    assert not list(destino.glob("*.wav"))  # en samples/ solo OGG
+
+    from storybook.storage import cargar_historia, listar_historias
+
+    muestra = cargar_historia(destino)
+    assert muestra.completa and muestra.escena(1).voz.suffix == ".ogg"  # type: ignore[union-attr]
+    assert [e.origen for e in listar_historias([tmp_path / "samples"])] == ["samples"]
+    peso = lambda carpeta: sum(f.stat().st_size for f in carpeta.iterdir())  # noqa: E731
+    assert peso(destino) < peso(historia.carpeta) / 3

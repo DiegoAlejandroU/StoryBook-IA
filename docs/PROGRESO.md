@@ -106,8 +106,10 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 - [x] 5.3 [AUTO] `scripts/verify_offline.py`: bloquea sockets salvo localhost, corre el pipeline con backends falsos o reales según una bandera e informa cualquier intento de conexión externa. (dep: 5.1)
 - [ ] 5.4 [WINDOWS] Prueba de punta a punta real con el Wi-Fi apagado; generar 2–3 historias para `samples/`. (dep: 2.3, 3.3, 4.4, 5.2)
   - Con el Wi-Fi apagado: `setup_windows.ps1 -Paso offline` (1 historia real con la red vigilada); con `-Muestras` hace 3 y las copia a `samples/`.
-  - Antes de versionar `samples/`, revisar el peso: ~55 MB por historia en WAV.
+  - `samples/` se versiona con los audios en OGG Vorbis (`storage.exportar_muestra`): unos 7 MB por historia, frente a ~55 MB en WAV.
   - **Prueba sin Internet hecha (10 nov, 13:58):** "El Faro de Lucian", completa en **133 s** (texto 73 s, imágenes 40 s, voz 8 s, sonido 10 s, mezcla 2 s). Ninguna conexión fuera del equipo. Falta generar las 2–3 historias de `samples/`.
+  - **3 historias reales generadas sin Internet (10 nov, 14:17–14:24),** entre 126 y 138 s cada una. La exportación a `samples/` falló (ver bitácora de las 14:45).
+  - Para terminar: `setup_windows.ps1 -Paso muestras` (con Internet). Rehace solo los ambientes débiles de esas 3 historias y las exporta a `samples/` sin volver a generar texto ni imágenes.
 
 ## F6 · Experimentos
 - [ ] 6.1 [AUTO] Ya existe `evaluation/clip_metrics.py`. Falta:
@@ -130,9 +132,10 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente:**
-  1. Quitar a Claude como coautor del historial: `powershell -ExecutionPolicy Bypass -File .\scripts\quitar_coautor.ps1`.
-  2. Probar la app con doble clic en `StoryBook.cmd`. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
+- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso muestras`.
+  - Rehace los ambientes débiles de las 3 historias de la prueba sin Internet, las exporta a `samples/` y sube todo a GitHub.
+  - Sube también el commit local de evidencias de la prueba sin Internet.
+  - Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
 ---
@@ -527,3 +530,42 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
     4. Verifican que quedan 0 y suben con `--force-with-lease`.
   - Probado en un repositorio de prueba en el contenedor: 3 → 0 y el coautor humano se conserva. 3 tests del filtro.
 - Verificación: **290 tests en verde** (contenedor y bundle Linux), ruff limpio.
+
+### 2026-11-10 14:40 · historial limpio + ejemplos livianos · —
+- **Historial de git limpio** (`quitar_coautor.ps1`, ejecutado por Diego a las 14:13):
+  - Verificado leyendo los objetos de git: 32 commits en `main`, **0 con Claude como coautor** y un único autor (Diego Alejandro Urbano Pira).
+  - `origin/main` coincide con `main`: ya está en GitHub.
+  - Queda la rama local `respaldo-antes-de-quitar-coautor` (y `refs/original`) por seguridad. No se sube y se puede borrar cuando Diego quiera.
+- **Ejemplos para `samples/`:**
+  - `storage.exportar_muestra` copia la Bible, el manifest y las imágenes, y convierte narración, ambiente y mezcla a OGG Vorbis. Los `sfx_N` intermedios no se copian.
+  - `archivos_escena` acepta `.wav` u `.ogg`; la UI reproduce ambos.
+  - En los ejemplos no se ofrece "regenerar escena", para no mezclar WAV nuevos en una historia de muestra.
+  - `-Paso offline -Muestras` también hace commit de `samples/`.
+- Verificación: **290 tests en verde** (contenedor y bundle Linux), ruff limpio.
+
+### 2026-11-10 14:45 · Windows (`-Paso offline -Muestras`) + correcciones · 5.4 parcial
+- **Resultado de la corrida:**
+  - Las 3 historias se generaron completas y sin conexiones externas:
+    - "El Faro de Lucian" (`outputs/20261110_141757_…`), 138 s;
+    - "La Biblia del Dragón" (`outputs/20261110_142017_…`), 126 s;
+    - "El Camino de los Amigos" (`outputs/20261110_142223_…`), 126 s.
+  - Al exportarlas a `samples/`, Python terminó con el código −1073741571 (0xC00000FD, desbordamiento de pila en Windows). Solo llegaron archivos sueltos de la primera historia (`voice_1.ogg` cortado, de 3 KB), y quedaron en un commit local.
+- **Causa 1, exportación a OGG:** `soundfile` escribía cada audio de 40–50 s a OGG Vorbis de una sola vez. En Windows eso desborda la pila del codificador Vorbis de libsndfile.
+  - Corrección en `storage._wav_a_ogg`: se lee el WAV y se escribe el OGG por bloques de 16 384 muestras. Con eso el codificador nunca recibe un bloque grande.
+- **Causa 2, ambientes de AudioLDM casi mudos:**
+  - Algunos clips pasaron el control de huecos, que es relativo a la parte más fuerte del clip, pero eran casi silencio absoluto:
+    - "El Camino de los Amigos", escenas 2, 4 y 5: alrededor de −72 dBFS, ambiente en −inf LUFS;
+    - "La Biblia del Dragón", escena 2: −68,9 LUFS.
+  - En la mezcla esos ambientes no se oían.
+  - Correcciones:
+    - `sound/generator.py`: nuevo `problema_de_ambiente`, que además de los huecos exige un nivel mínimo de −45 dBFS (`NIVEL_MINIMO_DBFS`). Si un clip generativo no lo cumple, se reintenta con otra seed y, si persiste, la escena pasa al siguiente backend (biblioteca → procedural). El manifest registra `nivel_dbfs` e `intentos`.
+    - `sound/mixer.py`: `medir_lufs` ya no devuelve −inf para señales muy bajas pero no nulas (todo bajo la compuerta absoluta de −70 LUFS). En ese caso estima el nivel por RMS.
+- **Nuevo, para no regenerar las historias:**
+  - `Pipeline.rehacer_sonido(carpeta, escenas)` hace un nuevo ambiente y una nueva mezcla solo para esas escenas. Texto, imágenes y voz no cambian, y queda registrado en `regeneraciones` del manifest con `tipo: sonido`.
+  - `scripts/exportar_muestras.py` toma las 3 historias reales completas más recientes. Revisa cada ambiente generativo con `problema_de_ambiente` y rehace los débiles en GPU (unos segundos por escena). Luego exporta cada historia a `samples/` y sobrescribe la exportación parcial. Si una historia falla, informa el error y sigue con las demás.
+  - `setup_windows.ps1 -Paso muestras` hace commit del código, ejecuta `exportar_muestras.py` y versiona `samples/` con las evidencias. La salida queda en `docs/evidencias/exportar_muestras.txt`.
+- Verificación: **294 tests en verde**, ruff limpio. Tests nuevos:
+  - clip generativo demasiado bajo → reintento y fallback a procedural;
+  - `medir_lufs` finito bajo la compuerta;
+  - rehacer y exportar con un ambiente débil simulado;
+  - OGG por bloques que conserva la duración.
