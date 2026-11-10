@@ -1,0 +1,989 @@
+{
+  "variantes": [
+    {
+      "variante": "cadena",
+      "carpeta": "cadena",
+      "backends_configurados": [
+        "sa3",
+        "audioldm",
+        "library",
+        "procedural"
+      ],
+      "backend_por_escena": {
+        "1": "audioldm",
+        "2": "audioldm",
+        "3": "audioldm",
+        "4": "audioldm",
+        "5": "audioldm"
+      },
+      "segundos_por_clip_mediana": 1.338,
+      "segundos_carga": {
+        "audioldm": 9.344
+      },
+      "vram_gpu_pico_mb": 1274.5,
+      "vram_torch_pico_mb": 943.2,
+      "fallbacks": [
+        "sonido:sa3:no_disponible"
+      ],
+      "errores": [
+        "sa3: ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"
+      ],
+      "sonido": {
+        "sonidos": [
+          {
+            "escena": 1,
+            "archivo": "sfx_1.wav",
+            "backend": "audioldm",
+            "duracion_s": 8.0,
+            "sample_rate": 16000,
+            "segundos": 2.189,
+            "prompt": "Ongoing ocean waves, wind howling through dense vegetation, faint heartbeat pulse.",
+            "etiquetas": [
+              "wind",
+              "ocean_waves",
+              "heartbeat"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 2,
+            "archivo": "sfx_2.wav",
+            "backend": "audioldm",
+            "duracion_s": 8.0,
+            "sample_rate": 16000,
+            "segundos": 1.253,
+            "prompt": "Wind howls through the forest. A slow heartbeat pulses in the background.",
+            "etiquetas": [
+              "wind",
+              "forest",
+              "heartbeat"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 3,
+            "archivo": "sfx_3.wav",
+            "backend": "audioldm",
+            "duracion_s": 8.0,
+            "sample_rate": 16000,
+            "segundos": 1.338,
+            "prompt": "Wind howls through the forest. Water streams gently over rocks. Distant waves crash against the shore.",
+            "etiquetas": [
+              "wind",
+              "water_stream",
+              "forest"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 4,
+            "archivo": "sfx_4.wav",
+            "backend": "audioldm",
+            "duracion_s": 8.0,
+            "sample_rate": 16000,
+            "segundos": 1.349,
+            "prompt": "Wind howls through the rocks. A slow heartbeat pulses in the background.",
+            "etiquetas": [
+              "wind",
+              "water_stream",
+              "heartbeat"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 5,
+            "archivo": "sfx_5.wav",
+            "backend": "audioldm",
+            "duracion_s": 8.0,
+            "sample_rate": 16000,
+            "segundos": 1.281,
+            "prompt": "Constant ocean waves, soft wind, slow heartbeat pulses",
+            "etiquetas": [
+              "wind",
+              "ocean_waves",
+              "heartbeat"
+            ],
+            "detalle": {}
+          }
+        ],
+        "backends": {
+          "sa3": {
+            "estado": "no_disponible",
+            "detalle": "ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"
+          },
+          "audioldm": {
+            "estado": "cargado",
+            "backend": "audioldm",
+            "repo": "cvssp/audioldm",
+            "revision": "8ed5f6437581a2fee9c662842d7cb13459914b0f"
+          }
+        },
+        "fallbacks": [
+          "sonido:sa3:no_disponible"
+        ],
+        "errores": [
+          "sa3: ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"
+        ],
+        "metricas": [
+          {
+            "etapa": "sonido_audioldm_carga",
+            "segundos": 9.344,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 821.0,
+            "vram_torch_reservada_pico_mb": 840.0,
+            "vram_gpu_base_mb": 196.5,
+            "vram_gpu_pico_mb": 770.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {}
+          },
+          {
+            "etapa": "sonido_escena_1",
+            "segundos": 2.193,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 943.2,
+            "vram_torch_reservada_pico_mb": 1048.0,
+            "vram_gpu_base_mb": 1036.5,
+            "vram_gpu_pico_mb": 1272.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "audioldm",
+              "duracion_audio_s": 8.0,
+              "seed": 1235
+            }
+          },
+          {
+            "etapa": "sonido_escena_2",
+            "segundos": 1.257,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 943.2,
+            "vram_torch_reservada_pico_mb": 1048.0,
+            "vram_gpu_base_mb": 1274.5,
+            "vram_gpu_pico_mb": 1274.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "audioldm",
+              "duracion_audio_s": 8.0,
+              "seed": 1236
+            }
+          },
+          {
+            "etapa": "sonido_escena_3",
+            "segundos": 1.344,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 943.2,
+            "vram_torch_reservada_pico_mb": 1048.0,
+            "vram_gpu_base_mb": 1274.5,
+            "vram_gpu_pico_mb": 1274.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "audioldm",
+              "duracion_audio_s": 8.0,
+              "seed": 1237
+            }
+          },
+          {
+            "etapa": "sonido_escena_4",
+            "segundos": 1.353,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 943.2,
+            "vram_torch_reservada_pico_mb": 1048.0,
+            "vram_gpu_base_mb": 1274.5,
+            "vram_gpu_pico_mb": 1274.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "audioldm",
+              "duracion_audio_s": 8.0,
+              "seed": 1238
+            }
+          },
+          {
+            "etapa": "sonido_escena_5",
+            "segundos": 1.285,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 943.2,
+            "vram_torch_reservada_pico_mb": 1048.0,
+            "vram_gpu_base_mb": 1274.5,
+            "vram_gpu_pico_mb": 1274.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "audioldm",
+              "duracion_audio_s": 8.0,
+              "seed": 1239
+            }
+          }
+        ]
+      },
+      "mezcla": {
+        "mezclas": [
+          {
+            "escena": 1,
+            "ambiente": "ambience_1.wav",
+            "mezcla": "mix_1.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "audioldm",
+            "duracion_s": 42.682,
+            "lufs_voz_original": -14.96,
+            "lufs_ambiente_original": -34.04,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.943,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7745
+          },
+          {
+            "escena": 2,
+            "ambiente": "ambience_2.wav",
+            "mezcla": "mix_2.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "audioldm",
+            "duracion_s": 50.589,
+            "lufs_voz_original": -14.78,
+            "lufs_ambiente_original": -13.35,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.95,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.751
+          },
+          {
+            "escena": 3,
+            "ambiente": "ambience_3.wav",
+            "mezcla": "mix_3.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "audioldm",
+            "duracion_s": 47.617,
+            "lufs_voz_original": -15.33,
+            "lufs_ambiente_original": -35.85,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.1,
+            "ambiente_bajo_voz_db": 12.1,
+            "ambiente_bajo_voz_hablando_db": 18.1,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.947,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7731
+          },
+          {
+            "escena": 4,
+            "ambiente": "ambience_4.wav",
+            "mezcla": "mix_4.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "audioldm",
+            "duracion_s": 43.193,
+            "lufs_voz_original": -15.54,
+            "lufs_ambiente_original": -20.47,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.934,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.8107
+          },
+          {
+            "escena": 5,
+            "ambiente": "ambience_5.wav",
+            "mezcla": "mix_5.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "audioldm",
+            "duracion_s": 40.198,
+            "lufs_voz_original": -14.72,
+            "lufs_ambiente_original": -24.97,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.945,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7172
+          }
+        ],
+        "metricas": [
+          {
+            "etapa": "mezcla_escena_1",
+            "segundos": 0.582,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 42.682,
+              "lufs_voz_original": -14.96,
+              "lufs_ambiente_original": -34.04,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.943,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7745
+            }
+          },
+          {
+            "etapa": "mezcla_escena_2",
+            "segundos": 0.559,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 50.589,
+              "lufs_voz_original": -14.78,
+              "lufs_ambiente_original": -13.35,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.95,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.751
+            }
+          },
+          {
+            "etapa": "mezcla_escena_3",
+            "segundos": 0.477,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 47.617,
+              "lufs_voz_original": -15.33,
+              "lufs_ambiente_original": -35.85,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.1,
+              "ambiente_bajo_voz_db": 12.1,
+              "ambiente_bajo_voz_hablando_db": 18.1,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.947,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7731
+            }
+          },
+          {
+            "etapa": "mezcla_escena_4",
+            "segundos": 0.427,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 43.193,
+              "lufs_voz_original": -15.54,
+              "lufs_ambiente_original": -20.47,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.934,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.8107
+            }
+          },
+          {
+            "etapa": "mezcla_escena_5",
+            "segundos": 0.445,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 40.198,
+              "lufs_voz_original": -14.72,
+              "lufs_ambiente_original": -24.97,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.945,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7172
+            }
+          }
+        ]
+      }
+    },
+    {
+      "variante": "procedural",
+      "carpeta": "procedural",
+      "backends_configurados": [
+        "procedural"
+      ],
+      "backend_por_escena": {
+        "1": "procedural",
+        "2": "procedural",
+        "3": "procedural",
+        "4": "procedural",
+        "5": "procedural"
+      },
+      "segundos_por_clip_mediana": 0.092,
+      "segundos_carga": {
+        "procedural": 0.0
+      },
+      "vram_gpu_pico_mb": 226.5,
+      "vram_torch_pico_mb": 0.0,
+      "fallbacks": [],
+      "errores": [],
+      "sonido": {
+        "sonidos": [
+          {
+            "escena": 1,
+            "archivo": "sfx_1.wav",
+            "backend": "procedural",
+            "duracion_s": 8.0,
+            "sample_rate": 44100,
+            "segundos": 0.092,
+            "prompt": "Ongoing ocean waves, wind howling through dense vegetation, faint heartbeat pulse.",
+            "etiquetas": [
+              "wind",
+              "ocean_waves",
+              "heartbeat"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 2,
+            "archivo": "sfx_2.wav",
+            "backend": "procedural",
+            "duracion_s": 8.0,
+            "sample_rate": 44100,
+            "segundos": 0.112,
+            "prompt": "Wind howls through the forest. A slow heartbeat pulses in the background.",
+            "etiquetas": [
+              "wind",
+              "forest",
+              "heartbeat"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 3,
+            "archivo": "sfx_3.wav",
+            "backend": "procedural",
+            "duracion_s": 8.0,
+            "sample_rate": 44100,
+            "segundos": 0.119,
+            "prompt": "Wind howls through the forest. Water streams gently over rocks. Distant waves crash against the shore.",
+            "etiquetas": [
+              "wind",
+              "water_stream",
+              "forest"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 4,
+            "archivo": "sfx_4.wav",
+            "backend": "procedural",
+            "duracion_s": 8.0,
+            "sample_rate": 44100,
+            "segundos": 0.075,
+            "prompt": "Wind howls through the rocks. A slow heartbeat pulses in the background.",
+            "etiquetas": [
+              "wind",
+              "water_stream",
+              "heartbeat"
+            ],
+            "detalle": {}
+          },
+          {
+            "escena": 5,
+            "archivo": "sfx_5.wav",
+            "backend": "procedural",
+            "duracion_s": 8.0,
+            "sample_rate": 44100,
+            "segundos": 0.084,
+            "prompt": "Constant ocean waves, soft wind, slow heartbeat pulses",
+            "etiquetas": [
+              "wind",
+              "ocean_waves",
+              "heartbeat"
+            ],
+            "detalle": {}
+          }
+        ],
+        "backends": {
+          "procedural": {
+            "estado": "cargado",
+            "backend": "procedural",
+            "frecuencia": 44100
+          }
+        },
+        "fallbacks": [],
+        "errores": [],
+        "metricas": [
+          {
+            "etapa": "sonido_procedural_carga",
+            "segundos": 0.0,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {}
+          },
+          {
+            "etapa": "sonido_escena_1",
+            "segundos": 0.101,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "procedural",
+              "duracion_audio_s": 8.0,
+              "seed": 1235
+            }
+          },
+          {
+            "etapa": "sonido_escena_2",
+            "segundos": 0.119,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "procedural",
+              "duracion_audio_s": 8.0,
+              "seed": 1236
+            }
+          },
+          {
+            "etapa": "sonido_escena_3",
+            "segundos": 0.128,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "procedural",
+              "duracion_audio_s": 8.0,
+              "seed": 1237
+            }
+          },
+          {
+            "etapa": "sonido_escena_4",
+            "segundos": 0.086,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "procedural",
+              "duracion_audio_s": 8.0,
+              "seed": 1238
+            }
+          },
+          {
+            "etapa": "sonido_escena_5",
+            "segundos": 0.094,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "backend": "procedural",
+              "duracion_audio_s": 8.0,
+              "seed": 1239
+            }
+          }
+        ]
+      },
+      "mezcla": {
+        "mezclas": [
+          {
+            "escena": 1,
+            "ambiente": "ambience_1.wav",
+            "mezcla": "mix_1.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "procedural",
+            "duracion_s": 42.682,
+            "lufs_voz_original": -14.96,
+            "lufs_ambiente_original": -18.8,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.943,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7622
+          },
+          {
+            "escena": 2,
+            "ambiente": "ambience_2.wav",
+            "mezcla": "mix_2.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "procedural",
+            "duracion_s": 50.589,
+            "lufs_voz_original": -14.78,
+            "lufs_ambiente_original": -17.73,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.95,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7365
+          },
+          {
+            "escena": 3,
+            "ambiente": "ambience_3.wav",
+            "mezcla": "mix_3.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "procedural",
+            "duracion_s": 47.617,
+            "lufs_voz_original": -15.33,
+            "lufs_ambiente_original": -16.63,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.947,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7526
+          },
+          {
+            "escena": 4,
+            "ambiente": "ambience_4.wav",
+            "mezcla": "mix_4.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "procedural",
+            "duracion_s": 43.193,
+            "lufs_voz_original": -15.54,
+            "lufs_ambiente_original": -19.71,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.934,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7908
+          },
+          {
+            "escena": 5,
+            "ambiente": "ambience_5.wav",
+            "mezcla": "mix_5.wav",
+            "sample_rate": 44100,
+            "fuente_sonido": "procedural",
+            "duracion_s": 40.198,
+            "lufs_voz_original": -14.72,
+            "lufs_ambiente_original": -18.67,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.945,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7207
+          }
+        ],
+        "metricas": [
+          {
+            "etapa": "mezcla_escena_1",
+            "segundos": 0.396,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 42.682,
+              "lufs_voz_original": -14.96,
+              "lufs_ambiente_original": -18.8,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.943,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7622
+            }
+          },
+          {
+            "etapa": "mezcla_escena_2",
+            "segundos": 0.611,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 50.589,
+              "lufs_voz_original": -14.78,
+              "lufs_ambiente_original": -17.73,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.95,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7365
+            }
+          },
+          {
+            "etapa": "mezcla_escena_3",
+            "segundos": 0.452,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 47.617,
+              "lufs_voz_original": -15.33,
+              "lufs_ambiente_original": -16.63,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.947,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7526
+            }
+          },
+          {
+            "etapa": "mezcla_escena_4",
+            "segundos": 0.405,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 43.193,
+              "lufs_voz_original": -15.54,
+              "lufs_ambiente_original": -19.71,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.934,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7908
+            }
+          },
+          {
+            "etapa": "mezcla_escena_5",
+            "segundos": 0.37,
+            "dispositivo": "cuda",
+            "vram_torch_pico_mb": 0.0,
+            "vram_torch_reservada_pico_mb": 0.0,
+            "vram_gpu_base_mb": 226.5,
+            "vram_gpu_pico_mb": 226.5,
+            "vram_gpu_total_mb": 4096.0,
+            "extra": {
+              "duracion_s": 40.198,
+              "lufs_voz_original": -14.72,
+              "lufs_ambiente_original": -18.67,
+              "lufs_voz": -18.0,
+              "lufs_ambiente": -30.0,
+              "ambiente_bajo_voz_db": 12.0,
+              "ambiente_bajo_voz_hablando_db": 18.0,
+              "ducking_db": 6.0,
+              "fraccion_con_voz": 0.945,
+              "limitacion_db": 0.0,
+              "pico_mezcla": 0.7207
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "errores": {},
+  "voz": {
+    "backend": {
+      "backend": "piper",
+      "voz": "es_MX-claude-high",
+      "length_scale": 1.0,
+      "noise_scale": 0.667,
+      "noise_w_scale": 0.8,
+      "piper_tts": "1.8.0",
+      "dispositivo": "cpu"
+    },
+    "duracion_total_s": 216.779,
+    "narraciones": [
+      {
+        "escena": 1,
+        "archivo": "voice_1.wav",
+        "duracion_s": 41.182,
+        "sample_rate": 22050,
+        "segundos_sintesis": 1.466,
+        "rtf": 0.0356,
+        "caracteres": 606
+      },
+      {
+        "escena": 2,
+        "archivo": "voice_2.wav",
+        "duracion_s": 49.089,
+        "sample_rate": 22050,
+        "segundos_sintesis": 1.711,
+        "rtf": 0.0349,
+        "caracteres": 745
+      },
+      {
+        "escena": 3,
+        "archivo": "voice_3.wav",
+        "duracion_s": 46.117,
+        "sample_rate": 22050,
+        "segundos_sintesis": 1.538,
+        "rtf": 0.0333,
+        "caracteres": 689
+      },
+      {
+        "escena": 4,
+        "archivo": "voice_4.wav",
+        "duracion_s": 41.693,
+        "sample_rate": 22050,
+        "segundos_sintesis": 1.353,
+        "rtf": 0.0325,
+        "caracteres": 620
+      },
+      {
+        "escena": 5,
+        "archivo": "voice_5.wav",
+        "duracion_s": 38.698,
+        "sample_rate": 22050,
+        "segundos_sintesis": 1.26,
+        "rtf": 0.0326,
+        "caracteres": 592
+      }
+    ],
+    "metricas": [
+      {
+        "etapa": "voz_carga",
+        "segundos": 2.022,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 0.0,
+        "vram_torch_reservada_pico_mb": 0.0,
+        "vram_gpu_base_mb": 196.5,
+        "vram_gpu_pico_mb": 196.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {}
+      },
+      {
+        "etapa": "voz_escena_1",
+        "segundos": 1.485,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 0.0,
+        "vram_torch_reservada_pico_mb": 0.0,
+        "vram_gpu_base_mb": 196.5,
+        "vram_gpu_pico_mb": 196.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {
+          "duracion_audio_s": 41.182,
+          "sample_rate": 22050,
+          "rtf": 0.0356
+        }
+      },
+      {
+        "etapa": "voz_escena_2",
+        "segundos": 1.734,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 0.0,
+        "vram_torch_reservada_pico_mb": 0.0,
+        "vram_gpu_base_mb": 196.5,
+        "vram_gpu_pico_mb": 196.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {
+          "duracion_audio_s": 49.089,
+          "sample_rate": 22050,
+          "rtf": 0.0349
+        }
+      },
+      {
+        "etapa": "voz_escena_3",
+        "segundos": 1.556,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 0.0,
+        "vram_torch_reservada_pico_mb": 0.0,
+        "vram_gpu_base_mb": 196.5,
+        "vram_gpu_pico_mb": 196.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {
+          "duracion_audio_s": 46.117,
+          "sample_rate": 22050,
+          "rtf": 0.0333
+        }
+      },
+      {
+        "etapa": "voz_escena_4",
+        "segundos": 1.368,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 0.0,
+        "vram_torch_reservada_pico_mb": 0.0,
+        "vram_gpu_base_mb": 196.5,
+        "vram_gpu_pico_mb": 196.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {
+          "duracion_audio_s": 41.693,
+          "sample_rate": 22050,
+          "rtf": 0.0325
+        }
+      },
+      {
+        "etapa": "voz_escena_5",
+        "segundos": 1.274,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 0.0,
+        "vram_torch_reservada_pico_mb": 0.0,
+        "vram_gpu_base_mb": 196.5,
+        "vram_gpu_pico_mb": 196.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {
+          "duracion_audio_s": 38.698,
+          "sample_rate": 22050,
+          "rtf": 0.0326
+        }
+      }
+    ]
+  },
+  "perfil": "rapido",
+  "story": "C:\\Users\\diego\\Documents\\StoryBook-IA\\outputs\\f1\\20261110_085328\\story_01.json",
+  "titulo": "El Faro de las Noches"
+}
