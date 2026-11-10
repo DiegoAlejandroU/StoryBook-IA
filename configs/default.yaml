@@ -37,13 +37,16 @@ image:
   attention_slicing: false               # con SDPA (torch 2.x) no hace falta e impide IP-Adapter
   vae_slicing: true
   cpu_offload: false
+  prompt_orden: accion_primero           # tarea 2.3: acción, personajes y estilo (CLIP pesa más
+                                         # lo primero); con el estilo primero la acción no se veía
   ip_adapter:
     enabled: true
     repo_id: h94/IP-Adapter
     subfolder: models
     weight_name: ip-adapter_sd15.safetensors
     image_encoder_subfolder: models/image_encoder
-    scale: 0.6
+    scale: 0.4                           # tarea 2.3: con 0.6 todas las escenas copiaban la pose
+                                         # de la character sheet; 0.4 mantiene la cara y deja ver la acción
 
 voice:
   backend: piper
@@ -67,6 +70,15 @@ sound:
   duration_s: 8.0                             # el mezclador hace loop + crossfade hasta la voz
   negative_prompt: "low quality, speech, voice, singing, music"
   cpu_offload: true
+
+mix:
+  sample_rate: 44100
+  voz_lufs: -18.0                        # narración
+  ambiente_bajo_voz_db: 12.0             # ambiente en las pausas; con el ducking queda a 18 dB
+  ducking_db: 6.0                        # cuánto baja el ambiente mientras se habla
+  crossfade_s: 1.0                       # loop del ambiente hasta la duración de la voz
+  pre_roll_s: 0.5                        # ambiente antes de que empiece la voz
+  post_roll_s: 1.0                       # y después de que termina
 
 evaluation:
   whisper_model: small

@@ -123,3 +123,12 @@ def test_local_snapshot_lee_la_cache_sin_red(
 
 def test_num_predict_en_perfiles() -> None:
     assert config.load_config("rapido").llm.num_predict < config.load_config("rapido").llm.num_ctx
+
+
+def test_imagen_ajustada_en_la_tarea_2_3() -> None:
+    """Variantes reales (docs/evidencias/f2_variantes.md): IP-Adapter 0.4 con la acción
+    primero mantiene al protagonista y deja ver la escena; con 0.6 todo era un retrato."""
+    for perfil in ("rapido", "calidad", "experiments/c3_ipadapter"):
+        imagen = config.load_config(perfil).image
+        assert imagen.ip_adapter.scale == 0.4
+        assert imagen.prompt_orden == "accion_primero"

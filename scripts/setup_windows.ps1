@@ -14,6 +14,8 @@
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2 -Perfil calidad
   Ajuste de 2.3 (variantes de IP-Adapter y orden del prompt, solo imagenes):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2v
+  Tarea 4.4 (sonido real: cadena del perfil y procedural, mezclados con la voz):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f4
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -22,7 +24,7 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [int]$NumGpu = -1,
@@ -140,6 +142,7 @@ function Paso-Git {
         if ($Paso -eq "f1") { $titulo = "chore: codigo usado en las generaciones reales de F1 (tarea 1.4)" }
         if ($Paso -eq "f2") { $titulo = "chore: codigo usado en las pruebas reales de imagen y voz (tareas 2.3 y 3.3)" }
         if ($Paso -eq "f2v") { $titulo = "chore: codigo usado en las variantes de imagen (tarea 2.3)" }
+        if ($Paso -eq "f4") { $titulo = "chore: codigo usado en la prueba real de sonido y mezcla (tarea 4.4)" }
         $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
         if ((Ejecutar "git" @("commit", "-m", $titulo, "-m", $coautor)) -ne 0) { return 1 }
     } else {
@@ -320,7 +323,7 @@ Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
 # f1 y f2 tambien hacen commit del codigo antes de generar: la evidencia debe corresponder a un commit.
-if ($Paso -in @("todo", "git", "f1", "f2", "f2v")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -374,6 +377,17 @@ if ($Paso -eq "f2v") {
     if (Test-Path $salidaF2v) { Remove-Item $salidaF2v }
     $codigo = Ejecutar "uv" $argsF2v $salidaF2v
     Guardar-Evidencias "chore: evidencias de variantes de imagen (tarea 2.3)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "f4") {
+    Titulo ("Tarea 4.4 - Sonido y mezcla reales de una historia de F1 (perfil {0})" -f $Perfil)
+    $perfilF4 = if ($Perfil -eq "llm_8b") { "experiments/llm_8b" } else { $Perfil }
+    $argsF4 = @("run", "python", "scripts/f4_sonido.py", "--perfil", $perfilF4, "--variantes", "cadena", "procedural")
+    $sufijo = if ($Perfil -eq "rapido") { "" } else { "_$Perfil" }
+    $salidaF4 = Join-Path $Evid ("f4_sonido{0}.txt" -f $sufijo)
+    if (Test-Path $salidaF4) { Remove-Item $salidaF4 }
+    $codigo = Ejecutar "uv" $argsF4 $salidaF4
+    Guardar-Evidencias "chore: evidencias de sonido y mezcla reales (tarea 4.4)" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 Fin 0

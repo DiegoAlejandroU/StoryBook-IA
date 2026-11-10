@@ -1,0 +1,422 @@
+"""Etapa de sonido: un ambiente por escena con fallback automático en cadena.
+
+Orden (``sound.backends`` de la configuración; CLAUDE.md §8):
+
+* **A · generación local** en GPU desde ``prompt_sonido``: Stable Audio 3 Small-SFX (``sa3``),
+  Stable Audio Open 1.0 (``sao``) o AudioLDM (``audioldm``), vía diffusers con imports
+  perezosos. Mismo procedimiento validado en F0 por ``scripts/f0_hello.py``.
+* **B · biblioteca** CC0 de ``assets/sfx/`` por ``etiquetas_sonido`` (``library``).
+* **C · síntesis procedural** con numpy/scipy por ``etiquetas_sonido`` (``procedural``):
+  nunca falla, así la historia siempre tiene 5 ambientes.
+
+Se procesa por etapas: cada backend se carga una sola vez y genera todas las escenas
+pendientes. Si no carga (no descargado, sin GPU, gated sin token), se pasa al siguiente. Si
+falla en una escena, esa escena pasa al siguiente backend. Un OOM abandona el backend para
+las escenas que falten. Cada escena registra el backend que la produjo y la etapa registra
+los fallbacks y errores (van al manifest).
+"""
+
+from __future__ import annotations
+
+import time
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any, Final, Protocol
+
+import numpy as np
+import soundfile as sf
+
+from storybook.config import SoundConfig
+from storybook.gpu import StageMetrics, free_cuda_memory, track_stage
+from storybook.hub import (
+    ModelNotDownloadedError,
+    diffusers_variant,
+    is_diffusers_repo,
+    local_snapshot,
+)
+from storybook.logging_utils import get_logger, kv
+from storybook.schemas import Escena, StoryBible
+from storybook.sound.library import BibliotecaSonidos, cargar_audio_mono
+from storybook.sound.procedural import FRECUENCIA, sintetizar
+
+logger = get_logger(__name__)
+
+GENERATIVOS: Final = ("sa3", "sao", "audioldm")
+DURACION_MINIMA_S: Final = 0.5
+RMS_MINIMO: Final = 1e-4
+SUBTIPO_WAV: Final = "PCM_16"
+
+
+class SoundError(Exception):
+    """Error de un backend de sonido (se recupera pasando al siguiente)."""
+
+
+class BackendSonido(Protocol):
+    nombre: str
+
+    def cargar(self) -> None:
+        """Prepara el backend una vez por historia. Lanza si no está disponible."""
+
+    def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
+        """Audio (mono o (muestras, canales)) y su frecuencia de muestreo."""
+
+    def liberar(self) -> None: ...
+
+    def es_oom(self, exc: BaseException) -> bool: ...
+
+    def info(self) -> dict[str, Any]:
+        """Datos del backend para el manifest."""
+
+
+def nombre_archivo_sonido(numero: int) -> str:
+    """Clip tal como sale del backend (el mezclador produce ``ambience_n`` y ``mix_n``)."""
+    return f"sfx_{numero}.wav"
+
+
+def a_mono(audio: Any) -> np.ndarray:
+    """Tensor o array (canales, muestras), (muestras, canales) o 1D -> mono float32."""
+    if hasattr(audio, "detach"):
+        audio = audio.detach().float().cpu().numpy()
+    datos = np.asarray(audio, dtype=np.float32)
+    if datos.ndim == 2:
+        eje_canales = 0 if datos.shape[0] <= 8 and datos.shape[0] < datos.shape[1] else 1
+        datos = datos.mean(axis=eje_canales)
+    return np.nan_to_num(datos.reshape(-1)).astype(np.float32)
+
+
+def validar_audio(audio: np.ndarray, frecuencia: int) -> None:
+    if frecuencia <= 0:
+        raise SoundError(f"frecuencia de muestreo inválida: {frecuencia}")
+    if audio.size < DURACION_MINIMA_S * frecuencia:
+        raise SoundError(f"audio demasiado corto ({audio.size / frecuencia:.2f} s)")
+    if not np.all(np.isfinite(audio)):
+        raise SoundError("audio con valores no finitos")
+    if float(np.sqrt(np.mean(np.square(audio)))) < RMS_MINIMO:
+        raise SoundError("audio en silencio")
+
+
+# ---------------------------------------------------------------------------------------
+# Resultados
+# ---------------------------------------------------------------------------------------
+@dataclass
+class ResultadoSonido:
+    escena: int
+    ruta: Path
+    backend: str
+    duracion_s: float
+    sample_rate: int
+    segundos: float
+    prompt: str
+    etiquetas: list[str]
+    detalle: dict[str, Any] = field(default_factory=dict)
+
+    def a_dict(self) -> dict[str, Any]:
+        return {
+            "escena": self.escena,
+            "archivo": self.ruta.name,
+            "backend": self.backend,
+            "duracion_s": self.duracion_s,
+            "sample_rate": self.sample_rate,
+            "segundos": self.segundos,
+            "prompt": self.prompt,
+            "etiquetas": self.etiquetas,
+            "detalle": self.detalle,
+        }
+
+
+@dataclass
+class EtapaSonido:
+    sonidos: list[ResultadoSonido]
+    backends: dict[str, dict[str, Any]] = field(default_factory=dict)
+    fallbacks: list[str] = field(default_factory=list)
+    errores: list[str] = field(default_factory=list)
+    metricas: list[StageMetrics] = field(default_factory=list)
+
+    def por_escena(self, numero: int) -> ResultadoSonido:
+        for sonido in self.sonidos:
+            if sonido.escena == numero:
+                return sonido
+        raise KeyError(numero)
+
+    def a_dict(self) -> dict[str, Any]:
+        return {
+            "sonidos": [s.a_dict() for s in sorted(self.sonidos, key=lambda s: s.escena)],
+            "backends": self.backends,
+            "fallbacks": self.fallbacks,
+            "errores": self.errores,
+            "metricas": [m.as_dict() for m in self.metricas],
+        }
+
+
+# ---------------------------------------------------------------------------------------
+# Generador (orquesta la cadena)
+# ---------------------------------------------------------------------------------------
+class GeneradorSonido:
+    def __init__(
+        self,
+        cfg: SoundConfig,
+        seed_base: int = 1234,
+        fabrica: Callable[[str], BackendSonido] | None = None,
+    ) -> None:
+        self.cfg = cfg
+        self.seed_base = seed_base
+        self.fabrica = fabrica or (lambda nombre: crear_backend(nombre, cfg))
+
+    def generar(
+        self, bible: StoryBible, carpeta: Path, numeros: Sequence[int] | None = None
+    ) -> EtapaSonido:
+        carpeta.mkdir(parents=True, exist_ok=True)
+        elegidas = set(numeros) if numeros is not None else None
+        pendientes = [e for e in bible.escenas if elegidas is None or e.numero in elegidas]
+        etapa = EtapaSonido(sonidos=[])
+        backends = list(dict.fromkeys(self.cfg.backends))
+        if "procedural" not in backends:
+            backends.append("procedural")  # la última red: la historia siempre tiene sonido
+
+        for nombre in backends:
+            if not pendientes:
+                break
+            pendientes = self._con_backend(nombre, pendientes, carpeta, etapa)
+        if pendientes:
+            raise SoundError(f"Escenas sin sonido: {[e.numero for e in pendientes]}")
+
+        etapa.sonidos.sort(key=lambda s: s.escena)
+        logger.info(
+            "etapa_sonido_terminada",
+            extra=kv(
+                backends={s.escena: s.backend for s in etapa.sonidos}, fallbacks=etapa.fallbacks
+            ),
+        )
+        return etapa
+
+    def _con_backend(
+        self, nombre: str, pendientes: list[Escena], carpeta: Path, etapa: EtapaSonido
+    ) -> list[Escena]:
+        """Genera con ``nombre`` las escenas pendientes; devuelve las que siguen sin sonido."""
+        try:
+            backend = self.fabrica(nombre)
+            with track_stage(f"sonido_{nombre}_carga") as m_carga:
+                backend.cargar()
+            etapa.metricas.append(m_carga)
+            etapa.backends[nombre] = {"estado": "cargado", **backend.info()}
+        except Exception as exc:
+            mensaje = f"{type(exc).__name__}: {exc}"[:400]
+            etapa.backends[nombre] = {"estado": "no_disponible", "detalle": mensaje}
+            etapa.fallbacks.append(f"sonido:{nombre}:no_disponible")
+            etapa.errores.append(f"{nombre}: {mensaje}")
+            logger.warning("sonido_backend_no_disponible", extra=kv(backend=nombre, error=mensaje))
+            return pendientes
+
+        restantes: list[Escena] = []
+        try:
+            for i, escena in enumerate(pendientes):
+                try:
+                    etapa.sonidos.append(self._escena(backend, escena, carpeta, etapa))
+                except Exception as exc:
+                    mensaje = f"{type(exc).__name__}: {exc}"[:400]
+                    etapa.fallbacks.append(f"sonido:escena_{escena.numero}:{nombre}_fallo")
+                    etapa.errores.append(f"Escena {escena.numero} con {nombre}: {mensaje}")
+                    logger.error(
+                        "sonido_escena_fallo",
+                        extra=kv(escena=escena.numero, backend=nombre, error=mensaje),
+                    )
+                    restantes.append(escena)
+                    if backend.es_oom(exc):
+                        free_cuda_memory()
+                        restantes.extend(pendientes[i + 1 :])  # sin memoria: siguiente backend
+                        break
+        finally:
+            backend.liberar()
+        return restantes
+
+    def _escena(
+        self, backend: BackendSonido, escena: Escena, carpeta: Path, etapa: EtapaSonido
+    ) -> ResultadoSonido:
+        seed = self.seed_base + escena.numero
+        with track_stage(f"sonido_escena_{escena.numero}") as metrica:
+            inicio = time.perf_counter()
+            crudo, frecuencia = backend.generar(escena, self.cfg.duration_s, seed)
+            segundos = time.perf_counter() - inicio
+            audio = a_mono(crudo)
+            validar_audio(audio, frecuencia)
+            ruta = carpeta / nombre_archivo_sonido(escena.numero)
+            sf.write(str(ruta), np.clip(audio, -1.0, 1.0), frecuencia, subtype=SUBTIPO_WAV)
+            duracion = round(audio.size / frecuencia, 3)
+            metrica.extra.update(backend=backend.nombre, duracion_audio_s=duracion, seed=seed)
+        etapa.metricas.append(metrica)
+        return ResultadoSonido(
+            escena=escena.numero,
+            ruta=ruta,
+            backend=backend.nombre,
+            duracion_s=duracion,
+            sample_rate=frecuencia,
+            segundos=round(segundos, 3),
+            prompt=escena.prompt_sonido,
+            etiquetas=[str(e) for e in escena.etiquetas_sonido],
+            detalle=getattr(backend, "ultimo_detalle", {}) or {},
+        )
+
+
+# ---------------------------------------------------------------------------------------
+# Backends
+# ---------------------------------------------------------------------------------------
+class ProceduralBackend:
+    """C · síntesis propia (CPU). No necesita nada descargado."""
+
+    nombre = "procedural"
+
+    def cargar(self) -> None:
+        return None
+
+    def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
+        return sintetizar(escena.etiquetas_sonido, duracion_s, FRECUENCIA, seed), FRECUENCIA
+
+    def liberar(self) -> None:
+        return None
+
+    def es_oom(self, exc: BaseException) -> bool:
+        return False
+
+    def info(self) -> dict[str, Any]:
+        return {"backend": self.nombre, "frecuencia": FRECUENCIA}
+
+
+class BibliotecaBackend:
+    """B · clips CC0 locales por etiqueta."""
+
+    nombre = "library"
+
+    def __init__(self, raiz: Path | None = None) -> None:
+        self.raiz = raiz
+        self.biblioteca: BibliotecaSonidos | None = None
+        self.ultimo_detalle: dict[str, Any] = {}
+
+    def cargar(self) -> None:
+        self.biblioteca = BibliotecaSonidos(self.raiz)
+        if not self.biblioteca.clips:
+            raise SoundError(f"biblioteca vacía o sin clips CC0 en {self.biblioteca.raiz}")
+
+    def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
+        if self.biblioteca is None:
+            raise SoundError("la biblioteca no está cargada")
+        clip = self.biblioteca.buscar([str(e) for e in escena.etiquetas_sonido], seed)
+        if clip is None:
+            raise SoundError(f"sin clip para {[str(e) for e in escena.etiquetas_sonido]}")
+        self.ultimo_detalle = clip.a_dict()
+        return cargar_audio_mono(clip.ruta)
+
+    def liberar(self) -> None:
+        self.biblioteca = None
+
+    def es_oom(self, exc: BaseException) -> bool:
+        return False
+
+    def info(self) -> dict[str, Any]:
+        clips = len(self.biblioteca.clips) if self.biblioteca else 0
+        return {"backend": self.nombre, "clips": clips}
+
+
+class DiffusersSonidoBackend:
+    """A · Stable Audio 3 Small-SFX, Stable Audio Open 1.0 o AudioLDM en GPU (fp16)."""
+
+    def __init__(self, nombre: str, cfg: SoundConfig) -> None:
+        if nombre not in GENERATIVOS:
+            raise ValueError(f"Backend generativo desconocido: {nombre}")
+        self.nombre = nombre
+        self.cfg = cfg
+        self.repo = {
+            "sa3": cfg.sa3_repo_id,
+            "sao": cfg.sao_repo_id,
+            "audioldm": cfg.audioldm_repo_id,
+        }[nombre]
+        self.pipe: Any = None
+        self.snapshot: Path | None = None
+
+    def cargar(self) -> None:
+        snapshot = local_snapshot(self.repo)  # ModelNotDownloadedError si falta
+        if not is_diffusers_repo(snapshot):
+            raise ModelNotDownloadedError(f"'{self.repo}' no está en formato diffusers")
+        import torch
+
+        if not torch.cuda.is_available():
+            raise SoundError("CUDA no disponible para el sonido generativo")
+        if self.nombre == "sa3":
+            from diffusers import StableAudio3Pipeline as Pipeline
+        elif self.nombre == "audioldm":
+            from diffusers import AudioLDMPipeline as Pipeline
+        else:
+            from diffusers import StableAudioPipeline as Pipeline
+        pipe = Pipeline.from_pretrained(
+            str(snapshot), torch_dtype=torch.float16, variant=diffusers_variant(snapshot)
+        )
+        # AudioLDM (421M) cabe entero en 4 GB; Stable Audio necesita offload (F0).
+        if self.cfg.cpu_offload and self.nombre != "audioldm":
+            pipe.enable_model_cpu_offload()
+        else:
+            pipe.to("cuda")
+        pipe.set_progress_bar_config(disable=True)
+        self.pipe, self.snapshot = pipe, snapshot
+
+    def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
+        import torch
+
+        generador = torch.Generator("cuda").manual_seed(seed)
+        prompt, cfg, pipe = escena.prompt_sonido, self.cfg, self.pipe
+        if self.nombre == "audioldm":
+            salida = pipe(
+                prompt,
+                negative_prompt=cfg.negative_prompt,
+                audio_length_in_s=duracion_s,
+                num_inference_steps=cfg.audioldm_steps,
+                guidance_scale=cfg.audioldm_guidance,
+                generator=generador,
+            )
+            return a_mono(salida.audios[0]), int(pipe.vocoder.config.sampling_rate)
+        if self.nombre == "sa3":
+            salida = pipe(
+                prompt,
+                duration=duracion_s,
+                num_inference_steps=cfg.sa3_steps,
+                generator=generador,
+            )
+            return a_mono(salida.audios[0]), int(pipe.vae.config.sampling_rate)
+        salida = pipe(
+            prompt,
+            negative_prompt=cfg.negative_prompt,
+            audio_end_in_s=duracion_s,
+            num_inference_steps=cfg.sao_steps,
+            guidance_scale=cfg.sao_guidance,
+            generator=generador,
+        )
+        return a_mono(salida.audios[0]), int(pipe.vae.sampling_rate)
+
+    def liberar(self) -> None:
+        self.pipe = None
+        free_cuda_memory()
+
+    def es_oom(self, exc: BaseException) -> bool:
+        try:
+            import torch
+        except ImportError:  # pragma: no cover - sin torch no hay OOM de CUDA
+            return False
+        return isinstance(exc, torch.cuda.OutOfMemoryError)
+
+    def info(self) -> dict[str, Any]:
+        return {
+            "backend": self.nombre,
+            "repo": self.repo,
+            "revision": self.snapshot.name if self.snapshot else None,
+        }
+
+
+def crear_backend(
+    nombre: str, cfg: SoundConfig, raiz_biblioteca: Path | None = None
+) -> BackendSonido:
+    if nombre in GENERATIVOS:
+        return DiffusersSonidoBackend(nombre, cfg)
+    if nombre == "library":
+        return BibliotecaBackend(raiz_biblioteca)
+    if nombre == "procedural":
+        return ProceduralBackend()
+    raise ValueError(f"Backend de sonido desconocido: {nombre}")

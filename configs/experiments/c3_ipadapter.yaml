@@ -9,4 +9,4 @@ consistency:
 image:
   ip_adapter:
     enabled: true
-    scale: 0.6
+    scale: 0.4                  # valor ajustado en la tarea 2.3 (docs/evidencias/f2_variantes.md)

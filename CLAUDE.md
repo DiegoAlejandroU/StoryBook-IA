@@ -273,6 +273,11 @@ Flujo:
     - VRAM pico de 4066 de 4096 MB en la GPU (torch 3,1 GB): sin OOM, pero al límite.
     - **IP-Adapter 0,6 con el estilo al principio del prompt deja todas las escenas como retratos de frente del protagonista**: la acción y el segundo personaje casi no aparecen.
     - `image.prompt_orden` (`estilo_primero` | `accion_primero`) y la escala de IP-Adapter se ajustan con `f2_f3_prueba.py --variantes` (`setup_windows.ps1 -Paso f2v`).
+    - **Ajuste elegido (variantes del 10 nov, `docs/evidencias/f2_variantes.md`): IP-Adapter 0,4 + `accion_primero`.**
+      - La protagonista se mantiene reconocible, cada escena muestra su lugar y su acción, y ya no hay fondos vacíos.
+      - CLIP imagen-texto 0,355 frente a 0,350; consistencia 0,75 frente a 0,81. Se cede algo de parecido entre imágenes, que antes era alto porque todas eran el mismo retrato.
+      - Con 0,25 la consistencia cae (mínimo 0,39) y a veces desaparece la protagonista.
+    - **Limitación conocida:** IP-Adapter aplica la identidad de la character sheet a cualquier persona del cuadro. Un segundo personaje (un hombre de 50 años) sale con la chaqueta y la cara de la protagonista. Mitigaciones posibles: descriptor que empiece por el tipo ("old man age 50"), ya en el prompt de la Bible, y bajar la escala en escenas cuyo sujeto no es el protagonista.
   - Voz elegida por Diego al escucharlas (3.3): `es_MX-claude-high`. WER mediano del 8,3 % con Whisper small; los errores son sobre todo de nombres propios.
 - **Voz (CPU):**
   - Una voz narradora fija para toda la historia, con parámetros constantes (length_scale, noise_scale).

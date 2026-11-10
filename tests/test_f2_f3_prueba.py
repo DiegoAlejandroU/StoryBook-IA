@@ -118,7 +118,7 @@ def test_aplicar_variante() -> None:
     v = f2.aplicar_variante(base, "ip=0.3+orden=accion_primero+pasos=8+cfg=2")
     assert v.ip_adapter.scale == 0.3 and v.ip_adapter.enabled
     assert v.prompt_orden == "accion_primero" and v.steps == 8 and v.guidance_scale == 2.0
-    assert base.ip_adapter.scale == 0.6  # la configuración original no cambia
+    assert base.ip_adapter.scale == 0.4  # la configuración original (ajustada en 2.3) no cambia
     assert f2.aplicar_variante(base, "ip=0").ip_adapter.enabled is False
     with pytest.raises(ValueError, match="Variante desconocida"):
         f2.aplicar_variante(base, "resolucion=1024")

@@ -58,8 +58,10 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - `image/consistency.py`: character sheet del protagonista;
   - en `prompt_builder`, cambiar los nombres de personajes que aparezcan en `prompt_imagen` ("Max and Luna walking...") por su descriptor, o quitarlos: CLIP no conoce esos nombres (visto en F1);
   - tests con un pipeline falso. (dep: 0.3, 2.1)
-- [ ] 2.3 [WINDOWS] Prueba real: 5 imágenes de una historia, sin OOM; ajustar steps, CFG y resolución; medir tiempos y VRAM. (dep: 0.6, 2.2)
-  - **Prueba real hecha (10 nov), falta el ajuste:** `setup_windows.ps1 -Paso f2v` compara escalas de IP-Adapter y el orden del prompt.
+- [x] 2.3 [WINDOWS] Prueba real: 5 imágenes de una historia, sin OOM; ajustar steps, CFG y resolución; medir tiempos y VRAM. (dep: 0.6, 2.2)
+  - **Hecha (10 nov):**
+    - 5 imágenes sin OOM: 3,4 s por imagen en rápido y 8,2 s en calidad; VRAM pico de 4066 de 4096 MB.
+    - Ajuste elegido con 5 variantes reales: **IP-Adapter 0,4 + acción primero** (`docs/evidencias/f2_variantes.md`).
   - Se ejecuta con `setup_windows.ps1 -Paso f2` (rápido); `-Paso f2 -Perfil calidad` mide solo las imágenes con DPM++ 25 pasos. Usa `scripts/f2_f3_prueba.py` con la primera historia válida de la última corrida de F1 hecha con el 4B. Evidencias en `docs/evidencias/f2_f3_resumen*.md`.
 
 ## F3 · Voz
@@ -73,14 +75,15 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
     - Los errores son sobre todo de Whisper: nombres ("Helias" por Elias) y palabras unidas o separadas ("si sea" por sisea).
 
 ## F4 · Sonido y mezcla
-- [ ] 4.1 [AUTO] `sound/procedural.py`: síntesis con numpy/scipy de viento, lluvia, fuego, latidos, drone oscuro, pasos, olas, bosque/pájaros y ambiente mágico. Mapeo desde `EtiquetaSonido` (schemas) a recetas. Tests: duración, sample rate, sin clipping, sin NaN. (dep: 0.3)
-- [ ] 4.2 [AUTO] Sonido con fallback en cadena:
+- [x] 4.1 [AUTO] `sound/procedural.py`: síntesis con numpy/scipy de viento, lluvia, fuego, latidos, drone oscuro, pasos, olas, bosque/pájaros y ambiente mágico. Mapeo desde `EtiquetaSonido` (schemas) a recetas. Tests: duración, sample rate, sin clipping, sin NaN. (dep: 0.3)
+- [x] 4.2 [AUTO] Sonido con fallback en cadena:
   - `sound/library.py`: índice JSON por etiquetas para `assets/sfx/`.
   - `sound/generator.py`: recorre `sound.backends` de la configuración (`sa3` → `sao` → `audioldm` → `library` → `procedural`), con imports perezosos de diffusers (`StableAudio3Pipeline`, `StableAudioPipeline`, `AudioLDMPipeline`; ver `scripts/f0_hello.py` como referencia), y registra el fallback usado.
 
   Tests con generadores falsos que fallan. (dep: 4.1)
-- [ ] 4.3 [AUTO] `sound/mixer.py`: loop con crossfade hasta la duración de la voz, LUFS con pyloudnorm, ambiente 12–18 dB bajo la voz, ducking y exportación de `ambience_n.wav` y `mix_n.wav`. Tests con señales sintéticas. (dep: 4.1)
+- [x] 4.3 [AUTO] `sound/mixer.py`: loop con crossfade hasta la duración de la voz, LUFS con pyloudnorm, ambiente 12–18 dB bajo la voz, ducking y exportación de `ambience_n.wav` y `mix_n.wav`. Tests con señales sintéticas. (dep: 4.1)
 - [ ] 4.4 [WINDOWS] Prueba real de SA3 Small-SFX y de AudioLDM: confirmar el formato diffusers, medir VRAM y tiempo, y comparar la pertinencia del sonido. Si SA3 no cabe, probar SAO 1.0 con offload. (dep: 0.6, 4.2)
+  - Se ejecuta con `setup_windows.ps1 -Paso f4` (`scripts/f4_sonido.py`): narra la historia de prueba y genera y mezcla los 5 ambientes con la cadena real del perfil y con procedural. Evidencias en `docs/evidencias/f4_sonido.md`; se escuchan los `mix_N.wav` de `outputs/f4/<fecha>/<variante>/`.
 
 ## F5 · Integración, persistencia y UI
 - [ ] 5.1 [AUTO] `storage.py` (run_id, estructura de `outputs/`, `manifest.json`, cargar historias) y `pipeline.py` (orquestación por etapas, callback de progreso, fallbacks, regenerar una escena). `tests/test_pipeline_mock.py`: el pipeline completo con backends falsos produce 5 escenas con todos sus archivos y su manifest. (dep: 1.3, 2.2, 3.1, 4.3)
@@ -94,6 +97,12 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - etiqueta "Contenido generado por IA".
 
   La lógica va en módulos testeables; Streamlit se importa solo en la app. Opción `--mock` para probar la UI sin GPU. (dep: 5.1)
+  - Lanzador de doble clic `StoryBook.cmd` en la raíz (pedido por Diego para probar la app sin escribir comandos):
+    - comprueba que Ollama responde en localhost:11434 y, si no, lo abre y espera;
+    - ejecuta `uv run streamlit run app/streamlit_app.py` y abre el navegador en http://localhost:8501;
+    - ASCII y compatible con cmd de Windows.
+    - Con `StoryBook.cmd mock` abre la UI con backends falsos.
+    - Documentarlo en el README.
 - [ ] 5.3 [AUTO] `scripts/verify_offline.py`: bloquea sockets salvo localhost, corre el pipeline con backends falsos o reales según una bandera e informa cualquier intento de conexión externa. (dep: 5.1)
 - [ ] 5.4 [WINDOWS] Prueba de punta a punta real con el Wi-Fi apagado; generar 2–3 historias para `samples/`. (dep: 2.3, 3.3, 4.4, 5.2)
 
@@ -118,7 +127,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente (ajuste de 2.3):** `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2v`. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
+- **Siguiente:** `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f4` (4.4) y escuchar los `mix_N.wav`. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
 ---
@@ -414,3 +423,49 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
 - **Presupuesto de tiempo (rápido) con lo medido:** texto ~75 s + imágenes ~55 s + voz ~7 s ≈ 2,3 min antes de sonido y mezcla. Objetivo < 5 min alcanzable.
 - Verificación sin GPU: **227 tests en verde** (contenedor y bundle Linux), ruff limpio.
 - **Siguiente [WINDOWS]:** `setup_windows.ps1 -Paso f2v`. Luego Claude revisa las imágenes de cada variante y fija la escala y el orden.
+
+### 2026-11-10 13:00 · Windows (variantes de imagen) · 2.3 hecha → **F1, F2 y F3 completas**
+- 5 variantes de la misma Bible y seeds (`outputs/f2/20261110_124150/v1..v5`, `docs/evidencias/f2_variantes.md`). Todas a ~3,5 s por imagen, con la misma VRAM y 3/5 prompts truncados.
+
+  | Variante | CLIP texto | CLIP img-img (media / mín.) | Revisión visual |
+  |---|---:|---|---|
+  | ip=0.6 (anterior) | 0,350 | 0,81 / 0,74 | todas son el mismo retrato de frente; 2 fondos vacíos |
+  | ip=0.4 | 0,365 | 0,75 / 0,62 | más escena; la escena 5 sigue con el fondo vacío |
+  | ip=0.25 | 0,346 | 0,73 / 0,58 | más variedad, menos parecido |
+  | **ip=0.4 + acción primero** | 0,355 | 0,75 / 0,62 | **la mejor:** protagonista reconocible, cada escena con su lugar y acción, sin fondos vacíos |
+  | ip=0.25 + acción primero | 0,346 | 0,62 / 0,39 | la protagonista desaparece en la escena 1 |
+
+- **Decisión:** `image.ip_adapter.scale: 0.4` y `image.prompt_orden: accion_primero` en `default.yaml`. Rápido y calidad lo heredan; C3 usa la misma escala.
+- **Limitación conocida, anotada en CLAUDE.md:** IP-Adapter aplica la identidad de la protagonista a cualquier persona del cuadro, y Elias (50 años) sale joven y con su chaqueta.
+  - Mitigación ya hecha: el descriptor empieza por el tipo ("old man age 50"); se notará en las historias nuevas.
+  - Mitigación posible: bajar la escala en escenas cuyo sujeto no es el protagonista. Evaluarla en F6 si hay tiempo.
+- Verificación sin GPU: **228 tests en verde** (contenedor y bundle Linux), ruff limpio.
+- **Estado frente al cronograma:** F1 (mar 10), F2 (mié 11) y F3 (jue 12) terminadas el martes 10. Falta F4 (sonido y mezcla: 4.1–4.3 [AUTO] y luego 4.4 [WINDOWS]) y F5 (pipeline y UI, con el lanzador `StoryBook.cmd`).
+
+### 2026-11-10 13:30 · sesión interactiva (Claude, a pedido de Diego) · 4.1, 4.2, 4.3
+- Diego pidió adelantar el sonido sin esperar la ejecución automática. **La tarea programada se pausó** mientras tanto, para que no trabajaran dos sesiones a la vez sobre los mismos archivos.
+- **4.1 · `sound/procedural.py`:** una receta numpy/scipy por cada `EtiquetaSonido` (21): ruido filtrado, osciladores, envolventes y eventos de Poisson.
+  - Deterministas con la seed, 44,1 kHz, pico a −3 dBFS, fundidos.
+  - Hasta 3 etiquetas por escena en capas (la primera manda).
+  - Unos 2 s para los 5 ambientes de una historia en CPU.
+- **4.2 · cadena de fallback:**
+  - `sound/library.py`: índice `assets/sfx/index.json`. Solo acepta clips CC0 con archivo presente; sin índice, la biblioteca queda vacía. Hoy no hay clips, así que la cadena salta de los generativos a procedural.
+  - `sound/generator.py`: `GeneradorSonido` recorre `sound.backends`.
+    - Backends: `DiffusersSonidoBackend` (SA3, SAO y AudioLDM, con imports perezosos y el mismo procedimiento de `f0_hello.py`), `BibliotecaBackend` y `ProceduralBackend`.
+    - Cada backend se carga una vez; si una escena falla, pasa al siguiente; un OOM abandona el backend; el audio silencioso o corto cuenta como fallo; procedural siempre va al final.
+    - Registra el backend de cada escena, los fallbacks (`sonido:sa3:no_disponible`, `sonido:escena_N:<backend>_fallo`), errores y métricas.
+    - Guarda `sfx_N.wav` en mono.
+- **4.3 · `sound/mixer.py` + `mix` en la configuración:**
+  - Remuestreo a 44,1 kHz; loop con crossfade de igual potencia hasta la duración de la voz más 0,5 s antes y 1 s después; fundidos.
+  - pyloudnorm: voz a −18 LUFS y ambiente 12 dB por debajo.
+  - Ducking de 6 dB con ataque de 30 ms y relajación de 350 ms: el ambiente queda a 12 dB bajo la voz en las pausas y a 18 dB mientras se habla.
+  - Exporta `ambience_N.wav` (nivel relativo, sin ducking, para el reproductor separado de la UI) y `mix_N.wav`, PCM de 16 bits.
+  - `MixConfig` valida que `ambiente_bajo_voz_db + ducking_db` no pase de 18.
+- **Prueba con la voz real de F2** (Linux, procedural; `outputs/f4_preview/procedural_20261110_180543`): 5 mezclas de 40–50 s.
+  - Voz a −18,0 LUFS, ambiente a −30,0 LUFS (12 / 18 dB), sin limitación y con picos de 0,72–0,82.
+  - Sonido en 2 s y mezcla en 16 s en la VM.
+- Nuevo `scripts/f4_sonido.py` + `setup_windows.ps1 -Paso f4` (4.4):
+  - Narra y mezcla la historia de prueba con la cadena real del perfil (SA3 sin token → AudioLDM) y con procedural, para comparar.
+  - `story/muestras.elegir_story` ahora es compartida por los scripts de F2 y F4.
+- Tests: `tests/test_sound.py` (37) y `tests/test_f4_sonido.py` (2). **267 tests en verde** (contenedor y bundle Linux), ruff limpio.
+- **Por validar en Windows (4.4):** AudioLDM real dentro de la cadena (tiempo y VRAM por clip), pertinencia del sonido al escuchar y niveles de la mezcla al oído.

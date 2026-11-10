@@ -19,7 +19,7 @@ from typing import Any, Literal
 
 import yaml
 from dotenv import load_dotenv
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 # ---------------------------------------------------------------------------------------
 # Rutas del proyecto (siempre relativas a la raíz del repositorio, nunca absolutas)
@@ -173,7 +173,7 @@ class IPAdapterConfig(_Strict):
     subfolder: str = "models"
     weight_name: str = "ip-adapter_sd15.safetensors"
     image_encoder_subfolder: str = "models/image_encoder"
-    scale: float = Field(default=0.6, ge=0.0, le=1.5)
+    scale: float = Field(default=0.4, ge=0.0, le=1.5)  # ajustado en la tarea 2.3
 
 
 # Qué va primero en el prompt de imagen (ver image/prompt_builder.construir_prompt).
@@ -193,7 +193,7 @@ class ImageConfig(_Strict):
     vae_slicing: bool = True
     cpu_offload: bool = False
     ip_adapter: IPAdapterConfig = IPAdapterConfig()
-    prompt_orden: OrdenPromptImagen = "estilo_primero"
+    prompt_orden: OrdenPromptImagen = "accion_primero"  # ajustado en la tarea 2.3
 
     @field_validator("width", "height")
     @classmethod
@@ -235,6 +235,29 @@ class SoundConfig(_Strict):
     cpu_offload: bool = True
 
 
+class MixConfig(_Strict):
+    """Mezcla en CPU (CLAUDE.md §8): ambiente 12-18 dB bajo la voz, con ducking."""
+
+    sample_rate: int = Field(default=44_100, ge=16_000, le=48_000)
+    voz_lufs: float = Field(default=-18.0, ge=-30.0, le=-10.0)
+    # Nivel del ambiente respecto a la voz fuera del habla; durante el habla se baja
+    # además ``ducking_db``. Con 12 + 6 el ambiente queda entre 12 y 18 dB bajo la voz.
+    ambiente_bajo_voz_db: float = Field(default=12.0, ge=12.0, le=18.0)
+    ducking_db: float = Field(default=6.0, ge=0.0, le=12.0)
+    crossfade_s: float = Field(default=1.0, ge=0.05, le=4.0)
+    pre_roll_s: float = Field(default=0.5, ge=0.0, le=3.0)
+    post_roll_s: float = Field(default=1.0, ge=0.0, le=5.0)
+
+    @model_validator(mode="after")
+    def _rango_bajo_la_voz(self) -> MixConfig:
+        if self.ambiente_bajo_voz_db + self.ducking_db > 18.0:
+            raise ValueError(
+                "ambiente_bajo_voz_db + ducking_db no debe superar 18 dB (el ambiente debe "
+                "quedar entre 12 y 18 dB bajo la voz)"
+            )
+        return self
+
+
 class EvaluationConfig(_Strict):
     whisper_model: str = "small"
     whisper_repo_id: str = "Systran/faster-whisper-small"
@@ -258,6 +281,7 @@ class AppConfig(_Strict):
     image: ImageConfig
     voice: VoiceConfig = VoiceConfig()
     sound: SoundConfig = SoundConfig()
+    mix: MixConfig = MixConfig()
     evaluation: EvaluationConfig = EvaluationConfig()
     consistency: ConsistencyConfig = ConsistencyConfig()
 
