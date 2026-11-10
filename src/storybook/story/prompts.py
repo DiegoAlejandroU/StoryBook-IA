@@ -68,7 +68,8 @@ Reglas obligatorias:
    - estilo_visual (tecnica + paleta + iluminacion): máximo {_palabras(TOKENS_MAX_ESTILO)} palabras
      en total.
    - descripcion_visual_fija: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras, en este orden:
-     edad, cabello, ropa, un rasgo distintivo y complexión. No describas el estado de ánimo.
+     edad, cabello, ropa, un rasgo distintivo y complexión, como frases sueltas SIN etiquetas
+     (nada de "age:" ni "hair:"). No describas el estado de ánimo.
    - prompt_imagen: máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras, SOLO acción, composición
      y entorno. No repitas la descripción del personaje ni el estilo: se añaden automáticamente.
    - prompt_sonido: máximo {PALABRAS_MAX_PROMPT_SONIDO} palabras: un ambiente y 1-2 efectos.
@@ -125,15 +126,16 @@ Reglas obligatorias:
 1. plan_escenas: exactamente 5 escenas con este arco: 1=inicio, 2=desarrollo,
    3=desarrollo, 4=climax, 5=desenlace. Cada resumen es una sola frase en español.
 2. Entre 1 y {MAX_PERSONAJES} personajes; exactamente uno con rol "protagonista", presente en la
-   escena 1 y en al menos {MIN_ESCENAS_PROTAGONISTA} escenas. El id de cada personaje es su
-   nombre en minúsculas, sin tildes ni espacios (ej.: 'lena', 'capitan_ruiz'); usa exactamente
-   esos ids en plan_escenas.
+   escena 1 y en al menos {MIN_ESCENAS_PROTAGONISTA} escenas. Inventa nombres propios que encajen
+   con esta historia. El id de cada personaje es su nombre en minúsculas, sin tildes y con "_"
+   en lugar de espacios; usa exactamente esos ids en plan_escenas.
 3. titulo, tono, escenario, resúmenes y canon_inicial en ESPAÑOL, aunque la idea sugiera
-   otro idioma.
+   otro idioma. tono: de 2 a 4 adjetivos.
 4. estilo_visual (tecnica + paleta + iluminacion) en INGLÉS: máximo
    {_palabras(TOKENS_MAX_ESTILO)} palabras en total.
 5. descripcion_visual_fija en INGLÉS: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras, en este
-   orden: edad, cabello, ropa, un rasgo distintivo y complexión.
+   orden: edad, cabello, ropa, un rasgo distintivo y complexión, como frases sueltas SIN
+   etiquetas (nada de "age:" ni "hair:").
 6. canon_inicial: hechos del mundo que se mantienen durante toda la historia.
 7. No incluyas texto fuera del JSON."""
 

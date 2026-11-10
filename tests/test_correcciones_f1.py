@@ -215,3 +215,51 @@ def test_descriptor_y_estilo_largos_se_recortan_por_frases(bible_dict: dict[str,
 def test_reparacion_recuerda_los_idiomas() -> None:
     contenido = prompts.mensaje_reparacion(["prompt_imagen: debe estar en inglés"])["content"]
     assert "siguen en español" in contenido
+
+
+# ---------------------------------------------------------------------------------------
+# Tercera corrida (10/10 válidas): calidad de los descriptores y variedad de nombres
+# ---------------------------------------------------------------------------------------
+@pytest.mark.parametrize(
+    ("entrada", "esperado"),
+    [
+        (
+            "age:18, hair:frizzy blonde, clothes:white cotton t-shirt and jeans",
+            "age 18, frizzy blonde hair, white cotton t-shirt and jeans",
+        ),
+        (
+            "edad: 30, cabello: silver strands, ropa: utility suit with green panels",
+            "age 30, silver strands hair, utility suit with green panels",
+        ),
+        (
+            "age: 12, hair: short and black, distinct_feature: glowing green eyes",
+            "age 12, short and black hair, glowing green eyes",
+        ),
+        ("10 years old, black braid, leather boots", "10 years old, black braid, leather boots"),
+        ("wears a cloak: stitched pages", "wears a cloak: stitched pages"),  # etiqueta desconocida
+    ],
+)
+def test_descriptor_sin_etiquetas(entrada: str, esperado: str) -> None:
+    from storybook.schemas import quitar_etiquetas_descriptor
+
+    assert quitar_etiquetas_descriptor(entrada) == esperado
+
+
+def test_descriptor_con_etiquetas_en_la_bible(bible_dict: dict[str, Any]) -> None:
+    datos = copy.deepcopy(bible_dict)
+    datos["personajes"][1]["descripcion_visual_fija"] = "edad: 70, cabello: white, ropa: grey coat"
+    bible = StoryBible.model_validate(datos)
+    assert bible.personaje("abuelo_tomas").descripcion_visual_fija == (
+        "age 70, white hair, grey coat"
+    )
+
+
+def test_prompts_sin_nombres_de_ejemplo() -> None:
+    """En F1 el 4B copió 'lena' y 'capitan_ruiz' del prompt en 5 de 10 historias."""
+    from storybook.schemas import esquema_json_llm
+
+    textos = [prompts.SISTEMA_PLAN, prompts.SISTEMA_ESCENA, prompts.SISTEMA_BIBLE]
+    textos.append(str(esquema_json_llm(PlanHistoria)))
+    for texto in textos:
+        for nombre in ("lena", "capitan_ruiz", "lucia"):
+            assert nombre not in texto.lower()

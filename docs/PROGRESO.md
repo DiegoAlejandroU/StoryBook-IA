@@ -47,13 +47,16 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 - [ ] 1.4 [WINDOWS] 10 generaciones reales con 4B y con 8B: tasa de JSON válido, tiempos, revisión de la calidad del español. (dep: 0.6, 1.3)
   - Se ejecuta con `setup_windows.ps1 -Paso f1 -Generaciones 10` (el 4B ya va 100 % en GPU por defecto). Genera `docs/evidencias/f1_generaciones.csv` y `f1_resumen.md`, con las causas de cada reintento.
   - Prueba de 3 generaciones (10 nov, 07:04): 3/3 válidas, pero una salió en inglés.
-  - Corrida de 10 (10 nov, 08:00): 6/10 válidas; los 4 fallos ya están corregidos. Falta repetir la corrida de 10 con el 4B; la comparación con el 8B (`-Perfil calidad`) es opcional.
+  - Corrida de 10 (10 nov, 08:00): 6/10 válidas; los 4 fallos ya están corregidos.
+  - Corrida de 10 (10 nov, 08:23): **10/10 válidas**, 85 s por historia, 1,14 intentos por llamada. Se corrigieron los nombres copiados del prompt y los descriptores con etiquetas.
+  - Falta la corrida definitiva con los prompts finales: 10 con el 4B y 10 con el 8B (`-Perfil calidad`), para comparar.
 
 ## F2 · Imágenes y consistencia visual
 - [x] 2.1 [AUTO] `image/prompt_builder.py`: compone estilo + personajes presentes + acción, controla el límite de 77 tokens con un tokenizer inyectable (estimador heurístico en tests), recorta por prioridad y registra los truncamientos. Tests. (dep: 1.1)
 - [ ] 2.2 [AUTO] Ya existe `gpu.py` (carga, liberación y medición de VRAM). Falta:
   - `image/generator.py`: diffusers con DreamShaper 8 + LCM-LoRA + IP-Adapter según `configs/`, imports perezosos y `hub.local_snapshot` para cargar offline;
   - `image/consistency.py`: character sheet del protagonista;
+  - en `prompt_builder`, cambiar los nombres de personajes que aparezcan en `prompt_imagen` ("Max and Luna walking...") por su descriptor, o quitarlos: CLIP no conoce esos nombres (visto en F1);
   - tests con un pipeline falso. (dep: 0.3, 2.1)
 - [ ] 2.3 [WINDOWS] Prueba real: 5 imágenes de una historia, sin OOM; ajustar steps, CFG y resolución; medir tiempos y VRAM. (dep: 0.6, 2.2)
 
@@ -293,3 +296,26 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - `setup_windows.ps1 -Paso f1` hace primero el commit del código, para que la evidencia corresponda a un commit. En la corrida anterior el código no se había subido.
 - Verificación sin GPU: **147 tests en verde**, ruff limpio. Las 9 Story Bibles reales en español (F0 y F1) siguen validando; solo se rechaza la que está en inglés.
 - **Siguiente [WINDOWS]:** repetir `setup_windows.ps1 -Paso f1 -Generaciones 10`.
+
+### 2026-11-10 08:55 · Windows (corrida F1 de 10 historias, 3.ª) + correcciones · 1.4 (parcial)
+- **10/10 Story Bibles válidas** (`outputs/f1/20261110_082340`, commit de evidencias `0430a90`, código `chore: codigo usado...`):
+  - Mediana de 85 s por historia y 35 tok/s.
+  - **1,14 intentos por llamada**; 4 historias sin ningún reintento.
+  - 100 % en GPU; el auditor no encontró contradicciones.
+- Causas de reintento que quedan:
+  - 13 · descriptores en español en el primer intento del plan. El modelo escribía `edad: 30, cabello: ...`.
+  - 1 · `prompt_imagen` con 3 tokens CLIP de más.
+- **Revisión de la calidad (lectura de 4 escenas de géneros distintos):**
+  - El español es fluido y coherente con el plan, y el arco de 5 escenas se respeta.
+  - El 4B comete errores sueltos de concordancia y algún extranjerismo: "un piedra", "sus ojos brilla", "ventana rotta", "montaña isolada", "la luz no ha encendido". Hay que medirlo frente al 8B.
+  - **Nombres copiados del prompt:** 'Lena' en 5 de 10 historias y 'Capitán Ruiz' en 5, incluso en fantasía y ciencia ficción. Venían del ejemplo de id que se añadió a las 07:45.
+  - **Descriptores con etiquetas** (`age:18, hair:...`) en 5 de 10, una con etiquetas en español (`edad: 30, cabello: ...`). Para CLIP son tokens sin contenido.
+  - `tono` a veces copia la indicación del género ("atmósfera inquietante y suspenso; sin gore...").
+  - Para F4, el sonido no siempre encaja con el lugar: `forest` en una biblioteca y `water_stream` + `forest` en una estación espacial. Revisarlo en 4.1–4.3, por ejemplo derivar etiquetas también del escenario.
+  - En algunas historias `prompt_imagen` nombra a los personajes ("Max and Luna walking..."). CLIP no conoce esos nombres; `prompt_builder` debería quitarlos o sustituirlos por el descriptor (anotar en 2.2).
+- Correcciones:
+  - Prompts y esquema sin nombres de ejemplo. El plan pide inventar nombres que encajen con la historia, un `tono` de 2 a 4 adjetivos y descriptores como frases sueltas, sin etiquetas.
+  - `quitar_etiquetas_descriptor()`: `age: 12, hair: black, distinct_feature: green eyes` → `age 12, black hair, green eyes`. Solo actúa sobre etiquetas conocidas, también en español.
+- Verificación sin GPU: **154 tests en verde** (contenedor y bundle Linux), ruff limpio. Las 18 Story Bibles reales en español de F1 siguen validando.
+- **Siguiente [WINDOWS]:** corrida definitiva de 1.4: 10 historias con el 4B y 10 con el 8B, con los mismos prompts. El 8B tarda bastante más; se puede dejar corriendo.
+- **Siguiente [AUTO]:** 2.2 (generador de imágenes; incluir el tratamiento de nombres en `prompt_imagen`), 3.1, 3.2 y 4.1.

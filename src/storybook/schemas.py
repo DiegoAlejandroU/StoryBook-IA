@@ -242,6 +242,48 @@ def _exigir_tokens(valor: str, campo: str, maximo: int) -> str:
     return valor
 
 
+# 'age: 12, hair: short and black' -> 'age 12, short and black hair'. En F1 la mitad de los
+# descriptores llegaron con etiquetas, a veces en español ('edad: 30, cabello: ...'): para
+# CLIP son tokens sin contenido visual. Solo se tocan etiquetas conocidas.
+_ETIQUETAS_DESCRIPTOR: Final[dict[str, str]] = {
+    **dict.fromkeys(("age", "edad"), "age {}"),
+    **dict.fromkeys(("hair", "cabello", "pelo"), "{} hair"),
+    **dict.fromkeys(("eyes", "ojos"), "{} eyes"),
+    **dict.fromkeys(("build", "complexion", "complexión", "body"), "{} build"),
+    **dict.fromkeys(
+        (
+            "clothes",
+            "clothing",
+            "outfit",
+            "ropa",
+            "vestimenta",
+            "feature",
+            "distinct feature",
+            "distinctive feature",
+            "distinguishing feature",
+            "rasgo",
+            "rasgo distintivo",
+        ),
+        "{}",
+    ),
+}
+_PATRON_ETIQUETA = re.compile(r"^([^\W\d][\w ]{0,30}?)\s*:\s*(\S.*)$", re.UNICODE)
+
+
+def quitar_etiquetas_descriptor(valor: str) -> str:
+    frases: list[str] = []
+    for frase in _frases(valor):
+        limpia = frase
+        coincidencia = _PATRON_ETIQUETA.match(frase)
+        if coincidencia:
+            etiqueta = coincidencia.group(1).replace("_", " ").strip().lower()
+            plantilla = _ETIQUETAS_DESCRIPTOR.get(etiqueta)
+            if plantilla:
+                limpia = plantilla.format(coincidencia.group(2).strip())
+        frases.append(limpia)
+    return ", ".join(frases)
+
+
 def _frases(valor: str) -> list[str]:
     return [f.strip() for f in valor.split(",") if f.strip()]
 
@@ -289,7 +331,9 @@ IdPersonaje = Annotated[
     str,
     BeforeValidator(_normalizar_id),
     StringConstraints(strip_whitespace=True, pattern=r"^[a-z][a-z0-9_]{1,31}$"),
-    Field(description="Identificador en minúsculas, sin espacios. Ej.: 'lucia', 'capitan_ruiz'."),
+    # Sin nombres de ejemplo: en F1 el 4B copió los del prompt ('lena', 'capitan_ruiz') en la
+    # mitad de las historias.
+    Field(description="El nombre del personaje en minúsculas, sin tildes y con '_' por espacios."),
 ]
 TextoCorto = Annotated[str, StringConstraints(strip_whitespace=True, min_length=2, max_length=160)]
 Hecho = Annotated[str, StringConstraints(strip_whitespace=True, min_length=5, max_length=220)]
@@ -453,6 +497,7 @@ class Personaje(_Base):
     @field_validator("descripcion_visual_fija")
     @classmethod
     def _descriptor_valido(cls, valor: str) -> str:
+        valor = quitar_etiquetas_descriptor(valor)
         valor = _exigir_ingles(valor, "descripcion_visual_fija")
         return _ajustar_tokens(valor, "descripcion_visual_fija", TOKENS_MAX_DESCRIPTOR)
 
