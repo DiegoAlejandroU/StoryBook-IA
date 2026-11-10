@@ -1,0 +1,1407 @@
+{
+  "tipo": "storybook_historia",
+  "version_app": "0.1.0",
+  "run_id": "20261110_142223_un_perro_y_un_gato_deben_cruza",
+  "creado": "2026-11-10T14:22:23",
+  "perfil": "rapido",
+  "idea": "Un perro y un gato deben cruzar la ciudad para volver a casa",
+  "genero": "infantil",
+  "titulo": "El Camino de los Amigos",
+  "estado": "completa_con_fallbacks",
+  "etapas": {
+    "texto": {
+      "modelo": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama": "0.40.15",
+      "estrategia": "por_etapas",
+      "fraccion_gpu": 1.0,
+      "llamadas": [
+        {
+          "etapa": "plan",
+          "intentos": 1,
+          "segundos": 23.279,
+          "prompt_tokens": 491,
+          "output_tokens": 961,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_1",
+          "intentos": 1,
+          "segundos": 8.979,
+          "prompt_tokens": 1081,
+          "output_tokens": 432,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_2",
+          "intentos": 1,
+          "segundos": 8.468,
+          "prompt_tokens": 1192,
+          "output_tokens": 425,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_3",
+          "intentos": 1,
+          "segundos": 8.7,
+          "prompt_tokens": 1299,
+          "output_tokens": 430,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_4",
+          "intentos": 1,
+          "segundos": 7.888,
+          "prompt_tokens": 1400,
+          "output_tokens": 386,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_5",
+          "intentos": 1,
+          "segundos": 8.716,
+          "prompt_tokens": 1491,
+          "output_tokens": 423,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "auditoria",
+          "intentos": 1,
+          "segundos": 4.896,
+          "prompt_tokens": 2899,
+          "output_tokens": 19,
+          "errores_por_intento": []
+        }
+      ],
+      "auditoria": {
+        "rondas": 1,
+        "coherente_final": true,
+        "escenas_regeneradas": [],
+        "contradicciones": [
+          []
+        ],
+        "errores": []
+      }
+    },
+    "imagen": {
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+      },
+      "parametros": {
+        "modelo": "Lykon/dreamshaper-8",
+        "scheduler": "lcm",
+        "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+        "pasos": 6,
+        "guidance_scale": 1.5,
+        "ancho": 768,
+        "alto": 512,
+        "usar_bible": true,
+        "ip_adapter": true,
+        "ip_adapter_scale": 0.4,
+        "prompt_orden": "accion_primero",
+        "seed_policy": "compartida",
+        "seed_fija": true
+      },
+      "character_sheet": "character_sheet.png",
+      "prompt_sheet": {
+        "personaje": "lucas",
+        "prompt": "watercolor with fine line details, pastel yellows, soft greens, sky blue, soft, warm light, boy age 7, curly brown hair, wears a red hoodie and jeans, one shoe missing, always looks cheerful, thin build, full body character portrait, front view, standing, centered, plain light background",
+        "negative_prompt": "dark shadows, heavy rain, stormy weather, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore, multiple people, crowd, cropped, cut off, busy background",
+        "tokens": 62,
+        "seed": 1734591273,
+        "ancho": 512,
+        "alto": 512,
+        "truncamientos": []
+      },
+      "imagenes": [
+        {
+          "escena": 1,
+          "archivo": "scene_1.png",
+          "seed": 1734591273,
+          "ip_adapter": true,
+          "segundos": 4.041,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 1,
+            "prompt": "A child draws a map in dirt beside two animals in a garden with red flowers at sunset., boy age 7, curly brown hair, wears a red hoodie and jeans, one shoe missing, always looks cheerful, thin build, cat age 3, blue eyes, short black fur, wears a tiny yellow scarf tied at the neck, dog age 5, watercolor with fine line details",
+            "negative_prompt": "dark shadows, heavy rain, stormy weather, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 75,
+            "tokens_negativo": 33,
+            "personajes": [
+              "lucas",
+              "milo",
+              "bax"
+            ],
+            "truncamientos": [
+              {
+                "segmento": "estilo",
+                "eliminado": "warm light",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "sky blue",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft greens",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "pastel yellows",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "slightly clumsy build",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "playful and bold",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "wears a blue collar with a star",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "floppy ears",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "golden fur",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "always sits on windowsills",
+                "motivo": "frase"
+              }
+            ],
+            "sustituciones": []
+          }
+        },
+        {
+          "escena": 2,
+          "archivo": "scene_2.png",
+          "seed": 1734591273,
+          "ip_adapter": true,
+          "segundos": 3.53,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 2,
+            "prompt": "Three friends walking down a narrow street with old houses, boy age 7, curly brown hair, wears a red hoodie and jeans, one shoe missing, always looks cheerful, thin build, cat age 3, blue eyes, short black fur, wears a tiny yellow scarf tied at the neck, always sits on windowsills, dog age 5, watercolor with fine line details",
+            "negative_prompt": "dark shadows, heavy rain, stormy weather, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 74,
+            "tokens_negativo": 33,
+            "personajes": [
+              "lucas",
+              "milo",
+              "bax"
+            ],
+            "truncamientos": [
+              {
+                "segmento": "estilo",
+                "eliminado": "warm light",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "sky blue",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft greens",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "pastel yellows",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "accion",
+                "eliminado": "flowers changing color in the evening light.",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "slightly clumsy build",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "playful and bold",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "wears a blue collar with a star",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "floppy ears",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "golden fur",
+                "motivo": "frase"
+              }
+            ],
+            "sustituciones": []
+          }
+        },
+        {
+          "escena": 3,
+          "archivo": "scene_3.png",
+          "seed": 1734591273,
+          "ip_adapter": true,
+          "segundos": 3.55,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 3,
+            "prompt": "A narrow street with old houses. A dog stuck in the middle, boy age 7, curly brown hair, wears a red hoodie and jeans, one shoe missing, always looks cheerful, thin build, cat age 3, blue eyes, short black fur, wears a tiny yellow scarf tied at the neck, dog age 5, watercolor with fine line details",
+            "negative_prompt": "dark shadows, heavy rain, stormy weather, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 70,
+            "tokens_negativo": 33,
+            "personajes": [
+              "lucas",
+              "milo",
+              "bax"
+            ],
+            "truncamientos": [
+              {
+                "segmento": "estilo",
+                "eliminado": "warm light",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "sky blue",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft greens",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "pastel yellows",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "accion",
+                "eliminado": "a boy drawing on the ground with fingers.",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "slightly clumsy build",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "playful and bold",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "wears a blue collar with a star",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "floppy ears",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "golden fur",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "always sits on windowsills",
+                "motivo": "frase"
+              }
+            ],
+            "sustituciones": []
+          }
+        },
+        {
+          "escena": 4,
+          "archivo": "scene_4.png",
+          "seed": 1734591273,
+          "ip_adapter": true,
+          "segundos": 3.542,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 4,
+            "prompt": "cat age 3 points to a hidden path under flowering bushes at dusk, boy age 7, curly brown hair, wears a red hoodie and jeans, one shoe missing, always looks cheerful, thin build, cat age 3, blue eyes, short black fur, wears a tiny yellow scarf tied at the neck, dog age 5, watercolor with fine line details",
+            "negative_prompt": "dark shadows, heavy rain, stormy weather, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 70,
+            "tokens_negativo": 33,
+            "personajes": [
+              "lucas",
+              "milo",
+              "bax"
+            ],
+            "truncamientos": [
+              {
+                "segmento": "estilo",
+                "eliminado": "warm light",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "sky blue",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft greens",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "pastel yellows",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "accion",
+                "eliminado": "with boy age 7 and dog age 5 following.",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "slightly clumsy build",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "playful and bold",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "wears a blue collar with a star",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "floppy ears",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "golden fur",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "always sits on windowsills",
+                "motivo": "frase"
+              }
+            ],
+            "sustituciones": [
+              {
+                "personaje": "milo",
+                "nombre": "Milo",
+                "por": "cat age 3"
+              },
+              {
+                "personaje": "lucas",
+                "nombre": "Lucas",
+                "por": "boy age 7"
+              },
+              {
+                "personaje": "bax",
+                "nombre": "Bax",
+                "por": "dog age 5"
+              }
+            ]
+          }
+        },
+        {
+          "escena": 5,
+          "archivo": "scene_5.png",
+          "seed": 1734591273,
+          "ip_adapter": true,
+          "segundos": 3.543,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 5,
+            "prompt": "Children and dog walking home through a small city street at dusk, boy age 7, curly brown hair, wears a red hoodie and jeans, one shoe missing, always looks cheerful, thin build, cat age 3, blue eyes, short black fur, wears a tiny yellow scarf tied at the neck, dog age 5, watercolor with fine line details",
+            "negative_prompt": "dark shadows, heavy rain, stormy weather, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 69,
+            "tokens_negativo": 33,
+            "personajes": [
+              "lucas",
+              "milo",
+              "bax"
+            ],
+            "truncamientos": [
+              {
+                "segmento": "estilo",
+                "eliminado": "warm light",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "sky blue",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "soft greens",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "pastel yellows",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "accion",
+                "eliminado": "flowers glowing in the background.",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "slightly clumsy build",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "playful and bold",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "wears a blue collar with a star",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "floppy ears",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "golden fur",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "always sits on windowsills",
+                "motivo": "frase"
+              }
+            ],
+            "sustituciones": []
+          }
+        }
+      ],
+      "metricas": [
+        {
+          "etapa": "imagen_carga",
+          "segundos": 4.841,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 2197.9,
+          "vram_torch_reservada_pico_mb": 2220.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 2382.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "imagen_character_sheet",
+          "segundos": 1.89,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 2808.5,
+          "vram_torch_reservada_pico_mb": 3410.0,
+          "vram_gpu_base_mb": 2446.5,
+          "vram_gpu_pico_mb": 3636.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 1734591273,
+            "tokens": 62
+          }
+        },
+        {
+          "etapa": "imagen_ip_adapter",
+          "segundos": 4.872,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 2240.9,
+          "vram_torch_reservada_pico_mb": 3410.0,
+          "vram_gpu_base_mb": 3636.5,
+          "vram_gpu_pico_mb": 3636.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "scale": 0.4
+          }
+        },
+        {
+          "etapa": "imagen_escena_1",
+          "segundos": 4.041,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 2480.5,
+          "vram_gpu_pico_mb": 4068.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 1734591273,
+            "tokens": 75,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_2",
+          "segundos": 3.53,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4068.5,
+          "vram_gpu_pico_mb": 4068.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 1734591273,
+            "tokens": 74,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_3",
+          "segundos": 3.55,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4068.5,
+          "vram_gpu_pico_mb": 4068.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 1734591273,
+            "tokens": 70,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_4",
+          "segundos": 3.542,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4068.5,
+          "vram_gpu_pico_mb": 4068.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 1734591273,
+            "tokens": 70,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_5",
+          "segundos": 3.543,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4068.5,
+          "vram_gpu_pico_mb": 4068.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 1734591273,
+            "tokens": 69,
+            "intento": 1,
+            "ip": true
+          }
+        }
+      ],
+      "fallbacks": [],
+      "errores": []
+    },
+    "voz": {
+      "backend": {
+        "backend": "piper",
+        "voz": "es_MX-claude-high",
+        "length_scale": 1.0,
+        "noise_scale": 0.667,
+        "noise_w_scale": 0.8,
+        "piper_tts": "1.8.0",
+        "dispositivo": "cpu"
+      },
+      "duracion_total_s": 219.426,
+      "narraciones": [
+        {
+          "escena": 1,
+          "archivo": "voice_1.wav",
+          "duracion_s": 41.171,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.281,
+          "rtf": 0.0311,
+          "caracteres": 608
+        },
+        {
+          "escena": 2,
+          "archivo": "voice_2.wav",
+          "duracion_s": 45.176,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.324,
+          "rtf": 0.0293,
+          "caracteres": 672
+        },
+        {
+          "escena": 3,
+          "archivo": "voice_3.wav",
+          "duracion_s": 42.982,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.324,
+          "rtf": 0.0308,
+          "caracteres": 646
+        },
+        {
+          "escena": 4,
+          "archivo": "voice_4.wav",
+          "duracion_s": 39.905,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.176,
+          "rtf": 0.0295,
+          "caracteres": 595
+        },
+        {
+          "escena": 5,
+          "archivo": "voice_5.wav",
+          "duracion_s": 50.192,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.501,
+          "rtf": 0.0299,
+          "caracteres": 692
+        }
+      ],
+      "metricas": [
+        {
+          "etapa": "voz_carga",
+          "segundos": 1.779,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 228.5,
+          "vram_gpu_pico_mb": 228.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "voz_escena_1",
+          "segundos": 1.297,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 228.5,
+          "vram_gpu_pico_mb": 228.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 41.171,
+            "sample_rate": 22050,
+            "rtf": 0.0311
+          }
+        },
+        {
+          "etapa": "voz_escena_2",
+          "segundos": 1.343,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 228.5,
+          "vram_gpu_pico_mb": 228.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 45.176,
+            "sample_rate": 22050,
+            "rtf": 0.0293
+          }
+        },
+        {
+          "etapa": "voz_escena_3",
+          "segundos": 1.341,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 228.5,
+          "vram_gpu_pico_mb": 228.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 42.982,
+            "sample_rate": 22050,
+            "rtf": 0.0308
+          }
+        },
+        {
+          "etapa": "voz_escena_4",
+          "segundos": 1.192,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 228.5,
+          "vram_gpu_pico_mb": 228.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 39.905,
+            "sample_rate": 22050,
+            "rtf": 0.0295
+          }
+        },
+        {
+          "etapa": "voz_escena_5",
+          "segundos": 1.519,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 228.5,
+          "vram_gpu_pico_mb": 228.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 50.192,
+            "sample_rate": 22050,
+            "rtf": 0.0299
+          }
+        }
+      ]
+    },
+    "sonido": {
+      "sonidos": [
+        {
+          "escena": 1,
+          "archivo": "sfx_1.wav",
+          "backend": "procedural",
+          "duracion_s": 8.0,
+          "sample_rate": 44100,
+          "segundos": 0.048,
+          "prompt": "Soft wind blows through trees, birds sing gently.",
+          "etiquetas": [
+            "wind",
+            "birds"
+          ],
+          "detalle": {
+            "seed": 1235
+          }
+        },
+        {
+          "escena": 2,
+          "archivo": "sfx_2.wav",
+          "backend": "procedural",
+          "duracion_s": 8.0,
+          "sample_rate": 44100,
+          "segundos": 0.049,
+          "prompt": "Soft wind blowing through trees and birds singing gently in the distance.",
+          "etiquetas": [
+            "wind",
+            "birds"
+          ],
+          "detalle": {
+            "seed": 1447
+          }
+        },
+        {
+          "escena": 3,
+          "archivo": "sfx_3.wav",
+          "backend": "audioldm",
+          "duracion_s": 8.0,
+          "sample_rate": 16000,
+          "segundos": 1.195,
+          "prompt": "Wind blows through narrow streets. Soft footsteps echo as animals move.",
+          "etiquetas": [
+            "wind",
+            "footsteps"
+          ],
+          "detalle": {
+            "intentos": 1,
+            "fraccion_silencio": 0.0,
+            "seed": 1237
+          }
+        },
+        {
+          "escena": 4,
+          "archivo": "sfx_4.wav",
+          "backend": "procedural",
+          "duracion_s": 8.0,
+          "sample_rate": 44100,
+          "segundos": 0.09,
+          "prompt": "Soft wind blows through trees; birds sing gently in the distance.",
+          "etiquetas": [
+            "wind",
+            "birds",
+            "forest"
+          ],
+          "detalle": {
+            "seed": 1449
+          }
+        },
+        {
+          "escena": 5,
+          "archivo": "sfx_5.wav",
+          "backend": "procedural",
+          "duracion_s": 8.0,
+          "sample_rate": 44100,
+          "segundos": 0.099,
+          "prompt": "Soft wind blowing through old houses, light footsteps on cobblestones, distant bird calls.",
+          "etiquetas": [
+            "wind",
+            "footsteps",
+            "forest"
+          ],
+          "detalle": {
+            "seed": 1450
+          }
+        }
+      ],
+      "backends": {
+        "sa3": {
+          "estado": "no_disponible",
+          "detalle": "ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"
+        },
+        "audioldm": {
+          "estado": "cargado",
+          "backend": "audioldm",
+          "repo": "cvssp/audioldm",
+          "revision": "8ed5f6437581a2fee9c662842d7cb13459914b0f"
+        },
+        "library": {
+          "estado": "no_disponible",
+          "detalle": "SoundError: biblioteca vacía o sin clips CC0 en C:\\Users\\diego\\Documents\\StoryBook-IA\\assets\\sfx"
+        },
+        "procedural": {
+          "estado": "cargado",
+          "backend": "procedural",
+          "frecuencia": 44100
+        }
+      },
+      "fallbacks": [
+        "sonido:sa3:no_disponible",
+        "sonido:escena_1:audioldm_fallo",
+        "sonido:library:no_disponible"
+      ],
+      "errores": [
+        "sa3: ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py",
+        "Escena 1 con audioldm: SoundError: clip casi en silencio el 97% del tiempo (2 intentos)",
+        "library: SoundError: biblioteca vacía o sin clips CC0 en C:\\Users\\diego\\Documents\\StoryBook-IA\\assets\\sfx"
+      ],
+      "metricas": [
+        {
+          "etapa": "sonido_audioldm_carga",
+          "segundos": 3.674,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 821.0,
+          "vram_torch_reservada_pico_mb": 840.0,
+          "vram_gpu_base_mb": 228.5,
+          "vram_gpu_pico_mb": 934.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "sonido_escena_2",
+          "segundos": 1.222,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1274.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 1236
+          }
+        },
+        {
+          "etapa": "sonido_escena_3",
+          "segundos": 1.2,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1274.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 1237
+          }
+        },
+        {
+          "etapa": "sonido_escena_4",
+          "segundos": 1.237,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1274.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 1238
+          }
+        },
+        {
+          "etapa": "sonido_escena_5",
+          "segundos": 1.17,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1274.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 1239
+          }
+        },
+        {
+          "etapa": "sonido_procedural_carga",
+          "segundos": 0.0,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "sonido_escena_1",
+          "segundos": 0.054,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "procedural",
+            "duracion_audio_s": 8.0,
+            "seed": 1235
+          }
+        }
+      ]
+    },
+    "mezcla": {
+      "mezclas": [
+        {
+          "escena": 1,
+          "ambiente": "ambience_1.wav",
+          "mezcla": "mix_1.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "procedural",
+          "duracion_s": 42.671,
+          "lufs_voz_original": -14.95,
+          "lufs_ambiente_original": -18.73,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.935,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7694
+        },
+        {
+          "escena": 2,
+          "ambiente": "ambience_2.wav",
+          "mezcla": "mix_2.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "procedural",
+          "duracion_s": 46.676,
+          "lufs_voz_original": -14.7,
+          "lufs_ambiente_original": -18.4,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.945,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7358
+        },
+        {
+          "escena": 3,
+          "ambiente": "ambience_3.wav",
+          "mezcla": "mix_3.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "audioldm",
+          "duracion_s": 44.482,
+          "lufs_voz_original": -15.24,
+          "lufs_ambiente_original": -17.95,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.939,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7584
+        },
+        {
+          "escena": 4,
+          "ambiente": "ambience_4.wav",
+          "mezcla": "mix_4.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "procedural",
+          "duracion_s": 41.405,
+          "lufs_voz_original": -15.29,
+          "lufs_ambiente_original": -18.28,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.942,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7551
+        },
+        {
+          "escena": 5,
+          "ambiente": "ambience_5.wav",
+          "mezcla": "mix_5.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "procedural",
+          "duracion_s": 51.692,
+          "lufs_voz_original": -15.6,
+          "lufs_ambiente_original": -18.36,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.924,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.8079
+        }
+      ],
+      "metricas": [
+        {
+          "etapa": "mezcla_escena_1",
+          "segundos": 0.362,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 42.671,
+            "lufs_voz_original": -14.95,
+            "lufs_ambiente_original": -18.73,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.935,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7694
+          }
+        },
+        {
+          "etapa": "mezcla_escena_2",
+          "segundos": 0.409,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 46.676,
+            "lufs_voz_original": -14.7,
+            "lufs_ambiente_original": -Infinity,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -Infinity,
+            "ambiente_bajo_voz_db": Infinity,
+            "ambiente_bajo_voz_hablando_db": Infinity,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.945,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7082
+          }
+        },
+        {
+          "etapa": "mezcla_escena_3",
+          "segundos": 0.383,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 44.482,
+            "lufs_voz_original": -15.24,
+            "lufs_ambiente_original": -17.95,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.939,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7584
+          }
+        },
+        {
+          "etapa": "mezcla_escena_4",
+          "segundos": 0.359,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 41.405,
+            "lufs_voz_original": -15.29,
+            "lufs_ambiente_original": -Infinity,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -Infinity,
+            "ambiente_bajo_voz_db": Infinity,
+            "ambiente_bajo_voz_hablando_db": Infinity,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.942,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7615
+          }
+        },
+        {
+          "etapa": "mezcla_escena_5",
+          "segundos": 0.438,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 51.692,
+            "lufs_voz_original": -15.6,
+            "lufs_ambiente_original": -Infinity,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -Infinity,
+            "ambiente_bajo_voz_db": Infinity,
+            "ambiente_bajo_voz_hablando_db": Infinity,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.924,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7759
+          }
+        }
+      ]
+    }
+  },
+  "segundos": {
+    "texto": 73.18,
+    "imagen": 30.42,
+    "voz": 8.61,
+    "sonido": 11.32,
+    "mezcla": 2.03,
+    "total": 125.58
+  },
+  "fallbacks": [
+    "sonido:sa3:no_disponible",
+    "sonido:escena_1:audioldm_fallo",
+    "sonido:library:no_disponible"
+  ],
+  "errores": [],
+  "hardware": {
+    "sistema": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.10",
+    "procesador": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "gpu": {
+      "nombre": "NVIDIA GeForce RTX 3050 Laptop GPU",
+      "driver": "617.42",
+      "vram_total_mb": 4096.0,
+      "vram_usada_mb": 226.5,
+      "cuda_driver": "13.4",
+      "temperatura_c": 66,
+      "potencia_limite_w": 75.0,
+      "potencia_actual_w": 29.4,
+      "pstate": 3
+    }
+  },
+  "configuracion": {
+    "profile": "rapido",
+    "llm": {
+      "host": "http://localhost:11434",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "think": false,
+      "num_ctx": 4096,
+      "num_predict": 2048,
+      "temperature_narrativa": 0.7,
+      "temperature_auditor": 0.2,
+      "max_reintentos": 3,
+      "seed": 42,
+      "timeout_s": 600.0,
+      "keep_alive_etapa": "5m",
+      "top_p": 0.8,
+      "top_k": 20,
+      "presence_penalty": 1.0,
+      "repeat_penalty": 1.1,
+      "num_gpu": 99,
+      "num_ctx_auditor": 8192,
+      "estrategia": "por_etapas",
+      "auditar": true,
+      "max_rondas_auditor": 1
+    },
+    "image": {
+      "model_id": "Lykon/dreamshaper-8",
+      "scheduler": "lcm",
+      "lcm_lora_id": "latent-consistency/lcm-lora-sdv1-5",
+      "steps": 6,
+      "guidance_scale": 1.5,
+      "width": 768,
+      "height": 512,
+      "negative_prompt_base": "lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+      "attention_slicing": false,
+      "vae_slicing": true,
+      "cpu_offload": false,
+      "ip_adapter": {
+        "enabled": true,
+        "repo_id": "h94/IP-Adapter",
+        "subfolder": "models",
+        "weight_name": "ip-adapter_sd15.safetensors",
+        "image_encoder_subfolder": "models/image_encoder",
+        "scale": 0.4
+      },
+      "prompt_orden": "accion_primero"
+    },
+    "voice": {
+      "backend": "piper",
+      "piper_voice": "es_MX-claude-high",
+      "length_scale": 1.0,
+      "noise_scale": 0.667,
+      "noise_w_scale": 0.8,
+      "kokoro_voice": "ef_dora",
+      "kokoro_lang_code": "e"
+    },
+    "sound": {
+      "backends": [
+        "sa3",
+        "audioldm",
+        "library",
+        "procedural"
+      ],
+      "sa3_repo_id": "stabilityai/stable-audio-3-small-sfx",
+      "sa3_steps": null,
+      "sao_repo_id": "stabilityai/stable-audio-open-1.0",
+      "sao_steps": 50,
+      "sao_guidance": 7.0,
+      "audioldm_repo_id": "cvssp/audioldm",
+      "audioldm_steps": 25,
+      "audioldm_guidance": 2.5,
+      "duration_s": 8.0,
+      "negative_prompt": "low quality, speech, voice, singing, music",
+      "cpu_offload": true
+    },
+    "mix": {
+      "sample_rate": 44100,
+      "voz_lufs": -18.0,
+      "ambiente_bajo_voz_db": 12.0,
+      "ducking_db": 6.0,
+      "crossfade_s": 1.0,
+      "pre_roll_s": 0.5,
+      "post_roll_s": 1.0
+    },
+    "evaluation": {
+      "whisper_model": "small",
+      "whisper_repo_id": "Systran/faster-whisper-small",
+      "whisper_compute_type": "int8",
+      "whisper_language": "es",
+      "clip_model": "ViT-B-32",
+      "clip_pretrained": "laion2b_s34b_b79k",
+      "cpu_threads": 0
+    },
+    "consistency": {
+      "use_bible": true,
+      "fixed_seed": true,
+      "seed_policy": "compartida",
+      "base_seed": 1234
+    }
+  },
+  "regeneraciones": [
+    {
+      "tipo": "sonido",
+      "escenas": [
+        2,
+        4,
+        5
+      ],
+      "fecha": "2026-11-10T14:42:48",
+      "backends": {
+        "2": "procedural",
+        "4": "procedural",
+        "5": "procedural"
+      },
+      "fallbacks": [
+        "sonido:sa3:no_disponible",
+        "sonido:escena_2:audioldm_fallo",
+        "sonido:escena_4:audioldm_fallo",
+        "sonido:escena_5:audioldm_fallo",
+        "sonido:library:no_disponible"
+      ]
+    }
+  ]
+}

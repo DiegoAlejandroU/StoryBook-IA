@@ -1,0 +1,205 @@
+{
+  "titulo": "La Biblia del Dragón",
+  "genero": "fantasía",
+  "tono": "mágico, oscuro, emocional, tranquilo",
+  "idioma": "es",
+  "estilo_visual": {
+    "tecnica": "watercolor with textured paper",
+    "paleta": "deep greens, burnt oranges",
+    "iluminacion": "soft golden glow from old book spines",
+    "negative_prompt": "modern elements, digital effects, bright colors"
+  },
+  "escenario": {
+    "lugar": "una biblioteca antigua en una montaña solitaria",
+    "epoca": "fantasía",
+    "rasgos_constantes": [
+      "la magia se manifiesta solo por palabras escritas en libros antiguos",
+      "cada libro contiene un poder único, y el dragón puede usarlo si lo lee correctamente"
+    ]
+  },
+  "personajes": [
+    {
+      "id": "kai_kai",
+      "nombre": "Kai Kai",
+      "rol": "protagonista",
+      "descripcion_visual_fija": "boy age 12, messy brown hair, wears a tattered cloak, has one eye covered by a patch, thin frame",
+      "rasgos_personalidad": [
+        "curious",
+        "brave despite fear",
+        "keeps secrets"
+      ],
+      "seed": 1642669939
+    },
+    {
+      "id": "morin_morin",
+      "nombre": "Morin Morin",
+      "rol": "antagonista",
+      "descripcion_visual_fija": "old man age 70, white hair, wears a long gray coat with pockets full of books, glasses on nose",
+      "rasgos_personalidad": [
+        "wise",
+        "quiet",
+        "keeps the truth hidden"
+      ],
+      "seed": 3818881811
+    },
+    {
+      "id": "dragoon_zen",
+      "nombre": "Dragoon Zen",
+      "rol": "secundario",
+      "descripcion_visual_fija": "dragon age unknown, scales like aged parchment, eyes glow faintly blue, breathes smoke that turns into ink",
+      "rasgos_personalidad": [
+        "silent",
+        "protective of knowledge",
+        "only speaks when books are read"
+      ],
+      "seed": 1059607701
+    }
+  ],
+  "escenas": [
+    {
+      "numero": 1,
+      "fase": "inicio",
+      "texto_narrativo": "Kai Kai camina por senderos cubiertos de musgo, con el viento que susurra entre los árboles. Su pueblo está en peligro: las piedras caen del cielo como relámpagos negros. No hay más recursos para defenderlos. Solo un libro antiguo puede detenerlo. El último registro dice que se encuentra en una biblioteca de la montaña solitaria. Las letras doradas brillan solo cuando alguien los lee correctamente. Kai Kai siente miedo, pero también fuerza. Tiene que encontrar el libro antes que todo desaparezca. Sus pies golpean la tierra como si cada paso fuera un acto de esperanza. No puede fallar. El mundo depende de sus palabras. Cada palabra escrita podría salvarlo todo.",
+      "resumen": "Un niño busca un libro mágico para salvar a su pueblo.",
+      "personajes_presentes": [
+        "kai_kai"
+      ],
+      "hechos_nuevos": [
+        "Kai Kai busca un libro mágico en la montaña solitaria.",
+        "Su pueblo está en peligro por una tormenta de piedras que arruina sus casas.",
+        "Los libros antiguos solo se activan con letras de oro cuando se leen correctamente."
+      ],
+      "prompt_imagen": "A boy runs through a forest, wind blowing leaves, mountains in the distance.",
+      "prompt_sonido": "Wind howls through trees. A slow heartbeat pulses beneath it.",
+      "etiquetas_sonido": [
+        "wind",
+        "forest",
+        "heartbeat"
+      ],
+      "seed_imagen": 1642669939
+    },
+    {
+      "numero": 2,
+      "fase": "desarrollo",
+      "texto_narrativo": "Kai Kai caminaba por las rocas de la montaña cuando vio a Morin Morin sentado bajo un árbol antiguo. El aire era frío y el viento soplaba entre los troncos, como si quisiera ocultar algo. Morin Morin levantó su mirada con calma, sus ojos brillaban como piedras de oro. Dijo que había visto al último dragón en la biblioteca años atrás, antes del gran silencio. Kai Kai lo miró sin decir palabra, temblando por el miedo y la esperanza. Morin Morin se inclinó para tocar un libro escondido entre las raíces. No habló más, solo observaba como si recordara cada letra de oro que alguna vez brilló en los libros antiguos.",
+      "resumen": "El niño encuentra un anciano que dice haber visto al último dragón en la biblioteca.",
+      "personajes_presentes": [
+        "kai_kai",
+        "morin_morin"
+      ],
+      "hechos_nuevos": [
+        "Morin Morin vive en la cima de la montaña, junto a un árbol antiguo.",
+        "Kai Kai encuentra a Morin Morin bajo una sombra de hojas que temblaban con el viento.",
+        "Morin Morin dice haber visto al último dragón en la biblioteca años atrás.",
+        "El anciano mira fijamente los libros escondidos entre las rocas, sin hablar."
+      ],
+      "prompt_imagen": "An elderly man sits under a ancient tree on a mountain peak, wind blowing through leaves.",
+      "prompt_sonido": "Wind rustling through trees, soft heartbeat in the background.",
+      "etiquetas_sonido": [
+        "wind",
+        "forest",
+        "heartbeat"
+      ],
+      "seed_imagen": 1642669939
+    },
+    {
+      "numero": 3,
+      "fase": "desarrollo",
+      "texto_narrativo": "Kai Kai y Morin Morin avanzan por un pasillo de piedra tallada, las paredes cubiertas de símbolos que temblaban con cada viento. La biblioteca está encerrada en el corazón de la montaña, sus libros brillando como estrellas bajo velas rojas. Al entrar, Kai Kai siente una presión en su pecho: algo espera allí. Morin Morin mira fijamente los volúmenes ocultos entre las mesas, sin hablar. De pronto, Kai Kai toca un libro con letras de oro y comienza a leerlo. La palabra se ilumina, como si el aire mismo hubiera despertado. Una luz dorada brota del texto y fluye hacia una figura silenciosa sentada al centro: Dragoon Zen. Su cuerpo se levanta lentamente, sus ojos brillan como piedras de fuego. El viento calla. La biblioteca respira.",
+      "resumen": "El niño y el anciano llegan a la biblioteca, donde el dragón aparece al leer un libro antiguo.",
+      "personajes_presentes": [
+        "kai_kai",
+        "morin_morin",
+        "dragoon_zen"
+      ],
+      "hechos_nuevos": [
+        "La biblioteca está oculta tras una pared de piedra tallada con símbolos antiguos.",
+        "Kai Kai y Morin Morin entran por un pasillo oscuro iluminado por velas de cera roja.",
+        "Dragoon Zen se sienta en el centro del salón, silencioso, observando los libros sobre mesas de madera antigua.",
+        "Cuando Kai Kai lee un libro con letras de oro, una luz dorada brota del texto y fluye hacia Dragoon Zen."
+      ],
+      "prompt_imagen": "A young boy and an old man enter a stone library with ancient books, glowing in the dark.",
+      "prompt_sonido": "Wind howls through trees. A slow heartbeat pulses beneath silence.",
+      "etiquetas_sonido": [
+        "wind",
+        "forest",
+        "heartbeat"
+      ],
+      "seed_imagen": 1642669939
+    },
+    {
+      "numero": 4,
+      "fase": "climax",
+      "texto_narrativo": "Kai Kai mira los libros con ojos llenos de miedo y esperanza. El viento sisea entre las piedras, como si temiera que se rompiera algo. De pronto, una voz ronronea en el aire: 'Solo se activará si lo lees sin errores'. Morin Morin sostiene su respiración, los ojos fijos en Kai Kai. El niño levanta un libro con letras de oro y comienza a leer. Cada palabra es pesada, como si tuviera que cargar el peso del mundo entero. Cuando dice 'fin', una luz dorada brota y fluye hacia Dragoon Zen. La biblioteca se estremece, los símbolos brillan. El dragón abre los ojos. No habla, pero la magia ahora protege cada página.",
+      "resumen": "El dragón usa su poder para proteger la biblioteca, pero solo si el niño lee un libro sin errores.",
+      "personajes_presentes": [
+        "kai_kai",
+        "morin_morin",
+        "dragoon_zen"
+      ],
+      "hechos_nuevos": [
+        "Kai Kai debe leer un libro sin errores para activar el poder del dragón.",
+        "El dragón solo responde cuando la magia se despierta con precisión en las letras de oro.",
+        "La biblioteca tembló ligeramente al momento que la luz dorada salió del libro.",
+        "Morin Morin observa silencioso, como si supiera que el niño no lo hará bien."
+      ],
+      "prompt_imagen": "A dragon sits in a stone hall, reading ancient books with golden letters. Shadows move as wind passes through cracks.",
+      "prompt_sonido": "Wind whispers through old stones. A slow heartbeat pulses under the silence. Distant forest sounds fade into stillness.",
+      "etiquetas_sonido": [
+        "wind",
+        "heartbeat",
+        "forest"
+      ],
+      "seed_imagen": 1642669939
+    },
+    {
+      "numero": 5,
+      "fase": "desenlace",
+      "texto_narrativo": "Kai Kai siente que ahora protege más que su pueblo: guarda todos los libros. Dragoon Zen no habla, pero sus ojos brillan como si leyera cada página sin error. Juntos, miran las estanterías vacías que aún albergan secretos. El viento se detiene cuando ambos sienten el peso del conocimiento. Morin Morin desaparece en la sombra del árbol antiguo, como si nunca hubiera estado allí. Kai Kai entiende: la magia no es poder, sino responsabilidad. Dragoon Zen asiente con una leve respiración. Desde entonces, cada noche, los libros brillan cuando el niño lee en silencio. La biblioteca tembló solo una vez más — y esta vez, fue por amor.",
+      "resumen": "El niño y el dragón se convierten en guardianes del conocimiento, mientras el anciano desaparece.",
+      "personajes_presentes": [
+        "kai_kai",
+        "dragoon_zen"
+      ],
+      "hechos_nuevos": [
+        "Kai Kai y Dragoon Zen se sientan juntos en el umbral de la biblioteca, mirando los libros.",
+        "El viento susurra entre las piedras del pasillo mientras los dos guardan silencio.",
+        "Dragoon Zen levanta su cabeza lentamente al escuchar un leve tic de su corazón.",
+        "Kai Kai siente que ahora protege el conocimiento, no solo su pueblo.",
+        "Morin Morin desaparece en la sombra del árbol antiguo sin decir una palabra."
+      ],
+      "prompt_imagen": "A young boy and a silent dragon sit together at the library's entrance, books glowing softly in the stone hall.",
+      "prompt_sonido": "Wind whispers through ancient stones. A slow heartbeat pulses beneath silence.",
+      "etiquetas_sonido": [
+        "wind",
+        "forest",
+        "heartbeat"
+      ],
+      "seed_imagen": 1642669939
+    }
+  ],
+  "canon": [
+    "la magia solo se activa al leer libros antiguos con letras de oro.",
+    "cada libro contiene un poder diferente que puede ser usado por quien lo lee correctamente.",
+    "Kai Kai busca un libro mágico en la montaña solitaria.",
+    "Su pueblo está en peligro por una tormenta de piedras que arruina sus casas.",
+    "Los libros antiguos solo se activan con letras de oro cuando se leen correctamente.",
+    "Morin Morin vive en la cima de la montaña, junto a un árbol antiguo.",
+    "Kai Kai encuentra a Morin Morin bajo una sombra de hojas que temblaban con el viento.",
+    "Morin Morin dice haber visto al último dragón en la biblioteca años atrás.",
+    "El anciano mira fijamente los libros escondidos entre las rocas, sin hablar.",
+    "La biblioteca está oculta tras una pared de piedra tallada con símbolos antiguos.",
+    "Kai Kai y Morin Morin entran por un pasillo oscuro iluminado por velas de cera roja.",
+    "Dragoon Zen se sienta en el centro del salón, silencioso, observando los libros sobre mesas de madera antigua.",
+    "Cuando Kai Kai lee un libro con letras de oro, una luz dorada brota del texto y fluye hacia Dragoon Zen.",
+    "Kai Kai debe leer un libro sin errores para activar el poder del dragón.",
+    "El dragón solo responde cuando la magia se despierta con precisión en las letras de oro.",
+    "La biblioteca tembló ligeramente al momento que la luz dorada salió del libro.",
+    "Morin Morin observa silencioso, como si supiera que el niño no lo hará bien.",
+    "Kai Kai y Dragoon Zen se sientan juntos en el umbral de la biblioteca, mirando los libros.",
+    "El viento susurra entre las piedras del pasillo mientras los dos guardan silencio.",
+    "Dragoon Zen levanta su cabeza lentamente al escuchar un leve tic de su corazón.",
+    "Kai Kai siente que ahora protege el conocimiento, no solo su pueblo.",
+    "Morin Morin desaparece en la sombra del árbol antiguo sin decir una palabra."
+  ]
+}

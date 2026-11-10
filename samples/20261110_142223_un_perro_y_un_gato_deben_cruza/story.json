@@ -1,0 +1,202 @@
+{
+  "titulo": "El Camino de los Amigos",
+  "genero": "infantil",
+  "tono": "cálido, esperanzador, divertido, acogedor",
+  "idioma": "es",
+  "estilo_visual": {
+    "tecnica": "watercolor with fine line details",
+    "paleta": "pastel yellows, soft greens, sky blue",
+    "iluminacion": "soft, warm light",
+    "negative_prompt": "dark shadows, heavy rain, stormy weather"
+  },
+  "escenario": {
+    "lugar": "una ciudad pequeña con calles estrechas y casas antiguas",
+    "epoca": "presente",
+    "rasgos_constantes": [
+      "cada casa tiene un jardín pequeño con flores",
+      "las calles tienen semáforos rojos y verdes que cambian lentamente",
+      "los vecinos siempre saludan con una sonrisa"
+    ]
+  },
+  "personajes": [
+    {
+      "id": "lucas",
+      "nombre": "Lucas",
+      "rol": "protagonista",
+      "descripcion_visual_fija": "boy age 7, curly brown hair, wears a red hoodie and jeans, one shoe missing, always looks cheerful, thin build",
+      "rasgos_personalidad": [
+        "loves stories, draws maps in the dirt with his fingers",
+        "helpful but shy",
+        "believes every animal has a secret"
+      ],
+      "seed": 1734591273
+    },
+    {
+      "id": "milo",
+      "nombre": "Milo",
+      "rol": "secundario",
+      "descripcion_visual_fija": "cat age 3, blue eyes, short black fur, wears a tiny yellow scarf tied at the neck, always sits on windowsills",
+      "rasgos_personalidad": [
+        "listens to wind sounds carefully",
+        "knows every flower by name",
+        "whispers stories when alone"
+      ],
+      "seed": 3063772827
+    },
+    {
+      "id": "bax",
+      "nombre": "Bax",
+      "rol": "secundario",
+      "descripcion_visual_fija": "dog age 5, golden fur, floppy ears, wears a blue collar with a star, playful and bold, slightly clumsy build",
+      "rasgos_personalidad": [
+        "always barks at shadows but is kind",
+        "loves chasing butterflies",
+        "has a habit of wagging his tail when happy"
+      ],
+      "seed": 3867409945
+    }
+  ],
+  "escenas": [
+    {
+      "numero": 1,
+      "fase": "inicio",
+      "texto_narrativo": "Lucas salía de su casa por la mañana con una sonrisa. El sol brillaba y las flores del jardín se ponían doradas al atardecer. De pronto, vio a Milo sentado bajo un árbol, leyendo un libro sobre el viento. A su lado, Bax estaba cerca de la verja, mirando hacia la calle con ojos curiosos. Lucas se acercó y sonrió. Le mostró cómo dibujar mapas en la tierra con los dedos. Milo levantó la vista y dijo: '¿Y si todos tenemos caminos secretos?'. Bax empezó a ladrar suavemente, como siempre cuando veía algo nuevo. Lucas se quedó mirando al cielo. Esa tarde, supo que tenía nuevos amigos en el jardín de su casa.",
+      "resumen": "Lucas encuentra a Milo y Bax perdidos en el jardín de su casa.",
+      "personajes_presentes": [
+        "lucas",
+        "milo",
+        "bax"
+      ],
+      "hechos_nuevos": [
+        "Lucas encuentra a Milo y Bax en el jardín de su casa.",
+        "El jardín tiene flores rojas que se vuelven doradas al atardecer.",
+        "Milo está sentado con un libro abierto, escuchando los vientos.",
+        "Bax está cerca del borde del jardín, mirando hacia la calle.",
+        "Lucas dibuja una mapa en el suelo con sus dedos mientras habla."
+      ],
+      "prompt_imagen": "A child draws a map in dirt beside two animals in a garden with red flowers at sunset.",
+      "prompt_sonido": "Soft wind blows through trees, birds sing gently.",
+      "etiquetas_sonido": [
+        "wind",
+        "birds"
+      ],
+      "seed_imagen": 1734591273
+    },
+    {
+      "numero": 2,
+      "fase": "desarrollo",
+      "texto_narrativo": "Lucas se levanta y sonríe, mostrando su mapa dibujado en el suelo. \"¡Vamos!\" dice con energía. Milo abre su libro pero lo cierra cuando ve que todos están listos. Bax bosteza y luego empieza a dar vueltas, feliz. Los tres caminan juntos por la calle estrecha, donde cada casa tiene un jardín lleno de flores. Al pasar por delante de los vecinos, todos les saludan con una sonrisa. Las flores en el jardín cambian de color al atardecer: rojas se vuelven doradas. Lucas mira hacia arriba y dice: \"Es como si cada flor contara una historia\". Milo susurra: \"Tal vez todos tenemos un camino secreto también.\" Bax empieza a latir más fuerte, contento con el grupo que comparten.",
+      "resumen": "Los amigos deciden ir juntos a la otra parte de la ciudad para volver a casa.",
+      "personajes_presentes": [
+        "lucas",
+        "milo",
+        "bax"
+      ],
+      "hechos_nuevos": [
+        "Lucas, Milo y Bax caminan juntos por la calle estrecha hacia el otro lado de la ciudad.",
+        "Los vecinos les saludan con una sonrisa mientras pasan por sus casas.",
+        "Las flores del jardín cambian de color al atardecer, reflejando su camino en el suelo."
+      ],
+      "prompt_imagen": "Three friends walking down a narrow street with old houses, flowers changing color in the evening light.",
+      "prompt_sonido": "Soft wind blowing through trees and birds singing gently in the distance.",
+      "etiquetas_sonido": [
+        "wind",
+        "birds"
+      ],
+      "seed_imagen": 1734591273
+    },
+    {
+      "numero": 3,
+      "fase": "desarrollo",
+      "texto_narrativo": "Lucas ve a Bax atrapado en la calle estrecha mientras corre tras un borrico. El viento sopla suave entre las casas antiguas, como si fuera una canción. Lucas se detiene y dibuja con los dedos una línea de mapas en el suelo: puntos, curvas y caminos imaginarios. Bax mira la traza, confundido al principio, pero luego empieza a moverse siguiendo el dibujo. Milo escucha desde lejos, sonriendo entre las hojas del jardín. Los vecinos pasan por su casa con una sonrisa y saludan a los amigos. El mapa no es real, pero Bax lo sigue como si fuera un camino secreto. Lucas sabe que todos tienen sus propios caminos, aunque se pierdan en el mismo lugar.",
+      "resumen": "En una calle estrecha, Bax se queda atascado y Lucas ayuda a sacarlo con un truco de mapas.",
+      "personajes_presentes": [
+        "lucas",
+        "milo",
+        "bax"
+      ],
+      "hechos_nuevos": [
+        "Bax se queda atascado en la calle estrecha mientras intenta perseguir un borrico.",
+        "Lucas dibuja una línea de mapas en el suelo con sus dedos para guiar a Bax hacia adelante.",
+        "Milo observa desde lejos, escuchando los vientos que soplan entre las casas antiguas."
+      ],
+      "prompt_imagen": "A narrow street with old houses. A dog stuck in the middle, a boy drawing on the ground with fingers.",
+      "prompt_sonido": "Wind blows through narrow streets. Soft footsteps echo as animals move.",
+      "etiquetas_sonido": [
+        "wind",
+        "footsteps"
+      ],
+      "seed_imagen": 1734591273
+    },
+    {
+      "numero": 4,
+      "fase": "climax",
+      "texto_narrativo": "Milo levanta la vista, como si escuchara un silencio especial. Su libro se cierra con suavidad. \"Hay un camino\", dice, señalando bajo las flores doradas. Lucas se queda sorprendido. Bax ladra de alegría al verlo. El sendero sale entre los pies de una planta que nunca antes habían notado. Cada paso es más claro con el viento suave y el canto de los pájaros. Los tres caminan juntos, sin hablar mucho, pero todos sienten la paz del secreto compartido. Las flores se iluminan al atardecer como si cada una tuviera un nombre. Milo sabe que ahora, también ellos tienen su propio camino en el mundo.",
+      "resumen": "Milo descubre que los animales tienen sus propios caminos secretos y les muestra uno.",
+      "personajes_presentes": [
+        "lucas",
+        "milo",
+        "bax"
+      ],
+      "hechos_nuevos": [
+        "Milo muestra a Lucas y Bax un camino secreto que solo los animales conocen.",
+        "El camino comienza bajo una fila de flores rojas que se vuelven doradas al atardecer.",
+        "Los pasos del grupo hacen eco suavemente entre las casas antiguas."
+      ],
+      "prompt_imagen": "Milo points to a hidden path under flowering bushes at dusk, with Lucas and Bax following.",
+      "prompt_sonido": "Soft wind blows through trees; birds sing gently in the distance.",
+      "etiquetas_sonido": [
+        "wind",
+        "birds",
+        "forest"
+      ],
+      "seed_imagen": 1734591273
+    },
+    {
+      "numero": 5,
+      "fase": "desenlace",
+      "texto_narrativo": "Cuando Lucas, Milo y Bax llegaron a su casa, el sol se había ocultado y las flores del jardín brillaban doradas. Los vecinos les saludaron con una sonrisa, como todos los días. Bax saltó de alegría al ver la puerta de su casa. Lucas dibujó un mapa pequeño en la pared para recordar el camino que hicieron. Milo cerró su libro y susurró: 'Hoy aprendí que los amigos se ayudan siempre'. Los tres entraron juntos, con las cabezas levantadas y corazones llenos de esperanza. Aunque cada uno tenía un secreto propio, ahora sabían que el verdadero camino era caminar juntos. Y por eso, en cada calle estrecha, los vecinos les devolvieron una sonrisa, como si hubieran conocido siempre a sus amigos.",
+      "resumen": "Todos llegan a casa felizmente, y ahora saben que siempre pueden confiar en los amigos.",
+      "personajes_presentes": [
+        "lucas",
+        "milo",
+        "bax"
+      ],
+      "hechos_nuevos": [
+        "Lucas, Milo y Bax llegan a casa con las flores doradas reflejándose en el suelo de la entrada.",
+        "Los vecinos les saludan nuevamente con una sonrisa al verlos llegar.",
+        "Bax late fuerte cuando ve a sus amigos, mostrando alegría por estar juntos."
+      ],
+      "prompt_imagen": "Children and dog walking home through a small city street at dusk, flowers glowing in the background.",
+      "prompt_sonido": "Soft wind blowing through old houses, light footsteps on cobblestones, distant bird calls.",
+      "etiquetas_sonido": [
+        "wind",
+        "footsteps",
+        "forest"
+      ],
+      "seed_imagen": 1734591273
+    }
+  ],
+  "canon": [
+    "Las casas tienen jardines con flores que cambian de color al atardecer.",
+    "Cada vecino tiene un animal que le acompaña en sus días.",
+    "Los niños y animales se saludan todos los días al salir de casa.",
+    "Lucas encuentra a Milo y Bax en el jardín de su casa.",
+    "El jardín tiene flores rojas que se vuelven doradas al atardecer.",
+    "Milo está sentado con un libro abierto, escuchando los vientos.",
+    "Bax está cerca del borde del jardín, mirando hacia la calle.",
+    "Lucas dibuja una mapa en el suelo con sus dedos mientras habla.",
+    "Lucas, Milo y Bax caminan juntos por la calle estrecha hacia el otro lado de la ciudad.",
+    "Los vecinos les saludan con una sonrisa mientras pasan por sus casas.",
+    "Las flores del jardín cambian de color al atardecer, reflejando su camino en el suelo.",
+    "Bax se queda atascado en la calle estrecha mientras intenta perseguir un borrico.",
+    "Lucas dibuja una línea de mapas en el suelo con sus dedos para guiar a Bax hacia adelante.",
+    "Milo observa desde lejos, escuchando los vientos que soplan entre las casas antiguas.",
+    "Milo muestra a Lucas y Bax un camino secreto que solo los animales conocen.",
+    "El camino comienza bajo una fila de flores rojas que se vuelven doradas al atardecer.",
+    "Los pasos del grupo hacen eco suavemente entre las casas antiguas.",
+    "Lucas, Milo y Bax llegan a casa con las flores doradas reflejándose en el suelo de la entrada.",
+    "Los vecinos les saludan nuevamente con una sonrisa al verlos llegar.",
+    "Bax late fuerte cuando ve a sus amigos, mostrando alegría por estar juntos."
+  ]
+}
