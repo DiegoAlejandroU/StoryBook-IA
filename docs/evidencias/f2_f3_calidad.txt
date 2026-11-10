@@ -1,0 +1,81 @@
+﻿12:30:36 INFO    f2_f3_prueba | f2_inicio  perfil=calidad story=C:\Users\diego\Documents\StoryBook-IA\outputs\f1\20261110_085328\story_01.json voces="['es_MX-claude-high', 'es_MX-ald-medium', 'es_ES-davefx-medium']"
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  28%|██▊       | 54/196 [00:00<00:00, 526.65it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1419.67it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  5.21it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 12.50it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 10.96it/s]
+12:30:46 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=6.966 dispositivo=cuda vram_torch_pico_mb=2056.6 vram_torch_reservada_pico_mb=2108 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2138.5 vram_gpu_total_mb=4096
+12:30:52 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=5.75 dispositivo=cuda vram_torch_pico_mb=2667.3 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=2304.5 vram_gpu_pico_mb=2880.5 vram_gpu_total_mb=4096 extra.seed=3740413757 extra.tokens=58
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 8/520 [00:00<00:11, 43.46it/s]
+Loading weights:   5%|▌         | 28/520 [00:00<00:04, 106.94it/s]
+Loading weights:  10%|▉         | 51/520 [00:00<00:03, 146.61it/s]
+Loading weights:  14%|█▍        | 73/520 [00:00<00:02, 171.15it/s]
+Loading weights:  18%|█▊        | 93/520 [00:00<00:02, 173.09it/s]
+Loading weights:  22%|██▏       | 112/520 [00:00<00:02, 172.60it/s]
+Loading weights:  25%|██▌       | 130/520 [00:00<00:02, 150.70it/s]
+Loading weights:  28%|██▊       | 146/520 [00:01<00:03, 124.39it/s]
+Loading weights:  33%|███▎      | 172/520 [00:01<00:02, 132.69it/s]
+Loading weights:  36%|███▌      | 186/520 [00:01<00:02, 123.93it/s]
+Loading weights:  40%|████      | 208/520 [00:01<00:02, 142.64it/s]
+Loading weights:  45%|████▍     | 233/520 [00:01<00:01, 162.47it/s]
+Loading weights: 100%|██████████| 520/520 [00:01<00:00, 316.61it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+12:30:55 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=2.913 dispositivo=cuda vram_torch_pico_mb=2099.7 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=3460.5 vram_gpu_pico_mb=3460.5 vram_gpu_total_mb=4096 extra.scale=0.6
+12:30:55 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=60
+12:31:04 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=8.358 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=2348.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=3740413757 extra.tokens=60 extra.intento=1 extra.ip=True
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (79 > 77). Running this sequence through the model will result in indexing errors
+12:31:04 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=71 eliminados="['estilo:moonlit shadows and cold blue glow']"
+12:31:12 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=8.134 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=3740413757 extra.tokens=71 extra.intento=1 extra.ip=True
+12:31:12 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=73 eliminados="['estilo:moonlit shadows and cold blue glow']"
+12:31:20 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=8.18 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=3740413757 extra.tokens=73 extra.intento=1 extra.ip=True
+12:31:20 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=74 eliminados="['estilo:moonlit shadows and cold blue glow']"
+12:31:28 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=8.215 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=3740413757 extra.tokens=74 extra.intento=1 extra.ip=True
+12:31:28 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Luna->25 years old']"
+12:31:28 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=61
+12:31:37 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=8.241 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=3740413757 extra.tokens=61 extra.intento=1 extra.ip=True
+12:31:37 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+12:31:37 INFO    f2_f3_prueba | paso  paso=imagen s=60.49
+12:31:37 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
+12:31:37 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
+12:31:37 INFO    open_clip.factory | Instantiating model architecture: CLIP
+12:31:38 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
+12:31:38 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
+12:31:38 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
+12:31:38 INFO    open_clip.factory | Parsing tokenizer identifier. Schema: None, Identifier: ViT-B-32
+12:31:38 INFO    open_clip.factory | Attempting to load config from built-in: ViT-B-32
+12:31:38 INFO    open_clip.factory | Using default SimpleTokenizer.
+12:31:39 INFO    f2_f3_prueba | paso  paso=clip s=2.26
+12:31:39 INFO    f2_f3_prueba | f2_fin  errores=[]
+# F2/F3 · Imágenes y voz reales (2026-11-10 12:31)
+
+- Perfil `calidad` · historia `C:/Users/diego/Documents/StoryBook-IA/outputs/f1/20261110_085328/story_01.json`: "El Faro de las Noches" (misterio), 2 personajes.
+
+## Imágenes (tarea 2.3)
+
+- `Lykon/dreamshaper-8` · dpmpp_2m_karras · 25 pasos · CFG 7.0 · 768×512 · IP-Adapter sí (escala 0.6).
+- Tiempos: carga 6.966 s · character sheet 5.75 s · IP-Adapter 2.913 s · **por imagen (mediana) 8.215 s** · total 56.76 s.
+- **VRAM pico:** GPU 4068.5 MB de 4096.0 MB · torch 3014.5 MB.
+- Respaldos (OOM u otro error): ninguno · fallbacks: ninguno.
+- CLIP imagen-texto (media): 0.3652 · CLIP imagen-imagen: media 0.7845, mínimo 0.6826 (10 pares).
+
+| Escena | s | Seed | Tokens | Truncado | Nombres sustituidos | CLIP texto |
+|---:|---:|---:|---:|---|---|---:|
+| 1 | 8.358 | 3740413757 | 60 | no | - | 0.4031 |
+| 2 | 8.134 | 3740413757 | 71 | sí | - | 0.3648 |
+| 3 | 8.18 | 3740413757 | 73 | sí | - | 0.3676 |
+| 4 | 8.215 | 3740413757 | 74 | sí | - | 0.2767 |
+| 5 | 8.241 | 3740413757 | 61 | no | Luna→25 years old | 0.4137 |
+
+Archivos: C:\Users\diego\Documents\StoryBook-IA\outputs\f2\20261110_123036

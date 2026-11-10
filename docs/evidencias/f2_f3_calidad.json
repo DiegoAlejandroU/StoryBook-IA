@@ -1,0 +1,122 @@
+{
+  "errores": {},
+  "imagen": {
+    "parametros": {
+      "modelo": "Lykon/dreamshaper-8",
+      "scheduler": "dpmpp_2m_karras",
+      "lcm_lora": null,
+      "pasos": 25,
+      "guidance_scale": 7.0,
+      "ancho": 768,
+      "alto": 512,
+      "usar_bible": true,
+      "ip_adapter": true,
+      "ip_adapter_scale": 0.6,
+      "seed_policy": "compartida",
+      "seed_fija": true
+    },
+    "backend": {
+      "backend": "diffusers",
+      "dispositivo": "cuda",
+      "dtype": "float16",
+      "variante": "fp16",
+      "torch": "2.15.0+cu132",
+      "diffusers": "0.42.1",
+      "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+      "lcm_lora_revision": null
+    },
+    "segundos_carga": 6.966,
+    "segundos_character_sheet": 5.75,
+    "segundos_ip_adapter": 2.913,
+    "segundos_por_imagen_mediana": 8.215,
+    "segundos_total": 56.76,
+    "vram_torch_pico_mb": 3014.5,
+    "vram_gpu_pico_mb": 4068.5,
+    "vram_gpu_total_mb": 4096.0,
+    "respaldos": [],
+    "fallbacks": [],
+    "errores": [],
+    "ip_adapter": true,
+    "escenas": [
+      {
+        "escena": 1,
+        "archivo": "scene_1.png",
+        "segundos": 8.358,
+        "seed": 3740413757,
+        "tokens": 60,
+        "truncado": false,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, A lone lighthouse on a remote coast, foggy and overgrown, glowing at night.",
+        "respaldo": false
+      },
+      {
+        "escena": 2,
+        "archivo": "scene_2.png",
+        "segundos": 8.134,
+        "seed": 3740413757,
+        "tokens": 71,
+        "truncado": true,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse.",
+        "respaldo": false
+      },
+      {
+        "escena": 3,
+        "archivo": "scene_3.png",
+        "segundos": 8.18,
+        "seed": 3740413757,
+        "tokens": 73,
+        "truncado": true,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight.",
+        "respaldo": false
+      },
+      {
+        "escena": 4,
+        "archivo": "scene_4.png",
+        "segundos": 8.215,
+        "seed": 3740413757,
+        "tokens": 74,
+        "truncado": true,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves.",
+        "respaldo": false
+      },
+      {
+        "escena": 5,
+        "archivo": "scene_5.png",
+        "segundos": 8.241,
+        "seed": 3740413757,
+        "tokens": 61,
+        "truncado": false,
+        "sustituciones": [
+          {
+            "personaje": "luna_perez",
+            "nombre": "Luna",
+            "por": "25 years old"
+          }
+        ],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 25 years old touching a dusty switch on a rocky wall of an abandoned lighthouse at night",
+        "respaldo": false
+      }
+    ]
+  },
+  "clip": {
+    "imagen_texto_por_escena": {
+      "1": 0.4031,
+      "2": 0.3648,
+      "3": 0.3676,
+      "4": 0.2767,
+      "5": 0.4137
+    },
+    "imagen_texto_media": 0.3652,
+    "imagen_imagen": {
+      "media": 0.7845,
+      "minimo": 0.6826,
+      "pares": 10
+    }
+  },
+  "perfil": "calidad",
+  "story": "C:\\Users\\diego\\Documents\\StoryBook-IA\\outputs\\f1\\20261110_085328\\story_01.json",
+  "titulo": "El Faro de las Noches"
+}
