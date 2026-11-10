@@ -128,6 +128,15 @@ class LLMConfig(_Strict):
     top_k: int | None = Field(default=20, ge=1, le=200)
     presence_penalty: float | None = Field(default=1.0, ge=0.0, le=2.0)
     repeat_penalty: float | None = Field(default=1.1, ge=1.0, le=2.0)
+    num_gpu: int | None = Field(
+        default=None,
+        ge=0,
+        le=999,
+        description=(
+            "Capas del LLM en GPU (Ollama). None = automático; 99 = todas. Con el 4B, el modo "
+            "automático dejó el 72 % en GPU (~11 tok/s) y 99 el 100 % (~21 tok/s, F1)."
+        ),
+    )
     num_ctx_auditor: int = Field(
         default=8192,
         ge=2048,
@@ -153,6 +162,7 @@ class LLMConfig(_Strict):
             "top_k": self.top_k,
             "presence_penalty": self.presence_penalty,
             "repeat_penalty": self.repeat_penalty,
+            "num_gpu": self.num_gpu,
         }
         return {k: v for k, v in valores.items() if v is not None}
 

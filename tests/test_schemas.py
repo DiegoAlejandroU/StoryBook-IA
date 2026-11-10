@@ -67,10 +67,12 @@ def test_personaje_inexistente(bible_dict: dict[str, Any]) -> None:
 
 
 def test_un_solo_protagonista(bible_dict: dict[str, Any]) -> None:
+    # Dos protagonistas: se queda el que está en la escena 1 y en más escenas (F1).
     datos = copy.deepcopy(bible_dict)
     datos["personajes"][1]["rol"] = "protagonista"
-    with pytest.raises(ValidationError, match="exactamente 1 protagonista"):
-        StoryBible.model_validate(datos)
+    bible = StoryBible.model_validate(datos)
+    assert bible.protagonista().id == "lucia"
+    assert bible.personaje("abuelo_tomas").rol.value == "secundario"
 
 
 def test_protagonista_en_suficientes_escenas(bible_dict: dict[str, Any]) -> None:
@@ -89,10 +91,16 @@ def test_campos_visuales_en_ingles(bible_dict: dict[str, Any]) -> None:
 
 
 def test_presupuesto_tokens_prompt_imagen(bible_dict: dict[str, Any]) -> None:
+    # Con frases separadas por comas se quitan las del final hasta que quepa (F1).
     datos = copy.deepcopy(bible_dict)
     datos["escenas"][0]["prompt_imagen"] = ", ".join(
         ["old stone lighthouse"] * 7
     )  # ~27 tokens, <200 caracteres
+    recortado = StoryBible.model_validate(datos).escena(1).prompt_imagen
+    assert recortado == ", ".join(["old stone lighthouse"] * 6)
+    assert estimar_tokens_clip(recortado) <= 25
+    # Una sola frase demasiado larga no se puede recortar: se devuelve al modelo.
+    datos["escenas"][0]["prompt_imagen"] = " ".join(["old stone lighthouse"] * 9)
     with pytest.raises(ValidationError, match="tokens CLIP"):
         StoryBible.model_validate(datos)
 

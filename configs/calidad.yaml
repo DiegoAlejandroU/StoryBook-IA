@@ -3,6 +3,7 @@ extends: default
 
 llm:
   model: qwen3:8b                         # ~5,2 GB Q4_K_M: Ollama reparte capas GPU/CPU
+  num_gpu: null                           # automático: el 8B no cabe entero en 4 GB de VRAM
   num_ctx: 8192
   num_predict: 4096
 

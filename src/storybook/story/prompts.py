@@ -25,7 +25,14 @@ from storybook.schemas import (
 )
 
 # Margen para las comas: el esquema limita tokens (palabras + signos), el prompt habla de palabras.
-_FACTOR_PALABRAS = 0.75
+# Con 0,75 el 4B se pasó del presupuesto en F1 (~28 tokens de 25): los modelos pequeños
+# escriben algo más de lo que se les pide, así que se pide un 20 % menos.
+_FACTOR_PALABRAS = 0.6
+
+# Los modelos pequeños escriben menos de lo pedido: en F1, con "7 a 10 oraciones", la
+# primera versión de cada escena tuvo 48-88 palabras (mínimo 90). Se pide más y se repite
+# al final del mensaje de usuario, que es lo que el modelo tiene más presente.
+LONGITUD_ESCENA = "de 10 a 12 oraciones completas (unas 120 palabras)"
 
 
 def _palabras(tokens_max: int) -> int:
@@ -51,15 +58,17 @@ Produces una "Story Bible" en JSON que sigue EXACTAMENTE el esquema recibido.
 Reglas obligatorias:
 1. Exactamente 5 escenas con este arco: 1=inicio, 2=desarrollo, 3=desarrollo, 4=climax,
    5=desenlace.
-2. texto_narrativo en español, de {PALABRAS_MIN_ESCENA} a {PALABRAS_MAX_ESCENA} palabras por escena.
+2. titulo, tono, resúmenes y texto_narrativo SIEMPRE en español. texto_narrativo de
+   {PALABRAS_MIN_ESCENA} a {PALABRAS_MAX_ESCENA} palabras por escena: escribe {LONGITUD_ESCENA};
+   con menos de {PALABRAS_MIN_ESCENA} palabras se rechaza.
 3. Entre 1 y {MAX_PERSONAJES} personajes; exactamente uno con rol "protagonista", presente en la
    escena 1 y en al menos {MIN_ESCENAS_PROTAGONISTA} escenas. Usa siempre el mismo nombre.
 4. Los campos para el ilustrador y el sonidista van en INGLÉS, como frases breves separadas por
    comas (cada coma también consume espacio del modelo de imagen):
    - estilo_visual (tecnica + paleta + iluminacion): máximo {_palabras(TOKENS_MAX_ESTILO)} palabras
      en total.
-   - descripcion_visual_fija: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras: edad, complexión,
-     cabello, ropa y un rasgo distintivo. No describas el estado de ánimo.
+   - descripcion_visual_fija: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras, en este orden:
+     edad, cabello, ropa, un rasgo distintivo y complexión. No describas el estado de ánimo.
    - prompt_imagen: máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras, SOLO acción, composición
      y entorno. No repitas la descripción del personaje ni el estilo: se añaden automáticamente.
    - prompt_sonido: máximo {PALABRAS_MAX_PROMPT_SONIDO} palabras: un ambiente y 1-2 efectos.
@@ -98,7 +107,10 @@ def mensaje_reparacion(
         "role": "user",
         "content": (
             "El JSON anterior no pasó la validación. Corrige SOLO estos problemas y devuelve "
-            f"{objeto}:\n{lista}"
+            f"{objeto}:\n{lista}\n"
+            # En F1, al pedirle un campo en inglés, el 4B pasó TODO el plan al inglés.
+            "No cambies lo que ya estaba bien: titulo, tono, resúmenes y texto_narrativo "
+            "siguen en español; solo los campos para el ilustrador y el sonidista van en inglés."
         ),
     }
 
@@ -113,19 +125,25 @@ Reglas obligatorias:
 1. plan_escenas: exactamente 5 escenas con este arco: 1=inicio, 2=desarrollo,
    3=desarrollo, 4=climax, 5=desenlace. Cada resumen es una sola frase en español.
 2. Entre 1 y {MAX_PERSONAJES} personajes; exactamente uno con rol "protagonista", presente en la
-   escena 1 y en al menos {MIN_ESCENAS_PROTAGONISTA} escenas.
-3. estilo_visual (tecnica + paleta + iluminacion) en INGLÉS: máximo
+   escena 1 y en al menos {MIN_ESCENAS_PROTAGONISTA} escenas. El id de cada personaje es su
+   nombre en minúsculas, sin tildes ni espacios (ej.: 'lena', 'capitan_ruiz'); usa exactamente
+   esos ids en plan_escenas.
+3. titulo, tono, escenario, resúmenes y canon_inicial en ESPAÑOL, aunque la idea sugiera
+   otro idioma.
+4. estilo_visual (tecnica + paleta + iluminacion) en INGLÉS: máximo
    {_palabras(TOKENS_MAX_ESTILO)} palabras en total.
-4. descripcion_visual_fija en INGLÉS: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras: edad,
-   complexión, cabello, ropa y un rasgo distintivo.
-5. canon_inicial: hechos del mundo que se mantienen durante toda la historia.
-6. No incluyas texto fuera del JSON."""
+5. descripcion_visual_fija en INGLÉS: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras, en este
+   orden: edad, cabello, ropa, un rasgo distintivo y complexión.
+6. canon_inicial: hechos del mundo que se mantienen durante toda la historia.
+7. No incluyas texto fuera del JSON."""
 
 SISTEMA_ESCENA = f"""Eres un guionista de cuentos ilustrados. Escribes UNA escena en JSON que
 sigue EXACTAMENTE el esquema recibido, a partir del plan aprobado de la historia.
 
 Reglas obligatorias:
-1. texto_narrativo en español, de {PALABRAS_MIN_ESCENA} a {PALABRAS_MAX_ESCENA} palabras.
+1. texto_narrativo y resumen SIEMPRE en español. texto_narrativo de {PALABRAS_MIN_ESCENA} a
+   {PALABRAS_MAX_ESCENA} palabras: escribe {LONGITUD_ESCENA}; con menos de {PALABRAS_MIN_ESCENA}
+   palabras se rechaza.
 2. Respeta el canon y los resúmenes previos: no contradigas nombres, rasgos, objetos, lugares ni
    relaciones ya establecidos. Usa los nombres exactos de los personajes.
 3. prompt_imagen en INGLÉS, máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras: SOLO acción,
@@ -197,7 +215,8 @@ def mensajes_escena(
                 f"Canon vigente (no se puede contradecir):\n{hechos}\n\n"
                 f"Escribe la escena {numero} (fase '{FASE_POR_NUMERO[numero].value}'). "
                 f"Resumen planeado: {objetivo.resumen}\n"
-                f"Personajes presentes (ids): {', '.join(objetivo.personajes_presentes)}"
+                f"Personajes presentes (ids): {', '.join(objetivo.personajes_presentes)}\n"
+                f"Recuerda: texto_narrativo en español, {LONGITUD_ESCENA}."
             ),
         },
     ]
@@ -265,7 +284,8 @@ def mensajes_regenerar_escena(
                 f"{actual.model_dump_json(exclude={'seed_imagen'})}\n\n"
                 f"Contradicciones detectadas por el editor:\n{problemas}\n\n"
                 f"Reescribe la escena {numero} (fase '{actual.fase.value}') corrigiéndolas, con "
-                f"los mismos personajes presentes: {', '.join(actual.personajes_presentes)}."
+                f"los mismos personajes presentes: {', '.join(actual.personajes_presentes)}.\n"
+                f"Recuerda: texto_narrativo en español, {LONGITUD_ESCENA}."
             ),
         },
     ]

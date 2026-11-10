@@ -39,6 +39,10 @@ from pydantic import (
 )
 from pydantic.json_schema import SkipJsonSchema
 
+from storybook.logging_utils import get_logger, kv
+
+logger = get_logger(__name__)
+
 # ---------------------------------------------------------------------------------------
 # Límites (únicos en todo el proyecto: los prompts y los tests los importan de aquí)
 # ---------------------------------------------------------------------------------------
@@ -63,6 +67,20 @@ SEED_MAX: Final = 2**32 - 1
 _PATRON_NO_INGLES = re.compile(r"[áéíóúñÁÉÍÓÚÑ¿¡]")
 _PATRON_PALABRA = re.compile(r"\w+(?:[-']\w+)*", re.UNICODE)
 _PATRON_TOKEN_CLIP = re.compile(r"\w+|[^\w\s]", re.UNICODE)
+
+# Palabras funcionales frecuentes y exclusivas de cada idioma (se excluyen las que existen en
+# ambos, como "a", "no", "me", "he", "has", "sin", "era" o "hay"). Bastan para distinguir
+# español de inglés sin otra dependencia.
+_TEXTO_FUNCIONALES_ES = (
+    "el la los las del de que y en un una unos unas por con para se su sus es al lo como más "
+    "pero sobre entre cuando muy ya le les este esta estos estas fue donde"
+)
+_TEXTO_FUNCIONALES_EN = (
+    "the and of to in is are was were with his her its their that this these from into for at "
+    "by it an be been have had they she you on"
+)
+_FUNCIONALES_ES: Final = frozenset(_TEXTO_FUNCIONALES_ES.split())
+_FUNCIONALES_EN: Final = frozenset(_TEXTO_FUNCIONALES_EN.split())
 
 
 # ---------------------------------------------------------------------------------------
@@ -165,10 +183,53 @@ def derivar_seed(base_seed: int, *partes: str | int) -> int:
     return int.from_bytes(hashlib.sha256(clave).digest()[:4], "big")
 
 
-def _exigir_ingles(valor: str, campo: str) -> str:
-    if _PATRON_NO_INGLES.search(valor):
-        raise ValueError(f"{campo} debe estar escrito en inglés (sin tildes, ñ ni ¿¡)")
+def parece_ingles(texto: str) -> bool:
+    """True si ``texto`` tiene más palabras funcionales inglesas que españolas.
+
+    En F1 el 4B escribió una historia de ciencia ficción entera en inglés (título, resúmenes
+    y narración) porque los campos para el ilustrador van en inglés; Piper la habría leído con
+    voz española. En textos cortos (títulos, resúmenes) basta una palabra inglesa; en textos
+    largos se exigen al menos tres para tolerar nombres propios o una cita aislada.
+    """
+    palabras = [p.lower() for p in _PATRON_PALABRA.findall(texto)]
+    ingles = sum(p in _FUNCIONALES_EN for p in palabras)
+    espanol = sum(p in _FUNCIONALES_ES for p in palabras)
+    minimo = 1 if len(palabras) <= 20 else 3
+    return ingles >= minimo and ingles > espanol
+
+
+def _exigir_espanol(valor: str, campo: str) -> str:
+    if parece_ingles(valor):
+        raise ValueError(
+            f"{campo} parece estar en inglés; escríbelo en español (solo los campos para el "
+            "ilustrador y el sonidista van en inglés)"
+        )
     return valor
+
+
+def parece_espanol(texto: str) -> bool:
+    """Simétrico de :func:`parece_ingles`, para los campos que deben ir en inglés."""
+    palabras = [p.lower() for p in _PATRON_PALABRA.findall(texto)]
+    ingles = sum(p in _FUNCIONALES_EN for p in palabras)
+    espanol = sum(p in _FUNCIONALES_ES for p in palabras)
+    minimo = 1 if len(palabras) <= 20 else 3
+    return espanol >= minimo and espanol > ingles
+
+
+def _sin_tildes(texto: str) -> str:
+    """'Tomás, niña' -> 'Tomas, nina'; quita también ¿ y ¡."""
+    descompuesto = unicodedata.normalize("NFKD", texto)
+    limpio = "".join(c for c in descompuesto if not unicodedata.combining(c))
+    return limpio.replace("¿", "").replace("¡", "")
+
+
+def _exigir_ingles(valor: str, campo: str) -> str:
+    """Rechaza el campo si está en español; si solo tiene tildes (un nombre como 'Tomás'),
+    las quita. En F1 rechazar por una tilde agotó los 4 intentos de una escena: el modelo
+    repetía el nombre del personaje en ``prompt_imagen``."""
+    if parece_espanol(valor):
+        raise ValueError(f"{campo} debe estar en inglés (parece español)")
+    return _sin_tildes(valor) if _PATRON_NO_INGLES.search(valor) else valor
 
 
 def _exigir_tokens(valor: str, campo: str, maximo: int) -> str:
@@ -179,6 +240,28 @@ def _exigir_tokens(valor: str, campo: str, maximo: int) -> str:
             "usando frases nominales breves separadas por comas"
         )
     return valor
+
+
+def _frases(valor: str) -> list[str]:
+    return [f.strip() for f in valor.split(",") if f.strip()]
+
+
+def _ajustar_tokens(valor: str, campo: str, maximo: int) -> str:
+    """Si el campo se pasa del presupuesto CLIP, quita frases del final (separadas por comas)
+    hasta que quepa; solo es error si ni la primera frase cabe.
+
+    En F1, 14 de 31 reintentos fueron por pasarse 1-5 tokens; cada reintento del plan cuesta
+    ~16 s. Las primeras frases son las importantes (los prompts piden ese orden) y
+    ``image/prompt_builder.py`` vuelve a verificar los 77 tokens con el tokenizer real.
+    """
+    if estimar_tokens_clip(valor) <= maximo:
+        return valor
+    frases = _frases(valor)
+    while len(frases) > 1 and estimar_tokens_clip(", ".join(frases)) > maximo:
+        frases.pop()
+    recortado = _exigir_tokens(", ".join(frases), campo, maximo)
+    logger.info("campo_recortado_a_presupuesto_clip", extra=kv(campo=campo, antes=valor))
+    return recortado
 
 
 def _sin_duplicados(valores: list[Any], campo: str) -> list[Any]:
@@ -326,6 +409,15 @@ class EstiloVisual(_Base):
 
     @model_validator(mode="after")
     def _presupuesto_tokens(self) -> EstiloVisual:
+        # Si se pasa, se quita la última frase del campo más largo que tenga varias.
+        campos = ("tecnica", "paleta", "iluminacion")
+        while estimar_tokens_clip(self.prompt()) > TOKENS_MAX_ESTILO:
+            recortables = [c for c in campos if len(_frases(getattr(self, c))) > 1]
+            if not recortables:
+                break
+            campo = max(recortables, key=lambda c: estimar_tokens_clip(getattr(self, c)))
+            setattr(self, campo, ", ".join(_frases(getattr(self, campo))[:-1]))
+            logger.info("campo_recortado_a_presupuesto_clip", extra=kv(campo=campo))
         _exigir_tokens(
             self.prompt(), "estilo_visual (tecnica+paleta+iluminacion)", TOKENS_MAX_ESTILO
         )
@@ -349,9 +441,10 @@ class Personaje(_Base):
     descripcion_visual_fija: str = Field(
         max_length=200,
         description=(
-            "En inglés, frases breves separadas por comas: edad, complexión, cabello, ropa y "
-            "un rasgo distintivo. Ej.: 'girl age 10, slim, curly red hair, yellow raincoat, "
-            "round glasses'. Se repite idéntica en todas las imágenes."
+            "En inglés, frases breves separadas por comas, de la más a la menos importante: "
+            "edad, cabello, ropa, rasgo distintivo y complexión. Ej.: 'girl age 10, curly red "
+            "hair, yellow raincoat, round glasses, slim'. Se repite idéntica en todas las "
+            "imágenes."
         ),
     )
     rasgos_personalidad: list[TextoCorto] = Field(min_length=1, max_length=5)
@@ -360,8 +453,8 @@ class Personaje(_Base):
     @field_validator("descripcion_visual_fija")
     @classmethod
     def _descriptor_valido(cls, valor: str) -> str:
-        _exigir_ingles(valor, "descripcion_visual_fija")
-        return _exigir_tokens(valor, "descripcion_visual_fija", TOKENS_MAX_DESCRIPTOR)
+        valor = _exigir_ingles(valor, "descripcion_visual_fija")
+        return _ajustar_tokens(valor, "descripcion_visual_fija", TOKENS_MAX_DESCRIPTOR)
 
 
 class Escena(_Base):
@@ -396,17 +489,19 @@ class Escena(_Base):
     @field_validator("texto_narrativo")
     @classmethod
     def _longitud_texto(cls, valor: str) -> str:
+        _exigir_espanol(valor, "texto_narrativo")
         palabras = contar_palabras(valor)
         if not PALABRAS_MIN_ESCENA <= palabras <= PALABRAS_MAX_ESCENA:
             raise ValueError(
                 f"texto_narrativo tiene {palabras} palabras; debe tener entre "
-                f"{PALABRAS_MIN_ESCENA} y {PALABRAS_MAX_ESCENA}"
+                f"{PALABRAS_MIN_ESCENA} y {PALABRAS_MAX_ESCENA} (escribe de 10 a 12 oraciones)"
             )
         return valor
 
     @field_validator("resumen")
     @classmethod
     def _resumen_breve(cls, valor: str) -> str:
+        _exigir_espanol(valor, "resumen")
         if contar_palabras(valor) > PALABRAS_MAX_RESUMEN:
             raise ValueError(
                 f"resumen debe ser una frase de máximo {PALABRAS_MAX_RESUMEN} palabras"
@@ -416,13 +511,13 @@ class Escena(_Base):
     @field_validator("prompt_imagen")
     @classmethod
     def _prompt_imagen_valido(cls, valor: str) -> str:
-        _exigir_ingles(valor, "prompt_imagen")
-        return _exigir_tokens(valor, "prompt_imagen", TOKENS_MAX_PROMPT_IMAGEN)
+        valor = _exigir_ingles(valor, "prompt_imagen")
+        return _ajustar_tokens(valor, "prompt_imagen", TOKENS_MAX_PROMPT_IMAGEN)
 
     @field_validator("prompt_sonido")
     @classmethod
     def _prompt_sonido_valido(cls, valor: str) -> str:
-        _exigir_ingles(valor, "prompt_sonido")
+        valor = _exigir_ingles(valor, "prompt_sonido")
         if contar_palabras(valor) > PALABRAS_MAX_PROMPT_SONIDO:
             raise ValueError(f"prompt_sonido supera {PALABRAS_MAX_PROMPT_SONIDO} palabras")
         return valor
@@ -430,7 +525,8 @@ class Escena(_Base):
     @field_validator("personajes_presentes")
     @classmethod
     def _ids_unicos(cls, valor: list[str]) -> list[str]:
-        return _sin_duplicados(valor, "personajes_presentes")
+        # Tras normalizar, 'Lucía' y 'lucia' son el mismo id: se quitan los repetidos.
+        return list(dict.fromkeys(valor))
 
     @field_validator("etiquetas_sonido")
     @classmethod
@@ -446,6 +542,60 @@ class Escena(_Base):
                 f"no '{self.fase.value}'"
             )
         return self
+
+
+def resolver_ids_por_nombre(personajes: list[Personaje], presentes: list[str]) -> list[str]:
+    """Cambia ids desconocidos por el id del personaje cuyo nombre coincide sin ambigüedad.
+
+    En F1 el 4B dio ids genéricos ('protagonista', 'p_1') y luego, en las escenas, escribió el
+    nombre ('lena', 'nexo_7'): la Bible se rechazaba en las 3 historias. Se acepta el nombre
+    completo normalizado o una palabra de él (de 3 letras o más) si identifica a un solo
+    personaje; lo demás sigue siendo un error de validación.
+    """
+    conocidos = {p.id for p in personajes}
+    alias: dict[str, set[str]] = {}
+    for personaje in personajes:
+        nombre = _normalizar_id(personaje.nombre)
+        for clave in {nombre, *nombre.split("_")}:
+            if len(clave) >= 3:
+                alias.setdefault(clave, set()).add(personaje.id)
+    resueltos: list[str] = []
+    for valor in presentes:
+        candidatos = alias.get(valor, set()) if valor not in conocidos else {valor}
+        nuevo = next(iter(candidatos)) if len(candidatos) == 1 else valor
+        if nuevo not in resueltos:
+            resueltos.append(nuevo)
+    return resueltos
+
+
+def normalizar_protagonista(
+    personajes: list[Personaje], presencias: list[tuple[int, list[str]]]
+) -> None:
+    """Deja exactamente un protagonista: el que está en la escena 1 y en más escenas.
+
+    En F1 el 4B insistió en dos protagonistas (un robot y una científica) durante los 4
+    intentos. El rol es una etiqueta que el código puede fijar: la consistencia visual se
+    mide sobre el protagonista, así que se elige el personaje más presente desde el inicio
+    y los demás protagonistas pasan a secundarios.
+    """
+    protagonistas = [p for p in personajes if p.rol is RolPersonaje.PROTAGONISTA]
+    if len(protagonistas) == 1:
+        return
+    candidatos = protagonistas or personajes
+
+    def presencia(personaje: Personaje) -> tuple[bool, int]:
+        en_escenas = [n for n, presentes in presencias if personaje.id in presentes]
+        return 1 in en_escenas, len(en_escenas)
+
+    elegido = max(candidatos, key=presencia)  # max conserva el primero si hay empate
+    for personaje in protagonistas:
+        if personaje is not elegido:
+            personaje.rol = RolPersonaje.SECUNDARIO
+    elegido.rol = RolPersonaje.PROTAGONISTA
+    logger.info(
+        "protagonista_normalizado",
+        extra=kv(elegido=elegido.id, antes=[p.id for p in protagonistas]),
+    )
 
 
 def _validar_reparto(personajes: list[Personaje], presencias: list[tuple[int, list[str]]]) -> None:
@@ -478,9 +628,15 @@ def _validar_numeracion(numeros: list[int]) -> None:
         raise ValueError(f"las escenas deben estar numeradas 1..{NUM_ESCENAS} en orden: {numeros}")
 
 
+# El género lo elige el usuario: el código lo copia de la solicitud y el LLM no lo escribe.
+# En F1 el 4B escribió géneros de más de 40 caracteres ("terror psicológico con ...") en los
+# 4 intentos y dos historias de terror se perdieron por eso.
+GeneroBible = SkipJsonSchema[str]
+
+
 class StoryBible(_Base):
     titulo: str = Field(min_length=3, max_length=80)
-    genero: str = Field(min_length=3, max_length=GENERO_OTRO_MAX_CHARS)
+    genero: GeneroBible = Field(default="", max_length=GENERO_OTRO_MAX_CHARS)
     tono: str = Field(min_length=3, max_length=80, description="En español. Ej.: 'inquietante'.")
     idioma: Literal["es"] = "es"
     estilo_visual: EstiloVisual
@@ -495,12 +651,21 @@ class StoryBible(_Base):
         description="Hechos establecidos que ninguna escena posterior puede contradecir.",
     )
 
+    @field_validator("titulo")
+    @classmethod
+    def _titulo_en_espanol(cls, valor: str) -> str:
+        return _exigir_espanol(valor, "titulo")
+
     @model_validator(mode="after")
     def _coherencia_estructural(self) -> StoryBible:
         _validar_numeracion([e.numero for e in self.escenas])
-        _validar_reparto(
-            self.personajes, [(e.numero, e.personajes_presentes) for e in self.escenas]
-        )
+        for escena in self.escenas:
+            escena.personajes_presentes[:] = resolver_ids_por_nombre(
+                self.personajes, escena.personajes_presentes
+            )
+        presencias = [(e.numero, e.personajes_presentes) for e in self.escenas]
+        normalizar_protagonista(self.personajes, presencias)
+        _validar_reparto(self.personajes, presencias)
         # El canon siempre contiene todos los hechos nuevos, en orden y sin duplicados.
         acumulado: list[str] = []
         for hecho in [*self.canon, *(h for e in self.escenas for h in e.hechos_nuevos)]:
@@ -582,6 +747,11 @@ class PlanEscena(_Base):
     resumen: str = Field(max_length=260, description="En español, una frase.")
     personajes_presentes: list[IdPersonaje] = Field(max_length=MAX_PERSONAJES)
 
+    @field_validator("resumen")
+    @classmethod
+    def _resumen_en_espanol(cls, valor: str) -> str:
+        return _exigir_espanol(valor, "resumen")
+
     @model_validator(mode="after")
     def _fase_coherente(self) -> PlanEscena:
         if self.fase is not FASE_POR_NUMERO[self.numero]:
@@ -593,7 +763,7 @@ class PlanEscena(_Base):
 
 class PlanHistoria(_Base):
     titulo: str = Field(min_length=3, max_length=80)
-    genero: str = Field(min_length=3, max_length=GENERO_OTRO_MAX_CHARS)
+    genero: GeneroBible = Field(default="", max_length=GENERO_OTRO_MAX_CHARS)
     tono: str = Field(min_length=3, max_length=80)
     idioma: Literal["es"] = "es"
     estilo_visual: EstiloVisual
@@ -602,12 +772,21 @@ class PlanHistoria(_Base):
     plan_escenas: list[PlanEscena] = Field(min_length=NUM_ESCENAS, max_length=NUM_ESCENAS)
     canon_inicial: list[Hecho] = Field(default_factory=list, max_length=10)
 
+    @field_validator("titulo")
+    @classmethod
+    def _titulo_en_espanol(cls, valor: str) -> str:
+        return _exigir_espanol(valor, "titulo")
+
     @model_validator(mode="after")
     def _coherencia(self) -> PlanHistoria:
         _validar_numeracion([e.numero for e in self.plan_escenas])
-        _validar_reparto(
-            self.personajes, [(e.numero, e.personajes_presentes) for e in self.plan_escenas]
-        )
+        for escena in self.plan_escenas:
+            escena.personajes_presentes[:] = resolver_ids_por_nombre(
+                self.personajes, escena.personajes_presentes
+            )
+        presencias = [(e.numero, e.personajes_presentes) for e in self.plan_escenas]
+        normalizar_protagonista(self.personajes, presencias)
+        _validar_reparto(self.personajes, presencias)
         return self
 
 

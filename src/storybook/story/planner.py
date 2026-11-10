@@ -132,6 +132,8 @@ class Planificador:
     def __init__(self, llm: LLMBackend, cfg: LLMConfig) -> None:
         self.llm = llm
         self.cfg = cfg
+        # Llamadas completadas de la última generación (sirve para medir aunque luego falle).
+        self.registro: list[RegistroLlamada] = []
 
     # ---- Infraestructura -----------------------------------------------------------------
     def _llamar(
@@ -160,6 +162,7 @@ class Planificador:
             opciones_extra=self.cfg.opciones_muestreo(),
         )
         registro = RegistroLlamada.desde(etapa, gen, time.perf_counter() - inicio)
+        self.registro.append(registro)
         logger.info(
             "llm_llamada", extra=kv(etapa=etapa, intentos=gen.intentos, s=registro.segundos)
         )
@@ -174,6 +177,7 @@ class Planificador:
         self, solicitud: StoryRequest, estrategia: Estrategia | None = None
     ) -> ResultadoPlan:
         elegida: Estrategia = estrategia or self.cfg.estrategia
+        self.registro = []
         logger.info("planificador_inicio", extra=kv(estrategia=elegida, modelo=self.cfg.model))
         if elegida == "una_llamada":
             return self._una_llamada(solicitud)
@@ -189,6 +193,7 @@ class Planificador:
             temperature=self.cfg.temperature_narrativa,
             seed=self.cfg.seed,
         )
+        bible.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
         return ResultadoPlan(bible=bible, estrategia="una_llamada", llamadas=[registro])
 
     def _por_etapas(self, solicitud: StoryRequest) -> ResultadoPlan:
@@ -200,6 +205,7 @@ class Planificador:
             seed=self.cfg.seed,
             reparar=_reparar_plan,
         )
+        plan.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
         llamadas = [registro_plan]
         regla = REGLAS_GENERO[solicitud.genero]
         canon = list(plan.canon_inicial)

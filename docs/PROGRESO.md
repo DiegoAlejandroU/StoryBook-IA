@@ -22,7 +22,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   3. Confirmar que torch ve la GPU: `torch.version.cuda` no es `None` y `torch.cuda.is_available()` es `True`.
   4. `uv run pytest` en verde.
   5. `uv run python scripts/check_env.py` sin FALLO. Guardar su salida en `docs/evidencias/`. (dep: 0.2, 0.4)
-- [ ] 0.6 [WINDOWS] Descargar modelos y hacer la prueba por modalidad (descargas OK; repetir `f0_hello` tras las correcciones del 9-nov 17:45):
+- [x] 0.6 [WINDOWS] Descargar modelos y hacer la prueba por modalidad (completa el 10-nov 06:40: las 5 modalidades en GPU, ver bitácora):
   1. Fijar `OLLAMA_FLASH_ATTENTION=1` y `OLLAMA_KV_CACHE_TYPE=q8_0` y reiniciar Ollama.
   2. Aceptar en Hugging Face las licencias de `stabilityai/stable-audio-3-small-sfx` y `stabilityai/stable-audio-open-1.0`, y poner `HF_TOKEN` en `.env`.
   3. `uv run python scripts/download_models.py`.
@@ -45,6 +45,9 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - `story/auditor.py`, que detecta contradicciones y regenera la escena afectada;
   - tests con un LLM falso. (dep: 1.2)
 - [ ] 1.4 [WINDOWS] 10 generaciones reales con 4B y con 8B: tasa de JSON válido, tiempos, revisión de la calidad del español. (dep: 0.6, 1.3)
+  - Se ejecuta con `setup_windows.ps1 -Paso f1 -Generaciones 10` (el 4B ya va 100 % en GPU por defecto). Genera `docs/evidencias/f1_generaciones.csv` y `f1_resumen.md`, con las causas de cada reintento.
+  - Prueba de 3 generaciones (10 nov, 07:04): 3/3 válidas, pero una salió en inglés.
+  - Corrida de 10 (10 nov, 08:00): 6/10 válidas; los 4 fallos ya están corregidos. Falta repetir la corrida de 10 con el 4B; la comparación con el 8B (`-Perfil calidad`) es opcional.
 
 ## F2 · Imágenes y consistencia visual
 - [x] 2.1 [AUTO] `image/prompt_builder.py`: compone estilo + personajes presentes + acción, controla el límite de 77 tokens con un tokenizer inyectable (estimador heurístico en tests), recorta por prioridad y registra los truncamientos. Tests. (dep: 1.1)
@@ -226,3 +229,67 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - `f0_hello.py llm` ahora usa el `Planificador` real del proyecto y guarda `story.json`, `llm_llamadas.json` y la salida inválida si falla.
 - Verificación sin GPU: **118 tests en verde**, ruff limpio.
 
+### 2026-11-10 06:50 · Windows (4.ª corrida de setup) · 0.6 hecha → **Fase 0 completa**
+- **Las 5 modalidades funcionan en GPU** (`outputs/f0/20261110_063941`, 285 s en total):
+  - LLM por etapas: Story Bible válida "El Faro que Escucha" (misterio, 2 personajes, 5 escenas de 96–121 palabras, canon de 14 hechos). 6 llamadas y 14 intentos, 227 s, 11,4 tok/s, **72 % del modelo en GPU**.
+  - Imagen: 4,3 y 2,8 s; IP-Adapter 3,9 s; VRAM pico 4,08 GB.
+  - Piper RTF 0,067. AudioLDM 1,4–1,6 s por clip de 8 s.
+  - **WER 0,0084**; CLIP imagen-texto 0,41; CLIP imagen-imagen 0,81 (mínimo 0,79).
+- Causas de los reintentos: las 5 escenas fueron demasiado cortas al primer intento (48–64 palabras, mínimo 90), y en el plan una descripción visual pasó de 25 tokens CLIP y un id de personaje no coincidió.
+- Ajustes para F1:
+  - El prompt pide la longitud como "7 a 10 oraciones completas".
+  - `llm.num_gpu` es opcional, para probar el modelo 100 % en GPU (`-NumGpu 99`).
+  - Nuevo `scripts/f1_generaciones.py` (tarea 1.4): 10 ideas que cubren los 6 géneros, planificador + auditor, con CSV y resumen en `docs/evidencias/`.
+- La tarea automática no corrió anoche (PC apagado): las ejecuciones requieren el PC encendido con la app de Claude abierta.
+- Verificación sin GPU: 120 tests en verde, ruff limpio.
+
+### 2026-11-10 07:45 · Windows (prueba F1, 3 generaciones con `-NumGpu 99`) + correcciones · 1.4 (parcial)
+- **3/3 Story Bibles válidas**. Mediana: 126 s por historia (plan ~50 s, escenas ~70 s, auditor ~5 s), 20,8 tok/s, **100 % del modelo en GPU** y 0 contradicciones del auditor.
+- `num_gpu: 99` duplica la velocidad (11 → 21 tok/s) y cabe junto con el contexto del auditor (8192). Queda por defecto en `default.yaml`; `calidad.yaml` lo deja automático porque el 8B no cabe.
+- **Problema encontrado:** la historia 3 (ciencia ficción, "Rooted in Orbit") salió **entera en inglés** (título, resúmenes y narración) y pasó la validación. Piper la habría leído con voz española.
+- Causas de los ~2 intentos por llamada (20 reintentos en total):
+  - 14 · escenas demasiado cortas al primer intento (56–88 palabras; mínimo 90).
+  - 8 · descriptores y `prompt_imagen` por encima del presupuesto CLIP (~28 tokens de 25).
+  - 3 · el plan usaba ids genéricos (`protagonista`, `p_1`) y las escenas los nombres (`lena`, `nexo_7`).
+  - 1 · fase equivocada en el plan.
+- Correcciones:
+  - `schemas.py`:
+    - `parece_ingles()` (palabras funcionales) rechaza `titulo`, `resumen` y `texto_narrativo` en inglés y devuelve el error al modelo. Probado con las 3 historias reales: rechaza solo la de inglés.
+    - `resolver_ids_por_nombre()`: un nombre que identifica a un solo personaje se cambia por su id. Los ids repetidos en `personajes_presentes` se eliminan en lugar de rechazarse.
+  - `prompts.py`:
+    - Pide 10 a 12 oraciones (unas 120 palabras) y lo repite al final del mensaje de cada escena.
+    - Pide los campos en inglés con el 60 % del presupuesto CLIP (antes 75 %), el título y los resúmenes en español, y ids iguales al nombre.
+  - `f1_generaciones.py`: nueva columna `causas_reintento` y tabla de causas en `f1_resumen.md`.
+  - `setup_windows.ps1 -Perfil calidad` corre la comparación con el 8B; sus evidencias llevan sufijo `_calidad` y no pisan las del 4B.
+- Verificación sin GPU: **140 tests en verde** (contenedor y bundle Linux), ruff limpio.
+- **Siguiente [WINDOWS]:** `setup_windows.ps1 -Paso f1 -Generaciones 10` (evidencia de 1.4). Esperado: menos intentos por llamada y unos 60–80 s por historia.
+- **Siguiente [AUTO]:** 2.2 (generador de imágenes), 3.1, 3.2 y 4.1.
+
+### 2026-11-10 08:40 · Windows (corrida F1 de 10 historias) + correcciones · 1.4 (parcial)
+- **6/10 Story Bibles válidas** (`outputs/f1/20261110_080023`). Las válidas mejoraron mucho con las correcciones de las 07:45:
+  - Mediana de 84 s por historia (antes 126 s) y 33 tok/s.
+  - 1,21 intentos por llamada (antes 2,0) y escenas de 100–125 palabras al primer intento.
+  - Todas en español y 100 % en GPU; el auditor no encontró contradicciones.
+- **Los 4 fallos** agotaron los 4 intentos repitiendo el mismo error:
+  - Historias 4 y 10 (terror): `genero` de más de 40 caracteres en el plan, las dos.
+  - Historia 3 (ciencia ficción): dos protagonistas, un robot y una científica.
+  - Historia 8 (fantasía): `prompt_imagen` con tilde, por el nombre de un personaje. La validación anterior rechazaba cualquier tilde.
+- Otras causas de reintento:
+  - 14 · presupuesto CLIP, por 1–5 tokens de más.
+  - 17 · idioma. En la historia 7, al pedirle un descriptor en inglés, el modelo pasó todo el plan al inglés y necesitó 4 intentos.
+- Correcciones (lo que el código ya sabe no lo decide el LLM; lo que se puede arreglar sin perder información no se reintenta):
+  - `genero` sale del esquema del LLM; el planificador lo copia de la solicitud.
+  - Con 0 o 2+ protagonistas, queda el personaje de la escena 1 con más apariciones; los demás pasan a secundarios.
+  - Campos en inglés:
+    - Se quitan las tildes ("Tomás" → "Tomas").
+    - Solo se rechazan si parecen español (`parece_espanol`).
+  - Descriptor, estilo y `prompt_imagen`:
+    - Si se pasan del presupuesto CLIP, se quitan frases del final.
+    - El descriptor se pide de lo más a lo menos importante.
+  - El mensaje de reparación recuerda qué campos van en español y cuáles en inglés.
+  - `f1_generaciones.py`:
+    - Si una generación falla, guarda `fallo_XX.json` (errores y última salida).
+    - Cuenta sus intentos y causas en el resumen.
+  - `setup_windows.ps1 -Paso f1` hace primero el commit del código, para que la evidencia corresponda a un commit. En la corrida anterior el código no se había subido.
+- Verificación sin GPU: **147 tests en verde**, ruff limpio. Las 9 Story Bibles reales en español (F0 y F1) siguen validando; solo se rechaza la que está en inglés.
+- **Siguiente [WINDOWS]:** repetir `setup_windows.ps1 -Paso f1 -Generaciones 10`.

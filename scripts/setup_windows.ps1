@@ -7,14 +7,22 @@
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso git
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso entorno
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso modelos
+  Tarea 1.4 (generaciones reales del LLM; el 4B ya va 100 % en GPU por configs/default.yaml):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 10
+  Comparacion con Qwen3 8B (perfil calidad; evidencias con sufijo _calidad):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil calidad
 
   Todo queda registrado en docs\evidencias\setup_windows.log (UTF-8).
   El script NO pide ni muestra el token de Hugging Face: se lee de .env si existe.
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1")]
     [string]$Paso = "todo",
+    [int]$Generaciones = 10,
+    [int]$NumGpu = -1,
+    [ValidateSet("rapido", "calidad")]
+    [string]$Perfil = "rapido",
     [switch]$SinPausa
 )
 
@@ -124,6 +132,7 @@ function Paso-Git {
     if ($pendiente) {
         & git rev-parse --verify HEAD 2>$null | Out-Null
         if ($LASTEXITCODE -eq 0) { $titulo = "chore: actualizar archivos del proyecto" } else { $titulo = "chore: estructura inicial del proyecto (Fase 0)" }
+        if ($Paso -eq "f1") { $titulo = "chore: codigo usado en las generaciones reales de F1 (tarea 1.4)" }
         $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
         if ((Ejecutar "git" @("commit", "-m", $titulo, "-m", $coautor)) -ne 0) { return 1 }
     } else {
@@ -303,7 +312,8 @@ function Guardar-Evidencias([string]$Mensaje) {
 Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
-if ($Paso -in @("todo", "git")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+# f1 tambien hace commit del codigo antes de generar: la evidencia debe corresponder a un commit.
+if ($Paso -in @("todo", "git", "f1")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -312,6 +322,17 @@ if ($Paso -in @("todo", "entorno")) {
 if ($Paso -in @("todo", "modelos")) {
     $codigo = Paso-Modelos
     Guardar-Evidencias "chore: evidencias de modelos y prueba por modalidad (tarea 0.6)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "f1") {
+    Titulo ("Tarea 1.4 - {0} generaciones reales de la Story Bible (perfil {1})" -f $Generaciones, $Perfil)
+    $argsF1 = @("run", "python", "scripts/f1_generaciones.py", "--n", "$Generaciones", "--perfil", $Perfil)
+    if ($NumGpu -ge 0) { $argsF1 += @("--num-gpu", "$NumGpu") }
+    $sufijo = if ($Perfil -eq "rapido") { "" } else { "_$Perfil" }
+    $salidaF1 = Join-Path $Evid ("f1_generaciones{0}.txt" -f $sufijo)
+    if (Test-Path $salidaF1) { Remove-Item $salidaF1 }
+    $codigo = Ejecutar "uv" $argsF1 $salidaF1
+    Guardar-Evidencias "chore: evidencias de generaciones reales del LLM (tarea 1.4)" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 Fin 0
