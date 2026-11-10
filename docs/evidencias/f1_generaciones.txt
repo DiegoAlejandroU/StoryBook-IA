@@ -1,157 +1,148 @@
-﻿08:23:40 INFO    f1_generaciones | f1_inicio  perfil=rapido n=10 salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f1\20261110_082340
-08:23:42 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:24:02 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:24:02 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=2 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
-08:24:18 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:24:18 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=36.492
-08:24:27 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.669
-08:24:36 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.614
-08:24:44 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.395
-08:24:52 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=7.949
-08:25:01 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=9.495
-08:25:07 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:25:07 INFO    f1_generaciones | generacion  n=1 genero=misterio valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=79.61 segundos_auditor=5.52 segundos_total=85.14 tokens_salida=2966 tokens_por_s=34.84 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=111 palabras_max=119 titulo="La luz del olvido" causas_reintento="personajes.descripcion_visual_fija · idioma ×2" error=
-08:25:07 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:25:27 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=19.839
-08:25:36 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.731
-08:25:44 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.571
-08:25:53 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.928
-08:26:02 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.203
-08:26:11 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.257
-08:26:16 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:26:16 INFO    f1_generaciones | generacion  n=2 genero=fantasia valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=63.53 segundos_auditor=5.37 segundos_total=68.9 tokens_salida=3020 tokens_por_s=43.83 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=104 palabras_max=124 titulo="La Sombra que Habla" causas_reintento= error=
-08:26:16 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:26:37 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:26:37 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="edad: 30, cabello: silver strands, ropa: utility suit with green panels, rasgo distintivo: a small garden tool on his chest, complexion: lean and agile"
-08:26:37 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="edad: 12, cabello: short and gray-blue, ropa: small repair suit with patchwork, rasgo distintivo: one eye is a blinking sensor, complexion: compact and sturdy"
-08:26:37 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=20.603
-08:26:45 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.713
-08:26:53 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.047
-08:27:02 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.264
-08:27:10 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.924
-08:27:19 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.772
-08:27:24 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:27:24 INFO    f1_generaciones | generacion  n=3 genero=ciencia_ficcion valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=63.32 segundos_auditor=5.09 segundos_total=68.42 tokens_salida=3000 tokens_por_s=43.85 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=101 palabras_max=127 titulo="La Huerta del Cielo" causas_reintento= error=
-08:27:24 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:27:45 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:27:45 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=2 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
-08:28:01 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:28:01 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age:18, hair:frizzy blonde, clothes:white cotton t-shirt and jeans, distinct feature:tattoo on left wrist, build:slim"
-08:28:01 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age:45, hair:short black and straight, clothes:old leather jacket, distinct feature:cold eyes with a sharp gaze, build:slim but firm"
-08:28:01 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=37.05
-08:28:10 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.587
-08:28:19 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=prompt_imagen antes="A man in a dark coat stands at the edge of a forest path, looking into an old house with wind blowing through its windows."
-08:28:19 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.786
-08:28:28 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=9.007
-08:28:37 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_imagen: Value error, prompt_imagen tiene ~28 tokens CLIP y el máximo es 25; acórtalo usando frases nominales breves separadas por comas"
-08:28:47 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=18.974
-08:29:02 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=15.746
-08:29:08 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:29:08 INFO    f1_generaciones | generacion  n=4 genero=terror valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=9 segundos_plan=98.15 segundos_auditor=5.53 segundos_total=103.68 tokens_salida=3012 tokens_por_s=29.05 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=110 palabras_max=144 titulo="La Casa que Cambia" causas_reintento="personajes.descripcion_visual_fija · idioma ×2; prompt_imagen · presupuesto CLIP ×1" error=
-08:29:08 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:29:27 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:29:27 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=18.776
-08:29:35 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=7.874
-08:29:42 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=7.564
-08:29:51 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=9.061
-08:30:00 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.61
-08:30:09 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.72
-08:30:14 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:30:14 INFO    f1_generaciones | generacion  n=5 genero=infantil valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=60.6 segundos_auditor=5.23 segundos_total=65.83 tokens_salida=2864 tokens_por_s=43.5 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=104 palabras_max=127 titulo="El Puente de Max y Luna" causas_reintento= error=
-08:30:14 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:30:33 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=2 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
-08:30:47 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=33.416
-08:30:57 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=9.314
-08:31:05 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.449
-08:31:15 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=9.508
-08:31:24 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.437
-08:31:34 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=9.818
-08:31:39 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:31:39 INFO    f1_generaciones | generacion  n=6 genero=aventura valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=79.94 segundos_auditor=5.37 segundos_total=85.31 tokens_salida=3036 tokens_por_s=35.59 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=113 palabras_max=149 titulo="El Tesoro del Abuelo en la Selva" causas_reintento="personajes.descripcion_visual_fija · idioma ×2" error=
-08:31:39 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:32:04 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:32:04 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:32:04 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:32:04 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=3 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
-08:32:23 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:32:23 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:32:23 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:32:23 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age: 32, hair: dark wavy, clothing: classic suit with red necktie, distinct feature: eyes slightly narrowed as if observing something fixed, build: slender but firm"
-08:32:23 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age: 45, hair: short gray, clothing: long wool coat with hat, distinct feature: has a scar on left cheek, build: robust"
-08:32:23 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age: 20, hair: short blonde, clothing: white shirt and linen pants, distinct feature: wears a watch in pocket that never moves, build: slender"
-08:32:23 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=44.066
-08:32:38 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=15.093
-08:32:46 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.081
-08:32:55 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.869
-08:33:04 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=prompt_imagen antes="Marta stands in a dimly lit victorian room, holding a pocket watch. A clock on the wall shows 3:15. Rain falls outside."
-08:33:04 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.044
-08:33:13 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.48
-08:33:18 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:33:18 INFO    f1_generaciones | generacion  n=7 genero=misterio valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=93.63 segundos_auditor=5.16 segundos_total=98.79 tokens_salida=3089 tokens_por_s=31.27 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=99 palabras_max=124 titulo="El Minuto Que Se Detuvo" causas_reintento="personajes.descripcion_visual_fija · idioma ×3" error=
-08:33:18 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:33:37 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
-08:33:37 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="10 years old, black hair tied in a braid, wears a tunic with frayed edges and leather boots, has one eye covered by a patch, thin build"
-08:33:37 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=19.522
-08:33:46 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.588
-08:33:54 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.297
-08:34:03 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.968
-08:34:12 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.435
-08:34:20 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.178
-08:34:25 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:34:25 INFO    f1_generaciones | generacion  n=8 genero=fantasia valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=61.99 segundos_auditor=5.24 segundos_total=67.23 tokens_salida=2922 tokens_por_s=43.46 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=116 palabras_max=137 titulo="El último dragón de la biblioteca" causas_reintento= error=
-08:34:25 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:34:45 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=2 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
-08:35:02 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age: 12, hair: short and black, clothing: blue cotton shirt with pockets, distinct feature: glowing green eyes, build: slender"
-08:35:02 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age: 50, hair: gray with golden strands, clothing: brown leather jacket, distinct feature: round glasses and a scar on the cheek, build: robust"
-08:35:02 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=36.339
-08:35:10 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.285
-08:35:19 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=9.049
-08:35:29 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=10.072
-08:35:38 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.171
-08:35:47 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.526
-08:35:52 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:35:52 INFO    f1_generaciones | generacion  n=9 genero=ciencia_ficcion valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=81.44 segundos_auditor=5.64 segundos_total=87.08 tokens_salida=3026 tokens_por_s=34.75 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=102 palabras_max=123 titulo="La Ciudad de las Noches" causas_reintento="personajes.descripcion_visual_fija · idioma ×2" error=
-08:35:52 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
-08:36:14 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:36:14 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:36:14 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=2 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
-08:36:31 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:36:31 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
-08:36:31 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age:10 years, hair:dark brown, clothing:wool jacket and short pants, distinct_feature:eyes like stones, build:slim"
-08:36:31 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age:50 years, hair:white and messy, clothing:old leather jacket, distinct_feature:hands marked by work, build:robust"
-08:36:31 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=38.391
-08:36:40 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=9.072
-08:36:48 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.267
-08:36:56 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.109
-08:37:05 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.936
-08:37:13 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.226
-08:37:19 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
-08:37:19 INFO    f1_generaciones | generacion  n=10 genero=terror valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=81 segundos_auditor=6.01 segundos_total=87.01 tokens_salida=2932 tokens_por_s=33.7 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=112 palabras_max=131 titulo="La Muñeca de Nieve" causas_reintento="personajes.descripcion_visual_fija · idioma ×2" error=
-08:37:19 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
-08:37:19 INFO    f1_generaciones | f1_fin  validas=10 total=10
-# F1 · Generaciones reales de la Story Bible (2026-11-10 08:37)
+﻿08:53:28 INFO    f1_generaciones | f1_inicio  perfil=rapido n=10 salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f1\20261110_085328
+08:53:31 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+08:53:51 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=20.57
+08:54:00 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.54
+08:54:08 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.43
+08:54:17 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.666
+08:54:25 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.273
+08:54:34 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+08:54:42 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=16.554
+08:54:47 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+08:54:47 INFO    f1_generaciones | generacion  n=1 genero=misterio valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=71.03 segundos_auditor=5.09 segundos_total=76.13 tokens_salida=2979 tokens_por_s=39.13 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=104 palabras_max=133 titulo="El Faro de las Noches" causas_reintento="prompt_imagen · idioma ×1; prompt_sonido · idioma ×1" error=
+08:54:47 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+08:55:06 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+08:55:06 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="7 years old, dark brown hair, simple tunic made of woven grass, eyes glow faintly when she speaks to her shadow, small frame with a crooked smile"
+08:55:06 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="middle-aged, silver hair tied with a frayed ribbon, wears tattered robes of old stone fabric, speaks in riddles, carries a lantern that never burns"
+08:55:06 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=19.638
+08:55:14 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=7.773
+08:55:22 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.128
+08:55:31 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.305
+08:55:40 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.971
+08:55:49 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=9.118
+08:55:54 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+08:55:54 INFO    f1_generaciones | generacion  n=2 genero=fantasia valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=61.93 segundos_auditor=5.43 segundos_total=67.36 tokens_salida=2951 tokens_por_s=43.81 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=104 palabras_max=129 titulo="La Sombra Que Habla" causas_reintento= error=
+08:55:54 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+08:56:16 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+08:56:16 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="12 years old, short brown hair, green tunic with leaf patterns, wears a small garden glove, eyes slightly squinted from sun exposure, slender frame"
+08:56:16 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="mechanical form, smooth silver surface with moss-like texture on joints, two green sensors on head, one arm has a leaf-shaped attachment"
+08:56:16 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=21.497
+08:56:25 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+08:56:33 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=2 s=17.442
+08:56:42 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.79
+08:56:52 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+08:57:01 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=19.505
+08:57:11 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.406
+08:57:21 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=10.274
+08:57:26 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+08:57:26 INFO    f1_generaciones | generacion  n=3 genero=ciencia_ficcion valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=9 segundos_plan=86.91 segundos_auditor=5.28 segundos_total=92.2 tokens_salida=3228 tokens_por_s=35.01 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=100 palabras_max=118 titulo="Huerta de Códigos" causas_reintento="prompt_imagen · idioma ×2" error=
+08:57:26 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+08:57:49 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+08:57:49 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=22.493
+08:57:58 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=9.308
+08:58:07 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.857
+08:58:16 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.921
+08:58:25 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.861
+08:58:35 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+08:58:44 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=19.566
+08:58:50 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+08:58:50 INFO    f1_generaciones | generacion  n=4 genero=terror valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=78.01 segundos_auditor=5.64 segundos_total=83.65 tokens_salida=3198 tokens_por_s=38.23 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=112 palabras_max=122 titulo="El Sueño Que Cambia" causas_reintento="prompt_imagen · idioma ×1; prompt_sonido · idioma ×1" error=
+08:58:50 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+08:59:10 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=20.267
+08:59:19 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.851
+08:59:28 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.863
+08:59:37 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.795
+08:59:45 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.596
+08:59:54 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.645
+09:00:00 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+09:00:00 INFO    f1_generaciones | generacion  n=5 genero=infantil valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=64.02 segundos_auditor=5.52 segundos_total=69.54 tokens_salida=2985 tokens_por_s=42.92 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=98 palabras_max=123 titulo="El Camino de Luna y Milo" causas_reintento= error=
+09:00:00 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+09:00:20 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=19.949
+09:00:28 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.887
+09:00:38 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=prompt_imagen antes="Two boys stand at the edge of a wide river, surrounded by tall trees with bright leaves. Roots form a natural bridge on one bank."
+09:00:38 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=9.457
+09:00:47 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.861
+09:00:56 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.277
+09:01:06 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=10.063
+09:01:11 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+09:01:11 INFO    f1_generaciones | generacion  n=6 genero=aventura valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=66.49 segundos_auditor=5.37 segundos_total=71.87 tokens_salida=3139 tokens_por_s=43.68 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=105 palabras_max=128 titulo="El Tesoro del Árbol Silencioso" causas_reintento= error=
+09:01:11 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+09:01:35 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:01:35 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
+09:01:35 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="18 years old, black hair in a messy bun, wears a navy trench coat and worn boots, has a scar on left cheek, thin build"
+09:01:35 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="50 years old, gray hair tied in a knot, wears a long coat with pockets full of papers, glasses slightly fogged, stout build"
+09:01:35 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=23.709
+09:01:44 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=9.018
+09:01:53 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.382
+09:02:01 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.791
+09:02:10 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.044
+09:02:20 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=9.55
+09:02:25 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+09:02:25 INFO    f1_generaciones | generacion  n=7 genero=misterio valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=68.49 segundos_auditor=5.24 segundos_total=73.73 tokens_salida=3220 tokens_por_s=43.67 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=102 palabras_max=117 titulo="El Minuto Olvidado" causas_reintento= error=
+09:02:25 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+09:02:47 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:02:47 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="12 years old, dark brown hair tied in a braid, wears a tattered cloak with frayed edges, one eye slightly covered by a patch of cloth, slender build"
+09:02:47 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="50 years old, silver hair streaked with gray, wears a long green robe stitched with dragon scales, carries an ancient staff made of bone, broad shoulders and strong frame"
+09:02:47 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=21.379
+09:02:56 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.975
+09:03:05 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=9.019
+09:03:13 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.447
+09:03:23 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=10.215
+09:03:34 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=10.715
+09:03:40 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+09:03:40 INFO    f1_generaciones | generacion  n=8 genero=fantasia valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=7 segundos_plan=68.75 segundos_auditor=5.8 segundos_total=74.55 tokens_salida=3251 tokens_por_s=43.61 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=114 palabras_max=140 titulo="El Último Dragón de los Libros" causas_reintento= error=
+09:03:40 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+09:04:05 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:04:05 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=3 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
+09:04:26 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:04:26 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age 45, silver-gray hair, green military uniform with torn insignias, wears a cracked watch that ticks backward, tall and rigid build"
+09:04:26 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=2 errores=5 primero="plan_escenas.0.resumen: Value error, resumen parece estar en inglés; escríbelo en español (solo los campos para el ilustrador y el sonidista van en inglés)"
+09:04:46 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:04:46 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age 45, silver-gray hair, green military uniform with torn insignias, wears a cracked watch that ticks backward, tall and rigid build"
+09:04:46 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=3 errores=5 primero="plan_escenas.0.resumen: Value error, resumen parece estar en inglés; escríbelo en español (solo los campos para el ilustrador y el sonidista van en inglés)"
+09:05:06 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:05:06 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="age 45, silver-gray hair, green military uniform with torn insignias, wears a cracked watch that ticks backward, tall and rigid build"
+09:05:06 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=4 errores=5 primero="plan_escenas.0.resumen: Value error, resumen parece estar en inglés; escríbelo en español (solo los campos para el ilustrador y el sonidista van en inglés)"
+09:05:06 WARNING f1_generaciones | generacion_fallida  n=9 error="LLMValidationError: PlanHistoria: salida inválida tras 4 intentos"
+09:05:06 INFO    f1_generaciones | generacion  n=9 genero=ciencia_ficcion valida=False estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=1 intentos=4 segundos_plan= segundos_auditor= segundos_total=85.97 tokens_salida=0 tokens_por_s=0 fraccion_gpu=1 contradicciones= escenas_regeneradas= palabras_min= palabras_max= titulo= causas_reintento="plan_escenas.resumen · idioma ×15; personajes.descripcion_visual_fija · idioma ×3" error="LLMValidationError: PlanHistoria: salida inválida tras 4 intentos"
+09:05:06 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+09:05:23 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=2 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija debe estar en inglés (parece español)"
+09:05:40 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=34.066
+09:05:47 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=7.704
+09:05:57 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=prompt_imagen antes="A woman in a dark wool coat stands in a rural garden at dawn, wind blowing through trees. She watches an old doll with glass eyes."
+09:05:57 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=9.31
+09:06:06 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=prompt_imagen antes="A dimly lit basement, a old doll sits beside an antique diary. Cracked wood beams and dust-filled corners. A woman in a dark coat watches from the hallway."
+09:06:06 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.769
+09:06:14 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.14
+09:06:22 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.596
+09:06:28 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+09:06:28 INFO    f1_generaciones | generacion  n=10 genero=terror valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=8 segundos_plan=76.58 segundos_auditor=5.51 segundos_total=82.1 tokens_salida=2918 tokens_por_s=35.54 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=97 palabras_max=122 titulo="La Muñeca del Amanecer" causas_reintento="personajes.descripcion_visual_fija · idioma ×2" error=
+09:06:28 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+09:06:28 INFO    f1_generaciones | f1_fin  validas=9 total=10
+# F1 · Generaciones reales de la Story Bible (2026-11-10 09:06)
 
 - Perfil `rapido` · modelo `qwen3:4b-instruct-2507-q4_K_M` · estrategia `por_etapas` · auditor sí · num_ctx 4096 · num_gpu 99
-- **Story Bibles válidas: 10/10**
-- Tiempo por historia (mediana): 85.22 s · tokens/s (mediana): 35.22
-- Intentos por llamada (mediana): 1.14 · fracción del modelo en GPU (mediana): 1.00
+- **Story Bibles válidas: 9/10**
+- Tiempo por historia (mediana): 75.34 s · tokens/s (mediana): 42.92
+- Intentos por llamada (mediana): 1.07 · fracción del modelo en GPU (mediana): 1.00
 
 | # | Género | Válida | Llamadas | Intentos | s total | tok/s | GPU | Contrad. | Título |
 |---:|---|---|---:|---:|---:|---:|---:|---:|---|
-| 1 | misterio | sí | 7 | 8 | 85.14 | 34.84 | 1.0 | 0 | La luz del olvido |
-| 2 | fantasia | sí | 7 | 7 | 68.9 | 43.83 | 1.0 | 0 | La Sombra que Habla |
-| 3 | ciencia_ficcion | sí | 7 | 7 | 68.42 | 43.85 | 1.0 | 0 | La Huerta del Cielo |
-| 4 | terror | sí | 7 | 9 | 103.68 | 29.05 | 1.0 | 0 | La Casa que Cambia |
-| 5 | infantil | sí | 7 | 7 | 65.83 | 43.5 | 1.0 | 0 | El Puente de Max y Luna |
-| 6 | aventura | sí | 7 | 8 | 85.31 | 35.59 | 1.0 | 0 | El Tesoro del Abuelo en la Selva |
-| 7 | misterio | sí | 7 | 8 | 98.79 | 31.27 | 1.0 | 0 | El Minuto Que Se Detuvo |
-| 8 | fantasia | sí | 7 | 7 | 67.23 | 43.46 | 1.0 | 0 | El último dragón de la biblioteca |
-| 9 | ciencia_ficcion | sí | 7 | 8 | 87.08 | 34.75 | 1.0 | 0 | La Ciudad de las Noches |
-| 10 | terror | sí | 7 | 8 | 87.01 | 33.7 | 1.0 | 0 | La Muñeca de Nieve |
+| 1 | misterio | sí | 7 | 8 | 76.13 | 39.13 | 1.0 | 0 | El Faro de las Noches |
+| 2 | fantasia | sí | 7 | 7 | 67.36 | 43.81 | 1.0 | 0 | La Sombra Que Habla |
+| 3 | ciencia_ficcion | sí | 7 | 9 | 92.2 | 35.01 | 1.0 | 0 | Huerta de Códigos |
+| 4 | terror | sí | 7 | 8 | 83.65 | 38.23 | 1.0 | 0 | El Sueño Que Cambia |
+| 5 | infantil | sí | 7 | 7 | 69.54 | 42.92 | 1.0 | 0 | El Camino de Luna y Milo |
+| 6 | aventura | sí | 7 | 7 | 71.87 | 43.68 | 1.0 | 0 | El Tesoro del Árbol Silencioso |
+| 7 | misterio | sí | 7 | 7 | 73.73 | 43.67 | 1.0 | 0 | El Minuto Olvidado |
+| 8 | fantasia | sí | 7 | 7 | 74.55 | 43.61 | 1.0 | 0 | El Último Dragón de los Libros |
+| 9 | ciencia_ficcion | NO | 1 | 4 | 85.97 | 0.0 | 1.0 |  | LLMValidationError: PlanHistoria: salida inválida tras 4 int |
+| 10 | terror | sí | 7 | 8 | 82.1 | 35.54 | 1.0 | 0 | La Muñeca del Amanecer |
 
 Causas de reintento (errores de validación devueltos al modelo):
 
 | Campo · causa | Veces |
 |---|---:|
-| personajes.descripcion_visual_fija · idioma | 13 |
-| prompt_imagen · presupuesto CLIP | 1 |
+| plan_escenas.resumen · idioma | 15 |
+| personajes.descripcion_visual_fija · idioma | 5 |
+| prompt_imagen · idioma | 4 |
+| prompt_sonido · idioma | 2 |
