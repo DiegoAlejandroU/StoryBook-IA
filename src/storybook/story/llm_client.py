@@ -283,7 +283,10 @@ class OllamaClient:
 
         Si la validación falla, devuelve al modelo su respuesta y los errores (``reparar``,
         por defecto ``mensaje_reparacion``) hasta ``max_reintentos`` veces. Solo se conserva el
-        último intento fallido para no desbordar ``num_ctx``. Los errores de conexión o de
+        último intento fallido para no desbordar ``num_ctx``. Si una reparación también falla,
+        el intento siguiente empieza de cero con otra seed: en F1 el 4B quedó atrapado en el
+        mismo error (resúmenes en inglés) durante 3 reparaciones seguidas, mientras que los
+        intentos limpios casi siempre pasan. Los errores de conexión o de
         modelo no encontrado no se reintentan. Si la respuesta se corta por longitud (bucle de
         repetición), se reintenta sin reenviar la salida cortada (no cabría en ``num_ctx``) y
         con otra seed. Si se agotan los intentos lanza ``LLMValidationError`` con los errores
@@ -296,6 +299,7 @@ class OllamaClient:
         ultimo_contenido = ""
         semilla = seed
         for intento in range(1, max_reintentos + 2):
+            era_reparacion = bool(reparacion)
             try:
                 resultado = self.chat_json(
                     model=model,
@@ -344,10 +348,15 @@ class OllamaClient:
                         primero=errores[0] if errores else "",
                     ),
                 )
-                reparacion = [
-                    {"role": "assistant", "content": resultado.content},
-                    reparador(errores),
-                ]
+                if era_reparacion:
+                    reparacion = []  # la reparación no funcionó: se empieza de cero
+                    if seed is not None:
+                        semilla = seed + intento
+                else:
+                    reparacion = [
+                        {"role": "assistant", "content": resultado.content},
+                        reparador(errores),
+                    ]
                 continue
             return GeneracionValidada(
                 objeto=objeto,

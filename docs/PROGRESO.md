@@ -44,26 +44,28 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - `story/planner.py` con la estrategia (a), una llamada, y la (b), plan y luego escenas con canon y resúmenes;
   - `story/auditor.py`, que detecta contradicciones y regenera la escena afectada;
   - tests con un LLM falso. (dep: 1.2)
-- [ ] 1.4 [WINDOWS] 10 generaciones reales con 4B y con 8B: tasa de JSON válido, tiempos, revisión de la calidad del español. (dep: 0.6, 1.3)
+- [x] 1.4 [WINDOWS] 10 generaciones reales con 4B y con 8B: tasa de JSON válido, tiempos, revisión de la calidad del español. (dep: 0.6, 1.3)
   - Se ejecuta con `setup_windows.ps1 -Paso f1 -Generaciones 10` (el 4B ya va 100 % en GPU por defecto). Genera `docs/evidencias/f1_generaciones.csv` y `f1_resumen.md`, con las causas de cada reintento.
   - Prueba de 3 generaciones (10 nov, 07:04): 3/3 válidas, pero una salió en inglés.
   - Corrida de 10 (10 nov, 08:00): 6/10 válidas; los 4 fallos ya están corregidos.
   - Corrida de 10 (10 nov, 08:23): **10/10 válidas**, 85 s por historia, 1,14 intentos por llamada. Se corrigieron los nombres copiados del prompt y los descriptores con etiquetas.
-  - Falta la corrida definitiva con los prompts finales: 10 con el 4B y 10 con el 8B (`-Perfil calidad`), para comparar.
+  - **Corrida definitiva (10 nov, 08:53 y 09:06):** 4B 9/10 (75 s por historia) y 8B 9/10 (~16 min por historia). Evidencias en `docs/evidencias/f1_resumen.md` y `f1_resumen_calidad.md` (perfil calidad = Qwen3 8B en esa fecha).
 
 ## F2 · Imágenes y consistencia visual
 - [x] 2.1 [AUTO] `image/prompt_builder.py`: compone estilo + personajes presentes + acción, controla el límite de 77 tokens con un tokenizer inyectable (estimador heurístico en tests), recorta por prioridad y registra los truncamientos. Tests. (dep: 1.1)
-- [ ] 2.2 [AUTO] Ya existe `gpu.py` (carga, liberación y medición de VRAM). Falta:
+- [x] 2.2 [AUTO] Ya existe `gpu.py` (carga, liberación y medición de VRAM). Falta:
   - `image/generator.py`: diffusers con DreamShaper 8 + LCM-LoRA + IP-Adapter según `configs/`, imports perezosos y `hub.local_snapshot` para cargar offline;
   - `image/consistency.py`: character sheet del protagonista;
   - en `prompt_builder`, cambiar los nombres de personajes que aparezcan en `prompt_imagen` ("Max and Luna walking...") por su descriptor, o quitarlos: CLIP no conoce esos nombres (visto en F1);
   - tests con un pipeline falso. (dep: 0.3, 2.1)
 - [ ] 2.3 [WINDOWS] Prueba real: 5 imágenes de una historia, sin OOM; ajustar steps, CFG y resolución; medir tiempos y VRAM. (dep: 0.6, 2.2)
+  - Se ejecuta con `setup_windows.ps1 -Paso f2` (rápido); `-Paso f2 -Perfil calidad` mide solo las imágenes con DPM++ 25 pasos. Usa `scripts/f2_f3_prueba.py` con la primera historia válida de la última corrida de F1 hecha con el 4B. Evidencias en `docs/evidencias/f2_f3_resumen*.md`.
 
 ## F3 · Voz
-- [ ] 3.1 [AUTO] `voice/tts.py`: Protocol `TTSBackend` con backends Piper (`hub.require_piper_voice`) y Kokoro (opcional), ambos con imports perezosos; voz y parámetros desde la configuración; salida WAV y duración. Tests con un backend falso. (dep: 0.3)
-- [ ] 3.2 [AUTO] Ya existe `evaluation/asr_check.py`. Falta `tests/test_asr_check.py` con un transcriptor falso: WER, normalización del español y casos borde. (dep: 0.3)
+- [x] 3.1 [AUTO] `voice/tts.py`: Protocol `TTSBackend` con backends Piper (`hub.require_piper_voice`) y Kokoro (opcional), ambos con imports perezosos; voz y parámetros desde la configuración; salida WAV y duración. Tests con un backend falso. (dep: 0.3)
+- [x] 3.2 [AUTO] Ya existe `evaluation/asr_check.py`. Falta `tests/test_asr_check.py` con un transcriptor falso: WER, normalización del español y casos borde. (dep: 0.3)
 - [ ] 3.3 [WINDOWS] Escuchar la voz `es_MX-claude-high` y 1–2 alternativas, elegir y medir el WER real. (dep: 0.6, 3.1, 3.2)
+  - `setup_windows.ps1 -Paso f2` descarga `es_MX-ald-medium` y `es_ES-davefx-medium` (`download_models.py --voces-extra`) y narra la historia con las 3 voces. Los WAV quedan en `outputs/f2/<fecha>/voz/<voz>/`, con el WER de cada voz en el resumen. Diego escucha y elige.
 
 ## F4 · Sonido y mezcla
 - [ ] 4.1 [AUTO] `sound/procedural.py`: síntesis con numpy/scipy de viento, lluvia, fuego, latidos, drone oscuro, pasos, olas, bosque/pájaros y ambiente mágico. Mapeo desde `EtiquetaSonido` (schemas) a recetas. Tests: duración, sample rate, sin clipping, sin NaN. (dep: 0.3)
@@ -111,7 +113,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Hoy (lun 9, según el cronograma):** tareas 0.1 (git), 0.5 (entorno) y 0.6 (modelos + `f0_hello`). Las tres las hace `scripts/setup_windows.ps1` (PowerShell: `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1`), que deja todo registrado en `docs/evidencias/`; luego Claude revisa las evidencias y marca las tareas. Las ejecuciones automáticas no usan git, así que el historial depende de los commits que se hagan en Windows.
+- **Siguiente (2.3 y 3.3):** `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2` y después `... -Paso f2 -Perfil calidad`. Al terminar, escuchar las 3 voces en `outputs/f2/<fecha>/voz/` y decirle a Claude cuál suena mejor. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
 ---
@@ -319,3 +321,69 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
 - Verificación sin GPU: **154 tests en verde** (contenedor y bundle Linux), ruff limpio. Las 18 Story Bibles reales en español de F1 siguen validando.
 - **Siguiente [WINDOWS]:** corrida definitiva de 1.4: 10 historias con el 4B y 10 con el 8B, con los mismos prompts. El 8B tarda bastante más; se puede dejar corriendo.
 - **Siguiente [AUTO]:** 2.2 (generador de imágenes; incluir el tratamiento de nombres en `prompt_imagen`), 3.1, 3.2 y 4.1.
+
+### 2026-11-10 11:44 · automático (Linux) · 2.2, 3.1, 3.2
+- **2.2 · Generador de imágenes y consistencia.**
+  - `image/generator.py` (nuevo): `GeneradorImagenes` con el Protocol `BackendImagen` y `DiffusersBackend` (imports perezosos; mismo procedimiento validado en F0 por `f0_hello.py`: fp16, `hub.local_snapshot`, LCM-LoRA o DPM++ 2M Karras, SDPA sin attention slicing, VAE slicing, encoder de IP-Adapter en CPU).
+    - Una carga para todas las escenas; asigna seeds con `consistency` si la Bible no las tiene; cuenta tokens con el tokenizer real (`contador_desde_tokenizer`).
+    - Fallbacks: si la character sheet o IP-Adapter fallan, sigue sin IP-Adapter (`imagen:sin_ip_adapter`); un OOM se reintenta una vez tras liberar memoria; si una escena sigue fallando recibe una imagen de respaldo (`imagen:respaldo:n`). Siempre salen 5 imágenes.
+    - `numeros=[n]` regenera una escena con la misma Bible y seeds, reutilizando `character_sheet.png`.
+    - `EtapaImagen.a_dict()` deja en el manifest parámetros, seeds, prompts (tokens, truncamientos, sustituciones), versiones, revisión de los pesos, métricas por etapa, fallbacks y errores.
+  - `image/consistency.py` (nuevo): prompt de la character sheet del protagonista (estilo + descriptor + retrato de cuerpo entero sobre fondo neutro, 512×512, seed del protagonista).
+  - `image/prompt_builder.py`: `sustituir_nombres()` cambia los nombres de personajes en `prompt_imagen` por la primera frase de su descriptor ("Lucia and Tomas…" → "girl age 10 and old man…"). Nombres de una palabra solo si van en mayúscula (no toca "rose", "sky"); nombres compuestos e ids con `_` sin distinguir mayúsculas; se omiten palabras compartidas por dos personajes. En C1 usa "a person". Las sustituciones se registran en `PromptImagen.sustituciones`.
+  - Tests: `tests/test_image_generator.py` (15) y `tests/test_image_consistency.py` (12).
+- **3.1 · Voz.** `voice/tts.py` (nuevo): `Narrador` + Protocol `TTSBackend`, con `PiperBackend` (valida la voz con `hub.require_piper_voice` antes de importar piper) y `KokoroBackend` (opcional, `speed = 1/length_scale`). Una carga por historia, texto normalizado para el TTS (comillas, rayas, signo final), `voice_n.wav` PCM 16 bits con 0,35 s de silencio final, duración y RTF por escena. Tests: `tests/test_tts.py` (18).
+- **3.2 · ASR.** `tests/test_asr_check.py` (19): normalización del español (tildes, ñ, ¿¡, comillas), WER (sustitución, borrado, inserción > 1, hipótesis vacía, referencia vacía) y `WhisperChecker` con un modelo falso. `asr_check.py` no necesitó cambios.
+- **Verificación (bundle Python 3.12):** **218 tests en verde** (antes 154); `ruff check` sin errores; `ruff format --check` con 51 archivos formateados.
+- No se cambió ningún modelo, versión ni configuración. Ningún archivo pidió acciones distintas a CLAUDE.md.
+- **Por validar en Windows/GPU:**
+  - 2.3: `GeneradorImagenes(cfg.image, cfg.consistency).generar(bible, carpeta)` con una Story Bible real de F1: 5 imágenes + character sheet sin OOM, tiempos y VRAM (`EtapaImagen.metricas`). Confirmar con diffusers real que `ip_adapter_image_embeds` con LCM (CFG 1,5) da imágenes correctas, y cuántos prompts se truncan con el tokenizer real.
+  - 3.3: `Narrador(cfg.voice).narrar_bible(bible, carpeta)` con Piper real (comprobar que `synthesize_wav` sobre un `BytesIO` funciona igual que sobre archivo) y medir el WER real con `WhisperChecker`.
+- **Siguiente [AUTO]:** 4.1 (síntesis procedural), luego 4.2 y 4.3.
+
+### 2026-11-10 12:15 · Windows (corrida definitiva de 1.4: 4B y 8B) + correcciones · 1.4 hecha
+- **4B** (`outputs/f1/20261110_085328`):
+  - **9/10 válidas**. Mediana de 75 s por historia, 43 tok/s, 1,07 intentos por llamada y 100 % en GPU.
+  - 0 contradicciones; 5 historias sin ningún reintento.
+  - Nombres variados: ya no se repiten Lena ni Capitán Ruiz.
+- **8B** (`outputs/f1/20261110_090633`, perfil calidad):
+  - **9/10 válidas**, pero **mediana de 982 s (~16 min) por historia solo de texto**. 3 tok/s, 39 % del modelo en GPU con `num_ctx` 8192 y 1,57 intentos por llamada.
+  - El auditor encontró 3 contradicciones en una historia.
+- **Fallos:**
+  - 4B, historia 9: el primer plan traía los descriptores en español; al repararlo, el modelo pasó los 5 resúmenes al inglés y se quedó así en 3 reparaciones seguidas. Quedó en `fallo_09.json`.
+  - 8B, historia 1: `iluminacion` de 62 caracteres (límite 60) en los 4 intentos; la reparación no lo corrigió.
+- **El 8B escribe más a menudo en español los campos para el ilustrador y el sonidista:** 31 descriptores, 21 `prompt_imagen` y 17 `prompt_sonido`, frente a 5, 4 y 2 del 4B.
+- **Calidad del español** (misma idea, terror, escena 2 de cada modelo):
+  - Ambos son fluidos y respetan el plan.
+  - El 8B tiene frases algo más elaboradas, con algún cambio de tiempo verbal ("soplaba").
+  - El 4B mantiene errores sueltos de concordancia y alguna incoherencia ("al amanecer, mientras el cielo se oscurece").
+  - Ninguno es claramente superior en lo narrativo; la diferencia decisiva es el tiempo: 13 veces más lento.
+- Correcciones:
+  - `generar_validado`: si una reparación falla, el intento siguiente empieza de cero con otra seed (`seed + intento`). Con 4 intentos queda: limpio → reparación → limpio → reparación.
+  - `EstiloVisual`: límite de 120 caracteres por campo; el que manda es el presupuesto CLIP, que ya recorta frases.
+- **Integración con lo automático de las 11:44 (2.2, 3.1 y 3.2):** sincronizado sin conflictos. **220 tests en verde** (contenedor y bundle Linux), ruff limpio.
+- **Decisión pendiente (Diego):** el perfil calidad con el 8B no puede cumplir "< 12 min por historia completa", porque el texto solo ya tarda ~16 min. Ver "Pendientes para Diego".
+- **Siguiente [WINDOWS]:** 2.3 (imágenes reales de una historia de F1) y 3.3 (voz real con WER), ya desbloqueadas por 2.2, 3.1 y 3.2.
+
+### 2026-11-10 12:30 · decisión del perfil calidad + preparación de 2.3 y 3.3 · —
+- **Decisión de Diego: opción (a).**
+  - `calidad.yaml` usa el mismo Qwen3 4B que rápido (100 % en GPU, ~75 s por historia) y gasta el tiempo extra en imágenes (DPM++ 25 pasos) y sonido (SAO 1.0).
+  - El 8B pasa a `configs/experiments/llm_8b.yaml` (`-Perfil llm_8b` en el script; `download_models.py --profiles experiments/llm_8b`).
+  - Las evidencias `f1_*_calidad.*` de hoy corresponden al 8B; su encabezado lo dice.
+  - Actualizados CLAUDE.md, MODELS.md y los tests de perfiles.
+- **Nuevo `scripts/f2_f3_prueba.py` (2.3 y 3.3):** con una Story Bible real de F1 ejecuta:
+  - `GeneradorImagenes`: character sheet, IP-Adapter y 5 escenas.
+  - CLIP: imagen-texto por escena e imagen-imagen.
+  - `Narrador` con la voz del perfil y las alternativas.
+  - WER con faster-whisper.
+
+  Cada paso es independiente: si uno falla, se registra y se sigue. Guarda `resultado.json` y `resumen.md` con tiempos, VRAM pico, tokens, truncamientos, nombres sustituidos, fallbacks, RTF y WER por voz.
+- `download_models.py --voces-extra` descarga voces Piper adicionales. Un nombre inválido ya no aborta la descarga.
+- `setup_windows.ps1 -Paso f2`:
+  1. Hace commit del código.
+  2. Descarga las 2 voces alternativas (si falla, sigue).
+  3. Ejecuta la prueba y guarda las evidencias.
+
+  Con `-Perfil calidad` mide solo las imágenes.
+- Verificación sin GPU: **224 tests en verde** (contenedor y bundle Linux), ruff limpio. Con los datos reales, la historia elegida sería `outputs/f1/20261110_085328/story_01.json` ("El Faro de las Noches", 2 personajes).
+- **Siguiente [WINDOWS]:** `setup_windows.ps1 -Paso f2` y después `-Paso f2 -Perfil calidad`.

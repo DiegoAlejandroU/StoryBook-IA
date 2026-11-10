@@ -9,19 +9,22 @@
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso modelos
   Tarea 1.4 (generaciones reales del LLM; el 4B ya va 100 % en GPU por configs/default.yaml):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 10
-  Comparacion con Qwen3 8B (perfil calidad; evidencias con sufijo _calidad):
-      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil calidad
+  Tareas 2.3 y 3.3 (imagenes y voz reales de una historia de F1; voces alternativas):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2 -Perfil calidad
+  Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
   Todo queda registrado en docs\evidencias\setup_windows.log (UTF-8).
   El script NO pide ni muestra el token de Hugging Face: se lee de .env si existe.
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [int]$NumGpu = -1,
-    [ValidateSet("rapido", "calidad")]
+    [ValidateSet("rapido", "calidad", "llm_8b")]
     [string]$Perfil = "rapido",
     [switch]$SinPausa
 )
@@ -133,6 +136,7 @@ function Paso-Git {
         & git rev-parse --verify HEAD 2>$null | Out-Null
         if ($LASTEXITCODE -eq 0) { $titulo = "chore: actualizar archivos del proyecto" } else { $titulo = "chore: estructura inicial del proyecto (Fase 0)" }
         if ($Paso -eq "f1") { $titulo = "chore: codigo usado en las generaciones reales de F1 (tarea 1.4)" }
+        if ($Paso -eq "f2") { $titulo = "chore: codigo usado en las pruebas reales de imagen y voz (tareas 2.3 y 3.3)" }
         $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
         if ((Ejecutar "git" @("commit", "-m", $titulo, "-m", $coautor)) -ne 0) { return 1 }
     } else {
@@ -312,8 +316,8 @@ function Guardar-Evidencias([string]$Mensaje) {
 Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
-# f1 tambien hace commit del codigo antes de generar: la evidencia debe corresponder a un commit.
-if ($Paso -in @("todo", "git", "f1")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+# f1 y f2 tambien hacen commit del codigo antes de generar: la evidencia debe corresponder a un commit.
+if ($Paso -in @("todo", "git", "f1", "f2")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -326,13 +330,36 @@ if ($Paso -in @("todo", "modelos")) {
 }
 if ($Paso -eq "f1") {
     Titulo ("Tarea 1.4 - {0} generaciones reales de la Story Bible (perfil {1})" -f $Generaciones, $Perfil)
-    $argsF1 = @("run", "python", "scripts/f1_generaciones.py", "--n", "$Generaciones", "--perfil", $Perfil)
+    $perfilF1 = if ($Perfil -eq "llm_8b") { "experiments/llm_8b" } else { $Perfil }
+    $argsF1 = @("run", "python", "scripts/f1_generaciones.py", "--n", "$Generaciones", "--perfil", $perfilF1)
     if ($NumGpu -ge 0) { $argsF1 += @("--num-gpu", "$NumGpu") }
     $sufijo = if ($Perfil -eq "rapido") { "" } else { "_$Perfil" }
     $salidaF1 = Join-Path $Evid ("f1_generaciones{0}.txt" -f $sufijo)
     if (Test-Path $salidaF1) { Remove-Item $salidaF1 }
     $codigo = Ejecutar "uv" $argsF1 $salidaF1
     Guardar-Evidencias "chore: evidencias de generaciones reales del LLM (tarea 1.4)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "f2") {
+    $voces = @("es_MX-ald-medium", "es_ES-davefx-medium")
+    $sufijo = if ($Perfil -eq "rapido") { "" } else { "_$Perfil" }
+    if ($Perfil -eq "rapido") {
+        # Voces alternativas para comparar (tarea 3.3). Unico paso con Internet; si falla, se sigue.
+        Titulo "Tarea 3.3 - Descarga de voces Piper alternativas"
+        $argsVoces = @("run", "python", "scripts/download_models.py", "--profiles", "rapido", "--only", "voice", "--voces-extra") + $voces
+        $salidaVoces = Join-Path $Evid "download_voces.txt"
+        if (Test-Path $salidaVoces) { Remove-Item $salidaVoces }
+        if ((Ejecutar "uv" $argsVoces $salidaVoces) -ne 0) { Escribir "Alguna voz no se pudo descargar; se prueba con las disponibles." "Yellow" }
+    }
+    Titulo ("Tareas 2.3 y 3.3 - Imagenes y voz reales de una historia de F1 (perfil {0})" -f $Perfil)
+    $perfilF2 = if ($Perfil -eq "llm_8b") { "experiments/llm_8b" } else { $Perfil }
+    $argsF2 = @("run", "python", "scripts/f2_f3_prueba.py", "--perfil", $perfilF2)
+    # La voz no cambia entre perfiles: con calidad solo se miden las imagenes (DPM++ 25 pasos).
+    if ($Perfil -eq "rapido") { $argsF2 += @("--voces") + $voces } else { $argsF2 += @("--solo", "imagen") }
+    $salidaF2 = Join-Path $Evid ("f2_f3{0}.txt" -f $sufijo)
+    if (Test-Path $salidaF2) { Remove-Item $salidaF2 }
+    $codigo = Ejecutar "uv" $argsF2 $salidaF2
+    Guardar-Evidencias "chore: evidencias de imagenes y voz reales (tareas 2.3 y 3.3)" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 Fin 0

@@ -32,7 +32,10 @@ def test_herencia_de_perfiles() -> None:
     calidad = config.load_config("calidad")
     assert rapido.image.scheduler == "lcm" and rapido.image.steps <= 8
     assert calidad.image.scheduler == "dpmpp_2m_karras" and calidad.image.steps >= 20
-    assert calidad.llm.model != rapido.llm.model
+    # Tarea 1.4: el 8B tardó ~16 min por historia solo de texto; calidad usa el mismo 4B y
+    # mejora imágenes y sonido. El 8B queda como experimento.
+    assert calidad.llm.model == rapido.llm.model
+    assert config.load_config("experiments/llm_8b").llm.model == "qwen3:8b"
     assert rapido.llm.host == calidad.llm.host  # heredado de default
 
 

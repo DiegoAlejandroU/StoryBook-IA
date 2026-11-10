@@ -11,9 +11,11 @@ Requisitos previos:
 
 Uso (PowerShell):
     uv run python scripts/download_models.py                      # rapido + calidad
+    uv run python scripts/download_models.py --profiles experiments/llm_8b   # Qwen3 8B (F6)
     uv run python scripts/download_models.py --profiles rapido    # solo lo de la demo
     uv run python scripts/download_models.py --only image voice   # por modalidad
     uv run python scripts/download_models.py --skip-gated         # sin Stable Audio
+    uv run python scripts/download_models.py --only voice --voces-extra es_MX-ald-medium  # 3.3
 """
 
 from __future__ import annotations
@@ -181,8 +183,8 @@ def descargar_piper(voz: str) -> Entrada:
     from huggingface_hub import hf_hub_download
 
     entrada = Entrada(f"{PIPER_REPO}:{voz}", "voice")
-    subruta = piper_repo_subpath(voz)
     try:
+        subruta = piper_repo_subpath(voz)  # dentro del try: un nombre inválido no aborta todo
         for nombre in (f"{voz}.onnx", f"{voz}.onnx.json", "MODEL_CARD"):
             hf_hub_download(
                 PIPER_REPO, f"{subruta}/{nombre}", local_dir=config.PIPER_DIR, token=_token()
@@ -250,6 +252,12 @@ def main() -> int:
         "--skip-gated", action="store_true", help="Omitir Stable Audio (AudioLDM sí se descarga)"
     )
     parser.add_argument("--with-kokoro", action="store_true", help="Voces Kokoro (experimento)")
+    parser.add_argument(
+        "--voces-extra",
+        nargs="*",
+        default=[],
+        help="Voces Piper adicionales para compararlas (tarea 3.3), p. ej. es_MX-ald-medium",
+    )
     args = parser.parse_args()
 
     setup_logging()
@@ -272,7 +280,7 @@ def main() -> int:
         entradas.append(descargar_ip_adapter(base))
 
     if "voice" in args.only:
-        for voz in sorted({p.voice.piper_voice for p in perfiles}):
+        for voz in sorted({p.voice.piper_voice for p in perfiles} | set(args.voces_extra)):
             entradas.append(descargar_piper(voz))
         if args.with_kokoro:
             patrones = ["config.json", "*.pth", f"voices/{base.voice.kokoro_voice}.pt"]

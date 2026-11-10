@@ -429,14 +429,16 @@ class EstiloVisual(_Base):
     """Estilo fijo para TODA la historia. Va al inicio de cada prompt de imagen."""
 
     tecnica: str = Field(
-        max_length=80,
+        max_length=120,
         description="En inglés. Técnica de ilustración, ej.: 'watercolor storybook illustration'.",
     )
+    # Los límites de caracteres son holgados: el que manda es TOKENS_MAX_ESTILO, que se ajusta
+    # quitando frases. En F1 el 8B escribió una iluminación de 62 caracteres en 4 intentos.
     paleta: str = Field(
-        max_length=60, description="En inglés. Paleta de color, ej.: 'muted teal and amber'."
+        max_length=120, description="En inglés. Paleta de color, ej.: 'muted teal and amber'."
     )
     iluminacion: str = Field(
-        max_length=60, description="En inglés. Iluminación, ej.: 'soft moonlight'."
+        max_length=120, description="En inglés. Iluminación, ej.: 'soft moonlight'."
     )
     negative_prompt: str = Field(
         max_length=300,

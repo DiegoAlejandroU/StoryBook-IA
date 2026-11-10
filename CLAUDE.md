@@ -244,10 +244,16 @@ Flujo:
   - Hasta N reintentos, devolviendo al modelo el error de validación.
   - Si el modelo es de la familia Qwen3, desactivar el razonamiento (`think: false`).
   - `num_ctx`: 4096 por etapas (así el 4B cabe 100 % en GPU; con 8192 solo cabía el 66 % y generaba a ~16 tok/s) y ≥ 6144 para una sola llamada. El auditor usa `num_ctx_auditor` = 8192.
-  - `num_gpu: 99` en `default.yaml` (todas las capas en GPU). Medido en F1 con el 4B: 100 % en GPU y ~21 tok/s, frente al 72 % y ~11 tok/s del modo automático. `calidad.yaml` lo deja en `null` (automático) porque el 8B no cabe en 4 GB.
+  - `num_gpu: 99` en `default.yaml` (todas las capas en GPU). Medido en F1 con el 4B: 100 % en GPU y ~21 tok/s, frente al 72 % y ~11 tok/s del modo automático. El experimento `experiments/llm_8b.yaml` lo deja en `null` (automático) porque el 8B no cabe en 4 GB.
   - **Ollama ordena alfabéticamente las claves del JSON** (la gramática sigue ese orden): por eso se prefiere `por_etapas` (los personajes del plan quedan definidos antes que las escenas) y los ids se normalizan (`'Luisa'` → `luisa`). Si una escena usa el nombre en vez del id (`'lena'` con id `protagonista`), el esquema lo resuelve cuando el nombre identifica a un solo personaje.
   - **Idioma:** el esquema rechaza `titulo`, `resumen` y `texto_narrativo` en inglés (`parece_ingles`, por palabras funcionales). En F1 el 4B escribió una historia de ciencia ficción entera en inglés, contagiado por los campos en inglés para el ilustrador. A la inversa, los campos para el ilustrador y el sonidista se rechazan solo si parecen español (`parece_espanol`); si solo traen tildes (un nombre como "Tomás") se quitan. El mensaje de reparación recuerda qué va en cada idioma: al pedirle un campo en inglés, el 4B llegó a pasar todo el plan al inglés.
   - **Longitud y presupuesto CLIP en los prompts:** los modelos pequeños escriben menos narración y más descriptores de lo pedido. Por eso se piden de 10 a 12 oraciones (unas 120 palabras; mínimo 90) y, para los campos en inglés, el 60 % del límite de tokens CLIP expresado en palabras. Si aun así un descriptor, el estilo o `prompt_imagen` se pasan, se quitan frases del final (separadas por comas) en vez de reintentar; el descriptor se pide de lo más a lo menos importante (edad, cabello, ropa, rasgo distintivo, complexión).
+  - **Reintentos:** si una reparación también falla, el intento siguiente empieza de cero con otra seed (`generar_validado`). El 4B puede quedar atrapado en el mismo error durante varias reparaciones; los intentos limpios casi siempre pasan.
+  - **4B frente a 8B (tarea 1.4, 10 historias cada uno):**
+    - 4B: 9/10 válidas, 75 s por historia, 43 tok/s y 100 % en GPU.
+    - 8B: 9/10 válidas, **~16 min por historia solo de texto**, 3 tok/s y 39 % en GPU con `num_ctx` 8192, con más reintentos (1,57 frente a 1,07 por llamada).
+    - El español del 8B es algo más fluido, pero con este hardware no cumple el objetivo del perfil calidad (< 12 min por historia completa).
+    - **Decisión (Diego, 10 nov):** el perfil calidad usa el mismo 4B y mejora imágenes y sonido. El 8B queda como experimento (`configs/experiments/llm_8b.yaml`, `-Perfil llm_8b`).
   - **Nada de nombres de ejemplo en prompts ni en el esquema:** en F1 el 4B copió `'lena'` y `'capitan_ruiz'` (puestos como ejemplo de id) en 5 de 10 historias. Los descriptores con etiquetas (`'age: 12, hair: black'`, a veces en español) se reescriben como frases sueltas (`quitar_etiquetas_descriptor`).
   - **Lo que el código ya sabe no lo decide el LLM:** el `genero` lo copia el planificador de la solicitud (no está en el esquema del LLM; en F1 el 4B escribía géneros de más de 40 caracteres y dos historias se perdieron). Si hay 0 o 2+ protagonistas, queda como protagonista el personaje de la escena 1 con más apariciones y los demás pasan a secundarios.
   - Muestreo de Qwen3-Instruct-2507: `top_p` 0.8, `top_k` 20, `presence_penalty` 1.0 y `repeat_penalty` 1.1. Sin penalización, el 4B entró en un bucle de repetición ('Ella lo sabe.' ×600). `num_predict` 2048 por llamada corta esos bucles, y `generar_validado` reintenta con otra seed.
@@ -300,7 +306,7 @@ Resumen (Fase 0):
 
 | Modalidad | Principal | Alternativa / comparación | Dónde corre |
 |---|---|---|---|
-| Texto | Qwen3-4B-Instruct-2507 Q4_K_M (Ollama `qwen3:4b-instruct-2507-q4_K_M`, ~2,5 GB) | Qwen3-8B Q4_K_M (`qwen3:8b`) con offload parcial (perfil calidad) | GPU / GPU+CPU |
+| Texto | Qwen3-4B-Instruct-2507 Q4_K_M (Ollama `qwen3:4b-instruct-2507-q4_K_M`, ~2,5 GB), en los dos perfiles | Qwen3-8B Q4_K_M (`qwen3:8b`) con offload parcial, solo como experimento (F6): ~16 min por historia de texto | GPU / GPU+CPU |
 | Imagen | DreamShaper 8 (SD 1.5) + LCM-LoRA (6 pasos) + IP-Adapter SD1.5 | Mismo checkpoint con DPM++ 2M Karras, 25 pasos | GPU fp16 |
 | Voz | Piper `es_MX-claude-high` | Kokoro (`ef_dora`), opcional | CPU |
 | Sonido | Stable Audio 3 Small-SFX (`stabilityai/stable-audio-3-small-sfx`, ~0,6B) | Stable Audio Open 1.0 (solo calidad) → AudioLDM `cvssp/audioldm` (sugerido en clase, sin token) → biblioteca CC0 → procedural | GPU fp16 |
@@ -320,7 +326,8 @@ Resumen (Fase 0):
 **Perfiles de configuración:**
 - `configs/default.yaml` es la base. Los perfiles heredan con `extends` y solo sobrescriben lo que cambia.
 - `configs/rapido.yaml`: Qwen3 4B, LCM 6 pasos, sonido SA3 → AudioLDM → biblioteca → procedural. Objetivo < 5 min por historia; es el que se usa en la sustentación.
-- `configs/calidad.yaml`: Qwen3 8B con offload, DPM++ 25 pasos, sonido SA3 → SAO 1.0 → AudioLDM → biblioteca → procedural. Objetivo < 12 min.
+- `configs/calidad.yaml`: mismo LLM 4B que rápido (decisión de la tarea 1.4), DPM++ 25 pasos, sonido SA3 → SAO 1.0 → AudioLDM → biblioteca → procedural. Objetivo < 12 min.
+- `configs/experiments/llm_8b.yaml`: Qwen3 8B con offload (experimento de tamaño del LLM en F6).
 - `configs/experiments/c1_baseline.yaml`, `c2_bible.yaml` y `c3_ipadapter.yaml`: las estrategias de consistencia.
 
 Estos tiempos son estimaciones. Se miden en F0 y en los experimentos, y en el informe se reportan los valores reales.

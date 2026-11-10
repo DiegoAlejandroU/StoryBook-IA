@@ -13,7 +13,8 @@ llm:
   presence_penalty: 1.0                  # evita repeticiones sin fin (0-2)
   repeat_penalty: 1.1
   num_gpu: 99                            # todas las capas en GPU: F1 midió 100 % y ~21 tok/s
-                                         # (automático: 72 % y ~11 tok/s). El 8B no cabe: ver calidad
+                                         # (automático: 72 % y ~11 tok/s). El 8B no cabe:
+                                         # ver experiments/llm_8b.yaml
   temperature_narrativa: 0.7
   temperature_auditor: 0.2
   max_reintentos: 3

@@ -146,9 +146,10 @@ def test_presupuesto_clip_del_prompt_deja_margen() -> None:
 def test_num_gpu_por_perfil() -> None:
     assert config.load_config("default").llm.num_gpu == 99
     assert config.load_config("rapido").llm.opciones_muestreo()["num_gpu"] == 99
-    calidad = config.load_config("calidad").llm
-    assert calidad.num_gpu is None  # el 8B no cabe entero: reparto automático
-    assert "num_gpu" not in calidad.opciones_muestreo()
+    assert config.load_config("calidad").llm.num_gpu == 99  # mismo 4B que rapido (1.4)
+    llm_8b = config.load_config("experiments/llm_8b").llm
+    assert llm_8b.num_gpu is None  # el 8B no cabe entero: reparto automático
+    assert "num_gpu" not in llm_8b.opciones_muestreo()
 
 
 # ---------------------------------------------------------------------------------------
@@ -263,3 +264,17 @@ def test_prompts_sin_nombres_de_ejemplo() -> None:
     for texto in textos:
         for nombre in ("lena", "capitan_ruiz", "lucia"):
             assert nombre not in texto.lower()
+
+
+# ---------------------------------------------------------------------------------------
+# Corrida definitiva 4B vs 8B: el 8B falló una historia por 62 caracteres de iluminación
+# ---------------------------------------------------------------------------------------
+def test_iluminacion_larga_la_limita_el_presupuesto_clip(bible_dict: dict[str, Any]) -> None:
+    from storybook.schemas import TOKENS_MAX_ESTILO, estimar_tokens_clip
+
+    datos = copy.deepcopy(bible_dict)
+    datos["estilo_visual"]["iluminacion"] = (
+        "faint lights and water reflections as if spirits were visible"  # 62 caracteres
+    )
+    bible = StoryBible.model_validate(datos)
+    assert estimar_tokens_clip(bible.estilo_visual.prompt()) <= TOKENS_MAX_ESTILO

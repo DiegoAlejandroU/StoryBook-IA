@@ -233,13 +233,27 @@ def test_numero_incorrecto_de_escenas_se_repara(bible_dict: dict, n_escenas: int
 
 
 def test_solo_se_conserva_el_ultimo_intento_fallido(bible_dict: dict) -> None:
-    g = Grabador([ok("{}"), ok("[1]"), ok(json.dumps(bible_dict))])
+    # 1 limpio -> 2 repara el 1 -> 3 limpio (la reparación falló) -> 4 repara el 3
+    g = Grabador([ok("{}"), ok("[1]"), ok("[2]"), ok(json.dumps(bible_dict))])
     with cliente(g) as c:
         r = generar(c, max_reintentos=3)
+    assert r.intentos == 4
+    assert len(g.payload(1)["messages"]) == 4
+    assert g.payload(1)["messages"][2]["content"] == "{}"
+    assert len(g.payload(2)["messages"]) == 2  # empieza de cero
+    cuarto = g.payload(3)["messages"]
+    assert len(cuarto) == 4
+    assert cuarto[2]["content"] == "[2]"
+
+
+def test_tras_reparacion_fallida_se_reinicia_con_otra_seed(bible_dict: dict) -> None:
+    g = Grabador([ok("{}"), ok("[1]"), ok(json.dumps(bible_dict))])
+    with cliente(g) as c:
+        r = generar(c, max_reintentos=3, seed=7)
     assert r.intentos == 3
-    tercero = g.payload(2)["messages"]
-    assert len(tercero) == 4
-    assert tercero[2]["content"] == "[1]"
+    seeds = [g.payload(i)["options"].get("seed") for i in range(3)]
+    assert seeds[0] == seeds[1] == 7  # la reparación conserva la seed
+    assert seeds[2] == 9  # el reinicio usa otra (seed + intento fallido)
 
 
 def test_agota_reintentos(bible_dict: dict) -> None:

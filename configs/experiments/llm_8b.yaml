@@ -1,0 +1,11 @@
+# Experimento de tamaño del LLM (F6): Qwen3 8B con offload parcial a CPU.
+# Fue el perfil "calidad" hasta el 10 nov. Medido en la tarea 1.4 (10 historias): 9/10 Story
+# Bibles válidas, ~16 min por historia solo de texto, 3 tok/s, 39 % del modelo en GPU.
+# Evidencias: docs/evidencias/f1_resumen_calidad.md (generado con esta configuración).
+extends: rapido
+
+llm:
+  model: qwen3:8b                         # ~5,2 GB Q4_K_M: Ollama reparte capas GPU/CPU
+  num_gpu: null                           # automático: el 8B no cabe entero en 4 GB de VRAM
+  num_ctx: 8192
+  num_predict: 4096

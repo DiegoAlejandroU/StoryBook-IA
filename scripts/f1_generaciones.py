@@ -14,7 +14,7 @@ Salidas:
 Uso (PowerShell, desde la carpeta del proyecto):
     uv run python scripts/f1_generaciones.py --n 10
     uv run python scripts/f1_generaciones.py --n 3 --num-gpu 20        # otro reparto GPU/CPU
-    uv run python scripts/f1_generaciones.py --n 3 --perfil calidad    # Qwen3 8B
+    uv run python scripts/f1_generaciones.py --n 3 --perfil experiments/llm_8b   # Qwen3 8B
     uv run python scripts/f1_generaciones.py --n 3 --estrategia una_llamada --sin-auditor
 """
 

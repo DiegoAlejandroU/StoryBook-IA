@@ -10,7 +10,7 @@ descargado se registran automáticamente en `docs/models_registry.json`.
 | Modalidad | Modelo | Fuente | Licencia | Ejecución | Estado de verificación |
 |---|---|---|---|---|---|
 | Texto | Qwen3-4B-Instruct-2507 (Q4_K_M, ~2,5 GB) | Ollama `qwen3:4b-instruct-2507-q4_K_M` | Apache 2.0 | GPU completa | Etiqueta verificada |
-| Texto (perfil calidad) | Qwen3-8B (Q4_K_M, ~5,2 GB) | Ollama `qwen3:8b` | Apache 2.0 | GPU + CPU (offload) | Razonamiento desactivado (`think: false`) |
+| Texto (experimento F6) | Qwen3-8B (Q4_K_M, ~5,2 GB) | Ollama `qwen3:8b` | Apache 2.0 | GPU + CPU (offload) | Razonamiento desactivado (`think: false`). Fue el LLM del perfil calidad hasta el 10 nov; la tarea 1.4 midió ~16 min por historia solo de texto, así que calidad usa el 4B (`configs/experiments/llm_8b.yaml`). |
 | Imagen | DreamShaper 8 (fine-tune de SD 1.5) | HF `Lykon/dreamshaper-8` | CreativeML OpenRAIL-M | GPU fp16 | Confirmar en el registro |
 | Imagen (aceleración) | LCM-LoRA SD 1.5 | HF `latent-consistency/lcm-lora-sdv1-5` | Ver registro | GPU fp16 | Confirmar en el registro |
 | Imagen (consistencia) | IP-Adapter SD 1.5 + encoder CLIP ViT-H | HF `h94/IP-Adapter` | Apache 2.0 | Adaptador en GPU; encoder en CPU | Confirmar en el registro |

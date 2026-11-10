@@ -1,11 +1,9 @@
-# Perfil de calidad: objetivo < 12 min por historia. LLM 8B con offload parcial a CPU.
+# Perfil de calidad: objetivo < 12 min por historia completa.
+# Usa el mismo LLM que rapido (Qwen3 4B, 100 % en GPU, ~75 s por historia) y gasta el tiempo
+# extra en imágenes (DPM++ 25 pasos) y sonido (SAO 1.0). Decisión del 10 nov (tarea 1.4): el
+# 8B tardó ~16 min por historia solo en el texto (3 tok/s, 39 % en GPU) con la misma tasa de
+# Story Bibles válidas (9/10). El 8B queda como experimento: configs/experiments/llm_8b.yaml.
 extends: default
-
-llm:
-  model: qwen3:8b                         # ~5,2 GB Q4_K_M: Ollama reparte capas GPU/CPU
-  num_gpu: null                           # automático: el 8B no cabe entero en 4 GB de VRAM
-  num_ctx: 8192
-  num_predict: 4096
 
 image:
   scheduler: dpmpp_2m_karras
