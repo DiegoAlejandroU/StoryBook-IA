@@ -10,7 +10,7 @@
     "archivos": 0,
     "nota": "ya estaba descargado",
     "extra": {},
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "ollama:qwen3:8b": {
     "repo_id": "ollama:qwen3:8b",
@@ -23,7 +23,7 @@
     "archivos": 0,
     "nota": "ya estaba descargado",
     "extra": {},
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "Lykon/dreamshaper-8": {
     "repo_id": "Lykon/dreamshaper-8",
@@ -38,7 +38,7 @@
     "extra": {
       "variante": "fp16"
     },
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "latent-consistency/lcm-lora-sdv1-5": {
     "repo_id": "latent-consistency/lcm-lora-sdv1-5",
@@ -51,7 +51,7 @@
     "archivos": 1,
     "nota": "",
     "extra": {},
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "h94/IP-Adapter": {
     "repo_id": "h94/IP-Adapter",
@@ -66,7 +66,7 @@
     "extra": {
       "peso": "models/ip-adapter_sd15.safetensors"
     },
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "rhasspy/piper-voices:es_MX-claude-high": {
     "repo_id": "rhasspy/piper-voices:es_MX-claude-high",
@@ -81,7 +81,7 @@
     "extra": {
       "model_card": "# Model card for claude (high)\n\n* Language: es_MX (Spanish, Mexico)\n* Speakers: 1\n* Quality: high\n* Samplerate: 22,050Hz\n\n## Dataset\n\n* URL: https://huggingface.co/spaces/HirCoir/Piper-TTS-Spanish\n* License: apache-2.0\n\n## Training\n\nSee URL above\n"
     },
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "cvssp/audioldm": {
     "repo_id": "cvssp/audioldm",
@@ -96,7 +96,7 @@
     "extra": {
       "variante": "fp32"
     },
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "Systran/faster-whisper-small": {
     "repo_id": "Systran/faster-whisper-small",
@@ -109,7 +109,7 @@
     "archivos": 6,
     "nota": "",
     "extra": {},
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   },
   "open_clip:ViT-B-32/laion2b_s34b_b79k": {
     "repo_id": "open_clip:ViT-B-32/laion2b_s34b_b79k",
@@ -122,6 +122,6 @@
     "archivos": 0,
     "nota": "",
     "extra": {},
-    "actualizado": "2026-11-09T17:49:53"
+    "actualizado": "2026-11-10T06:39:32"
   }
 }
