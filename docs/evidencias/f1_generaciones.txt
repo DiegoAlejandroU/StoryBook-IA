@@ -1,0 +1,62 @@
+﻿07:04:30 INFO    f1_generaciones | f1_inicio  perfil=rapido n=3 salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f1\20261110_070430 num_gpu=99
+07:04:33 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+07:04:55 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=3 primero="estilo_visual: Value error, estilo_visual (tecnica+paleta+iluminacion) tiene ~24 tokens CLIP y el máximo es 20; acórtalo usando frases nominales breves separadas por comas"
+07:05:09 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=2 errores=1 primero="Value error, la escena 1 usa ids de personaje inexistentes: ['lena']"
+07:05:22 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=3 s=49.29
+07:05:29 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 88 palabras; debe tener entre 90 y 160"
+07:05:37 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=2 s=15.134
+07:05:44 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 70 palabras; debe tener entre 90 y 160"
+07:05:52 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=2 s=14.521
+07:05:58 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 77 palabras; debe tener entre 90 y 160"
+07:06:06 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=14.474
+07:06:13 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="texto_narrativo: Value error, texto_narrativo tiene 71 palabras; debe tener entre 90 y 160"
+07:06:20 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=14.184
+07:06:27 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 56 palabras; debe tener entre 90 y 160"
+07:06:34 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=13.676
+07:06:39 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+07:06:39 INFO    f1_generaciones | generacion  n=1 genero=misterio valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=14 segundos_plan=121.28 segundos_auditor=5.06 segundos_total=126.34 tokens_salida=2632 tokens_por_s=20.83 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=93 palabras_max=116 titulo="La Llamada del Faro" error=
+07:06:39 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+07:06:59 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=1 primero="personajes.0.descripcion_visual_fija: Value error, descripcion_visual_fija tiene ~30 tokens CLIP y el máximo es 25; acórtalo usando frases nominales breves separadas por comas"
+07:07:14 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=2 errores=1 primero="Value error, la escena 1 usa ids de personaje inexistentes: ['lila']"
+07:07:29 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=3 s=49.874
+07:07:37 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=7.534
+07:07:43 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 57 palabras; debe tener entre 90 y 160"
+07:07:50 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=2 s=13.539
+07:07:57 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 88 palabras; debe tener entre 90 y 160"
+07:08:06 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=15.516
+07:08:14 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="texto_narrativo: Value error, texto_narrativo tiene 85 palabras; debe tener entre 90 y 160"
+07:08:23 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=17.751
+07:08:31 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 77 palabras; debe tener entre 90 y 160"
+07:08:39 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=15.818
+07:08:45 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+07:08:45 INFO    f1_generaciones | generacion  n=2 genero=fantasia valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=13 segundos_plan=120.03 segundos_auditor=5.41 segundos_total=125.45 tokens_salida=2808 tokens_por_s=22.38 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=91 palabras_max=137 titulo="La Sombra que Habla" error=
+07:08:45 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+07:09:06 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=4 primero="estilo_visual: Value error, estilo_visual (tecnica+paleta+iluminacion) tiene ~21 tokens CLIP y el máximo es 20; acórtalo usando frases nominales breves separadas por comas"
+07:09:22 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=2 errores=1 primero="Value error, la escena 1 usa ids de personaje inexistentes: ['nexo_7']"
+07:09:37 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=3 s=52.791
+07:09:44 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=6.652
+07:09:51 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 85 palabras; debe tener entre 90 y 160"
+07:09:58 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=2 s=13.876
+07:10:04 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 61 palabras; debe tener entre 90 y 160"
+07:10:11 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=13.052
+07:10:17 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 54 palabras; debe tener entre 90 y 160"
+07:10:24 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=13.386
+07:10:31 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="texto_narrativo: Value error, texto_narrativo tiene 67 palabras; debe tener entre 90 y 160"
+07:10:38 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=2 errores=1 primero="texto_narrativo: Value error, texto_narrativo tiene 84 palabras; debe tener entre 90 y 160"
+07:10:46 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=3 s=21.891
+07:10:52 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+07:10:52 INFO    f1_generaciones | generacion  n=3 genero=ciencia_ficcion valida=True estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M llamadas=7 intentos=14 segundos_plan=121.65 segundos_auditor=5.32 segundos_total=126.97 tokens_salida=2560 tokens_por_s=20.16 fraccion_gpu=1 contradicciones=0 escenas_regeneradas= palabras_min=88 palabras_max=123 titulo="Rooted in Orbit" error=
+07:10:52 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+07:10:52 INFO    f1_generaciones | f1_fin  validas=3 total=3
+# F1 · Generaciones reales de la Story Bible (2026-11-10 07:10)
+
+- Perfil `rapido` · modelo `qwen3:4b-instruct-2507-q4_K_M` · estrategia `por_etapas` · auditor sí · num_ctx 4096 · num_gpu 99
+- **Story Bibles válidas: 3/3**
+- Tiempo por historia (mediana): 126.34 s · tokens/s (mediana): 20.83
+- Intentos por llamada (mediana): 2.00 · fracción del modelo en GPU (mediana): 1.00
+
+| # | Género | Válida | Llamadas | Intentos | s total | tok/s | GPU | Contrad. | Título |
+|---:|---|---|---:|---:|---:|---:|---:|---:|---|
+| 1 | misterio | sí | 7 | 14 | 126.34 | 20.83 | 1.0 | 0 | La Llamada del Faro |
+| 2 | fantasia | sí | 7 | 13 | 125.45 | 22.38 | 1.0 | 0 | La Sombra que Habla |
+| 3 | ciencia_ficcion | sí | 7 | 14 | 126.97 | 20.16 | 1.0 | 0 | Rooted in Orbit |

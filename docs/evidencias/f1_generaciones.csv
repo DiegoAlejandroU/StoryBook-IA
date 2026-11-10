@@ -1,0 +1,4 @@
+n,genero,idea,valida,estrategia,modelo,llamadas,intentos,segundos_plan,segundos_auditor,segundos_total,tokens_salida,tokens_por_s,fraccion_gpu,contradicciones,escenas_regeneradas,palabras_min,palabras_max,titulo,error
+1,misterio,Un faro abandonado que se enciende solo cada noche,True,por_etapas,qwen3:4b-instruct-2507-q4_K_M,7,14,121.28,5.06,126.34,2632,20.83,1.0,0,,93,116,La Llamada del Faro,
+2,fantasia,Una niña descubre que su sombra tiene vida propia,True,por_etapas,qwen3:4b-instruct-2507-q4_K_M,7,13,120.03,5.41,125.45,2808,22.38,1.0,0,,91,137,La Sombra que Habla,
+3,ciencia_ficcion,Un robot jardinero cuida la última huerta de una estación espacial,True,por_etapas,qwen3:4b-instruct-2507-q4_K_M,7,14,121.65,5.32,126.97,2560,20.16,1.0,0,,88,123,Rooted in Orbit,
