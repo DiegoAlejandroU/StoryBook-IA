@@ -81,7 +81,7 @@
     "extra": {
       "model_card": "# Model card for claude (high)\n\n* Language: es_MX (Spanish, Mexico)\n* Speakers: 1\n* Quality: high\n* Samplerate: 22,050Hz\n\n## Dataset\n\n* URL: https://huggingface.co/spaces/HirCoir/Piper-TTS-Spanish\n* License: apache-2.0\n\n## Training\n\nSee URL above\n"
     },
-    "actualizado": "2026-11-10T06:39:32"
+    "actualizado": "2026-11-10T12:19:24"
   },
   "cvssp/audioldm": {
     "repo_id": "cvssp/audioldm",
@@ -123,5 +123,35 @@
     "nota": "",
     "extra": {},
     "actualizado": "2026-11-10T06:39:32"
+  },
+  "rhasspy/piper-voices:es_ES-davefx-medium": {
+    "repo_id": "rhasspy/piper-voices:es_ES-davefx-medium",
+    "modalidad": "voice",
+    "estado": "ok",
+    "revision": null,
+    "licencia": "voz: ver MODEL_CARD; código piper-tts: GPL-3.0-or-later",
+    "gated": null,
+    "tamano_mb": 60.3,
+    "archivos": 3,
+    "nota": "Revisar licencia del dataset en MODEL_CARD (código Piper: GPL-3.0).",
+    "extra": {
+      "model_card": "# Model card for davefx (medium)\n\n* Language: es_ES (Spanish, Spain)\n* Speakers: 1\n* Quality: medium\n* Samplerate: 22,050Hz\n\n## Dataset\n\n* URL: https://github.com/OHF-Voice/voice-datasets\n* License: CC0\n\n## Training\n\nFinetuned from the rdh base model (medium quality; nl_BE, one Flemish speaker, CC0), with MRD and SDP.\n\nDefault inference settings are noise_scale 0.5 and noise_w 0.333.\n\nRequires Piper 1.5 or higher.\n"
+    },
+    "actualizado": "2026-11-10T12:19:24"
+  },
+  "rhasspy/piper-voices:es_MX-ald-medium": {
+    "repo_id": "rhasspy/piper-voices:es_MX-ald-medium",
+    "modalidad": "voice",
+    "estado": "ok",
+    "revision": null,
+    "licencia": "voz: ver MODEL_CARD; código piper-tts: GPL-3.0-or-later",
+    "gated": null,
+    "tamano_mb": 60.3,
+    "archivos": 3,
+    "nota": "Revisar licencia del dataset en MODEL_CARD (código Piper: GPL-3.0).",
+    "extra": {
+      "model_card": "# Model card for ald (medium)\n\n* Language: es_MX (Spanish, Mexico)\n* Speakers: 1\n* Quality: medium\n* Samplerate: 22,050Hz\n\n## Dataset\n\n* URL: https://huggingface.co/datasets/rmcpantoja/Ald_Mexican_Spanish_speech_dataset\n* License: http://unlicense.org\n\n## Training\n\nFinetuned from Spanish davefx voice (medium quality).\n"
+    },
+    "actualizado": "2026-11-10T12:19:24"
   }
 }

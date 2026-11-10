@@ -1,0 +1,363 @@
+{
+  "errores": {},
+  "imagen": {
+    "parametros": {
+      "modelo": "Lykon/dreamshaper-8",
+      "scheduler": "lcm",
+      "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+      "pasos": 6,
+      "guidance_scale": 1.5,
+      "ancho": 768,
+      "alto": 512,
+      "usar_bible": true,
+      "ip_adapter": true,
+      "ip_adapter_scale": 0.6,
+      "seed_policy": "compartida",
+      "seed_fija": true
+    },
+    "backend": {
+      "backend": "diffusers",
+      "dispositivo": "cuda",
+      "dtype": "float16",
+      "variante": "fp16",
+      "torch": "2.15.0+cu132",
+      "diffusers": "0.42.1",
+      "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+      "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+    },
+    "segundos_carga": 30.125,
+    "segundos_character_sheet": 2.818,
+    "segundos_ip_adapter": 4.68,
+    "segundos_por_imagen_mediana": 3.424,
+    "segundos_total": 55.27,
+    "vram_torch_pico_mb": 3155.6,
+    "vram_gpu_pico_mb": 4066.5,
+    "vram_gpu_total_mb": 4096.0,
+    "respaldos": [],
+    "fallbacks": [],
+    "errores": [],
+    "ip_adapter": true,
+    "escenas": [
+      {
+        "escena": 1,
+        "archivo": "scene_1.png",
+        "segundos": 3.957,
+        "seed": 3740413757,
+        "tokens": 60,
+        "truncado": false,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, A lone lighthouse on a remote coast, foggy and overgrown, glowing at night.",
+        "respaldo": false
+      },
+      {
+        "escena": 2,
+        "archivo": "scene_2.png",
+        "segundos": 3.42,
+        "seed": 3740413757,
+        "tokens": 71,
+        "truncado": true,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse.",
+        "respaldo": false
+      },
+      {
+        "escena": 3,
+        "archivo": "scene_3.png",
+        "segundos": 3.418,
+        "seed": 3740413757,
+        "tokens": 73,
+        "truncado": true,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight.",
+        "respaldo": false
+      },
+      {
+        "escena": 4,
+        "archivo": "scene_4.png",
+        "segundos": 3.424,
+        "seed": 3740413757,
+        "tokens": 74,
+        "truncado": true,
+        "sustituciones": [],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves.",
+        "respaldo": false
+      },
+      {
+        "escena": 5,
+        "archivo": "scene_5.png",
+        "segundos": 3.427,
+        "seed": 3740413757,
+        "tokens": 61,
+        "truncado": false,
+        "sustituciones": [
+          {
+            "personaje": "luna_perez",
+            "nombre": "Luna",
+            "por": "25 years old"
+          }
+        ],
+        "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 25 years old touching a dusty switch on a rocky wall of an abandoned lighthouse at night",
+        "respaldo": false
+      }
+    ]
+  },
+  "clip": {
+    "imagen_texto_por_escena": {
+      "1": 0.3989,
+      "2": 0.2615,
+      "3": 0.4005,
+      "4": 0.3648,
+      "5": 0.3255
+    },
+    "imagen_texto_media": 0.3502,
+    "imagen_imagen": {
+      "media": 0.8145,
+      "minimo": 0.7381,
+      "pares": 10
+    }
+  },
+  "voz": {
+    "es_MX-claude-high": {
+      "duracion_total_s": 216.372,
+      "rtf_mediana": 0.03,
+      "segundos_carga": 1.887,
+      "narraciones": [
+        {
+          "escena": 1,
+          "archivo": "voice_1.wav",
+          "duracion_s": 41.368,
+          "sample_rate": 22050,
+          "segundos_sintesis": 2.474,
+          "rtf": 0.0598,
+          "caracteres": 606
+        },
+        {
+          "escena": 2,
+          "archivo": "voice_2.wav",
+          "duracion_s": 48.996,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.485,
+          "rtf": 0.0303,
+          "caracteres": 745
+        },
+        {
+          "escena": 3,
+          "archivo": "voice_3.wav",
+          "duracion_s": 45.768,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.37,
+          "rtf": 0.0299,
+          "caracteres": 689
+        },
+        {
+          "escena": 4,
+          "archivo": "voice_4.wav",
+          "duracion_s": 41.949,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.203,
+          "rtf": 0.0287,
+          "caracteres": 620
+        },
+        {
+          "escena": 5,
+          "archivo": "voice_5.wav",
+          "duracion_s": 38.291,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.091,
+          "rtf": 0.0285,
+          "caracteres": 592
+        }
+      ],
+      "carpeta": "voz\\es_MX-claude-high"
+    },
+    "es_MX-ald-medium": {
+      "duracion_total_s": 220.285,
+      "rtf_mediana": 0.027,
+      "segundos_carga": 2.611,
+      "narraciones": [
+        {
+          "escena": 1,
+          "archivo": "voice_1.wav",
+          "duracion_s": 41.949,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.135,
+          "rtf": 0.0271,
+          "caracteres": 606
+        },
+        {
+          "escena": 2,
+          "archivo": "voice_2.wav",
+          "duracion_s": 49.983,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.372,
+          "rtf": 0.0274,
+          "caracteres": 745
+        },
+        {
+          "escena": 3,
+          "archivo": "voice_3.wav",
+          "duracion_s": 46.395,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.249,
+          "rtf": 0.0269,
+          "caracteres": 689
+        },
+        {
+          "escena": 4,
+          "archivo": "voice_4.wav",
+          "duracion_s": 40.927,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.107,
+          "rtf": 0.027,
+          "caracteres": 620
+        },
+        {
+          "escena": 5,
+          "archivo": "voice_5.wav",
+          "duracion_s": 41.031,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.075,
+          "rtf": 0.0262,
+          "caracteres": 592
+        }
+      ],
+      "carpeta": "voz\\es_MX-ald-medium"
+    },
+    "es_ES-davefx-medium": {
+      "duracion_total_s": 195.055,
+      "rtf_mediana": 0.027,
+      "segundos_carga": 1.864,
+      "narraciones": [
+        {
+          "escena": 1,
+          "archivo": "voice_1.wav",
+          "duracion_s": 36.712,
+          "sample_rate": 22050,
+          "segundos_sintesis": 0.985,
+          "rtf": 0.0268,
+          "caracteres": 606
+        },
+        {
+          "escena": 2,
+          "archivo": "voice_2.wav",
+          "duracion_s": 43.69,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.197,
+          "rtf": 0.0274,
+          "caracteres": 745
+        },
+        {
+          "escena": 3,
+          "archivo": "voice_3.wav",
+          "duracion_s": 41.507,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.118,
+          "rtf": 0.0269,
+          "caracteres": 689
+        },
+        {
+          "escena": 4,
+          "archivo": "voice_4.wav",
+          "duracion_s": 36.039,
+          "sample_rate": 22050,
+          "segundos_sintesis": 0.962,
+          "rtf": 0.0267,
+          "caracteres": 620
+        },
+        {
+          "escena": 5,
+          "archivo": "voice_5.wav",
+          "duracion_s": 37.107,
+          "sample_rate": 22050,
+          "segundos_sintesis": 0.972,
+          "rtf": 0.0262,
+          "caracteres": 592
+        }
+      ],
+      "carpeta": "voz\\es_ES-davefx-medium"
+    }
+  },
+  "wer": {
+    "es_MX-claude-high": {
+      "wer_mediana": 0.083,
+      "wer_maximo": 0.0965,
+      "por_escena": {
+        "1": {
+          "wer": 0.0183,
+          "transcripcion": "Luna perez yera a la costa remota en una noche de lluvia. La vegetación es densa, los senderos desaparecidos y el aire pesado. El faro está abandonado, como si tiempo lo hubiera olvidado. Al mirar hacia arriba, ve cómo se enciende al medianoche, a las 23.07 exactas. No da electricidad visible ni señal de vida en su interior. Ella escucha el viento y las olas que golpean la roca. El faro no debería encenderse sin causa alguna. Su corazón late más fuerte al notar ese horario fijo. Como un reloj dormido cada noche, se enciende solo y cada vez, ella siente una presencia antigua que nunca ha hablado."
+        },
+        "2": {
+          "wer": 0.0827,
+          "transcripcion": "Luna camina entre los árboles densos hasta encontrar una figura oculta tras un tronco, Eselias Martínez, con ojos hundidos y bostenoe, le cuenta que en 1983, durante una tormenta violenta, vio el faro encenderse sin razón aparente. Dice que entonces creyó que el faro era más que un simple instrumento, era un testigo del orimenso del mar. Su voz se entrecorta al recordar como los navegantes, lo miraban como si desperaran una respuesta. Luna nota su silencio, la forma en que evita hablar de sí mismo, el viento si sea entre las hojas, mientras ambos escuchan el eco de un latido antiguo, ella, siente que algo profundo se rompe en ese momento. Ellias no dice por qué lo recordó, pero Luna sabe, ahora quiere saber más sobre esa noche del pasado."
+        },
+        "3": {
+          "wer": 0.0965,
+          "transcripcion": "Luna escucha silenciosamente, mientras Helias habla de su juventud, el viento si sea entre los árboles, como si recordara algo olvidado. Dice que su padre encendió el faro cada noche en 1983 para allada barcos perdidos durante tormentas, no a vida electricidad. Añade, mirando al mar con tristeza, el agua se mueve lentamente bajo las rocas, como un latido antiguo. Luna entiende que del faro no es solo una luz, es un testigo de sacrificios olvidados. Helias niega haber visto a su padre encenderlo en persona, pero sus ojos brillan con recuerdos oscuros. La brisa fría acaricia su rostro mientras habla. Luna siente que del faro no solo dilumina, el mar también ilumina historias olvidadas."
+        },
+        "4": {
+          "wer": 0.0962,
+          "transcripcion": "Luna escucha un susuro entre las hojas y encuentra un interruptor oculto tras una pared de musco. Su dedo toca la fría superficie, mientras el viento gira como si fuera una respiración. El faro se enciende con un resplandor tenue, como si respondiera algo más que electricidad. Él ya se está allí, quieto y mirando hacia el mar, no dice nada, solo asiente suavemente. Luna entiende, alguien lo activa cada noche, no por necesidad, sino porque hay amor en lo olvidado. El interruptor tiene una inscripción para quienes no regresan. Ella siente que el faro no gila barcos que la recuerdos y da veces también esperanza."
+        },
+        "5": {
+          "wer": 0.0566,
+          "transcripcion": "Luna siente un calor en la mano al tocar el interruptor. La inscripción brilla débilmente bajo la luz de la luna. Entonces comprende todo, cada noche. Alguien lo enciende para recordar a quienes murieron en el mar. No es misterio ni tecnologida. Es amor. El faro no guía pacos, quilla recuerdos. La gente que vivió allí los guadas como símbolos de vida perdida. Luna se queda quieto sin hablar. El viento sopla fuerte, pero dentro del faro todo ves silencio. Ella sabe ahora que el encendido no tiene fin. Solo dura hasta que da alguien más, lo sienta. Y entonces el faro brilla otra vez por amor."
+        }
+      }
+    },
+    "es_MX-ald-medium": {
+      "wer_mediana": 0.047,
+      "wer_maximo": 0.1058,
+      "por_escena": {
+        "1": {
+          "wer": 0.0092,
+          "transcripcion": "Luna Pérez llega a la costa remota en una noche de lluvia. La vegetación es densa a los senderos desaparecidos y el aire pesado. El faro está abandonado, como si tiempo lo hubiera olvidado al mirar hacia arriba. Ve cómo se enciende al medianoche a las 23.07 exactas. No hay electricidad visible ni señal de vida en su interior. Ella escucha el viento y las olas que golpean la roca. El faro no debería encenderse sin causa alguna. Su corazón late más fuerte al notar ese horario fijo. Como un reloj dormido. Cada noche se enciende solo y cada vez ella siente una presencia antigua que nunca ha hablado."
+        },
+        "2": {
+          "wer": 0.0827,
+          "transcripcion": "Lona camina entre los árboles densos hasta encontrar una figura oculta tras un tronco. Es Celias Martínez con ojos hundidos y voz tenue, le cuenta que en 1983, durante una tormenta violenta, vio el faro encenderse sin la zona aparente, dice que entonces creyó que el faro era más que un simple instrumento ea un testigo de lo inmenso del mar. Su voz se entrecorta al recordar como los navegantes lo miraban como si heresperaran una respuesta. Lona nota su silencio, la forma en que evita hablar de sí mismo. El viento, si sea entre las hojas mientras ambos escuchan el eco de un latido antiguo, ella siente que algo profundo se rompe en ese momento. Ellas no dice por qué lo recordó, pero Luna sabe. Ahora quieres saber más sobre esa noche del pasado."
+        },
+        "3": {
+          "wer": 0.0439,
+          "transcripcion": "Luna escucha silenciosamente mientras Elias habla de su juventud. El viento, si sea entre los árboles como si recordara algo olvidado, dice que su padre encendió el faro cada noche en 1983 para guiar a barcos perdidos durante tormentas. No había electricidad, añade mirando al mar con tristeza, el agua se mueve lentamente bajo las rocas como un nativo antiguo. Luna entiende que el faro no es solo una luz, es un testigo de sacrificios olvidados. Elias niega haber visto a su padre encenderlo en persona, pero sus ojos brillen con recuerdos oscuros. La brisa fría acaricia su rosto mientras habla, Luna siente que el faro no solo ilumina, el mar también ilumina historias olvidadas."
+        },
+        "4": {
+          "wer": 0.1058,
+          "transcripcion": "Luna escucha un sosugo entre las hojas y encuentra un interruptor oculto tras una pared de musgo, su dedo toca la fría a superficie mientras el viento gira como si fuera una respiración. El faro se enciende con un resplandor tenue como si respondiera algo más que electricidad. Eleas está ahí, quieto y mirando hacia el mar, no dice nada, solo asiente suavemente. Luna entiende, alguien lo activa a cada noque, no por necesidad, sino porque hay amor en lo olvidado. El interruptor tiene una inscripción para quienes no regresan, ellas siente que el faro no vía barcosquillas recuerdos y a veces también esperanza."
+        },
+        "5": {
+          "wer": 0.0472,
+          "transcripcion": "Luna siente un calor en la mano al tocar el interruptor, la inscripción brilla debilmente bajo la luz de la luna, entonces comprende todo, cada noche alguien lo enciende para recordar a quienes murieron en el mar, no es misterio ni tecnología, es amor, el faro no vía a barcos que a recuerdos, la gente que vivió allí los guarda como símbolos de vida perdida, Luna se queda quieto, sin hablar, el viento sopra fuerte, pero dentro del faro todo es silencio, ella sabe ahora que el encendido no tiene fin, solo dura hasta que alguien más lo sienta, y entonces el faro brilla otra vez por amor."
+        }
+      }
+    },
+    "es_ES-davefx-medium": {
+      "wer_mediana": 0.068,
+      "wer_maximo": 0.1154,
+      "por_escena": {
+        "1": {
+          "wer": 0.0367,
+          "transcripcion": "Luna Pérez llega a la costa remota en una noche de lluvia. La vegetación es densa, los senderos desaparecidos y el aire pesado. El faro está abandonado como si tiempo lo hubiera olvidado. Al mirar hacia arriba ve cómo se enciende al medianoche a las 23.07 exactas. No hay electricidad visible ni señal bebida en su interior. Ella escucha el viento y las olas que golpean la roca. El faro no debería encenderse sin cosa alguna. Su corazón late más fuerte al notar ese horario fijo, como un reloj dormido. Cada noche es enciende solo. Y cada vez ella siente una presencia antigua que nunca ha hablado."
+        },
+        "2": {
+          "wer": 0.0677,
+          "transcripcion": "Luna camina entre los árboles densos hasta encontrar una figura oculta tras un tronco. Es Eries Martínez, con ojos hundidos y bosteno. Le cuenta que en 1983, durante una tormenta violenta, vio el faro encenderse sin razón aparente. Dice que entonces creyó que el faro era más que un simple instrumento, era un testigo de lo inmeso del mar. Su voz se entrecorta al recordar cómo los navegantes lo miraban como se esperaran una respuesta. Luna nota su silencio, la forma en que evita hablar de sí mismo. El viento sí sea entre las hojas mientras ambos escuchan el eco de un latido antiguo. Ella siente que algo profundo se rompe en ese momento. Eries no dice por qué lo recordó, pero Luna sabe. Ahora quieres saber más sobre esa noche del pasado."
+        },
+        "3": {
+          "wer": 0.0789,
+          "transcripcion": "Luna escucha silenciosamente mientras Elias habla de su juventud, el viento si sea entre los árboles como si recordara algo olvidado. Dice que su padre encendió el faro cara noche en 1983 para guiar a barcos perdidos durante tormentas. No había electricidad, añade mirando el mar con tristeza. El agua se mueve lentamente bajo las rocas como un latido antiguo. Luna entiende que el faro no es solo una luz, es un testivo de sacrificios olvidados. Elias ni era haber visto a su padre encenderlo en persona, pero sus ojos brillan con recuerdos oscuros. La brisa fría cabicia a su rostro mientras habla. Luna siente que el faro no solo ilumina el mar también ilumina historias olvidadas."
+        },
+        "4": {
+          "wer": 0.1154,
+          "transcripcion": "Luna escucha un susurro entre las hojas y encuentra un interruptor oculto tras una pared de muso. Su dedo toca la fría a su superficie mientras el viento gira como si fuera una respiración. El faro se enciende con un resplandor tenue, como si respondiera algo más que electricidad. Eleas está allí, quieto y mirando hacia el mar. No dice nada, solo asiente su alo a mente. Luna entiende, alguien lo activa cada noche no por necesidad, sino porque hay amor en olvidado. El interruptor tiene una inscripción para quienes no regresan. Ella siente que el faro no vía barcos vía recuerdos, y a veces también esperanza."
+        },
+        "5": {
+          "wer": 0.0283,
+          "transcripcion": "Luna siente un calor en la mano al tocar el interruptor. La inscripción brilla débilmente bajo la luz de la luna. Entonces comprende todo. Tada noche, alguien lo enciende para recordar a quienes murieron en el mar. No es misterio ni tecnología. Es amor. El faro no día barcos. Y recuerdos. La gente que vivió allí los guarda como símbolos de vida perdida. Luna se queda quieto sin hablar. El viento sopla fuerte, pero dentro del faro todo es silencio. Ella sabe ahora que el encendido no tiene fin. Sólo dura hasta que alguien más lo sienta. Y entonces el faro brilla otra vez por amor."
+        }
+      }
+    }
+  },
+  "perfil": "rapido",
+  "story": "C:\\Users\\diego\\Documents\\StoryBook-IA\\outputs\\f1\\20261110_085328\\story_01.json",
+  "titulo": "El Faro de las Noches"
+}
