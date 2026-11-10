@@ -1,0 +1,168 @@
+﻿09:06:33 INFO    f1_generaciones | f1_inicio  perfil=calidad n=10 salida=C:\Users\diego\Documents\StoryBook-IA\outputs\f1\20261110_090633
+09:06:35 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+09:10:29 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=6 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+09:13:55 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=2 errores=1 primero="estilo_visual.iluminacion: String should have at most 60 characters"
+09:17:21 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=3 errores=1 primero="estilo_visual.iluminacion: String should have at most 60 characters"
+09:20:48 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=4 errores=1 primero="estilo_visual.iluminacion: String should have at most 60 characters"
+09:20:48 WARNING f1_generaciones | generacion_fallida  n=1 error="LLMValidationError: PlanHistoria: salida inválida tras 4 intentos"
+09:20:48 INFO    f1_generaciones | generacion  n=1 genero=misterio valida=False estrategia=por_etapas modelo=qwen3:8b llamadas=1 intentos=4 segundos_plan= segundos_auditor= segundos_total=852.66 tokens_salida=0 tokens_por_s=0 fraccion_gpu=0.387 contradicciones= escenas_regeneradas= palabras_min= palabras_max= titulo= causas_reintento="estilo_visual.iluminacion · otro ×4; personajes.descripcion_visual_fija · idioma ×3; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1" error="LLMValidationError: PlanHistoria: salida inválida tras 4 intentos"
+09:20:48 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+09:24:17 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=7 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+09:27:46 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
+09:27:46 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=417.843
+09:28:58 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=72.305
+09:30:21 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=83.536
+09:31:53 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+09:33:21 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=179.349
+09:34:54 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+09:36:23 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=182.518
+09:37:54 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+09:39:23 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=179.284
+09:39:30 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+09:39:30 INFO    f1_generaciones | generacion  n=2 genero=fantasia valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=11 segundos_plan=1114.84 segundos_auditor=7.46 segundos_total=1122.3 tokens_salida=3217 tokens_por_s=2.87 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=117 palabras_max=143 titulo="La sombra de Lila" causas_reintento="personajes.descripcion_visual_fija · idioma ×4; prompt_imagen · idioma ×3; prompt_sonido · idioma ×3; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1; estilo_visual.iluminacion · idioma ×1" error=
+09:39:30 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+09:43:09 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=6 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+09:46:57 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:46:57 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+09:46:57 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=447.187
+09:48:32 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=94.969
+09:49:53 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+09:51:11 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=2 s=158.584
+09:52:31 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+09:53:51 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=160.026
+09:55:20 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=89.252
+09:56:37 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=76.754
+09:56:44 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+09:56:44 INFO    f1_generaciones | generacion  n=3 genero=ciencia_ficcion valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=10 segundos_plan=1026.77 segundos_auditor=7.51 segundos_total=1034.29 tokens_salida=3125 tokens_por_s=3.02 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=99 palabras_max=135 titulo="El Jardín del Silencio" causas_reintento="personajes.descripcion_visual_fija · idioma ×3; prompt_imagen · idioma ×2; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1; estilo_visual.iluminacion · otro ×1" error=
+09:56:44 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+10:00:24 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=6 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+10:03:53 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+10:03:53 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=429.141
+10:05:20 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=86.436
+10:06:55 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+10:08:19 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=2 errores=1 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+10:09:39 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=3 s=259.35
+10:11:02 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+10:12:22 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=162.342
+10:13:43 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_sonido: Value error, prompt_sonido debe estar en inglés (parece español)"
+10:15:05 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=163.292
+10:16:25 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+10:17:43 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=158.502
+10:18:41 INFO    storybook.story.auditor | auditoria  contradicciones=3 criticas=[]
+10:18:41 INFO    f1_generaciones | generacion  n=4 genero=terror valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=13 segundos_plan=1259.06 segundos_auditor=57.81 segundos_total=1316.88 tokens_salida=3308 tokens_por_s=2.51 fraccion_gpu=0.387 contradicciones=3 escenas_regeneradas= palabras_min=114 palabras_max=128 titulo="Las Habitaciones que Suenan" causas_reintento="prompt_imagen · idioma ×4; prompt_sonido · idioma ×4; personajes.descripcion_visual_fija · idioma ×3; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1; estilo_visual.iluminacion · otro ×1" error=
+10:18:41 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+10:22:20 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=7 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+10:25:50 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+10:25:50 INFO    storybook.schemas | protagonista_normalizado  elegido=luna_perro antes="['luna_perro', 'milo_gato']"
+10:25:50 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=429.035
+10:27:06 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=76.022
+10:28:28 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=81.771
+10:29:53 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=84.986
+10:31:11 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=78.425
+10:32:35 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+10:33:56 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=164.587
+10:34:04 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+10:34:04 INFO    f1_generaciones | generacion  n=5 genero=infantil valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=9 segundos_plan=914.83 segundos_auditor=7.89 segundos_total=922.72 tokens_salida=3146 tokens_por_s=3.41 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=110 palabras_max=137 titulo="La aventura del perro y el gato" causas_reintento="personajes.descripcion_visual_fija · idioma ×4; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1; estilo_visual.iluminacion · idioma ×1; prompt_imagen · idioma ×1; prompt_sonido · idioma ×1" error=
+10:34:04 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+10:37:17 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=6 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+10:40:07 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=2 errores=1 primero="estilo_visual.iluminacion: String should have at most 60 characters"
+10:42:53 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+10:42:53 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=3 s=529.146
+10:44:16 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=82.49
+10:45:32 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=76.725
+10:46:48 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=75.686
+10:48:11 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=82.701
+10:49:27 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=76.228
+10:49:34 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+10:49:34 INFO    f1_generaciones | generacion  n=6 genero=aventura valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=9 segundos_plan=922.98 segundos_auditor=7.34 segundos_total=930.32 tokens_salida=3184 tokens_por_s=3.42 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=111 palabras_max=134 titulo="El Tesoro del Abuelo" causas_reintento="personajes.descripcion_visual_fija · idioma ×3; estilo_visual.iluminacion · otro ×2; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1" error=
+10:49:34 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+10:52:21 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=5 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+10:55:02 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+10:55:02 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=328.022
+10:56:17 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=74.443
+10:57:24 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+10:58:32 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=2 s=135.402
+10:59:44 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=71.517
+11:00:47 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:01:49 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=125.773
+11:03:07 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:04:20 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=150.844
+11:04:27 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:04:27 INFO    f1_generaciones | generacion  n=7 genero=misterio valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=11 segundos_plan=886 segundos_auditor=7.05 segundos_total=893.06 tokens_salida=2930 tokens_por_s=3.28 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=100 palabras_max=132 titulo="El Minuto Perdido" causas_reintento="prompt_imagen · idioma ×3; prompt_sonido · idioma ×3; personajes.descripcion_visual_fija · idioma ×2; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1; estilo_visual.iluminacion · idioma ×1" error=
+11:04:27 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+11:07:42 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=6 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+11:10:54 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+11:10:54 INFO    storybook.schemas | protagonista_normalizado  elegido=alric_kael antes="['alric_kael', 'drago_leythar']"
+11:10:54 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=386.287
+11:12:11 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:13:36 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=2 s=162.008
+11:13:36 WARNING storybook.story.planner | escena_alineada_con_plan  escena=1 campos=['personajes_presentes']
+11:15:08 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=92.592
+11:16:31 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:17:54 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=166.103
+11:19:11 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:20:25 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=150.423
+11:21:43 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:23:00 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=155.749
+11:23:08 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:23:08 INFO    f1_generaciones | generacion  n=8 genero=fantasia valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=12 segundos_plan=1113.16 segundos_auditor=7.34 segundos_total=1120.5 tokens_salida=3243 tokens_por_s=2.89 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=115 palabras_max=148 titulo="El Último Dragón de la Biblioteca" causas_reintento="prompt_imagen · idioma ×4; personajes.descripcion_visual_fija · idioma ×3; prompt_sonido · idioma ×3; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1; estilo_visual.iluminacion · otro ×1" error=
+11:23:08 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+11:26:02 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=6 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+11:28:51 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=2 errores=1 primero="estilo_visual.iluminacion: String should have at most 60 characters"
+11:31:34 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+11:31:34 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=3 s=506.334
+11:32:43 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=69.185
+11:34:01 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=1 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:35:22 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=2 s=158.596
+11:36:49 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:38:24 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=2 s=181.913
+11:39:57 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:41:26 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=2 s=182.073
+11:43:01 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=95.127
+11:43:09 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:43:09 INFO    f1_generaciones | generacion  n=9 genero=ciencia_ficcion valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=12 segundos_plan=1193.23 segundos_auditor=7.67 segundos_total=1200.91 tokens_salida=3121 tokens_por_s=2.6 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=114 palabras_max=129 titulo="La señal del norte" causas_reintento="personajes.descripcion_visual_fija · idioma ×3; prompt_imagen · idioma ×3; estilo_visual.iluminacion · otro ×2; prompt_sonido · idioma ×2; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1" error=
+11:43:09 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:8b
+11:46:47 WARNING storybook.story.llm_client | salida_invalida  salida=PlanHistoria intento=1 errores=6 primero="estilo_visual.tecnica: Value error, estilo_visual.tecnica debe estar en inglés (parece español)"
+11:50:02 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+11:50:02 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=2 s=413.246
+11:51:18 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=76.521
+11:52:27 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=69.009
+11:53:41 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=73.929
+11:54:59 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=77.196
+11:56:15 WARNING storybook.story.llm_client | salida_invalida  salida=Escena intento=1 errores=2 primero="prompt_imagen: Value error, prompt_imagen debe estar en inglés (parece español)"
+11:57:23 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=2 s=144.461
+11:57:30 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:57:30 INFO    f1_generaciones | generacion  n=10 genero=terror valida=True estrategia=por_etapas modelo=qwen3:8b llamadas=7 intentos=9 segundos_plan=854.36 segundos_auditor=7.26 segundos_total=861.63 tokens_salida=3155 tokens_por_s=3.66 fraccion_gpu=0.387 contradicciones=0 escenas_regeneradas= palabras_min=111 palabras_max=119 titulo="La Muñeca del Amanecer" causas_reintento="personajes.descripcion_visual_fija · idioma ×3; estilo_visual.tecnica · idioma ×1; estilo_visual.paleta · idioma ×1; estilo_visual.iluminacion · idioma ×1; prompt_imagen · idioma ×1; prompt_sonido · idioma ×1" error=
+11:57:30 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:8b
+11:57:30 INFO    f1_generaciones | f1_fin  validas=9 total=10
+# F1 · Generaciones reales de la Story Bible (2026-11-10 11:57)
+
+- Perfil `calidad` · modelo `qwen3:8b` · estrategia `por_etapas` · auditor sí · num_ctx 8192 · num_gpu auto
+- **Story Bibles válidas: 9/10**
+- Tiempo por historia (mediana): 982.31 s · tokens/s (mediana): 3.02
+- Intentos por llamada (mediana): 1.57 · fracción del modelo en GPU (mediana): 0.39
+
+| # | Género | Válida | Llamadas | Intentos | s total | tok/s | GPU | Contrad. | Título |
+|---:|---|---|---:|---:|---:|---:|---:|---:|---|
+| 1 | misterio | NO | 1 | 4 | 852.66 | 0.0 | 0.387 |  | LLMValidationError: PlanHistoria: salida inválida tras 4 int |
+| 2 | fantasia | sí | 7 | 11 | 1122.3 | 2.87 | 0.387 | 0 | La sombra de Lila |
+| 3 | ciencia_ficcion | sí | 7 | 10 | 1034.29 | 3.02 | 0.387 | 0 | El Jardín del Silencio |
+| 4 | terror | sí | 7 | 13 | 1316.88 | 2.51 | 0.387 | 3 | Las Habitaciones que Suenan |
+| 5 | infantil | sí | 7 | 9 | 922.72 | 3.41 | 0.387 | 0 | La aventura del perro y el gato |
+| 6 | aventura | sí | 7 | 9 | 930.32 | 3.42 | 0.387 | 0 | El Tesoro del Abuelo |
+| 7 | misterio | sí | 7 | 11 | 893.06 | 3.28 | 0.387 | 0 | El Minuto Perdido |
+| 8 | fantasia | sí | 7 | 12 | 1120.5 | 2.89 | 0.387 | 0 | El Último Dragón de la Biblioteca |
+| 9 | ciencia_ficcion | sí | 7 | 12 | 1200.91 | 2.6 | 0.387 | 0 | La señal del norte |
+| 10 | terror | sí | 7 | 9 | 861.63 | 3.66 | 0.387 | 0 | La Muñeca del Amanecer |
+
+Causas de reintento (errores de validación devueltos al modelo):
+
+| Campo · causa | Veces |
+|---|---:|
+| personajes.descripcion_visual_fija · idioma | 31 |
+| prompt_imagen · idioma | 21 |
+| prompt_sonido · idioma | 17 |
+| estilo_visual.iluminacion · otro | 11 |
+| estilo_visual.tecnica · idioma | 10 |
+| estilo_visual.paleta · idioma | 10 |
+| estilo_visual.iluminacion · idioma | 4 |
