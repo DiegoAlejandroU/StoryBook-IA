@@ -34,6 +34,15 @@ _FACTOR_PALABRAS = 0.6
 # al final del mensaje de usuario, que es lo que el modelo tiene más presente.
 LONGITUD_ESCENA = "de 10 a 12 oraciones completas (unas 120 palabras)"
 
+# La primera frase del descriptor es el sujeto que usa prompt_builder al cambiar nombres por
+# descripciones: debe decir quién es. En la prueba de 2.3 empezaba por "25 years old" (sin
+# tipo de persona) y el prompt de la escena quedó "25 years old touching a switch".
+ORDEN_DESCRIPTOR = (
+    'primero quién es y su edad en una sola frase ("<tipo> age <edad>", con el tipo en '
+    "inglés: woman, boy, old man, robot...), luego cabello, ropa, un rasgo distintivo y "
+    'complexión, como frases sueltas SIN etiquetas (nada de "age:" ni "hair:")'
+)
+
 
 def _palabras(tokens_max: int) -> int:
     return int(tokens_max * _FACTOR_PALABRAS)
@@ -68,8 +77,7 @@ Reglas obligatorias:
    - estilo_visual (tecnica + paleta + iluminacion): máximo {_palabras(TOKENS_MAX_ESTILO)} palabras
      en total.
    - descripcion_visual_fija: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras, en este orden:
-     edad, cabello, ropa, un rasgo distintivo y complexión, como frases sueltas SIN etiquetas
-     (nada de "age:" ni "hair:"). No describas el estado de ánimo.
+     {ORDEN_DESCRIPTOR}. No describas el estado de ánimo.
    - prompt_imagen: máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras, SOLO acción, composición
      y entorno. No repitas la descripción del personaje ni el estilo: se añaden automáticamente.
    - prompt_sonido: máximo {PALABRAS_MAX_PROMPT_SONIDO} palabras: un ambiente y 1-2 efectos.
@@ -134,8 +142,7 @@ Reglas obligatorias:
 4. estilo_visual (tecnica + paleta + iluminacion) en INGLÉS: máximo
    {_palabras(TOKENS_MAX_ESTILO)} palabras en total.
 5. descripcion_visual_fija en INGLÉS: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras, en este
-   orden: edad, cabello, ropa, un rasgo distintivo y complexión, como frases sueltas SIN
-   etiquetas (nada de "age:" ni "hair:").
+   orden: {ORDEN_DESCRIPTOR}.
 6. canon_inicial: hechos del mundo que se mantienen durante toda la historia.
 7. No incluyas texto fuera del JSON."""
 

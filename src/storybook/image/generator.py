@@ -217,6 +217,7 @@ class GeneradorImagenes:
             "usar_bible": self.usar_bible,
             "ip_adapter": self.usar_ip_adapter,
             "ip_adapter_scale": c.ip_adapter.scale if self.usar_ip_adapter else None,
+            "prompt_orden": c.prompt_orden,
             "seed_policy": self.consistencia.seed_policy,
             "seed_fija": self.consistencia.fixed_seed,
         }
@@ -375,6 +376,7 @@ class GeneradorImagenes:
             contar=contar,
             negative_base=self.cfg.negative_prompt_base,
             usar_bible=self.usar_bible,
+            orden=self.cfg.prompt_orden,
         )
         ruta = carpeta / nombre_archivo_escena(numero)
         ultimo_error: str | None = None

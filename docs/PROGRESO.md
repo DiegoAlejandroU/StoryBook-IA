@@ -59,13 +59,18 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - en `prompt_builder`, cambiar los nombres de personajes que aparezcan en `prompt_imagen` ("Max and Luna walking...") por su descriptor, o quitarlos: CLIP no conoce esos nombres (visto en F1);
   - tests con un pipeline falso. (dep: 0.3, 2.1)
 - [ ] 2.3 [WINDOWS] Prueba real: 5 imágenes de una historia, sin OOM; ajustar steps, CFG y resolución; medir tiempos y VRAM. (dep: 0.6, 2.2)
+  - **Prueba real hecha (10 nov), falta el ajuste:** `setup_windows.ps1 -Paso f2v` compara escalas de IP-Adapter y el orden del prompt.
   - Se ejecuta con `setup_windows.ps1 -Paso f2` (rápido); `-Paso f2 -Perfil calidad` mide solo las imágenes con DPM++ 25 pasos. Usa `scripts/f2_f3_prueba.py` con la primera historia válida de la última corrida de F1 hecha con el 4B. Evidencias en `docs/evidencias/f2_f3_resumen*.md`.
 
 ## F3 · Voz
 - [x] 3.1 [AUTO] `voice/tts.py`: Protocol `TTSBackend` con backends Piper (`hub.require_piper_voice`) y Kokoro (opcional), ambos con imports perezosos; voz y parámetros desde la configuración; salida WAV y duración. Tests con un backend falso. (dep: 0.3)
 - [x] 3.2 [AUTO] Ya existe `evaluation/asr_check.py`. Falta `tests/test_asr_check.py` con un transcriptor falso: WER, normalización del español y casos borde. (dep: 0.3)
-- [ ] 3.3 [WINDOWS] Escuchar la voz `es_MX-claude-high` y 1–2 alternativas, elegir y medir el WER real. (dep: 0.6, 3.1, 3.2)
+- [x] 3.3 [WINDOWS] Escuchar la voz `es_MX-claude-high` y 1–2 alternativas, elegir y medir el WER real. (dep: 0.6, 3.1, 3.2)
   - `setup_windows.ps1 -Paso f2` descarga `es_MX-ald-medium` y `es_ES-davefx-medium` (`download_models.py --voces-extra`) y narra la historia con las 3 voces. Los WAV quedan en `outputs/f2/<fecha>/voz/<voz>/`, con el WER de cada voz en el resumen. Diego escucha y elige.
+  - **Hecha (10 nov):** Diego eligió `es_MX-claude-high` al escucharlas.
+    - WER (mediana): claude-high 8,3 % (máximo 9,7 %); ald-medium 4,7 %; davefx-medium 6,8 %.
+    - RTF de 0,03: ~216 s de audio en ~7 s.
+    - Los errores son sobre todo de Whisper: nombres ("Helias" por Elias) y palabras unidas o separadas ("si sea" por sisea).
 
 ## F4 · Sonido y mezcla
 - [ ] 4.1 [AUTO] `sound/procedural.py`: síntesis con numpy/scipy de viento, lluvia, fuego, latidos, drone oscuro, pasos, olas, bosque/pájaros y ambiente mágico. Mapeo desde `EtiquetaSonido` (schemas) a recetas. Tests: duración, sample rate, sin clipping, sin NaN. (dep: 0.3)
@@ -113,7 +118,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente (2.3 y 3.3):** `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2` y después `... -Paso f2 -Perfil calidad`. Al terminar, escuchar las 3 voces en `outputs/f2/<fecha>/voz/` y decirle a Claude cuál suena mejor. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
+- **Siguiente (ajuste de 2.3):** `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2v`. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
 ---
@@ -387,3 +392,25 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   Con `-Perfil calidad` mide solo las imágenes.
 - Verificación sin GPU: **224 tests en verde** (contenedor y bundle Linux), ruff limpio. Con los datos reales, la historia elegida sería `outputs/f1/20261110_085328/story_01.json` ("El Faro de las Noches", 2 personajes).
 - **Siguiente [WINDOWS]:** `setup_windows.ps1 -Paso f2` y después `-Paso f2 -Perfil calidad`.
+
+### 2026-11-10 12:50 · Windows (prueba real de imágenes y voz: 2.3 y 3.3) + ajustes · 3.3 hecha, 2.3 parcial
+- Historia: `outputs/f1/20261110_085328/story_01.json`, "El Faro de las Noches" (2 personajes). Sin errores en ningún paso. Evidencias: `docs/evidencias/f2_f3_resumen.md` y `f2_f3_resumen_calidad.md`.
+- **Imágenes, rápido** (LCM, 6 pasos, CFG 1,5, 768×512, IP-Adapter 0,6):
+  - Carga 30 s la primera vez (7 s con la caché del disco caliente), 3,4 s por imagen, 55 s la etapa completa.
+  - **VRAM pico: 4066 de 4096 MB en la GPU** (incluye Windows), 3156 MB de torch. Sin OOM, pero al límite.
+  - CLIP imagen-texto 0,35; imagen-imagen 0,81 (mínimo 0,74).
+- **Imágenes, calidad** (DPM++ 25 pasos, CFG 7): 8,2 s por imagen (2,4 veces más) y 57 s en total. CLIP texto 0,37 e imagen-imagen 0,78: algo más fiel al texto y menos consistente.
+- **Revisión visual de las 12 imágenes (Claude):**
+  - El protagonista es muy consistente: misma cara, pelo y chaqueta.
+  - **Pero todas las escenas salen como un retrato de frente y de cuerpo entero, igual que la character sheet.** IP-Adapter 0,6 domina la composición: la acción ("toca un interruptor", "camina entre árboles") casi no se ve y el segundo personaje (Elias, 50 años) no aparece en ninguna.
+  - Calidad no se ve mejor y en una escena cambia de personaje.
+  - 3 de 5 prompts se truncan (71–74 tokens): se pierde la iluminación del estilo.
+- **El descriptor no decía quién es el personaje:** empezaba por "25 years old", sin "woman". Al cambiar el nombre por el descriptor, la escena 5 quedó "25 years old touching a switch".
+- Correcciones y preparación del ajuste:
+  - Prompt de la Bible: la primera frase del descriptor es "<tipo> age <edad>" (woman, boy, old man, robot…). `prompt_builder` la usa como sujeto al sustituir nombres.
+  - `image.prompt_orden` (`estilo_primero` | `accion_primero`) en la configuración y en `construir_prompt`. El orden de recorte no cambia y el valor por defecto sigue siendo el de siempre hasta tener datos.
+  - `f2_f3_prueba.py --variantes`: genera solo las imágenes con cada combinación (`ip=`, `orden=`, `pasos=`, `cfg=`) en `v1/…vN/` y compara tiempo, VRAM, truncados y CLIP en `docs/evidencias/f2_variantes.md`.
+  - `setup_windows.ps1 -Paso f2v` ejecuta 5 variantes: IP 0,6, 0,4 y 0,25, y 0,4 y 0,25 con la acción primero.
+- **Presupuesto de tiempo (rápido) con lo medido:** texto ~75 s + imágenes ~55 s + voz ~7 s ≈ 2,3 min antes de sonido y mezcla. Objetivo < 5 min alcanzable.
+- Verificación sin GPU: **227 tests en verde** (contenedor y bundle Linux), ruff limpio.
+- **Siguiente [WINDOWS]:** `setup_windows.ps1 -Paso f2v`. Luego Claude revisa las imágenes de cada variante y fija la escala y el orden.

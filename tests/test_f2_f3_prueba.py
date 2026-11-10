@@ -110,3 +110,37 @@ def test_sufijo_de_evidencias() -> None:
     f2 = _modulo()
     assert f2.sufijo_evidencias("rapido") == ""
     assert f2.sufijo_evidencias("calidad") == "_calidad"
+
+
+def test_aplicar_variante() -> None:
+    f2 = _modulo()
+    base = config.load_config("rapido").image
+    v = f2.aplicar_variante(base, "ip=0.3+orden=accion_primero+pasos=8+cfg=2")
+    assert v.ip_adapter.scale == 0.3 and v.ip_adapter.enabled
+    assert v.prompt_orden == "accion_primero" and v.steps == 8 and v.guidance_scale == 2.0
+    assert base.ip_adapter.scale == 0.6  # la configuración original no cambia
+    assert f2.aplicar_variante(base, "ip=0").ip_adapter.enabled is False
+    with pytest.raises(ValueError, match="Variante desconocida"):
+        f2.aplicar_variante(base, "resolucion=1024")
+    with pytest.raises(ValueError):
+        f2.aplicar_variante(base, "orden=al_azar")
+
+
+def test_variantes_en_carpetas_separadas(tmp_path: Path, bible_dict: dict[str, Any]) -> None:
+    f2 = _modulo()
+    bible = StoryBible.model_validate(bible_dict)
+    filas = f2.ejecutar_variantes(
+        config.load_config("rapido"),
+        bible,
+        tmp_path,
+        ["ip=0.6", "ip=0.3+orden=accion_primero", "nada=1"],
+        evaluar=False,
+        backend_imagen=FakeBackend(),
+    )
+    assert [f["carpeta"] for f in filas] == ["v1", "v2", "v3"]
+    assert (tmp_path / "v2" / "scene_5.png").is_file()
+    assert filas[1]["imagen"]["parametros"]["prompt_orden"] == "accion_primero"
+    assert filas[1]["imagen"]["parametros"]["ip_adapter_scale"] == 0.3
+    assert "error" in filas[2]
+    texto = f2.resumen_variantes_md(filas, "rapido", tmp_path / "s.json", bible)
+    assert "| 2 | `ip=0.3+orden=accion_primero` |" in texto

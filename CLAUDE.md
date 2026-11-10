@@ -268,6 +268,12 @@ Flujo:
   - Negative prompt común, seed fija y parámetros constantes. Resolución 768×512 (horizontal).
   - IP-Adapter con una "character sheet" del protagonista generada primero.
   - Memoria: VAE slicing y la atención SDPA de torch 2.x. **No usar attention slicing**: con IP-Adapter falla en diffusers 0.42 y con SDPA no aporta. `enable_model_cpu_offload()` si IP-Adapter + encoder superan los 4 GB. Medido en F0: SD 1.5 + LCM a 768×512, 6 pasos, unos 4–5 s por imagen y 3,8 GB de VRAM pico.
+  - Prueba real de 2.3 (10 nov):
+    - Rápido: 3,4 s por imagen y 55 s la etapa con character sheet. Calidad (DPM++ 25): 8,2 s por imagen.
+    - VRAM pico de 4066 de 4096 MB en la GPU (torch 3,1 GB): sin OOM, pero al límite.
+    - **IP-Adapter 0,6 con el estilo al principio del prompt deja todas las escenas como retratos de frente del protagonista**: la acción y el segundo personaje casi no aparecen.
+    - `image.prompt_orden` (`estilo_primero` | `accion_primero`) y la escala de IP-Adapter se ajustan con `f2_f3_prueba.py --variantes` (`setup_windows.ps1 -Paso f2v`).
+  - Voz elegida por Diego al escucharlas (3.3): `es_MX-claude-high`. WER mediano del 8,3 % con Whisper small; los errores son sobre todo de nombres propios.
 - **Voz (CPU):**
   - Una voz narradora fija para toda la historia, con parámetros constantes (length_scale, noise_scale).
   - Salida en WAV, con la duración registrada.

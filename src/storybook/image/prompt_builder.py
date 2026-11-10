@@ -24,6 +24,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import Any, Final, Literal
 
+from storybook.config import OrdenPromptImagen as OrdenPrompt
 from storybook.logging_utils import get_logger, kv
 from storybook.schemas import Personaje, RolPersonaje, StoryBible, estimar_tokens_clip
 
@@ -283,11 +284,18 @@ def construir_prompt(
     negative_base: str = "",
     usar_bible: bool = True,
     max_tokens: int = TOKENS_CLIP_UTILES,
+    orden: OrdenPrompt = "estilo_primero",
 ) -> PromptImagen:
     """Prompt y negative prompt de la escena ``numero``.
 
     ``usar_bible=False`` es la línea base C1 (experimentos): solo el ``prompt_imagen`` de la
     escena, sin estilo fijo ni descriptores de personajes.
+
+    ``orden`` decide qué va primero (CLIP pesa más los primeros tokens): ``estilo_primero``
+    (estilo, personajes, acción) o ``accion_primero`` (acción, personajes, estilo). En la
+    prueba real de 2.3, con el estilo primero y IP-Adapter, todas las escenas salieron como
+    retratos de frente del protagonista y la acción casi no se notaba. El orden de recorte
+    (estilo, acción, personajes) no cambia.
     """
     try:
         escena = bible.escena(numero)
@@ -311,7 +319,13 @@ def construir_prompt(
             minimo = 2 if personaje.rol is RolPersonaje.PROTAGONISTA else 1
             bloques.append(_Bloque("personajes", frases(personaje.descripcion_visual_fija), minimo))
     accion, sustituciones = sustituir_nombres(escena.prompt_imagen, bible, usar_bible=usar_bible)
-    bloques.append(_Bloque("accion", frases(accion)))
+    bloque_accion = _Bloque("accion", frases(accion))
+    if orden == "accion_primero":
+        bloques = [bloque_accion, *(b for b in bloques if b.segmento == "personajes")] + [
+            b for b in bloques if b.segmento == "estilo"
+        ]
+    else:
+        bloques.append(bloque_accion)
 
     prompt, truncamientos = ajustar_a_presupuesto(bloques, contar, max_tokens)
     negativo, trunc_neg = construir_negativo(

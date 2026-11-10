@@ -176,6 +176,10 @@ class IPAdapterConfig(_Strict):
     scale: float = Field(default=0.6, ge=0.0, le=1.5)
 
 
+# Qué va primero en el prompt de imagen (ver image/prompt_builder.construir_prompt).
+OrdenPromptImagen = Literal["estilo_primero", "accion_primero"]
+
+
 class ImageConfig(_Strict):
     model_id: str
     scheduler: Literal["lcm", "dpmpp_2m_karras"] = "lcm"
@@ -189,6 +193,7 @@ class ImageConfig(_Strict):
     vae_slicing: bool = True
     cpu_offload: bool = False
     ip_adapter: IPAdapterConfig = IPAdapterConfig()
+    prompt_orden: OrdenPromptImagen = "estilo_primero"
 
     @field_validator("width", "height")
     @classmethod

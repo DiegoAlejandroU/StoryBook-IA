@@ -24,6 +24,11 @@ Uso (PowerShell, desde la carpeta del proyecto):
     uv run python scripts/f2_f3_prueba.py --story outputs/f1/20261110_085328/story_04.json
     uv run python scripts/f2_f3_prueba.py --voces es_MX-ald-medium es_ES-davefx-medium
     uv run python scripts/f2_f3_prueba.py --solo voz
+    uv run python scripts/f2_f3_prueba.py --variantes ip=0.6 ip=0.3 ip=0.3+orden=accion_primero
+
+``--variantes`` (ajuste de 2.3) genera solo las imágenes con cada combinación de parámetros
+(``ip`` = escala de IP-Adapter, 0 = sin él; ``orden`` = estilo_primero | accion_primero;
+``pasos``; ``cfg``) y compara tiempos, VRAM y CLIP en ``docs/evidencias/f2_variantes.md``.
 """
 
 from __future__ import annotations
@@ -345,6 +350,85 @@ def resumen_md(resultado: dict[str, Any], perfil: str, story: Path, bible: Story
     return "\n".join(lineas) + "\n"
 
 
+# ---------------------------------------------------------------------------------------
+# Variantes de imagen (ajuste de la tarea 2.3)
+# ---------------------------------------------------------------------------------------
+def aplicar_variante(cfg_imagen: config.ImageConfig, variante: str) -> config.ImageConfig:
+    """``'ip=0.3+orden=accion_primero+pasos=8+cfg=2'`` -> copia validada de la configuración."""
+    datos = cfg_imagen.model_dump()
+    for parte in variante.split("+"):
+        clave, _, valor = parte.partition("=")
+        if clave == "ip":
+            escala = float(valor)
+            datos["ip_adapter"].update(scale=escala, enabled=escala > 0)
+        elif clave == "orden":
+            datos["prompt_orden"] = valor
+        elif clave == "pasos":
+            datos["steps"] = int(valor)
+        elif clave == "cfg":
+            datos["guidance_scale"] = float(valor)
+        else:
+            raise ValueError(f"Variante desconocida: '{parte}' (usa ip=, orden=, pasos= o cfg=)")
+    return config.ImageConfig.model_validate(datos)
+
+
+def ejecutar_variantes(
+    cfg: config.AppConfig,
+    bible: StoryBible,
+    carpeta: Path,
+    variantes: Sequence[str],
+    *,
+    evaluar: bool = True,
+    backend_imagen: Any = None,
+) -> list[dict[str, Any]]:
+    filas: list[dict[str, Any]] = []
+    for i, variante in enumerate(variantes, start=1):
+        fila: dict[str, Any] = {"variante": variante, "carpeta": f"v{i}"}
+        try:
+            cfg_v = cfg.model_copy(update={"image": aplicar_variante(cfg.image, variante)})
+            etapa, fila["imagen"] = paso_imagen(cfg_v, bible, carpeta / f"v{i}", backend_imagen)
+            if evaluar:
+                fila["clip"] = paso_clip(cfg_v, etapa)
+        except Exception as exc:
+            fila["error"] = f"{type(exc).__name__}: {exc}"[:300]
+            log.exception("variante_fallida", extra=kv(variante=variante, error=fila["error"]))
+        filas.append(fila)
+    return filas
+
+
+def resumen_variantes_md(
+    filas: list[dict[str, Any]], perfil: str, story: Path, bible: StoryBible
+) -> str:
+    lineas = [
+        f"# F2 · Variantes de imagen ({datetime.now():%Y-%m-%d %H:%M})",
+        "",
+        f'- Perfil base `{perfil}` · historia `{story.as_posix()}`: "{bible.titulo}"'
+        f" ({bible.genero}), {len(bible.personajes)} personajes. Misma Bible y seeds.",
+        "- CLIP imagen-texto: cuánto se parece cada imagen a su prompt (acción de la escena).",
+        "- CLIP imagen-imagen: cuánto se parecen las 5 entre sí (consistencia).",
+        "",
+        "| # | Variante | s/imagen | VRAM pico GPU | Truncados | CLIP texto | CLIP img-img"
+        " (media / mín.) | Carpeta |",
+        "|---:|---|---:|---:|---:|---:|---|---|",
+    ]
+    for i, fila in enumerate(filas, start=1):
+        if "error" in fila:
+            lineas.append(
+                f"| {i} | `{fila['variante']}` | - | - | - | - | {fila['error'][:60]} | - |"
+            )
+            continue
+        imagen, clip = fila["imagen"], fila.get("clip") or {}
+        ii = clip.get("imagen_imagen") or {}
+        truncados = sum(e["truncado"] for e in imagen["escenas"])
+        lineas.append(
+            f"| {i} | `{fila['variante']}` | {_f(imagen['segundos_por_imagen_mediana'])} |"
+            f" {_f(imagen['vram_gpu_pico_mb'], ' MB')} | {truncados}/5 |"
+            f" {_f(clip.get('imagen_texto_media'))} | {_f(ii.get('media'))} /"
+            f" {_f(ii.get('minimo'))} | `{fila['carpeta']}` |"
+        )
+    return "\n".join(lineas) + "\n"
+
+
 def sufijo_evidencias(perfil: str) -> str:
     return "" if perfil == "rapido" else f"_{Path(perfil).stem}"
 
@@ -362,6 +446,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--solo", choices=["imagen", "voz"], default=None)
     parser.add_argument("--sin-evaluacion", action="store_true", help="sin CLIP ni WER")
     parser.add_argument("--evidencias", type=Path, default=config.DOCS_DIR / "evidencias")
+    parser.add_argument(
+        "--variantes", nargs="*", default=None, help="solo imágenes, una vez por variante"
+    )
     args = parser.parse_args(argv)
 
     cfg = config.load_config(args.perfil)
@@ -373,6 +460,20 @@ def main(argv: list[str] | None = None) -> int:
     bible = StoryBible.model_validate_json(story.read_text(encoding="utf-8"))
     voces = list(dict.fromkeys([cfg.voice.piper_voice, *args.voces]))
     log.info("f2_inicio", extra=kv(perfil=args.perfil, story=str(story), voces=voces))
+    sufijo = sufijo_evidencias(args.perfil)
+    args.evidencias.mkdir(parents=True, exist_ok=True)
+
+    if args.variantes:
+        filas = ejecutar_variantes(
+            cfg, bible, carpeta, args.variantes, evaluar=not args.sin_evaluacion
+        )
+        resumen = resumen_variantes_md(filas, args.perfil, story, bible)
+        texto_json = json.dumps(filas, ensure_ascii=False, indent=2, default=str)
+        for destino in (carpeta, args.evidencias):
+            (destino / f"f2_variantes{sufijo}.json").write_text(texto_json, encoding="utf-8")
+            (destino / f"f2_variantes{sufijo}.md").write_text(resumen, encoding="utf-8")
+        sys.stdout.write(resumen + f"\nArchivos: {carpeta}\n")
+        return 2 if any("error" in f for f in filas) else 0
 
     resultado = ejecutar(
         cfg,
@@ -385,11 +486,9 @@ def main(argv: list[str] | None = None) -> int:
     resultado.update(perfil=args.perfil, story=str(story), titulo=bible.titulo)
     resumen = resumen_md(resultado, args.perfil, story, bible)
 
-    sufijo = sufijo_evidencias(args.perfil)
     texto_json = json.dumps(resultado, ensure_ascii=False, indent=2, default=str)
     (carpeta / "resultado.json").write_text(texto_json, encoding="utf-8")
     (carpeta / "resumen.md").write_text(resumen, encoding="utf-8")
-    args.evidencias.mkdir(parents=True, exist_ok=True)
     (args.evidencias / f"f2_f3{sufijo}.json").write_text(texto_json, encoding="utf-8")
     (args.evidencias / f"f2_f3_resumen{sufijo}.md").write_text(resumen, encoding="utf-8")
     sys.stdout.write(resumen)

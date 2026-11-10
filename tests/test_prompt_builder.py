@@ -157,3 +157,16 @@ def test_ajustar_respeta_minimos() -> None:
     texto, trunc = ajustar_a_presupuesto(bloques, estimar_tokens_clip, 6)
     assert texto == "a b c, f g"
     assert [t.eliminado for t in trunc] == ["d e", "h i"]
+
+
+def test_orden_accion_primero(bible: StoryBible) -> None:
+    from storybook.image.prompt_builder import construir_prompt
+
+    normal = construir_prompt(bible, 1)
+    invertido = construir_prompt(bible, 1, orden="accion_primero")
+    accion = bible.escena(1).prompt_imagen
+    estilo = bible.estilo_visual.prompt()
+    assert normal.prompt.startswith(estilo.split(",")[0])
+    assert invertido.prompt.startswith(accion.split(",")[0])
+    assert invertido.prompt.rstrip().endswith(estilo.split(",")[-1].strip())
+    assert sorted(normal.prompt.split(", ")) == sorted(invertido.prompt.split(", "))

@@ -12,6 +12,8 @@
   Tareas 2.3 y 3.3 (imagenes y voz reales de una historia de F1; voces alternativas):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2 -Perfil calidad
+  Ajuste de 2.3 (variantes de IP-Adapter y orden del prompt, solo imagenes):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2v
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -20,7 +22,7 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [int]$NumGpu = -1,
@@ -137,6 +139,7 @@ function Paso-Git {
         if ($LASTEXITCODE -eq 0) { $titulo = "chore: actualizar archivos del proyecto" } else { $titulo = "chore: estructura inicial del proyecto (Fase 0)" }
         if ($Paso -eq "f1") { $titulo = "chore: codigo usado en las generaciones reales de F1 (tarea 1.4)" }
         if ($Paso -eq "f2") { $titulo = "chore: codigo usado en las pruebas reales de imagen y voz (tareas 2.3 y 3.3)" }
+        if ($Paso -eq "f2v") { $titulo = "chore: codigo usado en las variantes de imagen (tarea 2.3)" }
         $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
         if ((Ejecutar "git" @("commit", "-m", $titulo, "-m", $coautor)) -ne 0) { return 1 }
     } else {
@@ -317,7 +320,7 @@ Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
 # f1 y f2 tambien hacen commit del codigo antes de generar: la evidencia debe corresponder a un commit.
-if ($Paso -in @("todo", "git", "f1", "f2")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+if ($Paso -in @("todo", "git", "f1", "f2", "f2v")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -360,6 +363,17 @@ if ($Paso -eq "f2") {
     if (Test-Path $salidaF2) { Remove-Item $salidaF2 }
     $codigo = Ejecutar "uv" $argsF2 $salidaF2
     Guardar-Evidencias "chore: evidencias de imagenes y voz reales (tareas 2.3 y 3.3)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "f2v") {
+    Titulo ("Tarea 2.3 - Variantes de imagen: escala de IP-Adapter y orden del prompt (perfil {0})" -f $Perfil)
+    $variantes = @("ip=0.6", "ip=0.4", "ip=0.25", "ip=0.4+orden=accion_primero", "ip=0.25+orden=accion_primero")
+    $argsF2v = @("run", "python", "scripts/f2_f3_prueba.py", "--perfil", $Perfil, "--variantes") + $variantes
+    $sufijo = if ($Perfil -eq "rapido") { "" } else { "_$Perfil" }
+    $salidaF2v = Join-Path $Evid ("f2_variantes{0}.txt" -f $sufijo)
+    if (Test-Path $salidaF2v) { Remove-Item $salidaF2v }
+    $codigo = Ejecutar "uv" $argsF2v $salidaF2v
+    Guardar-Evidencias "chore: evidencias de variantes de imagen (tarea 2.3)" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 Fin 0
