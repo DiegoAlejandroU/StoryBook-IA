@@ -21,7 +21,9 @@ def test_offline_por_defecto() -> None:
 def test_perfiles_validos(perfil: str) -> None:
     cfg = config.load_config(perfil)
     assert cfg.profile == perfil
-    assert cfg.llm.num_ctx >= 6144
+    # Una sola llamada necesita contexto para la Bible completa; por etapas basta 4096.
+    assert cfg.llm.num_ctx >= (6144 if cfg.llm.estrategia == "una_llamada" else 4096)
+    assert cfg.llm.num_ctx_auditor >= 8192
     assert cfg.image.width == 768 and cfg.image.height == 512
 
 

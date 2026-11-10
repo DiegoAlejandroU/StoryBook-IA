@@ -5,15 +5,20 @@ llm:
   host: http://localhost:11434
   model: qwen3:4b-instruct-2507-q4_K_M   # ~2,5 GB Q4_K_M: cabe completo en 4 GB de VRAM
   think: false                           # Qwen3: sin razonamiento (más rápido, JSON directo)
-  num_ctx: 8192                          # >= 6144 para no truncar la Bible; vigilar KV cache
-  num_predict: 4096                      # tope de salida (~3000 tokens esperados para la Bible)
+  num_ctx: 4096                          # por_etapas: cada llamada es corta; 4B cabe 100 % en GPU
+  num_ctx_auditor: 8192                  # el auditor recibe la Bible completa
+  num_predict: 2048                      # tope por llamada: corta bucles de repetición
+  top_p: 0.8                             # muestreo recomendado por Qwen3-Instruct-2507
+  top_k: 20
+  presence_penalty: 1.0                  # evita repeticiones sin fin (0-2)
+  repeat_penalty: 1.1
   temperature_narrativa: 0.7
   temperature_auditor: 0.2
   max_reintentos: 3
   seed: 42
   timeout_s: 600
   keep_alive_etapa: 5m                   # al terminar la etapa se fuerza keep_alive=0
-  estrategia: una_llamada                # (a) una_llamada | (b) por_etapas (experimento F6)
+  estrategia: por_etapas                 # (b) por_etapas | (a) una_llamada (experimento F6)
   auditar: true                          # segunda pasada que detecta contradicciones
   max_rondas_auditor: 1                  # 0 = solo auditar, sin regenerar escenas
 

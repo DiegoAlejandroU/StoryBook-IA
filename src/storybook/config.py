@@ -121,6 +121,20 @@ class LLMConfig(_Strict):
     seed: int = 42
     timeout_s: float = Field(default=600.0, gt=0)
     keep_alive_etapa: str = "5m"
+    # Muestreo recomendado por Qwen3-Instruct-2507 (top_p 0.8, top_k 20) y penalización de
+    # presencia para evitar bucles de repetición (en F0 el 4B repitió una frase hasta agotar
+    # num_predict). None = no se envía la opción.
+    top_p: float | None = Field(default=0.8, ge=0.0, le=1.0)
+    top_k: int | None = Field(default=20, ge=1, le=200)
+    presence_penalty: float | None = Field(default=1.0, ge=0.0, le=2.0)
+    repeat_penalty: float | None = Field(default=1.1, ge=1.0, le=2.0)
+    num_ctx_auditor: int = Field(
+        default=8192,
+        ge=2048,
+        le=32768,
+        description="El auditor recibe la Bible completa: necesita más contexto que una escena.",
+    )
+    # El valor de la clase se mantiene; los perfiles (configs/default.yaml) usan por_etapas.
     estrategia: Literal["una_llamada", "por_etapas"] = Field(
         default="una_llamada",
         description="Planificador: (a) una sola llamada o (b) plan y luego escena por escena.",
@@ -131,6 +145,16 @@ class LLMConfig(_Strict):
     max_rondas_auditor: int = Field(
         default=1, ge=0, le=5, description="Rondas de auditoría y regeneración (0 = solo auditar)."
     )
+
+    def opciones_muestreo(self) -> dict[str, float | int]:
+        """Opciones extra de Ollama (``options``) para todas las llamadas del LLM."""
+        valores: dict[str, float | int | None] = {
+            "top_p": self.top_p,
+            "top_k": self.top_k,
+            "presence_penalty": self.presence_penalty,
+            "repeat_penalty": self.repeat_penalty,
+        }
+        return {k: v for k, v in valores.items() if v is not None}
 
 
 class IPAdapterConfig(_Strict):

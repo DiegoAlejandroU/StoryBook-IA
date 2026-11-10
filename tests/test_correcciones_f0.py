@@ -50,3 +50,69 @@ def test_truncamiento_conserva_la_salida_parcial() -> None:
     assert info.value.contenido.startswith('{"titulo"')
     assert info.value.output_tokens == 4096 and info.value.eval_s == 128.0
     assert json.dumps(cuerpo)  # el cuerpo de prueba es JSON válido
+
+
+def test_ids_de_personaje_se_normalizan(bible_dict: dict) -> None:
+    """Ollama ordena las claves alfabéticamente: el LLM puede escribir 'Lucía' en vez de 'lucia'."""
+    import copy
+
+    datos = copy.deepcopy(bible_dict)
+    datos["escenas"][0]["personajes_presentes"] = ["Lucía"]
+    datos["personajes"][0]["id"] = "Lucia"
+    bible = StoryBible.model_validate(datos)
+    assert bible.personajes[0].id == "lucia"
+    assert bible.escenas[0].personajes_presentes == ["lucia"]
+
+
+def test_opciones_de_muestreo_se_envian() -> None:
+    from storybook.config import LLMConfig
+
+    enviados: list[dict] = []
+
+    def responder(request: httpx.Request) -> httpx.Response:
+        enviados.append(json.loads(request.content))
+        return httpx.Response(200, json={"message": {"content": "{}"}, "done_reason": "stop"})
+
+    opciones = LLMConfig(model="m").opciones_muestreo()
+    assert opciones["presence_penalty"] > 0 and opciones["top_k"] == 20
+    with OllamaClient(transport=httpx.MockTransport(responder)) as c:
+        c.chat_json(
+            model="m",
+            messages=[],
+            schema={},
+            temperature=0.7,
+            num_ctx=4096,
+            opciones_extra=opciones,
+        )
+    assert enviados[0]["options"]["presence_penalty"] == opciones["presence_penalty"]
+    assert enviados[0]["options"]["num_ctx"] == 4096
+
+
+def test_truncamiento_se_reintenta_sin_reenviar_la_salida(bible_dict: dict) -> None:
+    peticiones: list[dict] = []
+    bucle = '{"titulo": "' + "Ella lo sabe. " * 50
+    respuestas = [
+        {"message": {"content": bucle}, "done_reason": "length", "eval_count": 2048},
+        {"message": {"content": json.dumps(bible_dict)}, "done_reason": "stop"},
+    ]
+
+    def responder(request: httpx.Request) -> httpx.Response:
+        peticiones.append(json.loads(request.content))
+        return httpx.Response(200, json=respuestas[len(peticiones) - 1])
+
+    mensajes = [{"role": "system", "content": "s"}, {"role": "user", "content": "u"}]
+    with OllamaClient(transport=httpx.MockTransport(responder)) as c:
+        r = c.generar_validado(
+            modelo_salida=StoryBible,
+            model="m",
+            messages=mensajes,
+            temperature=0.7,
+            num_ctx=4096,
+            max_reintentos=2,
+            seed=42,
+        )
+    assert r.intentos == 2 and "cortó" in r.errores_por_intento[0][0]
+    segundo = peticiones[1]
+    assert len(segundo["messages"]) == 3  # sistema, usuario y reparación; sin la salida cortada
+    assert all("Ella lo sabe" not in m["content"] for m in segundo["messages"])
+    assert segundo["options"]["seed"] != peticiones[0]["options"]["seed"]

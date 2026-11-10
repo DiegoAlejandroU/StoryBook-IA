@@ -39,9 +39,13 @@ from storybook.hub import (
     require_piper_voice,
 )
 from storybook.logging_utils import get_logger, kv, setup_logging
-from storybook.schemas import StoryBible, esquema_json_llm, validar_entrada
-from storybook.story.llm_client import LLMError, LLMResponseError, OllamaClient
-from storybook.story.prompts import mensajes_bible
+from storybook.schemas import StoryBible, validar_entrada
+from storybook.story.llm_client import (
+    LLMError,
+    LLMResponseError,
+    LLMValidationError,
+    OllamaClient,
+)
 
 log = get_logger("f0_hello")
 
@@ -111,10 +115,15 @@ def _esperar_descarga(cliente: OllamaClient, modelo: str, max_s: float = 15.0) -
 
 
 def paso_llm(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) -> None:
-    from pydantic import ValidationError
+    """Story Bible real con el planificador del proyecto (estrategia de ``llm.estrategia``).
+
+    Usa el mismo código que la app (``story.planner``): validación Pydantic, reintentos con
+    los errores, muestreo anti-repetición y, en ``por_etapas``, plan + 5 escenas cortas.
+    """
+    from storybook.story.planner import Planificador
 
     solicitud = validar_entrada(args.idea, args.genero)
-    esquema = esquema_json_llm(StoryBible)
+    estrategia = cfg.llm.estrategia
     with OllamaClient(cfg.llm.host, cfg.llm.timeout_s) as cliente:
         if not cliente.has_model(cfg.llm.model):
             raise ModelNotDownloadedError(f"Falta el modelo. Ejecuta: ollama pull {cfg.llm.model}")
@@ -122,35 +131,29 @@ def paso_llm(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) -> No
         vram_cargado: float | None = None
         try:
             with track_stage("llm_bible") as metrica:
+                metrica.extra.update(estrategia=estrategia, num_ctx=cfg.llm.num_ctx)
                 try:
-                    resultado = cliente.chat_json(
-                        model=cfg.llm.model,
-                        messages=mensajes_bible(solicitud),
-                        schema=esquema,
-                        temperature=cfg.llm.temperature_narrativa,
-                        num_ctx=cfg.llm.num_ctx,
-                        think=cfg.llm.think,
-                        keep_alive=cfg.llm.keep_alive_etapa,
-                        seed=cfg.llm.seed,
-                        num_predict=cfg.llm.num_predict,
-                    )
+                    resultado = Planificador(cliente, cfg.llm).generar(solicitud, estrategia)
+                except LLMValidationError as exc:
+                    if exc.ultimo_contenido:
+                        parcial = ses.dir / "llm_raw_invalido.txt"
+                        parcial.write_text(exc.ultimo_contenido, encoding="utf-8")
+                        metrica.extra.update(salida_parcial=str(parcial))
+                    metrica.extra.update(errores_por_intento=exc.errores_por_intento[-3:])
+                    raise
                 except LLMResponseError as exc:
                     if exc.contenido:
                         parcial = ses.dir / "llm_raw_truncado.txt"
                         parcial.write_text(exc.contenido, encoding="utf-8")
-                        metrica.extra.update(
-                            tokens_salida=exc.output_tokens,
-                            tokens_por_s=round(exc.output_tokens / exc.eval_s, 2)
-                            if exc.eval_s
-                            else 0.0,
-                            salida_parcial=str(parcial),
-                        )
+                        metrica.extra.update(salida_parcial=str(parcial))
                     raise
+                tokens = sum(r.output_tokens for r in resultado.llamadas)
+                segundos = sum(r.segundos for r in resultado.llamadas)
                 metrica.extra.update(
-                    tokens_prompt=resultado.prompt_tokens,
-                    tokens_salida=resultado.output_tokens,
-                    tokens_por_s=resultado.tokens_por_s,
-                    carga_modelo_s=resultado.load_s,
+                    llamadas=len(resultado.llamadas),
+                    intentos=resultado.intentos_totales,
+                    tokens_salida=tokens,
+                    tokens_por_s=round(tokens / segundos, 2) if segundos else 0.0,
                 )
         finally:
             # Medir cuánto del modelo quedó en GPU (Ollama hace offload a CPU si no cabe) y
@@ -169,40 +172,39 @@ def paso_llm(cfg: config.AppConfig, ses: Sesion, args: argparse.Namespace) -> No
                 log.warning("ollama_unload_fallido", extra=kv(error=str(exc)))
         vram_liberado = gpu_used_mb()
 
-    (ses.dir / "llm_raw.json").write_text(resultado.content, encoding="utf-8")
-    errores: list[str] = []
-    try:
-        bible = StoryBible.model_validate_json(resultado.content).con_seeds(
-            cfg.consistency.base_seed, cfg.consistency.fixed_seed, cfg.consistency.seed_policy
-        )
-        (ses.dir / "story.json").write_text(bible.model_dump_json(indent=2), encoding="utf-8")
-        titulo = bible.titulo
-    except ValidationError as exc:
-        errores = [f"{'.'.join(map(str, e['loc']))}: {e['msg']}" for e in exc.errors()]
-        titulo = None
-    metrica.extra.update(bible_valida=not errores, errores_validacion=len(errores))
+    bible = resultado.bible.con_seeds(
+        cfg.consistency.base_seed, cfg.consistency.fixed_seed, cfg.consistency.seed_policy
+    )
+    (ses.dir / "story.json").write_text(bible.model_dump_json(indent=2), encoding="utf-8")
+    llamadas = [r.a_dict() for r in resultado.llamadas]
+    (ses.dir / "llm_llamadas.json").write_text(
+        json.dumps(llamadas, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    errores = [e for r in resultado.llamadas for intento in r.errores_por_intento for e in intento]
+    primer_intento = resultado.intentos_totales == len(resultado.llamadas)
     log.info(
         "llm_resultado",
         extra=kv(
-            valida=not errores,
-            titulo=titulo,
-            errores=len(errores),
+            estrategia=estrategia,
+            titulo=bible.titulo,
+            llamadas=len(llamadas),
+            intentos=resultado.intentos_totales,
             fraccion_en_gpu=fraccion_gpu,
             vram_cargado_mb=vram_cargado,
             vram_tras_unload_mb=vram_liberado,
         ),
     )
-    for error in errores[:8]:
-        log.warning("bible_error_validacion", extra=kv(detalle=error))
     ses.registrar(
         "llm",
         [metrica.as_dict()],
         modelo=cfg.llm.model,
+        estrategia=estrategia,
         idea=solicitud.idea,
         genero=solicitud.genero_efectivo,
-        bible_valida=not errores,
-        titulo=titulo,
+        bible_valida=primer_intento,
+        titulo=bible.titulo,
         errores=errores[:20],
+        llamadas=llamadas,
         fraccion_modelo_en_gpu=fraccion_gpu,
         vram_cargado_mb=vram_cargado,
         vram_tras_unload_mb=vram_liberado,

@@ -207,3 +207,22 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   3. AudioLDM: faltaba el componente `vocoder`. `seleccionar_archivos_diffusers` ahora incluye cualquier carpeta con configuración, salvo `safety_checker`. Se descarga en la próxima corrida.
 - Verificación sin GPU: 115 tests en verde, ruff limpio.
 
+### 2026-11-09 18:10 · Windows (3.ª corrida de setup) + correcciones del LLM · 0.6 (parcial)
+- **Ya funcionan en GPU:**
+  - Imagen: 4,0 y 2,9 s por imagen; VRAM pico 4,08 GB de la GPU (torch 3,11 GB).
+  - IP-Adapter: 4,0 s; embeddings en CPU 4,5 s.
+  - AudioLDM: 1,2–1,6 s por clip de 8 s, VRAM 1,27 GB.
+  - Piper: RTF 0,032.
+  - **WER 0,056**, CLIP imagen-texto 0,408, CLIP imagen-imagen media 0,82 (mínimo 0,74).
+- **El LLM sigue fallando** y se diagnosticó con `llm_raw_truncado.txt` y `ollama ps`:
+  1. **Bucle de repetición:** "Ella lo sabe." repetido cientos de veces dentro de `texto_narrativo`. Fue la causa real de los truncamientos y del timeout de 600 s.
+  2. **Ollama ordena alfabéticamente las claves del JSON:** las `escenas` salen antes que los `personajes` y el modelo usó "Luisa" como id.
+  3. **Solo el 66 % del 4B estaba en GPU** con `num_ctx` 8192, lo que daba ~16 tok/s.
+- **Correcciones:**
+  - Muestreo de Qwen3-Instruct-2507 (`top_p` 0.8, `top_k` 20) con `presence_penalty` 1.0 y `repeat_penalty` 1.1 (`LLMConfig.opciones_muestreo()`), en el cliente, el planificador y el auditor.
+  - `generar_validado` reintenta los truncamientos sin reenviar la salida cortada y con otra seed.
+  - Ids de personaje normalizados (`'Lucía'` → `lucia`).
+  - Perfiles con `estrategia: por_etapas`, `num_ctx` 4096, `num_predict` 2048 y `num_ctx_auditor` 8192. La clase mantiene `una_llamada` por defecto.
+  - `f0_hello.py llm` ahora usa el `Planificador` real del proyecto y guarda `story.json`, `llm_llamadas.json` y la salida inválida si falla.
+- Verificación sin GPU: **118 tests en verde**, ruff limpio.
+

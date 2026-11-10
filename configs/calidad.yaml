@@ -4,6 +4,7 @@ extends: default
 llm:
   model: qwen3:8b                         # ~5,2 GB Q4_K_M: Ollama reparte capas GPU/CPU
   num_ctx: 8192
+  num_predict: 4096
 
 image:
   scheduler: dpmpp_2m_karras

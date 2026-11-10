@@ -59,9 +59,12 @@ class LLMResponseError(LLMError):
 class LLMValidationError(LLMError):
     """El modelo no produjo una salida válida tras agotar los reintentos."""
 
-    def __init__(self, mensaje: str, errores_por_intento: list[list[str]]) -> None:
+    def __init__(
+        self, mensaje: str, errores_por_intento: list[list[str]], ultimo_contenido: str = ""
+    ) -> None:
         super().__init__(mensaje)
         self.errores_por_intento = errores_por_intento
+        self.ultimo_contenido = ultimo_contenido
 
 
 def errores_validacion(exc: ValidationError) -> list[str]:
@@ -189,9 +192,12 @@ class OllamaClient:
         keep_alive: str | int = "5m",
         seed: int | None = None,
         num_predict: int | None = None,
+        opciones_extra: dict[str, Any] | None = None,
     ) -> ChatResult:
         """Chat no streaming con salida restringida a ``schema``."""
         opciones: dict[str, Any] = {"temperature": temperature, "num_ctx": num_ctx}
+        if opciones_extra:
+            opciones.update(opciones_extra)
         if seed is not None:
             opciones["seed"] = seed
         if num_predict is not None:
@@ -271,31 +277,59 @@ class OllamaClient:
         seed: int | None = None,
         reparar: Reparador | None = None,
         num_predict: int | None = None,
+        opciones_extra: dict[str, Any] | None = None,
     ) -> GeneracionValidada[M]:
         """Pide JSON con el esquema de ``modelo_salida`` y lo valida con Pydantic.
 
         Si la validación falla, devuelve al modelo su respuesta y los errores (``reparar``,
         por defecto ``mensaje_reparacion``) hasta ``max_reintentos`` veces. Solo se conserva el
         último intento fallido para no desbordar ``num_ctx``. Los errores de conexión o de
-        modelo no encontrado no se reintentan. Si se agotan los intentos lanza
-        ``LLMValidationError`` con los errores de cada intento.
+        modelo no encontrado no se reintentan. Si la respuesta se corta por longitud (bucle de
+        repetición), se reintenta sin reenviar la salida cortada (no cabría en ``num_ctx``) y
+        con otra seed. Si se agotan los intentos lanza ``LLMValidationError`` con los errores
+        de cada intento y la última salida.
         """
         reparador = reparar or mensaje_reparacion
         esquema = esquema_json_llm(modelo_salida)
         errores_por_intento: list[list[str]] = []
         reparacion: list[dict[str, str]] = []
+        ultimo_contenido = ""
+        semilla = seed
         for intento in range(1, max_reintentos + 2):
-            resultado = self.chat_json(
-                model=model,
-                messages=[*messages, *reparacion],
-                schema=esquema,
-                temperature=temperature,
-                num_ctx=num_ctx,
-                think=think,
-                keep_alive=keep_alive,
-                seed=seed,
-                num_predict=num_predict,
-            )
+            try:
+                resultado = self.chat_json(
+                    model=model,
+                    messages=[*messages, *reparacion],
+                    schema=esquema,
+                    temperature=temperature,
+                    num_ctx=num_ctx,
+                    think=think,
+                    keep_alive=keep_alive,
+                    seed=semilla,
+                    num_predict=num_predict,
+                    opciones_extra=opciones_extra,
+                )
+            except LLMResponseError as exc:
+                if not exc.contenido:
+                    raise
+                errores = [
+                    "La respuesta se cortó por longitud antes de cerrar el JSON (probablemente "
+                    "repetía frases). Escribe textos más breves, sin repetir frases, y cierra el "
+                    "JSON."
+                ]
+                errores_por_intento.append(errores)
+                ultimo_contenido = exc.contenido
+                logger.warning(
+                    "salida_truncada",
+                    extra=kv(
+                        salida=modelo_salida.__name__, intento=intento, tokens=exc.output_tokens
+                    ),
+                )
+                reparacion = [reparador(errores)]
+                if seed is not None:
+                    semilla = seed + intento
+                continue
+            ultimo_contenido = resultado.content
             try:
                 objeto = modelo_salida.model_validate_json(resultado.content)
             except ValidationError as exc:
@@ -324,6 +358,7 @@ class OllamaClient:
         raise LLMValidationError(
             f"{modelo_salida.__name__}: salida inválida tras {max_reintentos + 1} intentos",
             errores_por_intento,
+            ultimo_contenido,
         )
 
     def unload(self, modelo: str) -> None:

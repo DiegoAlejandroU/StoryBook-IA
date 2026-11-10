@@ -66,6 +66,7 @@ class LLMBackend(Protocol):
         seed: int | None = ...,
         reparar: Any = ...,
         num_predict: int | None = ...,
+        opciones_extra: dict[str, Any] | None = ...,
     ) -> GeneracionValidada[M]: ...
 
     def unload(self, modelo: str) -> None: ...
@@ -156,6 +157,7 @@ class Planificador:
             seed=seed,
             reparar=reparar,
             num_predict=self.cfg.num_predict,
+            opciones_extra=self.cfg.opciones_muestreo(),
         )
         registro = RegistroLlamada.desde(etapa, gen, time.perf_counter() - inicio)
         logger.info(

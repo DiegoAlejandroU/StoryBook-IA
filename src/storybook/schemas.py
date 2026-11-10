@@ -23,11 +23,13 @@ import copy
 import hashlib
 import re
 import secrets
+import unicodedata
 from enum import StrEnum
 from typing import Annotated, Any, Final, Literal
 
 from pydantic import (
     BaseModel,
+    BeforeValidator,
     ConfigDict,
     Field,
     StringConstraints,
@@ -188,8 +190,21 @@ def _sin_duplicados(valores: list[Any], campo: str) -> list[Any]:
 # ---------------------------------------------------------------------------------------
 # Tipos base
 # ---------------------------------------------------------------------------------------
+def _normalizar_id(valor: Any) -> Any:
+    """'Lucía Pérez' -> 'lucia_perez'. Ollama ordena las claves del JSON alfabéticamente, así
+    que el LLM escribe ``escenas`` antes que ``personajes`` y a veces usa el nombre en vez del
+    id; normalizar evita rechazar la Bible por mayúsculas, tildes o espacios."""
+    if not isinstance(valor, str):
+        return valor
+    texto = unicodedata.normalize("NFKD", valor.strip().lower())
+    texto = "".join(c for c in texto if not unicodedata.combining(c))
+    texto = re.sub(r"[^a-z0-9]+", "_", texto).strip("_")
+    return f"p_{texto}" if texto[:1].isdigit() else texto
+
+
 IdPersonaje = Annotated[
     str,
+    BeforeValidator(_normalizar_id),
     StringConstraints(strip_whitespace=True, pattern=r"^[a-z][a-z0-9_]{1,31}$"),
     Field(description="Identificador en minúsculas, sin espacios. Ej.: 'lucia', 'capitan_ruiz'."),
 ]

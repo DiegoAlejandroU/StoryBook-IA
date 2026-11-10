@@ -90,13 +90,14 @@ class Auditor:
             model=self.cfg.model,
             messages=mensajes_auditor(bible),
             temperature=self.cfg.temperature_auditor,
-            num_ctx=self.cfg.num_ctx,
+            num_ctx=self.cfg.num_ctx_auditor,
             max_reintentos=self.cfg.max_reintentos,
             think=self.cfg.think,
             keep_alive=self.cfg.keep_alive_etapa,
             seed=self.cfg.seed,
             reparar=lambda e: mensaje_reparacion(e, objeto="la auditoría completa"),
             num_predict=self.cfg.num_predict,
+            opciones_extra=self.cfg.opciones_muestreo(),
         )
         registro = RegistroLlamada.desde("auditoria", gen, time.perf_counter() - inicio)
         auditoria = gen.objeto
@@ -118,13 +119,14 @@ class Auditor:
             model=self.cfg.model,
             messages=mensajes_regenerar_escena(bible, numero, contradicciones),
             temperature=self.cfg.temperature_narrativa,
-            num_ctx=self.cfg.num_ctx,
+            num_ctx=self.cfg.num_ctx_auditor,
             max_reintentos=self.cfg.max_reintentos,
             think=self.cfg.think,
             keep_alive=self.cfg.keep_alive_etapa,
             seed=derivar_seed(self.cfg.seed, "regenerar", numero),
             reparar=lambda e: mensaje_reparacion(e, objeto="la escena completa"),
             num_predict=self.cfg.num_predict,
+            opciones_extra=self.cfg.opciones_muestreo(),
         )
         registro = RegistroLlamada.desde(
             f"regenerar_escena_{numero}", gen, time.perf_counter() - inicio

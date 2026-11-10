@@ -243,7 +243,9 @@ Flujo:
   - Salida estructurada con `format` = JSON Schema generado desde Pydantic.
   - Hasta N reintentos, devolviendo al modelo el error de validación.
   - Si el modelo es de la familia Qwen3, desactivar el razonamiento (`think: false`).
-  - Fijar `num_ctx` ≥ 6144, porque el valor por defecto puede truncar la Bible; vigilar la VRAM del KV cache.
+  - `num_ctx`: 4096 por etapas (así el 4B cabe 100 % en GPU; con 8192 solo cabía el 66 % y generaba a ~16 tok/s) y ≥ 6144 para una sola llamada. El auditor usa `num_ctx_auditor` = 8192.
+  - **Ollama ordena alfabéticamente las claves del JSON** (la gramática sigue ese orden): por eso se prefiere `por_etapas` (los personajes del plan quedan definidos antes que las escenas) y los ids se normalizan (`'Luisa'` → `luisa`).
+  - Muestreo de Qwen3-Instruct-2507: `top_p` 0.8, `top_k` 20, `presence_penalty` 1.0 y `repeat_penalty` 1.1. Sin penalización, el 4B entró en un bucle de repetición ('Ella lo sabe.' ×600). `num_predict` 2048 por llamada corta esos bucles, y `generar_validado` reintenta con otra seed.
   - Temperatura: ~0,7 para narrar, ~0,2 para el auditor.
   - Evaluar dos estrategias como experimento:
     - (a) una sola llamada que genera la Bible completa;
