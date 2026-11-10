@@ -1,0 +1,1128 @@
+{
+  "tipo": "storybook_historia",
+  "version_app": "0.1.0",
+  "run_id": "20261110_141757_un_faro_abandonado_que_se_enci",
+  "creado": "2026-11-10T14:17:57",
+  "perfil": "rapido",
+  "idea": "Un faro abandonado que se enciende solo cada noche",
+  "genero": "misterio",
+  "titulo": "El Faro de Lucian",
+  "estado": "completa_con_fallbacks",
+  "etapas": {
+    "texto": {
+      "modelo": "qwen3:4b-instruct-2507-q4_K_M",
+      "ollama": "0.40.15",
+      "estrategia": "por_etapas",
+      "fraccion_gpu": 1.0,
+      "llamadas": [
+        {
+          "etapa": "plan",
+          "intentos": 1,
+          "segundos": 22.72,
+          "prompt_tokens": 477,
+          "output_tokens": 896,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_1",
+          "intentos": 1,
+          "segundos": 7.873,
+          "prompt_tokens": 1029,
+          "output_tokens": 385,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_2",
+          "intentos": 1,
+          "segundos": 8.402,
+          "prompt_tokens": 1116,
+          "output_tokens": 432,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_3",
+          "intentos": 1,
+          "segundos": 8.379,
+          "prompt_tokens": 1197,
+          "output_tokens": 425,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_4",
+          "intentos": 1,
+          "segundos": 8.254,
+          "prompt_tokens": 1313,
+          "output_tokens": 413,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "escena_5",
+          "intentos": 1,
+          "segundos": 8.279,
+          "prompt_tokens": 1418,
+          "output_tokens": 408,
+          "errores_por_intento": []
+        },
+        {
+          "etapa": "auditoria",
+          "intentos": 1,
+          "segundos": 5.074,
+          "prompt_tokens": 2772,
+          "output_tokens": 19,
+          "errores_por_intento": []
+        }
+      ],
+      "auditoria": {
+        "rondas": 1,
+        "coherente_final": true,
+        "escenas_regeneradas": [],
+        "contradicciones": [
+          []
+        ],
+        "errores": []
+      }
+    },
+    "imagen": {
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+      },
+      "parametros": {
+        "modelo": "Lykon/dreamshaper-8",
+        "scheduler": "lcm",
+        "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+        "pasos": 6,
+        "guidance_scale": 1.5,
+        "ancho": 768,
+        "alto": 512,
+        "usar_bible": true,
+        "ip_adapter": true,
+        "ip_adapter_scale": 0.4,
+        "prompt_orden": "accion_primero",
+        "seed_policy": "compartida",
+        "seed_fija": true
+      },
+      "character_sheet": "character_sheet.png",
+      "prompt_sheet": {
+        "personaje": "lucian",
+        "prompt": "watercolor ink blending on textured paper, deep oceanic blue, faded white, soft, boy age 12, short brown hair, wears a patched navy jacket, carries a small lantern, thin frame with wide eyes, full body character portrait, front view, standing, centered, plain light background",
+        "negative_prompt": "overly bright lights, cartoonish shadows, exaggerated proportions, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore, multiple people, crowd, cropped, cut off, busy background",
+        "tokens": 59,
+        "seed": 2081530954,
+        "ancho": 512,
+        "alto": 512,
+        "truncamientos": []
+      },
+      "imagenes": [
+        {
+          "escena": 1,
+          "archivo": "scene_1.png",
+          "seed": 2081530954,
+          "ip_adapter": true,
+          "segundos": 4.087,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 1,
+            "prompt": "A lone figure on a rocky cliff, watching a lighthouse flicker at night., boy age 12, short brown hair, wears a patched navy jacket, carries a small lantern, thin frame with wide eyes, watercolor ink blending on textured paper, deep oceanic blue, faded white, soft",
+            "negative_prompt": "overly bright lights, cartoonish shadows, exaggerated proportions, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 59,
+            "tokens_negativo": 36,
+            "personajes": [
+              "lucian"
+            ],
+            "truncamientos": [],
+            "sustituciones": []
+          }
+        },
+        {
+          "escena": 2,
+          "archivo": "scene_2.png",
+          "seed": 2081530954,
+          "ip_adapter": true,
+          "segundos": 3.503,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 2,
+            "prompt": "A man in a hat talks to another near a wooden cabin in the forest, boy age 12, short brown hair, wears a patched navy jacket, carries a small lantern, thin frame with wide eyes, old man age 70, white hair tied in a knot, wears a woolen hat and faded boots, watercolor ink blending on textured paper",
+            "negative_prompt": "overly bright lights, cartoonish shadows, exaggerated proportions, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 71,
+            "tokens_negativo": 36,
+            "personajes": [
+              "lucian",
+              "mario"
+            ],
+            "truncamientos": [
+              {
+                "segmento": "estilo",
+                "eliminado": "soft",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "faded white",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "deep oceanic blue",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "accion",
+                "eliminado": "at dusk.",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "personajes",
+                "eliminado": "walks slowly with a cane",
+                "motivo": "frase"
+              }
+            ],
+            "sustituciones": []
+          }
+        },
+        {
+          "escena": 3,
+          "archivo": "scene_3.png",
+          "seed": 2081530954,
+          "ip_adapter": true,
+          "segundos": 3.5,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 3,
+            "prompt": "boy age 12 inside a stone tower, examining ancient drawings on walls at night, boy age 12, short brown hair, wears a patched navy jacket, carries a small lantern, thin frame with wide eyes, watercolor ink blending on textured paper, deep oceanic blue, faded white, soft",
+            "negative_prompt": "overly bright lights, cartoonish shadows, exaggerated proportions, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 60,
+            "tokens_negativo": 36,
+            "personajes": [
+              "lucian"
+            ],
+            "truncamientos": [],
+            "sustituciones": [
+              {
+                "personaje": "lucian",
+                "nombre": "Lucian",
+                "por": "boy age 12"
+              }
+            ]
+          }
+        },
+        {
+          "escena": 4,
+          "archivo": "scene_4.png",
+          "seed": 2081530954,
+          "ip_adapter": true,
+          "segundos": 3.513,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 4,
+            "prompt": "Two figures on a rocky shore, watching the lighthouse glow at night., boy age 12, short brown hair, wears a patched navy jacket, carries a small lantern, thin frame with wide eyes, old man age 70, white hair tied in a knot, wears a woolen hat and faded boots, walks slowly with a cane, watercolor ink blending on textured paper",
+            "negative_prompt": "overly bright lights, cartoonish shadows, exaggerated proportions, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 75,
+            "tokens_negativo": 36,
+            "personajes": [
+              "lucian",
+              "mario"
+            ],
+            "truncamientos": [
+              {
+                "segmento": "estilo",
+                "eliminado": "soft",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "faded white",
+                "motivo": "frase"
+              },
+              {
+                "segmento": "estilo",
+                "eliminado": "deep oceanic blue",
+                "motivo": "frase"
+              }
+            ],
+            "sustituciones": []
+          }
+        },
+        {
+          "escena": 5,
+          "archivo": "scene_5.png",
+          "seed": 2081530954,
+          "ip_adapter": true,
+          "segundos": 3.509,
+          "respaldo": false,
+          "intentos": 1,
+          "error": null,
+          "prompt": {
+            "escena": 5,
+            "prompt": "boy age 12 stands on a rocky cliff at night, looking at the lighthouse as it glows., boy age 12, short brown hair, wears a patched navy jacket, carries a small lantern, thin frame with wide eyes, watercolor ink blending on textured paper, deep oceanic blue, faded white, soft",
+            "negative_prompt": "overly bright lights, cartoonish shadows, exaggerated proportions, lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+            "tokens": 63,
+            "tokens_negativo": 36,
+            "personajes": [
+              "lucian"
+            ],
+            "truncamientos": [],
+            "sustituciones": [
+              {
+                "personaje": "lucian",
+                "nombre": "Lucian",
+                "por": "boy age 12"
+              }
+            ]
+          }
+        }
+      ],
+      "metricas": [
+        {
+          "etapa": "imagen_carga",
+          "segundos": 11.891,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 2197.9,
+          "vram_torch_reservada_pico_mb": 2220.0,
+          "vram_gpu_base_mb": 196.5,
+          "vram_gpu_pico_mb": 2352.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "imagen_character_sheet",
+          "segundos": 2.651,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 2808.5,
+          "vram_torch_reservada_pico_mb": 3410.0,
+          "vram_gpu_base_mb": 2416.5,
+          "vram_gpu_pico_mb": 3634.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 2081530954,
+            "tokens": 59
+          }
+        },
+        {
+          "etapa": "imagen_ip_adapter",
+          "segundos": 4.92,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 2240.9,
+          "vram_torch_reservada_pico_mb": 3410.0,
+          "vram_gpu_base_mb": 3634.5,
+          "vram_gpu_pico_mb": 3634.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "scale": 0.4
+          }
+        },
+        {
+          "etapa": "imagen_escena_1",
+          "segundos": 4.087,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 2478.5,
+          "vram_gpu_pico_mb": 4066.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 2081530954,
+            "tokens": 59,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_2",
+          "segundos": 3.503,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4066.5,
+          "vram_gpu_pico_mb": 4066.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 2081530954,
+            "tokens": 71,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_3",
+          "segundos": 3.5,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4066.5,
+          "vram_gpu_pico_mb": 4066.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 2081530954,
+            "tokens": 60,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_4",
+          "segundos": 3.513,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4066.5,
+          "vram_gpu_pico_mb": 4066.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 2081530954,
+            "tokens": 75,
+            "intento": 1,
+            "ip": true
+          }
+        },
+        {
+          "etapa": "imagen_escena_5",
+          "segundos": 3.509,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 3155.6,
+          "vram_torch_reservada_pico_mb": 4034.0,
+          "vram_gpu_base_mb": 4066.5,
+          "vram_gpu_pico_mb": 4066.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "seed": 2081530954,
+            "tokens": 63,
+            "intento": 1,
+            "ip": true
+          }
+        }
+      ],
+      "fallbacks": [],
+      "errores": []
+    },
+    "voz": {
+      "backend": {
+        "backend": "piper",
+        "voz": "es_MX-claude-high",
+        "length_scale": 1.0,
+        "noise_scale": 0.667,
+        "noise_w_scale": 0.8,
+        "piper_tts": "1.8.0",
+        "dispositivo": "cpu"
+      },
+      "duracion_total_s": 216.952,
+      "narraciones": [
+        {
+          "escena": 1,
+          "archivo": "voice_1.wav",
+          "duracion_s": 40.938,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.289,
+          "rtf": 0.0315,
+          "caracteres": 568
+        },
+        {
+          "escena": 2,
+          "archivo": "voice_2.wav",
+          "duracion_s": 48.88,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.553,
+          "rtf": 0.0318,
+          "caracteres": 720
+        },
+        {
+          "escena": 3,
+          "archivo": "voice_3.wav",
+          "duracion_s": 45.768,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.404,
+          "rtf": 0.0307,
+          "caracteres": 677
+        },
+        {
+          "escena": 4,
+          "archivo": "voice_4.wav",
+          "duracion_s": 39.51,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.217,
+          "rtf": 0.0308,
+          "caracteres": 594
+        },
+        {
+          "escena": 5,
+          "archivo": "voice_5.wav",
+          "duracion_s": 41.856,
+          "sample_rate": 22050,
+          "segundos_sintesis": 1.305,
+          "rtf": 0.0312,
+          "caracteres": 620
+        }
+      ],
+      "metricas": [
+        {
+          "etapa": "voz_carga",
+          "segundos": 1.926,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "voz_escena_1",
+          "segundos": 1.305,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 40.938,
+            "sample_rate": 22050,
+            "rtf": 0.0315
+          }
+        },
+        {
+          "etapa": "voz_escena_2",
+          "segundos": 1.573,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 48.88,
+            "sample_rate": 22050,
+            "rtf": 0.0318
+          }
+        },
+        {
+          "etapa": "voz_escena_3",
+          "segundos": 1.42,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 45.768,
+            "sample_rate": 22050,
+            "rtf": 0.0307
+          }
+        },
+        {
+          "etapa": "voz_escena_4",
+          "segundos": 1.232,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 39.51,
+            "sample_rate": 22050,
+            "rtf": 0.0308
+          }
+        },
+        {
+          "etapa": "voz_escena_5",
+          "segundos": 1.319,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 2.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_audio_s": 41.856,
+            "sample_rate": 22050,
+            "rtf": 0.0312
+          }
+        }
+      ]
+    },
+    "sonido": {
+      "sonidos": [
+        {
+          "escena": 1,
+          "archivo": "sfx_1.wav",
+          "backend": "audioldm",
+          "duracion_s": 8.0,
+          "sample_rate": 16000,
+          "segundos": 2.754,
+          "prompt": "Ocean waves crash against rocks. Wind whispers through the cliffs.",
+          "etiquetas": [
+            "wind",
+            "ocean_waves"
+          ],
+          "detalle": {
+            "intentos": 2,
+            "fraccion_silencio": 0.0,
+            "seed": 2235
+          }
+        },
+        {
+          "escena": 2,
+          "archivo": "sfx_2.wav",
+          "backend": "audioldm",
+          "duracion_s": 8.0,
+          "sample_rate": 16000,
+          "segundos": 1.26,
+          "prompt": "Wind rustles through trees. Footsteps on damp ground. Distant bird calls.",
+          "etiquetas": [
+            "wind",
+            "footsteps",
+            "forest"
+          ],
+          "detalle": {
+            "intentos": 1,
+            "fraccion_silencio": 0.175,
+            "seed": 1236
+          }
+        },
+        {
+          "escena": 3,
+          "archivo": "sfx_3.wav",
+          "backend": "procedural",
+          "duracion_s": 8.0,
+          "sample_rate": 44100,
+          "segundos": 0.083,
+          "prompt": "Faint water stream in forest, slow heartbeat beneath silence",
+          "etiquetas": [
+            "water_stream",
+            "forest",
+            "heartbeat"
+          ],
+          "detalle": {
+            "seed": 1237
+          }
+        },
+        {
+          "escena": 4,
+          "archivo": "sfx_4.wav",
+          "backend": "audioldm",
+          "duracion_s": 8.0,
+          "sample_rate": 16000,
+          "segundos": 1.165,
+          "prompt": "Ocean wind hums. A steady heartbeat pulses in the background.",
+          "etiquetas": [
+            "wind",
+            "water_stream",
+            "heartbeat"
+          ],
+          "detalle": {
+            "intentos": 1,
+            "fraccion_silencio": 0.0,
+            "seed": 1238
+          }
+        },
+        {
+          "escena": 5,
+          "archivo": "sfx_5.wav",
+          "backend": "audioldm",
+          "duracion_s": 8.0,
+          "sample_rate": 16000,
+          "segundos": 2.338,
+          "prompt": "Wind whispers through trees. A slow heartbeat pulses in the background.",
+          "etiquetas": [
+            "wind",
+            "heartbeat",
+            "forest"
+          ],
+          "detalle": {
+            "intentos": 2,
+            "fraccion_silencio": 0.106,
+            "seed": 2239
+          }
+        }
+      ],
+      "backends": {
+        "sa3": {
+          "estado": "no_disponible",
+          "detalle": "ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py"
+        },
+        "audioldm": {
+          "estado": "cargado",
+          "backend": "audioldm",
+          "repo": "cvssp/audioldm",
+          "revision": "8ed5f6437581a2fee9c662842d7cb13459914b0f"
+        },
+        "library": {
+          "estado": "no_disponible",
+          "detalle": "SoundError: biblioteca vacía o sin clips CC0 en C:\\Users\\diego\\Documents\\StoryBook-IA\\assets\\sfx"
+        },
+        "procedural": {
+          "estado": "cargado",
+          "backend": "procedural",
+          "frecuencia": 44100
+        }
+      },
+      "fallbacks": [
+        "sonido:sa3:no_disponible",
+        "sonido:escena_3:audioldm_fallo",
+        "sonido:library:no_disponible"
+      ],
+      "errores": [
+        "sa3: ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py",
+        "Escena 3 con audioldm: SoundError: clip casi en silencio el 82% del tiempo (2 intentos)",
+        "library: SoundError: biblioteca vacía o sin clips CC0 en C:\\Users\\diego\\Documents\\StoryBook-IA\\assets\\sfx"
+      ],
+      "metricas": [
+        {
+          "etapa": "sonido_audioldm_carga",
+          "segundos": 3.734,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 821.0,
+          "vram_torch_reservada_pico_mb": 840.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 772.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "sonido_escena_1",
+          "segundos": 2.759,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1064.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 2235
+          }
+        },
+        {
+          "etapa": "sonido_escena_2",
+          "segundos": 1.265,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1274.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 1236
+          }
+        },
+        {
+          "etapa": "sonido_escena_4",
+          "segundos": 1.17,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1274.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 1238
+          }
+        },
+        {
+          "etapa": "sonido_escena_5",
+          "segundos": 2.343,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 943.2,
+          "vram_torch_reservada_pico_mb": 1048.0,
+          "vram_gpu_base_mb": 1274.5,
+          "vram_gpu_pico_mb": 1274.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "audioldm",
+            "duracion_audio_s": 8.0,
+            "seed": 2239
+          }
+        },
+        {
+          "etapa": "sonido_procedural_carga",
+          "segundos": 0.0,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {}
+        },
+        {
+          "etapa": "sonido_escena_3",
+          "segundos": 0.089,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "backend": "procedural",
+            "duracion_audio_s": 8.0,
+            "seed": 1237
+          }
+        }
+      ]
+    },
+    "mezcla": {
+      "mezclas": [
+        {
+          "escena": 1,
+          "ambiente": "ambience_1.wav",
+          "mezcla": "mix_1.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "audioldm",
+          "duracion_s": 42.438,
+          "lufs_voz_original": -14.88,
+          "lufs_ambiente_original": -17.6,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.938,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7528
+        },
+        {
+          "escena": 2,
+          "ambiente": "ambience_2.wav",
+          "mezcla": "mix_2.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "audioldm",
+          "duracion_s": 50.38,
+          "lufs_voz_original": -15.57,
+          "lufs_ambiente_original": -22.47,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.946,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7761
+        },
+        {
+          "escena": 3,
+          "ambiente": "ambience_3.wav",
+          "mezcla": "mix_3.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "procedural",
+          "duracion_s": 47.268,
+          "lufs_voz_original": -15.45,
+          "lufs_ambiente_original": -17.43,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.95,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7896
+        },
+        {
+          "escena": 4,
+          "ambiente": "ambience_4.wav",
+          "mezcla": "mix_4.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "audioldm",
+          "duracion_s": 41.01,
+          "lufs_voz_original": -14.57,
+          "lufs_ambiente_original": -14.24,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.942,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7337
+        },
+        {
+          "escena": 5,
+          "ambiente": "ambience_5.wav",
+          "mezcla": "mix_5.wav",
+          "sample_rate": 44100,
+          "fuente_sonido": "audioldm",
+          "duracion_s": 43.356,
+          "lufs_voz_original": -14.82,
+          "lufs_ambiente_original": -32.4,
+          "lufs_voz": -18.0,
+          "lufs_ambiente": -30.0,
+          "ambiente_bajo_voz_db": 12.0,
+          "ambiente_bajo_voz_hablando_db": 18.0,
+          "ducking_db": 6.0,
+          "fraccion_con_voz": 0.947,
+          "limitacion_db": 0.0,
+          "pico_mezcla": 0.7263
+        }
+      ],
+      "metricas": [
+        {
+          "etapa": "mezcla_escena_1",
+          "segundos": 0.382,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 42.438,
+            "lufs_voz_original": -14.88,
+            "lufs_ambiente_original": -17.6,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.938,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7528
+          }
+        },
+        {
+          "etapa": "mezcla_escena_2",
+          "segundos": 0.432,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 50.38,
+            "lufs_voz_original": -15.57,
+            "lufs_ambiente_original": -22.47,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.946,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7761
+          }
+        },
+        {
+          "etapa": "mezcla_escena_3",
+          "segundos": 0.412,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 47.268,
+            "lufs_voz_original": -15.45,
+            "lufs_ambiente_original": -17.43,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.95,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7896
+          }
+        },
+        {
+          "etapa": "mezcla_escena_4",
+          "segundos": 0.36,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 41.01,
+            "lufs_voz_original": -14.57,
+            "lufs_ambiente_original": -14.24,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.942,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7337
+          }
+        },
+        {
+          "etapa": "mezcla_escena_5",
+          "segundos": 0.384,
+          "dispositivo": "cuda",
+          "vram_torch_pico_mb": 0.0,
+          "vram_torch_reservada_pico_mb": 0.0,
+          "vram_gpu_base_mb": 226.5,
+          "vram_gpu_pico_mb": 226.5,
+          "vram_gpu_total_mb": 4096.0,
+          "extra": {
+            "duracion_s": 43.356,
+            "lufs_voz_original": -14.82,
+            "lufs_ambiente_original": -32.4,
+            "lufs_voz": -18.0,
+            "lufs_ambiente": -30.0,
+            "ambiente_bajo_voz_db": 12.0,
+            "ambiente_bajo_voz_hablando_db": 18.0,
+            "ducking_db": 6.0,
+            "fraccion_con_voz": 0.947,
+            "limitacion_db": 0.0,
+            "pico_mezcla": 0.7263
+          }
+        }
+      ]
+    }
+  },
+  "segundos": {
+    "texto": 71.56,
+    "imagen": 41.26,
+    "voz": 8.9,
+    "sonido": 14.09,
+    "mezcla": 2.06,
+    "total": 137.88
+  },
+  "fallbacks": [
+    "sonido:sa3:no_disponible",
+    "sonido:escena_3:audioldm_fallo",
+    "sonido:library:no_disponible"
+  ],
+  "errores": [],
+  "hardware": {
+    "sistema": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.10",
+    "procesador": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "gpu": {
+      "nombre": "NVIDIA GeForce RTX 3050 Laptop GPU",
+      "driver": "617.42",
+      "vram_total_mb": 4096.0,
+      "vram_usada_mb": 134.0,
+      "cuda_driver": "13.4",
+      "temperatura_c": 34,
+      "potencia_limite_w": 75.0,
+      "potencia_actual_w": 10.6,
+      "pstate": 0
+    }
+  },
+  "configuracion": {
+    "profile": "rapido",
+    "llm": {
+      "host": "http://localhost:11434",
+      "model": "qwen3:4b-instruct-2507-q4_K_M",
+      "think": false,
+      "num_ctx": 4096,
+      "num_predict": 2048,
+      "temperature_narrativa": 0.7,
+      "temperature_auditor": 0.2,
+      "max_reintentos": 3,
+      "seed": 42,
+      "timeout_s": 600.0,
+      "keep_alive_etapa": "5m",
+      "top_p": 0.8,
+      "top_k": 20,
+      "presence_penalty": 1.0,
+      "repeat_penalty": 1.1,
+      "num_gpu": 99,
+      "num_ctx_auditor": 8192,
+      "estrategia": "por_etapas",
+      "auditar": true,
+      "max_rondas_auditor": 1
+    },
+    "image": {
+      "model_id": "Lykon/dreamshaper-8",
+      "scheduler": "lcm",
+      "lcm_lora_id": "latent-consistency/lcm-lora-sdv1-5",
+      "steps": 6,
+      "guidance_scale": 1.5,
+      "width": 768,
+      "height": 512,
+      "negative_prompt_base": "lowres, blurry, deformed, bad anatomy, extra fingers, text, watermark, signature, nsfw, gore",
+      "attention_slicing": false,
+      "vae_slicing": true,
+      "cpu_offload": false,
+      "ip_adapter": {
+        "enabled": true,
+        "repo_id": "h94/IP-Adapter",
+        "subfolder": "models",
+        "weight_name": "ip-adapter_sd15.safetensors",
+        "image_encoder_subfolder": "models/image_encoder",
+        "scale": 0.4
+      },
+      "prompt_orden": "accion_primero"
+    },
+    "voice": {
+      "backend": "piper",
+      "piper_voice": "es_MX-claude-high",
+      "length_scale": 1.0,
+      "noise_scale": 0.667,
+      "noise_w_scale": 0.8,
+      "kokoro_voice": "ef_dora",
+      "kokoro_lang_code": "e"
+    },
+    "sound": {
+      "backends": [
+        "sa3",
+        "audioldm",
+        "library",
+        "procedural"
+      ],
+      "sa3_repo_id": "stabilityai/stable-audio-3-small-sfx",
+      "sa3_steps": null,
+      "sao_repo_id": "stabilityai/stable-audio-open-1.0",
+      "sao_steps": 50,
+      "sao_guidance": 7.0,
+      "audioldm_repo_id": "cvssp/audioldm",
+      "audioldm_steps": 25,
+      "audioldm_guidance": 2.5,
+      "duration_s": 8.0,
+      "negative_prompt": "low quality, speech, voice, singing, music",
+      "cpu_offload": true
+    },
+    "mix": {
+      "sample_rate": 44100,
+      "voz_lufs": -18.0,
+      "ambiente_bajo_voz_db": 12.0,
+      "ducking_db": 6.0,
+      "crossfade_s": 1.0,
+      "pre_roll_s": 0.5,
+      "post_roll_s": 1.0
+    },
+    "evaluation": {
+      "whisper_model": "small",
+      "whisper_repo_id": "Systran/faster-whisper-small",
+      "whisper_compute_type": "int8",
+      "whisper_language": "es",
+      "clip_model": "ViT-B-32",
+      "clip_pretrained": "laion2b_s34b_b79k",
+      "cpu_threads": 0
+    },
+    "consistency": {
+      "use_bible": true,
+      "fixed_seed": true,
+      "seed_policy": "compartida",
+      "base_seed": 1234
+    }
+  },
+  "regeneraciones": []
+}

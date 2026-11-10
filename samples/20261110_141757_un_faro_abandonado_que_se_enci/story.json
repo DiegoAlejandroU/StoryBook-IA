@@ -1,0 +1,179 @@
+{
+  "titulo": "El Faro de Lucian",
+  "genero": "misterio",
+  "tono": "misterioso, oscuro, emotivo, tranquilo",
+  "idioma": "es",
+  "estilo_visual": {
+    "tecnica": "watercolor ink blending on textured paper",
+    "paleta": "deep oceanic blue, faded white",
+    "iluminacion": "soft",
+    "negative_prompt": "overly bright lights, cartoonish shadows, exaggerated proportions"
+  },
+  "escenario": {
+    "lugar": "una isla remota en el océano Atlántico",
+    "epoca": "presente",
+    "rasgos_constantes": [
+      "el faro está ubicado en una roca elevada, rodeado de mares sin vela",
+      "cada noche a las 10:37 p.m. se enciende solo el faro y apaga automáticamente",
+      "los vecinos no saben quién lo enciende ni por qué"
+    ]
+  },
+  "personajes": [
+    {
+      "id": "lucian",
+      "nombre": "Lucian",
+      "rol": "protagonista",
+      "descripcion_visual_fija": "boy age 12, short brown hair, wears a patched navy jacket, carries a small lantern, thin frame with wide eyes",
+      "rasgos_personalidad": [
+        "curioso",
+        "observador",
+        "le gusta dibujar los faros"
+      ],
+      "seed": 2081530954
+    },
+    {
+      "id": "mario",
+      "nombre": "Mario",
+      "rol": "antagonista",
+      "descripcion_visual_fija": "old man age 70, white hair tied in a knot, wears a woolen hat and faded boots, walks slowly with a cane",
+      "rasgos_personalidad": [
+        "quieto",
+        "cuenta historias de la isla que nadie creyó"
+      ],
+      "seed": 637664517
+    }
+  ],
+  "escenas": [
+    {
+      "numero": 1,
+      "fase": "inicio",
+      "texto_narrativo": "Cada noche, a las 10:37 p.m., Lucian ve cómo la luz del faro se activa en silencio. No hay ruido, ni viento, solo el agua que se tambalea contra la roca. Los vecinos lo ignoran, dicen que es un relicario olvidado. Pero él lo observa con atención. Dibuja cada detalle: cómo brilla, cómo desaparece. Algunos días siente una presión en su pecho, como si el faro le hablara. No entiende por qué se enciende solo entonces. Nadie ha visto la luz encendida antes. Apenas sabe que algo está cambiando. Y cada noche, a las 10:37 p.m., lo vuelve a ver. Como si esperara alguien.",
+      "resumen": "Lucian descubre que el faro se enciende cada noche sin razón aparente.",
+      "personajes_presentes": [
+        "lucian"
+      ],
+      "hechos_nuevos": [
+        "Lucian observa que el faro se enciende cada noche a las 10:37 p.m.",
+        "El faro no ha sido visto encendido por nadie en décadas.",
+        "Los vecinos creen que es solo un relicario olvidado."
+      ],
+      "prompt_imagen": "A lone figure on a rocky cliff, watching a lighthouse flicker at night.",
+      "prompt_sonido": "Ocean waves crash against rocks. Wind whispers through the cliffs.",
+      "etiquetas_sonido": [
+        "wind",
+        "ocean_waves"
+      ],
+      "seed_imagen": 2081530954
+    },
+    {
+      "numero": 2,
+      "fase": "desarrollo",
+      "texto_narrativo": "Lucian encuentra a Mario sentado frente al mar, dibujando mapas en una hoja arrugada. El viento sisea entre las rocas mientras él le pregunta por el faro. Mario baja la mirada y susurra: 'Solo se enciende para quienes lo necesitan'. Lucian duda, pero ve cómo su expresión cambia al recordar a un niño que desapareció en 1987. Mario añade que nadie ha visto el faro encendido por humanos en décadas. Su voz es baja y tranquila, como si hubiera olvidado la luz también. Lucian siente una punzada en el pecho. El aire se vuelve denso, como si el mar lo estuviera escuchando. Mario no mira hacia él cuando dice: 'Alguien siempre está perdido aquí'. Lucian entiende que el faro no es un relicario olvidado… sino una puerta.",
+      "resumen": "Lucian habla con Mario, quien menciona que el faro enciende solo para los que lo necesitan.",
+      "personajes_presentes": [
+        "lucian",
+        "mario"
+      ],
+      "hechos_nuevos": [
+        "Mario afirma que el faro enciende solo para quienes lo necesitan.",
+        "Lucian escucha una historia de Mario sobre un ritual antiguo del faro.",
+        "Mario menciona que las luces se activan cuando alguien está perdido en la isla."
+      ],
+      "prompt_imagen": "A man in a hat talks to another near a wooden cabin in the forest, at dusk.",
+      "prompt_sonido": "Wind rustles through trees. Footsteps on damp ground. Distant bird calls.",
+      "etiquetas_sonido": [
+        "wind",
+        "footsteps",
+        "forest"
+      ],
+      "seed_imagen": 2081530954
+    },
+    {
+      "numero": 3,
+      "fase": "desarrollo",
+      "texto_narrativo": "Lucian sube por la roca hasta el interior del faro. Allí, entre polvo y grietas, descubre una serie de dibujos viejos pegados a las paredes. Muestra luces encendidas en círculos alrededor de un altar. Cada uno está marcado con la hora: 10:37 p.m. Al lado, hay una oración escrita en un idioma olvidado. Las piedras negras colocadas sobre el suelo parecen haber sido arrastradas por vientos antiguos. El dibujo final muestra a alguien mirando hacia el mar como si esperara algo. Lucian siente que el faro no es solo una luz: es un ritual vivo, repetido cada noche. Sabe ahora que nadie lo ve porque nadie se acerca al lugar. Pero él está allí por primera vez. Y eso cambia todo.",
+      "resumen": "Lucian encuentra dibujos antiguos en el faro que indican un ritual cada noche.",
+      "personajes_presentes": [
+        "lucian"
+      ],
+      "hechos_nuevos": [
+        "Lucian encuentra dibujos antiguos en el interior del faro.",
+        "Los dibujos muestran un ritual nocturno con luces que se encienden a las 10:37 p.m.",
+        "El ritual incluye una oración en un idioma olvidado y la colocación de piedras negras en el suelo del faro."
+      ],
+      "prompt_imagen": "Lucian inside a stone tower, examining ancient drawings on walls at night",
+      "prompt_sonido": "Faint water stream in forest, slow heartbeat beneath silence",
+      "etiquetas_sonido": [
+        "water_stream",
+        "forest",
+        "heartbeat"
+      ],
+      "seed_imagen": 2081530954
+    },
+    {
+      "numero": 4,
+      "fase": "climax",
+      "texto_narrativo": "A las 10:37 p.m., el faro se enciende de nuevo. Lucian observa cómo la luz resplandece, como si respondiera a un llamado invisible. Mario mira hacia él y dice que solo los perdidos lo ven. El viento sisea entre las rocas mientras ambos escuchan el sonido del mar. Lucian recuerda los dibujos antiguos: piedras negras en el suelo, una oración olvidada. Mario asiente, como si supiera que el faro no es un relicario, sino una puerta. El agua se tambalea lejos de la costa. En silencio, ambos entienden que cada noche guía a quien está perdido. La luz no los busca; ellos son quienes la necesitan.",
+      "resumen": "Lucian y Mario descubren que el faro enciende para guiar a quienes se pierden en la isla.",
+      "personajes_presentes": [
+        "lucian",
+        "mario"
+      ],
+      "hechos_nuevos": [
+        "Lucian y Mario observan que el faro se enciende exactamente a las 10:37 p.m. cada noche.",
+        "Mario confirma que el faro solo activa cuando alguien está perdido en la isla.",
+        "Los dibujos antiguos coinciden con el ritual de luces y piedras negras mencionado por Mario."
+      ],
+      "prompt_imagen": "Two figures on a rocky shore, watching the lighthouse glow at night.",
+      "prompt_sonido": "Ocean wind hums. A steady heartbeat pulses in the background.",
+      "etiquetas_sonido": [
+        "wind",
+        "water_stream",
+        "heartbeat"
+      ],
+      "seed_imagen": 2081530954
+    },
+    {
+      "numero": 5,
+      "fase": "desenlace",
+      "texto_narrativo": "Cada noche, desde niño, Lucian ha visto cómo se enciende el faro a las 10:37 p.m. Nunca lo entendió. Hasta que encontró los dibujos antiguos en su interior. Allí había un ritual: piedras negras y una oración olvidada. Mario le dijo que solo para quienes se pierden, el faro se enciende. Lucian pensaba que era un misterio sin sentido. Pero ahora sabe que el faro no es un relicario abandonado. Espera a alguien que lo observe con curiosidad y paciencia. Y él, como siempre, fue el primero en verlo. El faro nunca olvidó nadie. Solo esperaba a quien lo entendiera. Y Lucian, por fin, se convirtió en parte de su historia.",
+      "resumen": "Lucian entiende que el faro nunca fue abandonado: solo esperaba a alguien como él.",
+      "personajes_presentes": [
+        "lucian"
+      ],
+      "hechos_nuevos": [
+        "Lucian comprende que el faro no fue abandonado, sino que esperaba a alguien como él.",
+        "El ritual antiguo del faro se activa solo cuando un habitante se pierde en la isla.",
+        "Lucian reconoce que su curiosidad y observación lo hicieron elegible para ser guiado por el faro."
+      ],
+      "prompt_imagen": "Lucian stands on a rocky cliff at night, looking at the lighthouse as it glows.",
+      "prompt_sonido": "Wind whispers through trees. A slow heartbeat pulses in the background.",
+      "etiquetas_sonido": [
+        "wind",
+        "heartbeat",
+        "forest"
+      ],
+      "seed_imagen": 2081530954
+    }
+  ],
+  "canon": [
+    "el faro se enciende cada noche exactamente a las 10:37 p.m.",
+    "nunca ha sido visto encendido por humanos en la historia de la isla",
+    "todos los habitantes creen que el faro es solo un relicario olvidado",
+    "Lucian observa que el faro se enciende cada noche a las 10:37 p.m.",
+    "El faro no ha sido visto encendido por nadie en décadas.",
+    "Los vecinos creen que es solo un relicario olvidado.",
+    "Mario afirma que el faro enciende solo para quienes lo necesitan.",
+    "Lucian escucha una historia de Mario sobre un ritual antiguo del faro.",
+    "Mario menciona que las luces se activan cuando alguien está perdido en la isla.",
+    "Lucian encuentra dibujos antiguos en el interior del faro.",
+    "Los dibujos muestran un ritual nocturno con luces que se encienden a las 10:37 p.m.",
+    "El ritual incluye una oración en un idioma olvidado y la colocación de piedras negras en el suelo del faro.",
+    "Lucian y Mario observan que el faro se enciende exactamente a las 10:37 p.m. cada noche.",
+    "Mario confirma que el faro solo activa cuando alguien está perdido en la isla.",
+    "Los dibujos antiguos coinciden con el ritual de luces y piedras negras mencionado por Mario.",
+    "Lucian comprende que el faro no fue abandonado, sino que esperaba a alguien como él.",
+    "El ritual antiguo del faro se activa solo cuando un habitante se pierde en la isla.",
+    "Lucian reconoce que su curiosidad y observación lo hicieron elegible para ser guiado por el faro."
+  ]
+}
