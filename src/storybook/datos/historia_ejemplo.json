@@ -1,0 +1,184 @@
+{
+  "titulo": "El Faro de las Noches",
+  "genero": "misterio",
+  "tono": "misterioso, oscuro, emotivo, reflexivo",
+  "idioma": "es",
+  "estilo_visual": {
+    "tecnica": "watercolor with ink lines",
+    "paleta": "deep blues, silver highlights, charcoal gray",
+    "iluminacion": "moonlit shadows and cold blue glow",
+    "negative_prompt": "bright colors, warm tones, daylight"
+  },
+  "escenario": {
+    "lugar": "una costa remota con vegetación densa y olas constantes",
+    "epoca": "actual",
+    "rasgos_constantes": [
+      "el faro está completamente abandonado desde hace años",
+      "cada noche a las 23:07, el faro se enciende por sí solo",
+      "no hay señal de electricidad ni conexión con redes"
+    ]
+  },
+  "personajes": [
+    {
+      "id": "luna_perez",
+      "nombre": "Luna Perez",
+      "rol": "protagonista",
+      "descripcion_visual_fija": "25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build",
+      "rasgos_personalidad": [
+        "curiosa",
+        "leal a sus amigos",
+        "cree en lo sobrenatural"
+      ],
+      "seed": null
+    },
+    {
+      "id": "elias_martinez",
+      "nombre": "Elias Martinez",
+      "rol": "antagonista",
+      "descripcion_visual_fija": "50 years old, white hair, thick woolen coat, always carrying an old compass",
+      "rasgos_personalidad": [
+        "misterioso",
+        "cuenta historias antiguas",
+        "no habla de sí mismo"
+      ],
+      "seed": null
+    }
+  ],
+  "escenas": [
+    {
+      "numero": 1,
+      "fase": "inicio",
+      "texto_narrativo": "Luna Perez llega a la costa remota en una noche de lluvia. La vegetación es densa, los senderos desaparecidos y el aire pesado. El faro está abandonado, como si tiempo lo hubiera olvidado. Al mirar hacia arriba, ve cómo se enciende al medianoche, a las 23:07 exactas. No hay electricidad visible ni señal de vida en su interior. Ella escucha el viento y las olas que golpean la roca. El faro no debería encenderse sin causa alguna. Su corazón late más fuerte al notar ese horario fijo, como un reloj dormido. Cada noche, se enciende solo. Y cada vez, ella siente una presencia antigua que nunca ha hablado.",
+      "resumen": "Luna descubre que el faro se enciende cada noche a las 23:07 sin causa aparente.",
+      "personajes_presentes": [
+        "luna_perez"
+      ],
+      "hechos_nuevos": [
+        "Luna Perez llega a la costa remota por primera vez.",
+        "Observa el faro abandonado, cubierto de musgo y maleza.",
+        "Note que cada noche a las 23:07 se enciende sin causa aparente.",
+        "No hay señales eléctricas ni rastro de vida en el lugar."
+      ],
+      "prompt_imagen": "A lone lighthouse on a remote coast, foggy and overgrown, glowing at night.",
+      "prompt_sonido": "Ongoing ocean waves, wind howling through dense vegetation, faint heartbeat pulse.",
+      "etiquetas_sonido": [
+        "wind",
+        "ocean_waves",
+        "heartbeat"
+      ],
+      "seed_imagen": null
+    },
+    {
+      "numero": 2,
+      "fase": "desarrollo",
+      "texto_narrativo": "Luna camina entre los árboles densos hasta encontrar una figura oculta tras un tronco. Es Elias Martinez, con ojos hundidos y voz tenue. Le cuenta que en 1983, durante una tormenta violenta, vio el faro encenderse sin razón aparente. Dice que entonces creyó que el faro era más que un simple instrumento: era un testigo de lo inmenso del mar. Su voz se entrecorta al recordar cómo los navegantes lo miraban como si esperaran una respuesta. Luna nota su silencio, la forma en que evita hablar de sí mismo. El viento sisea entre las hojas mientras ambos escuchan el eco de un latido antiguo. Ella siente que algo profundo se rompe en ese momento. Elias no dice por qué lo recordó, pero Luna sabe: ahora quiere saber más sobre esa noche del pasado.",
+      "resumen": "Luna encuentra a Elias, quien dice haber visto el faro encenderse en su juventud.",
+      "personajes_presentes": [
+        "luna_perez",
+        "elias_martinez"
+      ],
+      "hechos_nuevos": [
+        "Luna encuentra a Elias Martinez en la entrada del faro, oculto entre los árboles.",
+        "Elias habla con voz baja y melancólica de su juventud en la costa.",
+        "Dice haber visto el faro encenderse durante una tormenta en 1983."
+      ],
+      "prompt_imagen": "A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse.",
+      "prompt_sonido": "Wind howls through the forest. A slow heartbeat pulses in the background.",
+      "etiquetas_sonido": [
+        "wind",
+        "forest",
+        "heartbeat"
+      ],
+      "seed_imagen": null
+    },
+    {
+      "numero": 3,
+      "fase": "desarrollo",
+      "texto_narrativo": "Luna escucha silenciosamente mientras Elias habla de su juventud. El viento sisea entre los árboles, como si recordara algo olvidado. Dice que su padre encendió el faro cada noche en 1983 para guiar a barcos perdidos durante tormentas. \"No había electricidad\", añade, mirando al mar con tristeza. El agua se mueve lentamente bajo las rocas, como un latido antiguo. Luna entiende que el faro no es solo una luz: es un testigo de sacrificios olvidados. Elias niega haber visto a su padre encenderlo en persona, pero sus ojos brillan con recuerdos oscuros. La brisa fría acaricia su rostro mientras habla. Luna siente que el faro no solo ilumina el mar… también ilumina historias olvidadas.",
+      "resumen": "Elias revela que el faro fue encendido por su padre para guiar a navegantes en peligro.",
+      "personajes_presentes": [
+        "luna_perez",
+        "elias_martinez"
+      ],
+      "hechos_nuevos": [
+        "Elias revela que su padre fue el encendedor original del faro en 1983.",
+        "El faro fue usado para guiar a navegantes en peligro durante décadas.",
+        "Elias menciona una tormenta particular donde vio al faro encenderse por primera vez."
+      ],
+      "prompt_imagen": "A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight.",
+      "prompt_sonido": "Wind howls through the forest. Water streams gently over rocks. Distant waves crash against the shore.",
+      "etiquetas_sonido": [
+        "wind",
+        "water_stream",
+        "forest"
+      ],
+      "seed_imagen": null
+    },
+    {
+      "numero": 4,
+      "fase": "climax",
+      "texto_narrativo": "Luna escucha un susurro entre las hojas y encuentra un interruptor oculto tras una pared de musgo. Su dedo toca la fría superficie mientras el viento gira como si fuera una respiración. El faro se enciende con un resplandor tenue, como si respondiera a algo más que electricidad. Elias está allí, quieto y mirando hacia el mar. No dice nada, solo asiente suavemente. Luna entiende: alguien lo activa cada noche, no por necesidad, sino porque hay amor en lo olvidado. El interruptor tiene una inscripción: 'Para quienes no regresan.' Ella siente que el faro no guía barcos… guía recuerdos. Y a veces, también esperanza.",
+      "resumen": "Luna descubre que el faro se enciende porque alguien, en secreto, lo activa cada noche.",
+      "personajes_presentes": [
+        "luna_perez",
+        "elias_martinez"
+      ],
+      "hechos_nuevos": [
+        "Luna encuentra un pequeño interruptor oculto en la pared del faro.",
+        "El interruptor está cubierto de polvo y tiene una inscripción: 'Para quienes no regresan.'",
+        "Elias observa silencioso mientras Luna lo activa con el dedo, como si fuera una tradición."
+      ],
+      "prompt_imagen": "A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves.",
+      "prompt_sonido": "Wind howls through the rocks. A slow heartbeat pulses in the background.",
+      "etiquetas_sonido": [
+        "wind",
+        "water_stream",
+        "heartbeat"
+      ],
+      "seed_imagen": null
+    },
+    {
+      "numero": 5,
+      "fase": "desenlace",
+      "texto_narrativo": "Luna siente un calor en la mano al tocar el interruptor. La inscripción brilla débilmente bajo la luz de la luna. Entonces comprende todo: cada noche, alguien lo enciende para recordar a quienes murieron en el mar. No es misterio ni tecnología. Es amor. El faro no guía barcos. Guía recuerdos. La gente que vivió allí los guarda como símbolos de vida perdida. Luna se queda quieto, sin hablar. El viento sopla fuerte, pero dentro del faro todo es silencio. Ella sabe ahora que el encendido no tiene fin. Solo dura hasta que alguien más lo sienta. Y entonces, el faro brilla otra vez por amor.",
+      "resumen": "Luna entiende que el faro enciende por amor: alguien lo enciende para recordar a los que murieron en el mar.",
+      "personajes_presentes": [
+        "luna_perez"
+      ],
+      "hechos_nuevos": [
+        "Luna comprende que el faro se enciende por amor, no por mecánica.",
+        "El interruptor fue activado por una persona en secreto cada noche.",
+        "La inscripción 'Para quienes no regresan' conecta el faro con las víctimas del mar."
+      ],
+      "prompt_imagen": "Luna touching a dusty switch on a rocky wall of an abandoned lighthouse at night",
+      "prompt_sonido": "Constant ocean waves, soft wind, slow heartbeat pulses",
+      "etiquetas_sonido": [
+        "wind",
+        "ocean_waves",
+        "heartbeat"
+      ],
+      "seed_imagen": null
+    }
+  ],
+  "canon": [
+    "el faro está abandonado desde hace años",
+    "cada noche a las 23:07 se enciende sin causa aparente",
+    "no hay electricidad ni señal de vida en el lugar",
+    "Luna Perez llega a la costa remota por primera vez.",
+    "Observa el faro abandonado, cubierto de musgo y maleza.",
+    "Note que cada noche a las 23:07 se enciende sin causa aparente.",
+    "No hay señales eléctricas ni rastro de vida en el lugar.",
+    "Luna encuentra a Elias Martinez en la entrada del faro, oculto entre los árboles.",
+    "Elias habla con voz baja y melancólica de su juventud en la costa.",
+    "Dice haber visto el faro encenderse durante una tormenta en 1983.",
+    "Elias revela que su padre fue el encendedor original del faro en 1983.",
+    "El faro fue usado para guiar a navegantes en peligro durante décadas.",
+    "Elias menciona una tormenta particular donde vio al faro encenderse por primera vez.",
+    "Luna encuentra un pequeño interruptor oculto en la pared del faro.",
+    "El interruptor está cubierto de polvo y tiene una inscripción: 'Para quienes no regresan.'",
+    "Elias observa silencioso mientras Luna lo activa con el dedo, como si fuera una tradición.",
+    "Luna comprende que el faro se enciende por amor, no por mecánica.",
+    "El interruptor fue activado por una persona en secreto cada noche.",
+    "La inscripción 'Para quienes no regresan' conecta el faro con las víctimas del mar."
+  ]
+}

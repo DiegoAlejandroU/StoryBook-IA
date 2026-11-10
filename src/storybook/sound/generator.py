@@ -45,6 +45,14 @@ logger = get_logger(__name__)
 GENERATIVOS: Final = ("sa3", "sao", "audioldm")
 DURACION_MINIMA_S: Final = 0.5
 RMS_MINIMO: Final = 1e-4
+# Continuidad de los clips generativos (tarea 4.4): AudioLDM a veces concentra el sonido en el
+# primer segundo y deja el resto casi en silencio (2 de 5 escenas en la prueba real); en loop
+# eso son huecos periódicos. Si más del 40 % del clip está 20 dB por debajo de su parte más
+# fuerte, se reintenta con otra seed y, si sigue igual, la escena pasa al siguiente backend.
+UMBRAL_HUECO_DB: Final = 20.0
+FRACCION_HUECO_MAX: Final = 0.4
+VENTANA_HUECO_S: Final = 0.05
+DESFASE_SEED_REINTENTO: Final = 1000
 SUBTIPO_WAV: Final = "PCM_16"
 
 
@@ -83,6 +91,19 @@ def a_mono(audio: Any) -> np.ndarray:
         eje_canales = 0 if datos.shape[0] <= 8 and datos.shape[0] < datos.shape[1] else 1
         datos = datos.mean(axis=eje_canales)
     return np.nan_to_num(datos.reshape(-1)).astype(np.float32)
+
+
+def fraccion_en_silencio(
+    audio: np.ndarray, frecuencia: int, umbral_db: float = UMBRAL_HUECO_DB
+) -> float:
+    """Fracción de ventanas de 50 ms que están ``umbral_db`` por debajo de la más fuerte."""
+    ventana = max(1, int(VENTANA_HUECO_S * frecuencia))
+    n = audio.size // ventana
+    if n == 0:
+        return 1.0
+    rms = np.sqrt(np.mean(np.square(audio[: n * ventana].reshape(n, ventana)), axis=1))
+    db = 20 * np.log10(np.maximum(rms, 1e-9))
+    return float(np.mean(db < db.max() - umbral_db))
 
 
 def validar_audio(audio: np.ndarray, frecuencia: int) -> None:
@@ -234,12 +255,29 @@ class GeneradorSonido:
         self, backend: BackendSonido, escena: Escena, carpeta: Path, etapa: EtapaSonido
     ) -> ResultadoSonido:
         seed = self.seed_base + escena.numero
+        detalle: dict[str, Any] = {}
         with track_stage(f"sonido_escena_{escena.numero}") as metrica:
             inicio = time.perf_counter()
-            crudo, frecuencia = backend.generar(escena, self.cfg.duration_s, seed)
+            for intento in (1, 2):
+                crudo, frecuencia = backend.generar(escena, self.cfg.duration_s, seed)
+                audio = a_mono(crudo)
+                validar_audio(audio, frecuencia)
+                if backend.nombre not in GENERATIVOS:
+                    break
+                silencio = fraccion_en_silencio(audio, frecuencia)
+                detalle.update(intentos=intento, fraccion_silencio=round(silencio, 3))
+                if silencio <= FRACCION_HUECO_MAX:
+                    break
+                logger.warning(
+                    "sonido_clip_con_huecos",
+                    extra=kv(escena=escena.numero, backend=backend.nombre, silencio=silencio),
+                )
+                if intento == 2:
+                    raise SoundError(
+                        f"clip casi en silencio el {silencio:.0%} del tiempo (2 intentos)"
+                    )
+                seed += DESFASE_SEED_REINTENTO
             segundos = time.perf_counter() - inicio
-            audio = a_mono(crudo)
-            validar_audio(audio, frecuencia)
             ruta = carpeta / nombre_archivo_sonido(escena.numero)
             sf.write(str(ruta), np.clip(audio, -1.0, 1.0), frecuencia, subtype=SUBTIPO_WAV)
             duracion = round(audio.size / frecuencia, 3)
@@ -254,7 +292,7 @@ class GeneradorSonido:
             segundos=round(segundos, 3),
             prompt=escena.prompt_sonido,
             etiquetas=[str(e) for e in escena.etiquetas_sonido],
-            detalle=getattr(backend, "ultimo_detalle", {}) or {},
+            detalle={**(getattr(backend, "ultimo_detalle", {}) or {}), **detalle, "seed": seed},
         )
 
 

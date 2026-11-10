@@ -70,6 +70,40 @@ cada modelo, con la misma cuenta del token: `stabilityai/stable-audio-3-small-sf
 AudioLDM (`cvssp/audioldm`, no requiere token) y, si tampoco está, con la biblioteca CC0 y la
 síntesis procedural.
 
+## Usar la aplicación
+
+Con doble clic en **`StoryBook.cmd`**, en la carpeta del proyecto. Abre Ollama si hace falta,
+inicia la app y la muestra en el navegador (http://localhost:8501). Para cerrarla, cierra la
+ventana negra.
+
+Equivalente en PowerShell:
+
+```powershell
+uv run streamlit run app/streamlit_app.py              # modelos reales (Ollama abierto)
+uv run streamlit run app/streamlit_app.py -- --mock    # modo simulado, sin GPU ni Ollama
+```
+
+En la app:
+
+1. Escribe una idea, elige el género y el perfil (rápido o calidad) y presiona
+   **Generar historia**.
+2. Recorre las 5 escenas con **Anterior** y **Siguiente**. Cada escena muestra su
+   ilustración, el texto y tres reproductores: narración, ambiente sonoro y mezcla.
+3. **Regenerar ilustración y ambiente** crea una imagen y un sonido nuevos para la escena.
+4. En **Historias guardadas** se abren las historias anteriores (`outputs/`) y los
+   ejemplos (`samples/`).
+
+Cada historia queda en `outputs/<run_id>/` con `story.json`, las imágenes, los audios y
+`manifest.json`. El manifest registra modelos, seeds, parámetros, hardware, tiempos,
+alternativas usadas y errores.
+
+Para comprobar que nada sale a Internet:
+
+```powershell
+uv run python scripts/verify_offline.py          # pipeline simulado
+uv run python scripts/verify_offline.py --real   # modelos reales; con el Wi-Fi apagado
+```
+
 ## Prueba por modalidad (Fase 0)
 
 ```powershell

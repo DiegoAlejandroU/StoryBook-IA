@@ -82,12 +82,12 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 
   Tests con generadores falsos que fallan. (dep: 4.1)
 - [x] 4.3 [AUTO] `sound/mixer.py`: loop con crossfade hasta la duración de la voz, LUFS con pyloudnorm, ambiente 12–18 dB bajo la voz, ducking y exportación de `ambience_n.wav` y `mix_n.wav`. Tests con señales sintéticas. (dep: 4.1)
-- [ ] 4.4 [WINDOWS] Prueba real de SA3 Small-SFX y de AudioLDM: confirmar el formato diffusers, medir VRAM y tiempo, y comparar la pertinencia del sonido. Si SA3 no cabe, probar SAO 1.0 con offload. (dep: 0.6, 4.2)
+- [x] 4.4 [WINDOWS] Prueba real de SA3 Small-SFX y de AudioLDM: confirmar el formato diffusers, medir VRAM y tiempo, y comparar la pertinencia del sonido. Si SA3 no cabe, probar SAO 1.0 con offload. (dep: 0.6, 4.2)
   - Se ejecuta con `setup_windows.ps1 -Paso f4` (`scripts/f4_sonido.py`): narra la historia de prueba y genera y mezcla los 5 ambientes con la cadena real del perfil y con procedural. Evidencias en `docs/evidencias/f4_sonido.md`; se escuchan los `mix_N.wav` de `outputs/f4/<fecha>/<variante>/`.
 
 ## F5 · Integración, persistencia y UI
-- [ ] 5.1 [AUTO] `storage.py` (run_id, estructura de `outputs/`, `manifest.json`, cargar historias) y `pipeline.py` (orquestación por etapas, callback de progreso, fallbacks, regenerar una escena). `tests/test_pipeline_mock.py`: el pipeline completo con backends falsos produce 5 escenas con todos sus archivos y su manifest. (dep: 1.3, 2.2, 3.1, 4.3)
-- [ ] 5.2 [AUTO] `app/streamlit_app.py`:
+- [x] 5.1 [AUTO] `storage.py` (run_id, estructura de `outputs/`, `manifest.json`, cargar historias) y `pipeline.py` (orquestación por etapas, callback de progreso, fallbacks, regenerar una escena). `tests/test_pipeline_mock.py`: el pipeline completo con backends falsos produce 5 escenas con todos sus archivos y su manifest. (dep: 1.3, 2.2, 3.1, 4.3)
+- [x] 5.2 [AUTO] `app/streamlit_app.py`:
   - formulario validado y selector de perfil;
   - `st.status` por etapa;
   - visor con imagen, texto y tres reproductores;
@@ -103,8 +103,11 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
     - ASCII y compatible con cmd de Windows.
     - Con `StoryBook.cmd mock` abre la UI con backends falsos.
     - Documentarlo en el README.
-- [ ] 5.3 [AUTO] `scripts/verify_offline.py`: bloquea sockets salvo localhost, corre el pipeline con backends falsos o reales según una bandera e informa cualquier intento de conexión externa. (dep: 5.1)
+- [x] 5.3 [AUTO] `scripts/verify_offline.py`: bloquea sockets salvo localhost, corre el pipeline con backends falsos o reales según una bandera e informa cualquier intento de conexión externa. (dep: 5.1)
 - [ ] 5.4 [WINDOWS] Prueba de punta a punta real con el Wi-Fi apagado; generar 2–3 historias para `samples/`. (dep: 2.3, 3.3, 4.4, 5.2)
+  - Con el Wi-Fi apagado: `setup_windows.ps1 -Paso offline` (1 historia real con la red vigilada); con `-Muestras` hace 3 y las copia a `samples/`.
+  - Antes de versionar `samples/`, revisar el peso: ~55 MB por historia en WAV.
+  - **Prueba sin Internet hecha (10 nov, 13:58):** "El Faro de Lucian", completa en **133 s** (texto 73 s, imágenes 40 s, voz 8 s, sonido 10 s, mezcla 2 s). Ninguna conexión fuera del equipo. Falta generar las 2–3 historias de `samples/`.
 
 ## F6 · Experimentos
 - [ ] 6.1 [AUTO] Ya existe `evaluation/clip_metrics.py`. Falta:
@@ -127,7 +130,9 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente:** `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f4` (4.4) y escuchar los `mix_N.wav`. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
+- **Siguiente:**
+  1. Quitar a Claude como coautor del historial: `powershell -ExecutionPolicy Bypass -File .\scripts\quitar_coautor.ps1`.
+  2. Probar la app con doble clic en `StoryBook.cmd`. Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
 ---
@@ -469,3 +474,56 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - `story/muestras.elegir_story` ahora es compartida por los scripts de F2 y F4.
 - Tests: `tests/test_sound.py` (37) y `tests/test_f4_sonido.py` (2). **267 tests en verde** (contenedor y bundle Linux), ruff limpio.
 - **Por validar en Windows (4.4):** AudioLDM real dentro de la cadena (tiempo y VRAM por clip), pertinencia del sonido al escuchar y niveles de la mezcla al oído.
+
+### 2026-11-10 14:05 · Windows (4.4) + sesión interactiva · 4.4, 5.1, 5.2, 5.3 → **F4 completa; F5 lista salvo 5.4**
+- **4.4 · prueba real** (`outputs/f4/20261110_130910`, `docs/evidencias/f4_sonido.md`):
+  - Cadena real de rápido: SA3 no disponible (gated, sin token) → **AudioLDM en las 5 escenas**, a 1,34 s por clip de 8 s y 1,27 GB de VRAM pico.
+  - Procedural: 0,09 s por clip.
+  - Mezclas a −18,0 / −30,0 LUFS (12 / 18 dB), sin limitación. Unos 40 s en total, con narración.
+  - Falta que Diego elija entre AudioLDM y procedural al escuchar; no bloquea nada.
+- **5.1 · `storage.py` + `pipeline.py`:**
+  - `Pipeline.generar(idea, genero, …, progreso)`: texto → imágenes → voz → sonido → mezcla, por etapas y liberando cada modelo.
+    - Sin modelo de imagen: 5 ilustraciones de respaldo. Sin voz: queda el ambiente (`sfx_N`) y no hay mezcla.
+    - Si el texto falla, la ejecución termina con un mensaje claro (por ejemplo, "Ollama no responde…") y el manifest queda en `fallida`.
+  - `manifest.json`: tipo, perfil, idea, género, título, estado, etapas completas, segundos por etapa, fallbacks, errores, hardware, configuración y regeneraciones.
+  - `regenerar_escena(carpeta, n)`: nueva seed de imagen (reutiliza la character sheet) y de sonido, y vuelve a mezclar; el texto y la voz no cambian.
+  - `storage`: `listar_historias` (de `outputs/` y `samples/`, solo con manifest de tipo `storybook_historia`), escritura atómica y `archivos_escena`.
+  - `mock.py`: historia de ejemplo real de F1 (`datos/historia_ejemplo.json`), imágenes de tarjeta de color, voz de tono y sonido procedural.
+- **5.2 · UI** (`app/streamlit_app.py` + `ui_logica.py` + `StoryBook.cmd`):
+  - Contenido:
+    - Formulario validado (idea, género con "Otro" y perfil).
+    - `st.status` con barra de progreso y etapas.
+    - Visor con imagen, texto y 3 reproductores (narración, ambiente y mezcla), Anterior/Siguiente con n/5 y fase.
+    - Regenerar escena, historias guardadas, etiqueta "Contenido generado por IA", detalles técnicos (backend del sonido, tiempo y alternativas usadas) y aviso de modo simulado.
+  - **Probada en el contenedor** con Streamlit 1.67 y Playwright en modo simulado: generar, navegar, 3 audios, abrir guardada y regenerar, sin errores de página.
+  - `StoryBook.cmd` (doble clic): comprueba uv y `.venv`, abre Ollama si no responde y espera hasta 60 s, arranca Streamlit y abre el navegador cuando la app responde. Con `mock`, modo simulado.
+  - **`.streamlit/config.toml`: lo sobrescribí sin revisarlo antes** (error mío; ya existía desde F0). Lo recuperé del índice de git y lo fusioné:
+    - Se conservan `gatherUsageStats = false`, `address = "localhost"` y el tema oscuro.
+    - Cambia `headless = true`, para que Streamlit no pregunte un correo en la consola; el lanzador abre el navegador.
+- **5.3 · `scripts/verify_offline.py`:**
+  - Parchea `socket.connect`, `connect_ex` y `getaddrinfo`: bloquea y registra todo lo que no sea localhost.
+  - Corre el pipeline simulado o real (`--real`), 1–3 ideas, y opcionalmente copia a `samples/`.
+  - Test: el pipeline simulado no hace ninguna conexión.
+  - `setup_windows.ps1 -Paso offline [-Muestras]` lo corre con `uv run --offline`.
+- README: sección "Usar la aplicación". CLAUDE.md: notas de sonido e integración.
+- Verificación: **284 tests en verde** (contenedor y bundle Linux), ruff limpio.
+- **Estado frente al cronograma:** F0–F4 terminadas y F5 lista salvo la prueba real sin Wi-Fi (5.4), planeada para el sábado 14.
+- **Queda para la tarea automática:** F6 (experimentos: `run_experiment.py`, `make_contact_sheet.py`, C1/C2/C3) y F7 (documentación). La tarea programada se reactiva al cerrar esta sesión.
+
+### 2026-11-10 14:30 · Windows (5.4, prueba sin Internet) + decisiones · 5.4 parcial
+- **5.4:**
+  - `-Paso offline` con la red vigilada: "El Faro de Lucian" (`outputs/20261110_135837_…`), completa en 133 s, **0 conexiones externas**. El único fallback fue SA3, no disponible.
+  - Los descriptores ya empiezan por el tipo ("boy age 12", "old man age 70"), gracias al cambio de prompt de las 12:50.
+  - El presupuesto del perfil rápido (< 5 min) se cumple con margen: 2 min 13 s.
+- **Sonido, decisión de Claude a pedido de Diego:** se mantiene **AudioLDM como backend principal** (generación desde `prompt_sonido`, la opción que valora el enunciado), con procedural como red.
+  - Análisis de los 5 clips reales (espectrogramas): AudioLDM es pertinente pero irregular. Las escenas 1 y 3 concentran el sonido al principio y dejan el 47–55 % del clip 20 dB por debajo de su parte más fuerte, lo que en loop daría huecos periódicos.
+  - Corrección en `sound/generator.py` (`fraccion_en_silencio`): si un clip generativo tiene más del 40 % en silencio, se reintenta con otra seed (+1000); si persiste, la escena pasa al siguiente backend. Procedural y biblioteca quedan exentos, porque reloj y pasos son intermitentes a propósito. 3 tests nuevos.
+- **Git, pedido explícito de Diego:** Claude no debe aparecer como colaborador.
+  - `setup_windows.ps1` ya no agrega `Co-Authored-By` en ningún commit. Regla en CLAUDE.md §3: el único autor es Diego, sin menciones a asistentes en commits, PR ni tags.
+  - Nuevos `scripts/quitar_coautor.ps1` + `scripts/filtro_mensaje_commit.py`:
+    1. Hacen commit de lo pendiente.
+    2. Crean la rama local `respaldo-antes-de-quitar-coautor`.
+    3. Reescriben los mensajes de `main` con `git filter-branch --msg-filter`, quitando solo las líneas `Co-Authored-By: Claude…` y `Claude-Session:`.
+    4. Verifican que quedan 0 y suben con `--force-with-lease`.
+  - Probado en un repositorio de prueba en el contenedor: 3 → 0 y el coautor humano se conserva. 3 tests del filtro.
+- Verificación: **290 tests en verde** (contenedor y bundle Linux), ruff limpio.

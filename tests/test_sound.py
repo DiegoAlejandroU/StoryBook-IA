@@ -334,3 +334,51 @@ def test_mezclar_historia_escribe_ambience_y_mix(tmp_path: Path) -> None:
         assert m.a_dict()["fuente_sonido"] == "procedural"
     with pytest.raises(MixError, match="sin ambiente"):
         mezclar_historia({3: narraciones[1]}, sonidos, tmp_path / "out", MixConfig())
+
+
+# ---------------------------------------------------------------------------------------
+# 4.4 · Clips generativos con huecos (AudioLDM concentra a veces el sonido al principio)
+# ---------------------------------------------------------------------------------------
+class ConHuecos(FakeSonido):
+    """Con la seed base da un clip que se apaga tras 1 s; con otra seed, uno continuo."""
+
+    def __init__(self, nombre: str, *, siempre: bool = False) -> None:
+        super().__init__(nombre)
+        self.siempre = siempre
+        self.seeds: list[int] = []
+
+    def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
+        self.seeds.append(seed)
+        sr = 16_000
+        audio = np.random.default_rng(seed).standard_normal(int(duracion_s * sr)) * 0.2
+        if self.siempre or len(self.seeds) % 2 == 1:
+            audio[sr:] *= 0.001  # -60 dB después del primer segundo
+        return audio.astype(np.float32), sr
+
+
+def test_fraccion_en_silencio() -> None:
+    from storybook.sound.generator import fraccion_en_silencio
+
+    sr = 16_000
+    continuo = np.random.default_rng(0).standard_normal(4 * sr)
+    con_hueco = continuo.copy()
+    con_hueco[sr:] *= 0.001
+    assert fraccion_en_silencio(continuo, sr) < 0.05
+    assert fraccion_en_silencio(con_hueco, sr) > 0.7
+    assert fraccion_en_silencio(np.zeros(10), sr) == 1.0
+
+
+def test_clip_con_huecos_se_reintenta_con_otra_seed(bible: StoryBible, tmp_path: Path) -> None:
+    falso = ConHuecos("audioldm")
+    etapa = _generador({"audioldm": falso}, ["audioldm"]).generar(bible, tmp_path, numeros=[1])
+    (sonido,) = etapa.sonidos
+    assert sonido.backend == "audioldm"
+    assert falso.seeds == [11, 1011]  # seed_base 10 + escena 1, y el reintento
+    assert sonido.detalle["intentos"] == 2 and sonido.detalle["seed"] == 1011
+
+
+def test_clip_siempre_con_huecos_pasa_a_procedural(bible: StoryBible, tmp_path: Path) -> None:
+    falsos = {"audioldm": ConHuecos("audioldm", siempre=True), "procedural": ProceduralBackend()}
+    etapa = _generador(falsos, ["audioldm", "procedural"]).generar(bible, tmp_path, numeros=[2])  # type: ignore[arg-type]
+    assert etapa.por_escena(2).backend == "procedural"
+    assert any("casi en silencio" in e for e in etapa.errores)

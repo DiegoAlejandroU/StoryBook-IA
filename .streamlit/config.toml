@@ -5,7 +5,13 @@ gatherUsageStats = false
 
 [server]
 address = "localhost"
-headless = false
+port = 8501
+# headless = true evita que Streamlit pregunte un correo en la consola la primera vez;
+# StoryBook.cmd abre el navegador cuando la app responde.
+headless = true
+
+[client]
+toolbarMode = "minimal"
 
 [theme]
 base = "dark"

@@ -16,6 +16,9 @@
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f2v
   Tarea 4.4 (sonido real: cadena del perfil y procedural, mezclados con la voz):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f4
+  Tarea 5.4 (historia completa real sin Internet; apagar el Wi-Fi antes):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso offline
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso offline -Muestras
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -24,12 +27,13 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [int]$NumGpu = -1,
     [ValidateSet("rapido", "calidad", "llm_8b")]
     [string]$Perfil = "rapido",
+    [switch]$Muestras,
     [switch]$SinPausa
 )
 
@@ -143,8 +147,8 @@ function Paso-Git {
         if ($Paso -eq "f2") { $titulo = "chore: codigo usado en las pruebas reales de imagen y voz (tareas 2.3 y 3.3)" }
         if ($Paso -eq "f2v") { $titulo = "chore: codigo usado en las variantes de imagen (tarea 2.3)" }
         if ($Paso -eq "f4") { $titulo = "chore: codigo usado en la prueba real de sonido y mezcla (tarea 4.4)" }
-        $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-        if ((Ejecutar "git" @("commit", "-m", $titulo, "-m", $coautor)) -ne 0) { return 1 }
+        # Sin "Co-Authored-By" ni menciones a asistentes: el unico autor es Diego (pedido explicito).
+        if ((Ejecutar "git" @("commit", "-m", $titulo)) -ne 0) { return 1 }
     } else {
         Escribir "No hay cambios nuevos para commit." "DarkGray"
     }
@@ -310,8 +314,7 @@ function Guardar-Evidencias([string]$Mensaje) {
     & git diff --cached --quiet 2>$null
     if ($LASTEXITCODE -eq 0) { return 0 }
     Titulo "Guardando evidencias en git"
-    $coautor = "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-    if ((Ejecutar "git" @("commit", "-m", $Mensaje, "-m", $coautor)) -ne 0) { return 1 }
+    if ((Ejecutar "git" @("commit", "-m", $Mensaje)) -ne 0) { return 1 }
     if ((Ejecutar "git" @("push")) -ne 0) {
         Escribir "AVISO: el push de evidencias fallo; quedaron en un commit local." "Yellow"
     }
@@ -377,6 +380,18 @@ if ($Paso -eq "f2v") {
     if (Test-Path $salidaF2v) { Remove-Item $salidaF2v }
     $codigo = Ejecutar "uv" $argsF2v $salidaF2v
     Guardar-Evidencias "chore: evidencias de variantes de imagen (tarea 2.3)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "offline") {
+    # Sin git al principio: con el Wi-Fi apagado el push fallaria. Las evidencias quedan en
+    # un commit local y se suben con el siguiente paso que tenga Internet.
+    Titulo "Tarea 5.4 - Historia completa real con la red vigilada (verify_offline)"
+    $argsOff = @("run", "--offline", "python", "scripts/verify_offline.py", "--real", "--perfil", $Perfil)
+    if ($Muestras) { $argsOff += @("--n", "3", "--samples") }
+    $salidaOff = Join-Path $Evid "verify_offline.txt"
+    if (Test-Path $salidaOff) { Remove-Item $salidaOff }
+    $codigo = Ejecutar "uv" $argsOff $salidaOff
+    Guardar-Evidencias "chore: evidencias de la prueba sin Internet (tarea 5.4)" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 if ($Paso -eq "f4") {
