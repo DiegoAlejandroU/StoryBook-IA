@@ -1,0 +1,607 @@
+[
+  {
+    "variante": "ip=0.6",
+    "carpeta": "v1",
+    "imagen": {
+      "parametros": {
+        "modelo": "Lykon/dreamshaper-8",
+        "scheduler": "lcm",
+        "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+        "pasos": 6,
+        "guidance_scale": 1.5,
+        "ancho": 768,
+        "alto": 512,
+        "usar_bible": true,
+        "ip_adapter": true,
+        "ip_adapter_scale": 0.6,
+        "prompt_orden": "estilo_primero",
+        "seed_policy": "compartida",
+        "seed_fija": true
+      },
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+      },
+      "segundos_carga": 8.02,
+      "segundos_character_sheet": 2.321,
+      "segundos_ip_adapter": 3.637,
+      "segundos_por_imagen_mediana": 3.503,
+      "segundos_total": 32.06,
+      "vram_torch_pico_mb": 3155.6,
+      "vram_gpu_pico_mb": 4066.5,
+      "vram_gpu_total_mb": 4096.0,
+      "respaldos": [],
+      "fallbacks": [],
+      "errores": [],
+      "ip_adapter": true,
+      "escenas": [
+        {
+          "escena": 1,
+          "archivo": "scene_1.png",
+          "segundos": 4.053,
+          "seed": 3740413757,
+          "tokens": 60,
+          "truncado": false,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, A lone lighthouse on a remote coast, foggy and overgrown, glowing at night.",
+          "respaldo": false
+        },
+        {
+          "escena": 2,
+          "archivo": "scene_2.png",
+          "segundos": 3.49,
+          "seed": 3740413757,
+          "tokens": 71,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse.",
+          "respaldo": false
+        },
+        {
+          "escena": 3,
+          "archivo": "scene_3.png",
+          "segundos": 3.497,
+          "seed": 3740413757,
+          "tokens": 73,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight.",
+          "respaldo": false
+        },
+        {
+          "escena": 4,
+          "archivo": "scene_4.png",
+          "segundos": 3.543,
+          "seed": 3740413757,
+          "tokens": 74,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves.",
+          "respaldo": false
+        },
+        {
+          "escena": 5,
+          "archivo": "scene_5.png",
+          "segundos": 3.503,
+          "seed": 3740413757,
+          "tokens": 61,
+          "truncado": false,
+          "sustituciones": [
+            {
+              "personaje": "luna_perez",
+              "nombre": "Luna",
+              "por": "25 years old"
+            }
+          ],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 25 years old touching a dusty switch on a rocky wall of an abandoned lighthouse at night",
+          "respaldo": false
+        }
+      ]
+    },
+    "clip": {
+      "imagen_texto_por_escena": {
+        "1": 0.3989,
+        "2": 0.2615,
+        "3": 0.4005,
+        "4": 0.3648,
+        "5": 0.3255
+      },
+      "imagen_texto_media": 0.3502,
+      "imagen_imagen": {
+        "media": 0.8145,
+        "minimo": 0.7381,
+        "pares": 10
+      }
+    }
+  },
+  {
+    "variante": "ip=0.4",
+    "carpeta": "v2",
+    "imagen": {
+      "parametros": {
+        "modelo": "Lykon/dreamshaper-8",
+        "scheduler": "lcm",
+        "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+        "pasos": 6,
+        "guidance_scale": 1.5,
+        "ancho": 768,
+        "alto": 512,
+        "usar_bible": true,
+        "ip_adapter": true,
+        "ip_adapter_scale": 0.4,
+        "prompt_orden": "estilo_primero",
+        "seed_policy": "compartida",
+        "seed_fija": true
+      },
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+      },
+      "segundos_carga": 2.265,
+      "segundos_character_sheet": 1.861,
+      "segundos_ip_adapter": 3.637,
+      "segundos_por_imagen_mediana": 3.525,
+      "segundos_total": 25.9,
+      "vram_torch_pico_mb": 3155.6,
+      "vram_gpu_pico_mb": 4066.5,
+      "vram_gpu_total_mb": 4096.0,
+      "respaldos": [],
+      "fallbacks": [],
+      "errores": [],
+      "ip_adapter": true,
+      "escenas": [
+        {
+          "escena": 1,
+          "archivo": "scene_1.png",
+          "segundos": 4.064,
+          "seed": 3740413757,
+          "tokens": 60,
+          "truncado": false,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, A lone lighthouse on a remote coast, foggy and overgrown, glowing at night.",
+          "respaldo": false
+        },
+        {
+          "escena": 2,
+          "archivo": "scene_2.png",
+          "segundos": 3.525,
+          "seed": 3740413757,
+          "tokens": 71,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse.",
+          "respaldo": false
+        },
+        {
+          "escena": 3,
+          "archivo": "scene_3.png",
+          "segundos": 3.528,
+          "seed": 3740413757,
+          "tokens": 73,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight.",
+          "respaldo": false
+        },
+        {
+          "escena": 4,
+          "archivo": "scene_4.png",
+          "segundos": 3.513,
+          "seed": 3740413757,
+          "tokens": 74,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves.",
+          "respaldo": false
+        },
+        {
+          "escena": 5,
+          "archivo": "scene_5.png",
+          "segundos": 3.505,
+          "seed": 3740413757,
+          "tokens": 61,
+          "truncado": false,
+          "sustituciones": [
+            {
+              "personaje": "luna_perez",
+              "nombre": "Luna",
+              "por": "25 years old"
+            }
+          ],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 25 years old touching a dusty switch on a rocky wall of an abandoned lighthouse at night",
+          "respaldo": false
+        }
+      ]
+    },
+    "clip": {
+      "imagen_texto_por_escena": {
+        "1": 0.4132,
+        "2": 0.3463,
+        "3": 0.3568,
+        "4": 0.373,
+        "5": 0.3347
+      },
+      "imagen_texto_media": 0.3648,
+      "imagen_imagen": {
+        "media": 0.7493,
+        "minimo": 0.6224,
+        "pares": 10
+      }
+    }
+  },
+  {
+    "variante": "ip=0.25",
+    "carpeta": "v3",
+    "imagen": {
+      "parametros": {
+        "modelo": "Lykon/dreamshaper-8",
+        "scheduler": "lcm",
+        "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+        "pasos": 6,
+        "guidance_scale": 1.5,
+        "ancho": 768,
+        "alto": 512,
+        "usar_bible": true,
+        "ip_adapter": true,
+        "ip_adapter_scale": 0.25,
+        "prompt_orden": "estilo_primero",
+        "seed_policy": "compartida",
+        "seed_fija": true
+      },
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+      },
+      "segundos_carga": 2.224,
+      "segundos_character_sheet": 1.844,
+      "segundos_ip_adapter": 3.396,
+      "segundos_por_imagen_mediana": 3.514,
+      "segundos_total": 25.57,
+      "vram_torch_pico_mb": 3155.6,
+      "vram_gpu_pico_mb": 4066.5,
+      "vram_gpu_total_mb": 4096.0,
+      "respaldos": [],
+      "fallbacks": [],
+      "errores": [],
+      "ip_adapter": true,
+      "escenas": [
+        {
+          "escena": 1,
+          "archivo": "scene_1.png",
+          "segundos": 4.026,
+          "seed": 3740413757,
+          "tokens": 60,
+          "truncado": false,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, A lone lighthouse on a remote coast, foggy and overgrown, glowing at night.",
+          "respaldo": false
+        },
+        {
+          "escena": 2,
+          "archivo": "scene_2.png",
+          "segundos": 3.507,
+          "seed": 3740413757,
+          "tokens": 71,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse.",
+          "respaldo": false
+        },
+        {
+          "escena": 3,
+          "archivo": "scene_3.png",
+          "segundos": 3.514,
+          "seed": 3740413757,
+          "tokens": 73,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight.",
+          "respaldo": false
+        },
+        {
+          "escena": 4,
+          "archivo": "scene_4.png",
+          "segundos": 3.51,
+          "seed": 3740413757,
+          "tokens": 74,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves.",
+          "respaldo": false
+        },
+        {
+          "escena": 5,
+          "archivo": "scene_5.png",
+          "segundos": 3.546,
+          "seed": 3740413757,
+          "tokens": 61,
+          "truncado": false,
+          "sustituciones": [
+            {
+              "personaje": "luna_perez",
+              "nombre": "Luna",
+              "por": "25 years old"
+            }
+          ],
+          "prompt": "watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 25 years old touching a dusty switch on a rocky wall of an abandoned lighthouse at night",
+          "respaldo": false
+        }
+      ]
+    },
+    "clip": {
+      "imagen_texto_por_escena": {
+        "1": 0.3749,
+        "2": 0.3151,
+        "3": 0.3247,
+        "4": 0.3726,
+        "5": 0.3418
+      },
+      "imagen_texto_media": 0.3458,
+      "imagen_imagen": {
+        "media": 0.7262,
+        "minimo": 0.577,
+        "pares": 10
+      }
+    }
+  },
+  {
+    "variante": "ip=0.4+orden=accion_primero",
+    "carpeta": "v4",
+    "imagen": {
+      "parametros": {
+        "modelo": "Lykon/dreamshaper-8",
+        "scheduler": "lcm",
+        "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+        "pasos": 6,
+        "guidance_scale": 1.5,
+        "ancho": 768,
+        "alto": 512,
+        "usar_bible": true,
+        "ip_adapter": true,
+        "ip_adapter_scale": 0.4,
+        "prompt_orden": "accion_primero",
+        "seed_policy": "compartida",
+        "seed_fija": true
+      },
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+      },
+      "segundos_carga": 2.125,
+      "segundos_character_sheet": 2.14,
+      "segundos_ip_adapter": 2.997,
+      "segundos_por_imagen_mediana": 3.551,
+      "segundos_total": 25.5,
+      "vram_torch_pico_mb": 3155.6,
+      "vram_gpu_pico_mb": 4066.5,
+      "vram_gpu_total_mb": 4096.0,
+      "respaldos": [],
+      "fallbacks": [],
+      "errores": [],
+      "ip_adapter": true,
+      "escenas": [
+        {
+          "escena": 1,
+          "archivo": "scene_1.png",
+          "segundos": 4.067,
+          "seed": 3740413757,
+          "tokens": 59,
+          "truncado": false,
+          "sustituciones": [],
+          "prompt": "A lone lighthouse on a remote coast, foggy and overgrown, glowing at night., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow",
+          "respaldo": false
+        },
+        {
+          "escena": 2,
+          "archivo": "scene_2.png",
+          "segundos": 3.534,
+          "seed": 3740413757,
+          "tokens": 70,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, watercolor with ink lines, deep blues, silver highlights, charcoal gray",
+          "respaldo": false
+        },
+        {
+          "escena": 3,
+          "archivo": "scene_3.png",
+          "segundos": 3.555,
+          "seed": 3740413757,
+          "tokens": 72,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, watercolor with ink lines, deep blues, silver highlights, charcoal gray",
+          "respaldo": false
+        },
+        {
+          "escena": 4,
+          "archivo": "scene_4.png",
+          "segundos": 3.535,
+          "seed": 3740413757,
+          "tokens": 73,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, watercolor with ink lines, deep blues, silver highlights, charcoal gray",
+          "respaldo": false
+        },
+        {
+          "escena": 5,
+          "archivo": "scene_5.png",
+          "segundos": 3.551,
+          "seed": 3740413757,
+          "tokens": 61,
+          "truncado": false,
+          "sustituciones": [
+            {
+              "personaje": "luna_perez",
+              "nombre": "Luna",
+              "por": "25 years old"
+            }
+          ],
+          "prompt": "25 years old touching a dusty switch on a rocky wall of an abandoned lighthouse at night, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow",
+          "respaldo": false
+        }
+      ]
+    },
+    "clip": {
+      "imagen_texto_por_escena": {
+        "1": 0.3846,
+        "2": 0.3393,
+        "3": 0.357,
+        "4": 0.3384,
+        "5": 0.3559
+      },
+      "imagen_texto_media": 0.355,
+      "imagen_imagen": {
+        "media": 0.7512,
+        "minimo": 0.6221,
+        "pares": 10
+      }
+    }
+  },
+  {
+    "variante": "ip=0.25+orden=accion_primero",
+    "carpeta": "v5",
+    "imagen": {
+      "parametros": {
+        "modelo": "Lykon/dreamshaper-8",
+        "scheduler": "lcm",
+        "lcm_lora": "latent-consistency/lcm-lora-sdv1-5",
+        "pasos": 6,
+        "guidance_scale": 1.5,
+        "ancho": 768,
+        "alto": 512,
+        "usar_bible": true,
+        "ip_adapter": true,
+        "ip_adapter_scale": 0.25,
+        "prompt_orden": "accion_primero",
+        "seed_policy": "compartida",
+        "seed_fija": true
+      },
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b"
+      },
+      "segundos_carga": 2.165,
+      "segundos_character_sheet": 1.879,
+      "segundos_ip_adapter": 3.22,
+      "segundos_por_imagen_mediana": 3.552,
+      "segundos_total": 25.53,
+      "vram_torch_pico_mb": 3155.6,
+      "vram_gpu_pico_mb": 4066.5,
+      "vram_gpu_total_mb": 4096.0,
+      "respaldos": [],
+      "fallbacks": [],
+      "errores": [],
+      "ip_adapter": true,
+      "escenas": [
+        {
+          "escena": 1,
+          "archivo": "scene_1.png",
+          "segundos": 4.067,
+          "seed": 3740413757,
+          "tokens": 59,
+          "truncado": false,
+          "sustituciones": [],
+          "prompt": "A lone lighthouse on a remote coast, foggy and overgrown, glowing at night., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow",
+          "respaldo": false
+        },
+        {
+          "escena": 2,
+          "archivo": "scene_2.png",
+          "segundos": 3.541,
+          "seed": 3740413757,
+          "tokens": 70,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "A man in a worn coat stands beneath ancient trees, looking at a foggy lighthouse., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, watercolor with ink lines, deep blues, silver highlights, charcoal gray",
+          "respaldo": false
+        },
+        {
+          "escena": 3,
+          "archivo": "scene_3.png",
+          "segundos": 3.54,
+          "seed": 3740413757,
+          "tokens": 72,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "A man in a worn coat stands among tall trees, facing a weathered lighthouse at twilight., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, watercolor with ink lines, deep blues, silver highlights, charcoal gray",
+          "respaldo": false
+        },
+        {
+          "escena": 4,
+          "archivo": "scene_4.png",
+          "segundos": 3.552,
+          "seed": 3740413757,
+          "tokens": 73,
+          "truncado": true,
+          "sustituciones": [],
+          "prompt": "A lone girl touches a dusty switch on a stormy lighthouse wall, surrounded by dense forest and waves., 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, 50 years old, white hair, thick woolen coat, always carrying an old compass, watercolor with ink lines, deep blues, silver highlights, charcoal gray",
+          "respaldo": false
+        },
+        {
+          "escena": 5,
+          "archivo": "scene_5.png",
+          "segundos": 3.57,
+          "seed": 3740413757,
+          "tokens": 61,
+          "truncado": false,
+          "sustituciones": [
+            {
+              "personaje": "luna_perez",
+              "nombre": "Luna",
+              "por": "25 years old"
+            }
+          ],
+          "prompt": "25 years old touching a dusty switch on a rocky wall of an abandoned lighthouse at night, 25 years old, short black hair, worn denim jacket, one eye slightly crooked, thin build, watercolor with ink lines, deep blues, silver highlights, charcoal gray, moonlit shadows and cold blue glow",
+          "respaldo": false
+        }
+      ]
+    },
+    "clip": {
+      "imagen_texto_por_escena": {
+        "1": 0.3254,
+        "2": 0.3675,
+        "3": 0.3079,
+        "4": 0.3577,
+        "5": 0.3697
+      },
+      "imagen_texto_media": 0.3456,
+      "imagen_imagen": {
+        "media": 0.6241,
+        "minimo": 0.3856,
+        "pares": 10
+      }
+    }
+  }
+]
