@@ -65,3 +65,31 @@ def test_etiqueta_de_historia_y_modo_simulado(monkeypatch) -> None:  # type: ign
     assert not ui_logica.es_mock(["app.py"])
     monkeypatch.setenv("STORYBOOK_MOCK", "1")
     assert ui_logica.es_mock(["app.py"])
+
+
+def test_fallbacks_vigentes_tras_rehacer_el_sonido() -> None:
+    """Ejemplo real: la escena 2 falló con AudioLDM y al rehacerla salió con AudioLDM."""
+    sonidos = [{"escena": n, "backend": "audioldm"} for n in range(1, 6)]
+    manifest = {
+        "fallbacks": [
+            "sonido:sa3:no_disponible",
+            "sonido:escena_2:audioldm_fallo",
+            "sonido:library:no_disponible",
+            "imagen:respaldo:3",
+        ],
+        "etapas": {"sonido": {"sonidos": sonidos}},
+        "regeneraciones": [
+            {"tipo": "sonido", "escenas": [2], "fallbacks": ["sonido:sa3:no_disponible"]}
+        ],
+    }
+    # el aviso de la escena 2 ya no vale y la biblioteca no hizo falta en ninguna escena
+    assert ui_logica.fallbacks_vigentes(manifest) == [
+        "sonido:sa3:no_disponible",
+        "imagen:respaldo:3",
+    ]
+    # si una escena terminó en procedural, que la biblioteca no estuviera sí importa
+    sonidos[3]["backend"] = "procedural"
+    assert "sonido:library:no_disponible" in ui_logica.fallbacks_vigentes(manifest)
+    # regenerar la escena 3 completa (imagen y sonido) borra su aviso de imagen
+    manifest["regeneraciones"].append({"escena": 3, "fallbacks": []})
+    assert "imagen:respaldo:3" not in ui_logica.fallbacks_vigentes(manifest)

@@ -296,6 +296,8 @@ Flujo:
     - "Regenerar escena" cambia la seed de la imagen y del sonido; el texto y la voz no cambian.
     - `scripts/verify_offline.py` bloquea y registra toda conexión que no sea a localhost.
     - `samples/` guarda los audios en OGG Vorbis (`storage.exportar_muestra`), escritos por bloques: en Windows, escribir un OGG largo de una vez desborda la pila (0xC00000FD).
+    - *Detalles técnicos* muestra solo las alternativas vigentes (`ui_logica.fallbacks_vigentes`): una regeneración anula los avisos anteriores de esa escena, y "<backend> no disponible" solo aparece si alguna escena usa un backend posterior en la cadena.
+    - Documentación de la entrega: `README.md` (con capturas en `docs/informe/capturas/`), `MODELS.md` (revisiones y mediciones) y `docs/arquitectura.md` (diagramas Mermaid verificados con `mmdc`).
   - Voz elegida por Diego al escucharlas (3.3): `es_MX-claude-high`. WER mediano del 8,3 % con Whisper small; los errores son sobre todo de nombres propios.
 - **Voz (CPU):**
   - Una voz narradora fija para toda la historia, con parámetros constantes (length_scale, noise_scale).
@@ -400,6 +402,7 @@ Plan:
   - Piper frente a Kokoro.
 - **Batería de pruebas:** al menos 4 combinaciones (terror, fantasía, ciencia ficción, infantil) por configuración.
   - Implementada en `scripts/run_experiment.py` (6.1). Por idea: la historia completa con C3 (producción) y, sobre el mismo texto, solo imágenes con C1, C2 y `calidad` (DPM++ 25 pasos). Resultados en `experiments/results.csv` y resumen en `docs/evidencias/f6_experimentos_<id>.md`.
+  - Análisis (6.3) en `docs/informe/analisis_experimentos.md`. Gráficas en `docs/informe/graficas/` con `scripts/graficas_informe.py` (Pillow; no agregar matplotlib).
 - **Registro por prueba:**
   - Identificación: ID, fecha, idea, género, configuración.
   - Reproducibilidad: modelos con versión, seeds, parámetros.

@@ -13,8 +13,10 @@ from storybook.schemas import GENERO_ETIQUETA, Fase, Genero
 from storybook.storage import NUM_ESCENAS, EntradaHistoria
 
 PERFILES: Final[dict[str, str]] = {
-    "rapido": "Rápido · unos 3 a 5 minutos",
-    "calidad": "Calidad · imágenes y sonido más elaborados, unos 5 a 12 minutos",
+    # Tiempos medidos en el equipo de referencia (batería 6.2: 124-129 s por historia en rápido;
+    # calidad suma unos 30 s de imágenes con 25 pasos).
+    "rapido": "Rápido · unos 2 minutos",
+    "calidad": "Calidad · imágenes con 25 pasos, unos 3 minutos",
 }
 FASES: Final[dict[str, str]] = {
     Fase.INICIO.value: "Inicio",
@@ -110,11 +112,61 @@ def fallback_legible(codigo: str) -> str:
     return codigo
 
 
-def resumen_fallbacks(manifest: dict[str, Any]) -> list[str]:
+ORDEN_SONIDO: Final = ("sa3", "sao", "audioldm", "library", "procedural")
+_POR_ESCENA: Final = re.compile(r"^(?:(sonido):escena_(\d+):|(imagen):respaldo:(\d+)$)")
+
+
+def _escena_del_codigo(codigo: str) -> tuple[str, int] | None:
+    """("sonido", 2) para "sonido:escena_2:audioldm_fallo"; ("imagen", 3) para
+    "imagen:respaldo:3"; None si el código no es de una escena."""
+    m = _POR_ESCENA.match(codigo)
+    if not m:
+        return None
+    return (m.group(1), int(m.group(2))) if m.group(1) else (m.group(3), int(m.group(4)))
+
+
+def fallbacks_vigentes(manifest: dict[str, Any]) -> list[str]:
+    """Alternativas que siguen describiendo la historia tal como está ahora.
+
+    - Al regenerar una escena (o rehacer su sonido), los avisos anteriores de esa escena
+      dejan de valer: la escena 2 pudo fallar con AudioLDM y, al rehacerla, salir con él.
+    - "<backend> no estaba disponible" solo se muestra si alguna escena usa un backend
+      posterior en la cadena. Si todas salieron con AudioLDM, que la biblioteca no estuviera
+      no afectó a nada.
+    """
     codigos = list(manifest.get("fallbacks", []))
     for regeneracion in manifest.get("regeneraciones", []):
-        codigos += regeneracion.get("fallbacks", [])
-    return [fallback_legible(c) for c in dict.fromkeys(codigos)]
+        escenas = set(regeneracion.get("escenas") or [])
+        if "escena" in regeneracion:
+            escenas.add(int(regeneracion["escena"]))
+        solo_sonido = regeneracion.get("tipo") == "sonido"
+
+        def cubierto(codigo: str, escenas: set[int] = escenas, solo: bool = solo_sonido) -> bool:
+            escena = _escena_del_codigo(codigo)
+            return (
+                escena is not None and escena[1] in escenas and (not solo or escena[0] == "sonido")
+            )
+
+        codigos = [c for c in codigos if not cubierto(c)] + list(regeneracion.get("fallbacks", []))
+
+    usados = [
+        ORDEN_SONIDO.index(b)
+        for b in backend_sonido_por_escena(manifest).values()
+        if b in ORDEN_SONIDO
+    ]
+    ultimo = max(usados, default=len(ORDEN_SONIDO))
+
+    def vigente(codigo: str) -> bool:
+        partes = codigo.split(":")
+        if len(partes) == 3 and partes[0] == "sonido" and partes[2] == "no_disponible":
+            return partes[1] not in ORDEN_SONIDO or ORDEN_SONIDO.index(partes[1]) < ultimo
+        return True
+
+    return list(dict.fromkeys(c for c in codigos if vigente(c)))
+
+
+def resumen_fallbacks(manifest: dict[str, Any]) -> list[str]:
+    return [fallback_legible(c) for c in fallbacks_vigentes(manifest)]
 
 
 def etiqueta_historia(entrada: EntradaHistoria) -> str:

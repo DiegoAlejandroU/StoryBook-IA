@@ -122,11 +122,13 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - **Hecha el 11 nov, 11:15–11:33:** 16 pruebas (4 ideas × C3, C1, C2 y `calidad`), todas con 5 escenas. Resumen en `docs/evidencias/f6_experimentos_20261111_111458.md` y hojas de contactos en `docs/evidencias/f6_hojas/`.
   - 4B frente a 8B: se usa lo medido en 1.4. SA3 no está disponible (acceso restringido), así que la comparación de sonido es AudioLDM frente a procedural.
   - Complemento (`-Paso audioldm`, 11 nov, 11:42): con el sufijo ", high quality, clear", AudioLDM da un ambiente apto en 20 de 20 escenas (sin él, 13 de 20). Adoptado en la configuración.
-- [ ] 6.3 [AUTO] Análisis de `results.csv`: gráficas, tablas y conclusiones en `docs/informe/`. (dep: 6.2)
+- [x] 6.3 [AUTO] Análisis de `results.csv`: gráficas, tablas y conclusiones en `docs/informe/`. (dep: 6.2)
+  - Hecho en la sesión interactiva del 11 nov: `docs/informe/analisis_experimentos.md` y 5 gráficas en `docs/informe/graficas/` (`scripts/graficas_informe.py`).
 
 ## F7 · Documentación y video
-- [ ] 7.1 [AUTO] Completar `README.md` (ya existe la base de F0), `MODELS.md` y `docs/arquitectura.md` con diagramas Mermaid de componentes y de flujo de datos. Marcar `[DATO PENDIENTE]` donde falten mediciones. (dep: 5.1)
-- [ ] 7.2 [AUTO] Borrador del informe técnico en `docs/informe/informe.md` con las 12 secciones de CLAUDE.md §16, marcando `[DATO PENDIENTE]` donde falten resultados reales. (dep: 7.1)
+- [x] 7.1 [AUTO] Completar `README.md` (ya existe la base de F0), `MODELS.md` y `docs/arquitectura.md` con diagramas Mermaid de componentes y de flujo de datos. Marcar `[DATO PENDIENTE]` donde falten mediciones. (dep: 5.1)
+  - Hecho en la sesión interactiva del 11 nov (ver la bitácora). Sin `[DATO PENDIENTE]`: las mediciones ya existen.
+- [~] 7.2 [AUTO] **Reservada para la sesión interactiva (11 nov, 12:20); la ejecución automática no debe tomarla.** Borrador del informe técnico en `docs/informe/informe.md` con las 12 secciones de CLAUDE.md §16, marcando `[DATO PENDIENTE]` donde falten resultados reales. (dep: 7.1)
 - [ ] 7.3 [WINDOWS] Completar el informe con los datos reales y exportarlo a PDF; grabar el video demo. (dep: 6.2, 7.2)
 
 ## F8 · Sustentación
@@ -136,7 +138,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso muestras` (1–2 min). Reintenta con AudioLDM, ya con el sufijo de calidad, las 6 escenas de los ejemplos que quedaron con sonido procedural, y vuelve a exportar `samples/`.
+- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso git`, para subir la documentación y las correcciones de 6.3 y 7.1. Claude sigue con 7.2 (borrador del informe) y 8.1 (guion de la sustentación). Luego vienen 7.3 (informe en PDF y video) y 8.2 (ensayo).
   - Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
@@ -668,3 +670,58 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - la prueba apaga el sufijo de producción;
   - reintento de escenas procedurales y selección de las historias de `samples/`.
 - **Validar en Windows** (`-Paso muestras`): las 6 escenas procedurales de los ejemplos deberían pasar a AudioLDM.
+
+### 2026-11-11 11:59 · Windows (`-Paso muestras`) · sufijo de AudioLDM validado en la aplicación
+- `-Paso muestras` (11:57–11:58), con `--las-de-samples --rehacer-procedurales`. Las 6 escenas de los ejemplos que tenían sonido procedural pasaron a AudioLDM al primer intento, sin ningún clip rechazado:
+  - "El Faro de Lucian", escena 3;
+  - "La Biblia del Dragón", escena 2;
+  - "El Camino de los Amigos", escenas 1, 2, 4 y 5.
+- Con esto, las 3 historias de `samples/` usan AudioLDM en sus 15 escenas. Ambiente de −26 a −34 dB RMS y mezcla de −17,7 a −17,9 dB, verificados al leer los OGG.
+- Commits 0049286 (código) y 3629671 (ejemplos), subidos a GitHub.
+
+### 2026-11-11 12:08 · sesión interactiva (Claude) · 6.3 hecha → **F6 completa**
+- **`docs/informe/analisis_experimentos.md`:** preguntas P1–P5, diseño, resultados con tablas y gráficas, revisión cualitativa de las hojas de contactos, VRAM por etapa, sonido, LLM, conclusiones, limitaciones y trabajo futuro. Es la base de las secciones de resultados y discusión del informe (7.2).
+- **Gráficas** (`docs/informe/graficas/`):
+  - `consistencia.png`
+  - `pertinencia.png`
+  - `costo_consistencia.png`
+  - `tiempos_etapas.png`
+  - `audioldm.png`
+
+  Se dibujan con Pillow, sin dependencias nuevas, en fondo blanco para imprimir y con la paleta Okabe-Ito. Las genera `scripts/graficas_informe.py` a partir de `results.csv` y `f6_audioldm_prompts.json`. Código en `src/storybook/evaluation/graficas.py`.
+- **VRAM por etapa** (de los manifests de la batería, para el informe):
+  - Imágenes C3: 3156 MB asignados por torch, 4034 MB reservados y 4076 MB en NVML. El tope de NVML es sobre todo caché del asignador; quedan unos 900 MB de margen real.
+  - AudioLDM: 943 MB asignados.
+  - Voz: CPU.
+  - Ollama se libera antes de las imágenes (la GPU parte de 196–226 MB).
+- **Matiz de la métrica:** parte del CLIP img-img alto de C3 viene de la composición repetida (retratos), no solo de la identidad del personaje. Queda explicado en el análisis (sección 3).
+- Verificación: **315 tests en verde**, ruff limpio. 4 tests nuevos de las gráficas: los 3 tipos, valores faltantes, un punto en x = 0, la selección de batería y la CLI.
+- **Pendiente:** las columnas `*_1a5` de `results.csv` (revisión humana, tarea 7.3).
+
+### 2026-11-11 12:19 · sesión interactiva (Claude) · 7.1 hecha
+- **`docs/arquitectura.md`** (nuevo), con 4 diagramas Mermaid verificados con `mmdc`:
+  - componentes;
+  - flujo de datos;
+  - secuencia de una generación y paso de la GPU entre modelos;
+  - cadenas de *fallback*.
+
+  Incluye además tablas de módulos, memoria medida por etapa, capas de consistencia, estructura de una historia, perfiles, decisiones de diseño con la alternativa descartada y su motivo, y calidad del software.
+- **`README.md`:**
+  - estado actual y tabla de documentos;
+  - historias de ejemplo;
+  - 3 capturas reales de la app (`docs/informe/capturas/`), tomadas con Playwright sobre "La Biblia del Dragón" de `samples/`;
+  - resultados medidos;
+  - comandos de experimentos;
+  - tabla de solución de problemas (9 síntomas).
+- **`MODELS.md`:**
+  - revisión (commit) de cada repositorio, tomada de `docs/models_registry.json`, y estado real: SA3 y SAO no disponibles (acceso restringido) y AudioLDM en uso con el sufijo;
+  - nueva tabla de mediciones por modelo;
+  - Qwen3-0.6B marcado como no evaluado y corrección de "Python 3.11" a 3.12.
+- **Correcciones en la app**, encontradas al tomar las capturas:
+  - **Avisos viejos en *Detalles técnicos*:** después de rehacer el sonido de los ejemplos, seguía diciendo "Sonido de la escena 2: falló AudioLDM", aunque la escena 2 ya usaba AudioLDM.
+    - Nuevo `ui_logica.fallbacks_vigentes`: al regenerar una escena o rehacer su sonido, descarta los avisos anteriores de esa escena.
+    - "<backend> no estaba disponible" solo se muestra si alguna escena usa un backend posterior en la cadena.
+    - Arregla también los manifests ya exportados, sin volver a generar nada.
+  - **Perfiles con tiempos medidos:** "Rápido · unos 2 minutos" y "Calidad · imágenes con 25 pasos, unos 3 minutos". Antes decía "3 a 5" y "5 a 12 minutos", estimaciones previas a las mediciones.
+- **Observación para el informe:** en "La Biblia del Dragón" el LLM nombró a los personajes "Kai Kai" y "Morin Morin" (nombre duplicado en el plan; no es un error del código).
+- Verificación: **316 tests en verde**, ruff limpio.
