@@ -630,10 +630,10 @@
         {
           "escena": 2,
           "archivo": "sfx_2.wav",
-          "backend": "procedural",
+          "backend": "audioldm",
           "duracion_s": 8.0,
-          "sample_rate": 44100,
-          "segundos": 0.094,
+          "sample_rate": 16000,
+          "segundos": 1.42,
           "prompt": "Wind rustling through trees, soft heartbeat in the background.",
           "etiquetas": [
             "wind",
@@ -641,7 +641,12 @@
             "heartbeat"
           ],
           "detalle": {
-            "seed": 1447
+            "prompt_efectivo": "Wind rustling through trees, heartbeat in the background, high quality, clear",
+            "negativo_efectivo": "speech, voice, singing, music",
+            "intentos": 1,
+            "fraccion_silencio": 0.0,
+            "nivel_dbfs": -17.1,
+            "seed": 1658
           }
         },
         {
@@ -834,10 +839,10 @@
           "ambiente": "ambience_2.wav",
           "mezcla": "mix_2.wav",
           "sample_rate": 44100,
-          "fuente_sonido": "procedural",
+          "fuente_sonido": "audioldm",
           "duracion_s": 42.032,
           "lufs_voz_original": -15.32,
-          "lufs_ambiente_original": -18.86,
+          "lufs_ambiente_original": -20.29,
           "lufs_voz": -18.0,
           "lufs_ambiente": -30.0,
           "ambiente_bajo_voz_db": 12.0,
@@ -845,7 +850,7 @@
           "ducking_db": 6.0,
           "fraccion_con_voz": 0.936,
           "limitacion_db": 0.0,
-          "pico_mezcla": 0.7535
+          "pico_mezcla": 0.8116
         },
         {
           "escena": 3,
@@ -1162,6 +1167,19 @@
         "sonido:sa3:no_disponible",
         "sonido:escena_2:audioldm_fallo",
         "sonido:library:no_disponible"
+      ]
+    },
+    {
+      "tipo": "sonido",
+      "escenas": [
+        2
+      ],
+      "fecha": "2026-11-11T11:57:57",
+      "backends": {
+        "2": "audioldm"
+      },
+      "fallbacks": [
+        "sonido:sa3:no_disponible"
       ]
     }
   ]

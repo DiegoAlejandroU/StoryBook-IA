@@ -1,111 +1,115 @@
-﻿14:42:28 WARNING exportar_muestras | ambiente_debil  historia=20261110_142223_un_perro_y_un_gato_deben_cruza escena=2 problema="clip demasiado bajo (-72 dBFS)"
-14:42:28 WARNING exportar_muestras | ambiente_debil  historia=20261110_142223_un_perro_y_un_gato_deben_cruza escena=4 problema="clip demasiado bajo (-74 dBFS)"
-14:42:28 WARNING exportar_muestras | ambiente_debil  historia=20261110_142223_un_perro_y_un_gato_deben_cruza escena=5 problema="clip demasiado bajo (-71 dBFS)"
-14:42:28 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.1 mensaje="Nuevo ambiente de las escenas [2, 4, 5]"
-14:42:31 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096
-14:42:31 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+﻿11:57:38 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.1 mensaje="Nuevo ambiente de las escenas [3]"
+11:57:41 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096
+11:57:41 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
 C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
   deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
 System.Management.Automation.RemoteException
-Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
-Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  5.40it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  2.17it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
-Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 3942.30it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  33%|███▎      | 2/6 [00:01<00:02,  1.80it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  8.17it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
 System.Management.Automation.RemoteException
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 4779.89it/s]
 System.Management.Automation.RemoteException
-Loading weights:  16%|█▌        | 31/196 [00:00<00:00, 294.58it/s][A
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  7.25it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
 System.Management.Automation.RemoteException
-Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 847.50it/s][A
-Loading weights: 100%|██████████| 196/196 [00:00<00:00, 805.17it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  7.09it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
 System.Management.Automation.RemoteException
-Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.01it/s]
-System.Management.Automation.RemoteException
-Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
-Loading weights: 100%|██████████| 205/205 [00:00<00:00, 4767.73it/s]
-System.Management.Automation.RemoteException
-Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.81it/s]
-Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.76it/s]
-Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.31it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  2.87it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.03it/s]
 The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
-14:42:39 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=8.017 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=694.5 vram_gpu_total_mb=4096
-14:42:41 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip demasiado bajo (-73 dBFS)"
-14:42:42 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip demasiado bajo (-72 dBFS)"
-14:42:42 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=2.985 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1036.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
-14:42:42 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=2 backend=audioldm error="SoundError: clip demasiado bajo (-72 dBFS) (2 intentos)"
-14:42:43 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=4 backend=audioldm problema="clip demasiado bajo (-73 dBFS)"
-14:42:44 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=4 backend=audioldm problema="clip demasiado bajo (-75 dBFS)"
-14:42:44 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=2.26 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
-14:42:44 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=4 backend=audioldm error="SoundError: clip demasiado bajo (-75 dBFS) (2 intentos)"
-14:42:46 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=5 backend=audioldm problema="clip demasiado bajo (-67 dBFS)"
-14:42:47 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=5 backend=audioldm problema="clip demasiado bajo (-69 dBFS)"
-14:42:47 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=2.375 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
-14:42:47 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=5 backend=audioldm error="SoundError: clip demasiado bajo (-69 dBFS) (2 intentos)"
-14:42:47 INFO    storybook.gpu | etapa_medida  etapa=sonido_library_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
-14:42:47 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=library error="SoundError: biblioteca vacía o sin clips CC0 en C:\Users\diego\Documents\StoryBook-IA\assets\sfx"
-14:42:47 INFO    storybook.gpu | etapa_medida  etapa=sonido_procedural_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
-14:42:47 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=0.055 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1447
-14:42:47 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=0.096 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1449
-14:42:47 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=0.104 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1450
-14:42:47 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{2: 'procedural', 4: 'procedural', 5: 'procedural'}" fallbacks="['sonido:sa3:no_disponible', 'sonido:escena_2:audioldm_fallo', 'sonido:escena_4:audioldm_fallo', 'sonido:escena_5:audioldm_fallo', 'sonido:library:no_disponible']"
-14:42:47 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.8 mensaje=Mezclando
-14:42:48 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.371 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=46.676 extra.lufs_voz_original=-14.7 extra.lufs_ambiente_original=-18.4 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.945 extra.limitacion_db=0 extra.pico_mezcla=0.736
-14:42:48 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=procedural duracion_s=46.676 lufs_voz_original=-14.7 lufs_ambiente_original=-18.4 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.945 limitacion_db=0 pico_mezcla=0.736
-14:42:48 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_4 segundos=0.33 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=41.405 extra.lufs_voz_original=-15.29 extra.lufs_ambiente_original=-18.28 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.942 extra.limitacion_db=0 extra.pico_mezcla=0.755
-14:42:48 INFO    storybook.sound.mixer | mezcla_escena  escena=4 fuente=procedural duracion_s=41.405 lufs_voz_original=-15.29 lufs_ambiente_original=-18.28 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.942 limitacion_db=0 pico_mezcla=0.755
-14:42:48 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_5 segundos=0.412 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=51.692 extra.lufs_voz_original=-15.6 extra.lufs_ambiente_original=-18.36 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.924 extra.limitacion_db=0 extra.pico_mezcla=0.808
-14:42:48 INFO    storybook.sound.mixer | mezcla_escena  escena=5 fuente=procedural duracion_s=51.692 lufs_voz_original=-15.6 lufs_ambiente_original=-18.36 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.924 limitacion_db=0 pico_mezcla=0.808
-14:42:48 INFO    storybook.pipeline | progreso  etapa=listo avance=1 mensaje="Ambiente rehecho"
-14:42:51 WARNING exportar_muestras | ambiente_debil  historia=20261110_142017_el_ultimo_dragon_vive_escondid escena=2 problema="clip demasiado bajo (-71 dBFS)"
-14:42:51 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.1 mensaje="Nuevo ambiente de las escenas [2]"
-14:42:51 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0.001 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
-14:42:51 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+11:57:48 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=6.725 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=618.5 vram_gpu_total_mb=4096
+11:57:50 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=1.809 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1036.5 vram_gpu_pico_mb=1272.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1448
+11:57:50 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{3: 'audioldm'}" fallbacks=['sonido:sa3:no_disponible']
+11:57:50 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.8 mensaje=Mezclando
+11:57:50 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_3 segundos=0.49 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=47.268 extra.lufs_voz_original=-15.45 extra.lufs_ambiente_original=-5.52 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.95 extra.limitacion_db=0 extra.pico_mezcla=0.782
+11:57:50 INFO    storybook.sound.mixer | mezcla_escena  escena=3 fuente=audioldm duracion_s=47.268 lufs_voz_original=-15.45 lufs_ambiente_original=-5.52 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.95 limitacion_db=0 pico_mezcla=0.782
+11:57:50 INFO    storybook.pipeline | progreso  etapa=listo avance=1 mensaje="Ambiente rehecho"
+11:57:53 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.1 mensaje="Nuevo ambiente de las escenas [2]"
+11:57:53 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:57:53 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
 C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
   deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
 System.Management.Automation.RemoteException
-Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
-Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
-An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
-Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  9.37it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  4.44it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 3474.66it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 14.34it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
 System.Management.Automation.RemoteException
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
-Loading weights: 100%|██████████| 196/196 [00:00<00:00, 6125.03it/s]
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 4780.56it/s]
+An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
 System.Management.Automation.RemoteException
-Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  5.46it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  9.34it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.64it/s]
+The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
+11:57:55 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=1.634 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=934.5 vram_gpu_total_mb=4096
+11:57:56 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=1.423 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1066.5 vram_gpu_pico_mb=1112.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1658
+11:57:56 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{2: 'audioldm'}" fallbacks=['sonido:sa3:no_disponible']
+11:57:56 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.8 mensaje=Mezclando
+11:57:57 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.362 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=42.032 extra.lufs_voz_original=-15.32 extra.lufs_ambiente_original=-20.29 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.936 extra.limitacion_db=0 extra.pico_mezcla=0.812
+11:57:57 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=audioldm duracion_s=42.032 lufs_voz_original=-15.32 lufs_ambiente_original=-20.29 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.936 limitacion_db=0 pico_mezcla=0.812
+11:57:57 INFO    storybook.pipeline | progreso  etapa=listo avance=1 mensaje="Ambiente rehecho"
+11:57:59 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.1 mensaje="Nuevo ambiente de las escenas [1, 2, 4, 5]"
+11:57:59 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:57:59 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  9.85it/s]
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
-Loading weights: 100%|██████████| 205/205 [00:00<00:00, 4407.14it/s]
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 4225.43it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  6.33it/s]
-Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  8.71it/s]
-Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  7.15it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 15.74it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 5848.84it/s]
+An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  9.83it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.74it/s]
 The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
-14:42:53 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=1.478 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=1066.5 vram_gpu_total_mb=4096
-14:42:54 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip demasiado bajo (-72 dBFS)"
-14:42:55 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip demasiado bajo (-71 dBFS)"
-14:42:55 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=2.493 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1066.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
-14:42:55 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=2 backend=audioldm error="SoundError: clip demasiado bajo (-71 dBFS) (2 intentos)"
-14:42:55 INFO    storybook.gpu | etapa_medida  etapa=sonido_library_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
-14:42:55 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=library error="SoundError: biblioteca vacía o sin clips CC0 en C:\Users\diego\Documents\StoryBook-IA\assets\sfx"
-14:42:55 INFO    storybook.gpu | etapa_medida  etapa=sonido_procedural_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
-14:42:56 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=0.098 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1447
-14:42:56 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{2: 'procedural'}" fallbacks="['sonido:sa3:no_disponible', 'sonido:escena_2:audioldm_fallo', 'sonido:library:no_disponible']"
-14:42:56 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.8 mensaje=Mezclando
-14:42:56 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.369 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=42.032 extra.lufs_voz_original=-15.32 extra.lufs_ambiente_original=-18.86 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.936 extra.limitacion_db=0 extra.pico_mezcla=0.753
-14:42:56 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=procedural duracion_s=42.032 lufs_voz_original=-15.32 lufs_ambiente_original=-18.86 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.936 limitacion_db=0 pico_mezcla=0.753
-14:42:56 INFO    storybook.pipeline | progreso  etapa=listo avance=1 mensaje="Ambiente rehecho"
+11:58:01 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=1.55 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=996.5 vram_gpu_total_mb=4096
+11:58:02 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=1.431 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1066.5 vram_gpu_pico_mb=1112.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1657
+11:58:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=1.245 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1658
+11:58:05 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=1.228 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1660
+11:58:06 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=1.174 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1661
+11:58:06 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{1: 'audioldm', 2: 'audioldm', 4: 'audioldm', 5: 'audioldm'}" fallbacks=['sonido:sa3:no_disponible']
+11:58:06 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.8 mensaje=Mezclando
+11:58:07 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_1 segundos=0.374 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=42.671 extra.lufs_voz_original=-14.95 extra.lufs_ambiente_original=-15.24 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.935 extra.limitacion_db=0 extra.pico_mezcla=0.743
+11:58:07 INFO    storybook.sound.mixer | mezcla_escena  escena=1 fuente=audioldm duracion_s=42.671 lufs_voz_original=-14.95 lufs_ambiente_original=-15.24 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.935 limitacion_db=0 pico_mezcla=0.743
+11:58:07 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.399 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=46.676 extra.lufs_voz_original=-14.7 extra.lufs_ambiente_original=-16.29 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.945 extra.limitacion_db=0 extra.pico_mezcla=0.722
+11:58:07 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=audioldm duracion_s=46.676 lufs_voz_original=-14.7 lufs_ambiente_original=-16.29 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.945 limitacion_db=0 pico_mezcla=0.722
+11:58:07 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_4 segundos=0.356 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=41.405 extra.lufs_voz_original=-15.29 extra.lufs_ambiente_original=-12.25 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.942 extra.limitacion_db=0 extra.pico_mezcla=0.754
+11:58:07 INFO    storybook.sound.mixer | mezcla_escena  escena=4 fuente=audioldm duracion_s=41.405 lufs_voz_original=-15.29 lufs_ambiente_original=-12.25 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.942 limitacion_db=0 pico_mezcla=0.754
+11:58:08 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_5 segundos=0.452 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=51.692 extra.lufs_voz_original=-15.6 extra.lufs_ambiente_original=-31.24 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.924 extra.limitacion_db=0 extra.pico_mezcla=0.784
+11:58:08 INFO    storybook.sound.mixer | mezcla_escena  escena=5 fuente=audioldm duracion_s=51.692 lufs_voz_original=-15.6 lufs_ambiente_original=-31.24 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.924 limitacion_db=0 pico_mezcla=0.784
+11:58:08 INFO    storybook.pipeline | progreso  etapa=listo avance=1 mensaje="Ambiente rehecho"
 
 Historias de ejemplo:
-- 20261110_142223_un_perro_y_un_gato_deben_cruza: ambiente rehecho en escenas [2, 4, 5] -> {'2': 'procedural', '4': 'procedural', '5': 'procedural'}
-  exportada a C:\Users\diego\Documents\StoryBook-IA\samples\20261110_142223_un_perro_y_un_gato_deben_cruza (7.6 MB)
-- 20261110_142017_el_ultimo_dragon_vive_escondid: ambiente rehecho en escenas [2] -> {'2': 'procedural'}
+- 20261110_141757_un_faro_abandonado_que_se_enci: ambiente rehecho en escenas [3] -> {'3': 'audioldm'}
+  exportada a C:\Users\diego\Documents\StoryBook-IA\samples\20261110_141757_un_faro_abandonado_que_se_enci (8.1 MB)
+- 20261110_142017_el_ultimo_dragon_vive_escondid: ambiente rehecho en escenas [2] -> {'2': 'audioldm'}
   exportada a C:\Users\diego\Documents\StoryBook-IA\samples\20261110_142017_el_ultimo_dragon_vive_escondid (7.8 MB)
-- 20261110_141757_un_faro_abandonado_que_se_enci: ambientes correctos, no se rehace nada
-  exportada a C:\Users\diego\Documents\StoryBook-IA\samples\20261110_141757_un_faro_abandonado_que_se_enci (8.2 MB)
+- 20261110_142223_un_perro_y_un_gato_deben_cruza: ambiente rehecho en escenas [1, 2, 4, 5] -> {'1': 'audioldm', '2': 'audioldm', '4': 'audioldm', '5': 'audioldm'}
+  exportada a C:\Users\diego\Documents\StoryBook-IA\samples\20261110_142223_un_perro_y_un_gato_deben_cruza (7.5 MB)

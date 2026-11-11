@@ -827,33 +827,43 @@
         {
           "escena": 1,
           "archivo": "sfx_1.wav",
-          "backend": "procedural",
+          "backend": "audioldm",
           "duracion_s": 8.0,
-          "sample_rate": 44100,
-          "segundos": 0.048,
+          "sample_rate": 16000,
+          "segundos": 1.428,
           "prompt": "Soft wind blows through trees, birds sing gently.",
           "etiquetas": [
             "wind",
             "birds"
           ],
           "detalle": {
-            "seed": 1235
+            "prompt_efectivo": "Wind blows through trees, birds sing, high quality, clear",
+            "negativo_efectivo": "speech, voice, music",
+            "intentos": 1,
+            "fraccion_silencio": 0.0,
+            "nivel_dbfs": -16.7,
+            "seed": 1657
           }
         },
         {
           "escena": 2,
           "archivo": "sfx_2.wav",
-          "backend": "procedural",
+          "backend": "audioldm",
           "duracion_s": 8.0,
-          "sample_rate": 44100,
-          "segundos": 0.049,
+          "sample_rate": 16000,
+          "segundos": 1.242,
           "prompt": "Soft wind blowing through trees and birds singing gently in the distance.",
           "etiquetas": [
             "wind",
             "birds"
           ],
           "detalle": {
-            "seed": 1447
+            "prompt_efectivo": "Wind blowing through trees and birds singing in the distance, high quality, clear",
+            "negativo_efectivo": "speech, voice, music",
+            "intentos": 1,
+            "fraccion_silencio": 0.0,
+            "nivel_dbfs": -17.8,
+            "seed": 1658
           }
         },
         {
@@ -877,10 +887,10 @@
         {
           "escena": 4,
           "archivo": "sfx_4.wav",
-          "backend": "procedural",
+          "backend": "audioldm",
           "duracion_s": 8.0,
-          "sample_rate": 44100,
-          "segundos": 0.09,
+          "sample_rate": 16000,
+          "segundos": 1.224,
           "prompt": "Soft wind blows through trees; birds sing gently in the distance.",
           "etiquetas": [
             "wind",
@@ -888,16 +898,21 @@
             "forest"
           ],
           "detalle": {
-            "seed": 1449
+            "prompt_efectivo": "Wind blows through trees; birds sing in the distance, high quality, clear",
+            "negativo_efectivo": "speech, voice, music",
+            "intentos": 1,
+            "fraccion_silencio": 0.1,
+            "nivel_dbfs": -15.0,
+            "seed": 1660
           }
         },
         {
           "escena": 5,
           "archivo": "sfx_5.wav",
-          "backend": "procedural",
+          "backend": "audioldm",
           "duracion_s": 8.0,
-          "sample_rate": 44100,
-          "segundos": 0.099,
+          "sample_rate": 16000,
+          "segundos": 1.171,
           "prompt": "Soft wind blowing through old houses, light footsteps on cobblestones, distant bird calls.",
           "etiquetas": [
             "wind",
@@ -905,7 +920,12 @@
             "forest"
           ],
           "detalle": {
-            "seed": 1450
+            "prompt_efectivo": "Wind blowing through old houses, light footsteps on cobblestones, distant bird calls, high quality, clear",
+            "negativo_efectivo": "speech, voice, singing, music",
+            "intentos": 1,
+            "fraccion_silencio": 0.0,
+            "nivel_dbfs": -29.4,
+            "seed": 1661
           }
         }
       ],
@@ -1047,10 +1067,10 @@
           "ambiente": "ambience_1.wav",
           "mezcla": "mix_1.wav",
           "sample_rate": 44100,
-          "fuente_sonido": "procedural",
+          "fuente_sonido": "audioldm",
           "duracion_s": 42.671,
           "lufs_voz_original": -14.95,
-          "lufs_ambiente_original": -18.73,
+          "lufs_ambiente_original": -15.24,
           "lufs_voz": -18.0,
           "lufs_ambiente": -30.0,
           "ambiente_bajo_voz_db": 12.0,
@@ -1058,17 +1078,17 @@
           "ducking_db": 6.0,
           "fraccion_con_voz": 0.935,
           "limitacion_db": 0.0,
-          "pico_mezcla": 0.7694
+          "pico_mezcla": 0.7427
         },
         {
           "escena": 2,
           "ambiente": "ambience_2.wav",
           "mezcla": "mix_2.wav",
           "sample_rate": 44100,
-          "fuente_sonido": "procedural",
+          "fuente_sonido": "audioldm",
           "duracion_s": 46.676,
           "lufs_voz_original": -14.7,
-          "lufs_ambiente_original": -18.4,
+          "lufs_ambiente_original": -16.29,
           "lufs_voz": -18.0,
           "lufs_ambiente": -30.0,
           "ambiente_bajo_voz_db": 12.0,
@@ -1076,7 +1096,7 @@
           "ducking_db": 6.0,
           "fraccion_con_voz": 0.945,
           "limitacion_db": 0.0,
-          "pico_mezcla": 0.7358
+          "pico_mezcla": 0.7217
         },
         {
           "escena": 3,
@@ -1101,10 +1121,10 @@
           "ambiente": "ambience_4.wav",
           "mezcla": "mix_4.wav",
           "sample_rate": 44100,
-          "fuente_sonido": "procedural",
+          "fuente_sonido": "audioldm",
           "duracion_s": 41.405,
           "lufs_voz_original": -15.29,
-          "lufs_ambiente_original": -18.28,
+          "lufs_ambiente_original": -12.25,
           "lufs_voz": -18.0,
           "lufs_ambiente": -30.0,
           "ambiente_bajo_voz_db": 12.0,
@@ -1112,17 +1132,17 @@
           "ducking_db": 6.0,
           "fraccion_con_voz": 0.942,
           "limitacion_db": 0.0,
-          "pico_mezcla": 0.7551
+          "pico_mezcla": 0.7537
         },
         {
           "escena": 5,
           "ambiente": "ambience_5.wav",
           "mezcla": "mix_5.wav",
           "sample_rate": 44100,
-          "fuente_sonido": "procedural",
+          "fuente_sonido": "audioldm",
           "duracion_s": 51.692,
           "lufs_voz_original": -15.6,
-          "lufs_ambiente_original": -18.36,
+          "lufs_ambiente_original": -31.24,
           "lufs_voz": -18.0,
           "lufs_ambiente": -30.0,
           "ambiente_bajo_voz_db": 12.0,
@@ -1130,7 +1150,7 @@
           "ducking_db": 6.0,
           "fraccion_con_voz": 0.924,
           "limitacion_db": 0.0,
-          "pico_mezcla": 0.8079
+          "pico_mezcla": 0.7844
         }
       ],
       "metricas": [
@@ -1401,6 +1421,25 @@
         "sonido:escena_4:audioldm_fallo",
         "sonido:escena_5:audioldm_fallo",
         "sonido:library:no_disponible"
+      ]
+    },
+    {
+      "tipo": "sonido",
+      "escenas": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "fecha": "2026-11-11T11:58:08",
+      "backends": {
+        "1": "audioldm",
+        "2": "audioldm",
+        "4": "audioldm",
+        "5": "audioldm"
+      },
+      "fallbacks": [
+        "sonido:sa3:no_disponible"
       ]
     }
   ]

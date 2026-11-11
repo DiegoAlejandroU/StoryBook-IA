@@ -599,10 +599,10 @@
         {
           "escena": 3,
           "archivo": "sfx_3.wav",
-          "backend": "procedural",
+          "backend": "audioldm",
           "duracion_s": 8.0,
-          "sample_rate": 44100,
-          "segundos": 0.083,
+          "sample_rate": 16000,
+          "segundos": 1.806,
           "prompt": "Faint water stream in forest, slow heartbeat beneath silence",
           "etiquetas": [
             "water_stream",
@@ -610,7 +610,12 @@
             "heartbeat"
           ],
           "detalle": {
-            "seed": 1237
+            "prompt_efectivo": "Water stream in forest, slow heartbeat, high quality, clear",
+            "negativo_efectivo": "speech, voice, singing, music",
+            "intentos": 1,
+            "fraccion_silencio": 0.0,
+            "nivel_dbfs": -7.8,
+            "seed": 1448
           }
         },
         {
@@ -826,10 +831,10 @@
           "ambiente": "ambience_3.wav",
           "mezcla": "mix_3.wav",
           "sample_rate": 44100,
-          "fuente_sonido": "procedural",
+          "fuente_sonido": "audioldm",
           "duracion_s": 47.268,
           "lufs_voz_original": -15.45,
-          "lufs_ambiente_original": -17.43,
+          "lufs_ambiente_original": -5.52,
           "lufs_voz": -18.0,
           "lufs_ambiente": -30.0,
           "ambiente_bajo_voz_db": 12.0,
@@ -837,7 +842,7 @@
           "ducking_db": 6.0,
           "fraccion_con_voz": 0.95,
           "limitacion_db": 0.0,
-          "pico_mezcla": 0.7896
+          "pico_mezcla": 0.7817
         },
         {
           "escena": 4,
@@ -1124,5 +1129,19 @@
       "base_seed": 1234
     }
   },
-  "regeneraciones": []
+  "regeneraciones": [
+    {
+      "tipo": "sonido",
+      "escenas": [
+        3
+      ],
+      "fecha": "2026-11-11T11:57:50",
+      "backends": {
+        "3": "audioldm"
+      },
+      "fallbacks": [
+        "sonido:sa3:no_disponible"
+      ]
+    }
+  ]
 }
