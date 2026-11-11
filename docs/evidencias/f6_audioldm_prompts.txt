@@ -1,0 +1,148 @@
+﻿C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  95%|█████████▌| 195/205 [00:00<00:00, 1939.94it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 2019.34it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:01,  2.71it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  5.22it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.42it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  16%|█▌        | 31/196 [00:00<00:00, 306.20it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  55%|█████▍    | 107/196 [00:00<00:00, 566.77it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 657.60it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 631.72it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  2.31it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  2.87it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  2.85it/s]
+The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
+11:42:16 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_111458_una_casa escena=1
+11:42:18 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_111458_una_casa escena=2
+11:42:21 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_111458_una_casa escena=3
+11:42:24 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_111458_una_casa escena=4
+11:42:26 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_111458_una_casa escena=5
+11:42:29 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112020_el_ultim escena=1
+11:42:31 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112020_el_ultim escena=2
+11:42:34 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112020_el_ultim escena=3
+11:42:36 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112020_el_ultim escena=4
+11:42:39 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112020_el_ultim escena=5
+11:42:41 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112439_una_astr escena=1
+11:42:43 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112439_una_astr escena=2
+11:42:46 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112439_una_astr escena=3
+11:42:48 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112439_una_astr escena=4
+11:42:51 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112439_una_astr escena=5
+11:42:53 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112857_un_perro escena=1
+11:42:56 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112857_un_perro escena=2
+11:42:58 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112857_un_perro escena=3
+11:43:01 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112857_un_perro escena=4
+11:43:03 INFO    f6_audioldm_prompts | ablacion_escena  variante=base historia=20261111_112857_un_perro escena=5
+11:43:06 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_111458_una_casa escena=1
+11:43:08 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_111458_una_casa escena=2
+11:43:10 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_111458_una_casa escena=3
+11:43:13 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_111458_una_casa escena=4
+11:43:15 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_111458_una_casa escena=5
+11:43:18 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112020_el_ultim escena=1
+11:43:20 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112020_el_ultim escena=2
+11:43:23 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112020_el_ultim escena=3
+11:43:25 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112020_el_ultim escena=4
+11:43:27 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112020_el_ultim escena=5
+11:43:30 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112439_una_astr escena=1
+11:43:33 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112439_una_astr escena=2
+11:43:35 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112439_una_astr escena=3
+11:43:38 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112439_una_astr escena=4
+11:43:41 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112439_una_astr escena=5
+11:43:43 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112857_un_perro escena=1
+11:43:46 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112857_un_perro escena=2
+11:43:49 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112857_un_perro escena=3
+11:43:52 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112857_un_perro escena=4
+11:43:55 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo historia=20261111_112857_un_perro escena=5
+11:43:58 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_111458_una_casa escena=1
+11:44:00 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_111458_una_casa escena=2
+11:44:03 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_111458_una_casa escena=3
+11:44:06 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_111458_una_casa escena=4
+11:44:08 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_111458_una_casa escena=5
+11:44:11 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112020_el_ultim escena=1
+11:44:14 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112020_el_ultim escena=2
+11:44:16 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112020_el_ultim escena=3
+11:44:19 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112020_el_ultim escena=4
+11:44:21 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112020_el_ultim escena=5
+11:44:24 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112439_una_astr escena=1
+11:44:26 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112439_una_astr escena=2
+11:44:29 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112439_una_astr escena=3
+11:44:32 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112439_una_astr escena=4
+11:44:34 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112439_una_astr escena=5
+11:44:37 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112857_un_perro escena=1
+11:44:39 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112857_un_perro escena=2
+11:44:42 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112857_un_perro escena=3
+11:44:44 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112857_un_perro escena=4
+11:44:47 INFO    f6_audioldm_prompts | ablacion_escena  variante=guia_alta historia=20261111_112857_un_perro escena=5
+11:44:49 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_111458_una_casa escena=1
+11:44:52 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_111458_una_casa escena=2
+11:44:54 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_111458_una_casa escena=3
+11:44:57 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_111458_una_casa escena=4
+11:44:59 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_111458_una_casa escena=5
+11:45:02 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112020_el_ultim escena=1
+11:45:04 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112020_el_ultim escena=2
+11:45:07 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112020_el_ultim escena=3
+11:45:09 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112020_el_ultim escena=4
+11:45:11 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112020_el_ultim escena=5
+11:45:14 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112439_una_astr escena=1
+11:45:16 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112439_una_astr escena=2
+11:45:19 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112439_una_astr escena=3
+11:45:21 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112439_una_astr escena=4
+11:45:24 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112439_una_astr escena=5
+11:45:26 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112857_un_perro escena=1
+11:45:29 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112857_un_perro escena=2
+11:45:32 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112857_un_perro escena=3
+11:45:35 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112857_un_perro escena=4
+11:45:37 INFO    f6_audioldm_prompts | ablacion_escena  variante=sufijo_guia historia=20261111_112857_un_perro escena=5
+# AudioLDM: variantes de prompt y guidance (complemento de 6.2)
+
+Prompts: los `prompt_sonido` de la batería `20261111_111458`. Seeds: 101, 1101.
+Una escena pasa si alguna de sus 2 seeds da un clip apto (como en producción).
+
+| Variante | Escenas que pasan | Clips aptos | Nivel mediano | s/clip |
+|---|---|---|---|---|
+| `base` | 13/20 | 24/40 | -18.2 dBFS | 1.29 |
+| `sufijo` | 20/20 | 39/40 | -14.6 dBFS | 1.29 |
+| `guia_alta` | 12/20 | 20/40 | -21.4 dBFS | 1.3 |
+| `sufijo_guia` | 20/20 | 40/40 | -9.2 dBFS | 1.26 |
+
+## Por escena (mejor nivel de las 2 seeds; ✗ = ninguna apta)
+
+| Historia | Esc. | Prompt (base) | `base` | `sufijo` | `guia_alta` | `sufijo_guia` |
+|---|---|---|---|---|---|---|
+| una_casa_antigua_donde_t | 1 | Wind rustling through trees, heartbeat in the background. | -51.7 ✗ | -14.5 | -67.1 ✗ | -11.4 |
+| una_casa_antigua_donde_t | 2 | Wind howls through trees. A heartbeat pulses beneath it. | -7.0 | -12.2 | -1.7 | -8.1 |
+| una_casa_antigua_donde_t | 3 | Wind through trees, mechanical hum growing louder. | -62.8 ✗ | -6.9 | -65.8 ✗ | -2.4 |
+| una_casa_antigua_donde_t | 4 | Wind howls. A slow heartbeat pulses. | -10.5 | -10.0 | -18.9 | -9.0 |
+| una_casa_antigua_donde_t | 5 | Wind through trees, distant water stream, heartbeat pulse. | -32.1 ✗ | -15.8 | -52.7 ✗ | -13.8 |
+| el_ultimo_dragon_vive_es | 1 | Wind howls through trees. A slow heartbeat pulses beneath it. | -7.9 | -13.3 | -1.8 | -9.0 |
+| el_ultimo_dragon_vive_es | 2 | Wind rustling through trees, heartbeat in the background. | -51.7 ✗ | -14.5 | -67.1 ✗ | -11.4 |
+| el_ultimo_dragon_vive_es | 3 | Wind howls through trees. A slow heartbeat pulses. | -7.3 | -13.4 | -1.7 | -8.4 |
+| el_ultimo_dragon_vive_es | 4 | Wind whispers through old stones. A slow heartbeat pulses. Distant for | -18.7 | -16.4 | -18.0 | -14.0 |
+| el_ultimo_dragon_vive_es | 5 | Wind whispers through ancient stones. A slow heartbeat pulses. | -16.6 | -16.2 | -14.4 | -14.9 |
+| una_astronauta_despierta | 1 | Wind through metal vents. Heartbeat rhythm. Distant forest sounds. | -25.1 | -15.3 | -39.0 | -15.4 |
+| una_astronauta_despierta | 2 | Low hum of machinery. Heartbeat pulses. | -3.7 | -10.6 | -0.5 | -4.2 |
+| una_astronauta_despierta | 3 | Low wind hums through the hull; a steady heartbeat pulses from inside  | -7.8 | -19.6 | -7.7 | -35.2 |
+| una_astronauta_despierta | 4 | Wind howls through vents. Machinery hums with growing urgency. | -7.2 | -2.9 | -1.2 | -0.8 |
+| una_astronauta_despierta | 5 | Wind hums through the hull. A steady heartbeat pulses. Machinery whirs | -9.8 | -5.0 | -11.5 | -1.5 |
+| un_perro_y_un_gato_deben | 1 | Wind blows through trees, birds sing. | -13.1 ✗ | -13.4 | -20.0 ✗ | -5.5 |
+| un_perro_y_un_gato_deben | 2 | Wind blowing through trees and birds singing in the distance. | -35.6 ✗ | -14.7 | -39.4 ✗ | -6.5 |
+| un_perro_y_un_gato_deben | 3 | Wind blows through narrow streets. Footsteps echo as animals move. | -7.4 | -16.6 | -1.1 | -7.9 |
+| un_perro_y_un_gato_deben | 4 | Wind blows through trees; birds sing in the distance. | -17.8 | -9.1 | -22.8 ✗ | -2.4 |
+| un_perro_y_un_gato_deben | 5 | Wind blowing through old houses, light footsteps on cobblestones, dist | -48.0 ✗ | -28.8 | -66.9 ✗ | -27.4 |
