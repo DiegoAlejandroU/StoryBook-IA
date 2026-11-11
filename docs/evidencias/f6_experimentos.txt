@@ -1,0 +1,1079 @@
+﻿11:14:58 INFO    run_experiment | experimento_idea  indice=1 idea="Una casa antigua donde todos los relojes se detienen a medianoche" genero=terror
+11:14:59 INFO    storybook.pipeline | progreso  etapa=texto avance=0 mensaje="Escribiendo la historia (LLM local)"
+11:15:02 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+11:15:41 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+11:15:41 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=iluminacion
+11:15:41 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=39.416
+11:15:50 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=8.8
+11:15:59 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.63
+11:16:07 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.036
+11:16:15 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=8.175
+11:16:23 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.217
+11:16:30 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:16:30 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+11:16:30 INFO    storybook.pipeline | progreso  etapa=texto avance=0.4 mensaje="Escribiendo la historia (LLM local): listo"
+11:16:30 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.4 mensaje="Ilustrando las 5 escenas"
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:01,  4.63it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  14%|█▍        | 27/196 [00:00<00:00, 253.53it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1149.38it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.87it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  6.04it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.16it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:17:08 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=32.153 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2396.5 vram_gpu_total_mb=4096
+11:17:11 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=3.01 dispositivo=cuda vram_torch_pico_mb=2808.5 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=2416.5 vram_gpu_pico_mb=3634.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=50
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   3%|▎         | 17/520 [00:00<00:03, 159.44it/s]
+Loading weights:   6%|▋         | 33/520 [00:00<00:03, 126.63it/s]
+Loading weights:   9%|▉         | 47/520 [00:00<00:05, 89.95it/s] 
+Loading weights:  11%|█         | 58/520 [00:00<00:04, 94.79it/s]
+Loading weights:  13%|█▎        | 70/520 [00:00<00:04, 96.55it/s]
+Loading weights:  16%|█▌        | 81/520 [00:00<00:04, 93.86it/s]
+Loading weights:  18%|█▊        | 96/520 [00:00<00:03, 107.67it/s]
+Loading weights:  21%|██        | 108/520 [00:01<00:04, 92.60it/s]
+Loading weights:  23%|██▎       | 118/520 [00:01<00:05, 79.31it/s]
+Loading weights:  24%|██▍       | 127/520 [00:01<00:05, 70.65it/s]
+Loading weights:  26%|██▌       | 135/520 [00:01<00:06, 62.02it/s]
+Loading weights:  28%|██▊       | 143/520 [00:01<00:05, 64.59it/s]
+Loading weights:  29%|██▉       | 150/520 [00:01<00:06, 55.40it/s]
+Loading weights:  32%|███▏      | 164/520 [00:02<00:05, 68.86it/s]
+Loading weights:  35%|███▌      | 183/520 [00:02<00:03, 90.57it/s]
+Loading weights:  38%|███▊      | 199/520 [00:02<00:03, 105.77it/s]
+Loading weights:  41%|████      | 211/520 [00:02<00:03, 94.26it/s] 
+Loading weights:  43%|████▎     | 222/520 [00:02<00:03, 95.11it/s]
+Loading weights:  45%|████▌     | 234/520 [00:02<00:02, 96.67it/s]
+Loading weights:  47%|████▋     | 245/520 [00:02<00:02, 93.19it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 183.40it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:17:16 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.87 dispositivo=cuda vram_torch_pico_mb=2240.9 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=3634.5 vram_gpu_pico_mb=3634.5 vram_gpu_total_mb=4096 extra.scale=0.4
+11:17:16 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=56
+11:17:20 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=4.146 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=2478.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=56 extra.intento=1 extra.ip=True
+11:17:20 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=75
+11:17:24 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=3.532 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=75 extra.intento=1 extra.ip=True
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (93 > 77). Running this sequence through the model will result in indexing errors
+11:17:24 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=3 cambios="['Lucas->boy age 12']"
+11:17:24 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=70 eliminados="['estilo:dull', 'estilo:deep indigo', 'estilo:slate', 'estilo:ochre', 'accion:slowly turning its head as boy age 12 speaks about midnight.']"
+11:17:27 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=3.531 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=True
+11:17:27 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=71 eliminados="['estilo:dull', 'estilo:deep indigo', 'estilo:slate', 'estilo:ochre', 'accion:wind blowing through trees in an isolated house.', 'accion:a notebook open on it']"
+11:17:31 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=3.53 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=71 extra.intento=1 extra.ip=True
+11:17:31 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Lucas->boy age 12']"
+11:17:31 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=53
+11:17:34 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=3.534 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=53 extra.intento=1 extra.ip=True
+11:17:35 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+11:17:35 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.65 mensaje="Ilustrando las 5 escenas: listo"
+11:17:35 INFO    storybook.pipeline | progreso  etapa=voz avance=0.65 mensaje=Narrando
+11:17:37 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=2.001 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:17:39 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_1 segundos=2.762 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=46.418 extra.sample_rate=22050
+11:17:41 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_2 segundos=1.615 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=50.401 extra.sample_rate=22050
+11:17:43 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_3 segundos=1.469 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=47.196 extra.sample_rate=22050
+11:17:44 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_4 segundos=1.232 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=37.618 extra.sample_rate=22050
+11:17:45 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_5 segundos=1.133 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=35.795 extra.sample_rate=22050
+11:17:45 INFO    storybook.voice.tts | etapa_voz_terminada  escenas="[1, 2, 3, 4, 5]" total_s=217.428
+11:17:45 INFO    storybook.pipeline | progreso  etapa=voz avance=0.72 mensaje="Narrando: listo"
+11:17:45 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.72 mensaje="Creando el ambiente sonoro"
+11:17:45 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:17:45 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  8.15it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:   3%|▎         | 7/205 [00:00<00:15, 13.08it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 375.95it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.23it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.30it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  16%|█▌        | 31/196 [00:00<00:00, 302.36it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 862.28it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 820.08it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.38it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:02<00:00,  1.34it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  2.04it/s]
+The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
+11:17:49 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=3.826 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=794.5 vram_gpu_total_mb=4096
+11:17:51 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=1 backend=audioldm problema="clip casi en silencio el 88% del tiempo"
+11:17:52 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=1 backend=audioldm problema="clip demasiado bajo (-71 dBFS)"
+11:17:52 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=2.787 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1064.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+11:17:52 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=1 backend=audioldm error="SoundError: clip demasiado bajo (-71 dBFS) (2 intentos)"
+11:17:53 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=1.242 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1236
+11:17:54 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=3 backend=audioldm problema="clip demasiado bajo (-69 dBFS)"
+11:17:56 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=3 backend=audioldm problema="clip demasiado bajo (-73 dBFS)"
+11:17:56 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=2.504 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+11:17:56 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=3 backend=audioldm error="SoundError: clip demasiado bajo (-73 dBFS) (2 intentos)"
+11:17:57 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=1.213 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1238
+11:17:58 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=5 backend=audioldm problema="clip demasiado bajo (-49 dBFS)"
+11:17:59 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=5 backend=audioldm problema="clip casi en silencio el 59% del tiempo"
+11:17:59 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=2.374 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+11:17:59 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=5 backend=audioldm error="SoundError: clip casi en silencio el 59% del tiempo (2 intentos)"
+11:18:00 INFO    storybook.gpu | etapa_medida  etapa=sonido_library_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:18:00 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=library error="SoundError: biblioteca vacía o sin clips CC0 en C:\Users\diego\Documents\StoryBook-IA\assets\sfx"
+11:18:00 INFO    storybook.gpu | etapa_medida  etapa=sonido_procedural_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:18:00 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=0.11 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1235
+11:18:00 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=0.099 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1237
+11:18:00 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=0.074 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1239
+11:18:00 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{1: 'procedural', 2: 'audioldm', 3: 'procedural', 4: 'audioldm', 5: 'procedural'}" fallbacks="['sonido:sa3:no_disponible', 'sonido:escena_1:audioldm_fallo', 'sonido:escena_3:audioldm_fallo', 'sonido:escena_5:audioldm_fallo', 'sonido:library:no_disponible']"
+11:18:00 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.92 mensaje="Creando el ambiente sonoro: listo"
+11:18:00 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.92 mensaje="Mezclando voz y ambiente"
+11:18:00 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_1 segundos=0.404 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=47.918 extra.lufs_voz_original=-14.84 extra.lufs_ambiente_original=-18.94 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.942 extra.limitacion_db=0 extra.pico_mezcla=0.73
+11:18:00 INFO    storybook.sound.mixer | mezcla_escena  escena=1 fuente=procedural duracion_s=47.918 lufs_voz_original=-14.84 lufs_ambiente_original=-18.94 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.942 limitacion_db=0 pico_mezcla=0.73
+11:18:01 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.435 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=51.901 extra.lufs_voz_original=-15.37 extra.lufs_ambiente_original=-10.83 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.933 extra.limitacion_db=0 extra.pico_mezcla=0.779
+11:18:01 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=audioldm duracion_s=51.901 lufs_voz_original=-15.37 lufs_ambiente_original=-10.83 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.933 limitacion_db=0 pico_mezcla=0.779
+11:18:01 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_3 segundos=0.405 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=48.696 extra.lufs_voz_original=-15.54 extra.lufs_ambiente_original=-17.18 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.941 extra.limitacion_db=0 extra.pico_mezcla=0.789
+11:18:01 INFO    storybook.sound.mixer | mezcla_escena  escena=3 fuente=procedural duracion_s=48.696 lufs_voz_original=-15.54 lufs_ambiente_original=-17.18 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.941 limitacion_db=0 pico_mezcla=0.789
+11:18:02 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_4 segundos=0.328 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=39.118 extra.lufs_voz_original=-15.29 extra.lufs_ambiente_original=-29.73 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.93 extra.limitacion_db=0 extra.pico_mezcla=0.772
+11:18:02 INFO    storybook.sound.mixer | mezcla_escena  escena=4 fuente=audioldm duracion_s=39.118 lufs_voz_original=-15.29 lufs_ambiente_original=-29.73 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.93 limitacion_db=0 pico_mezcla=0.772
+11:18:02 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_5 segundos=0.315 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=37.295 extra.lufs_voz_original=-15.74 extra.lufs_ambiente_original=-16.77 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.926 extra.limitacion_db=0 extra.pico_mezcla=0.812
+11:18:02 INFO    storybook.sound.mixer | mezcla_escena  escena=5 fuente=procedural duracion_s=37.295 lufs_voz_original=-15.74 lufs_ambiente_original=-16.77 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.926 limitacion_db=0 pico_mezcla=0.812
+11:18:02 INFO    storybook.pipeline | progreso  etapa=mezcla avance=1 mensaje="Mezclando voz y ambiente: listo"
+11:18:02 INFO    storybook.pipeline | historia_generada  run_id=20261111_111458_una_casa_antigua_donde_todos_l segundos="{'texto': 90.16, 'imagen': 65.09, 'voz': 10.33, 'sonido': 14.91, 'mezcla': 1.96, 'total': 182.47}" estado=completa_con_fallbacks
+11:18:04 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
+11:18:04 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
+11:18:04 INFO    open_clip.factory | Instantiating model architecture: CLIP
+11:18:05 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
+11:18:05 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
+11:18:05 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
+11:18:05 INFO    open_clip.factory | Parsing tokenizer identifier. Schema: None, Identifier: ViT-B-32
+11:18:05 INFO    open_clip.factory | Attempting to load config from built-in: ViT-B-32
+11:18:05 INFO    open_clip.factory | Using default SimpleTokenizer.
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  24%|██▍       | 47/196 [00:00<00:00, 462.83it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1419.55it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.18it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 14.63it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 15.53it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:18:49 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.172 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:18:49 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=22
+11:18:52 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.11 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1534566421 extra.tokens=22 extra.intento=1 extra.ip=False
+11:18:52 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=22
+11:18:55 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.817 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1138998148 extra.tokens=22 extra.intento=1 extra.ip=False
+11:18:55 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=3 cambios="['Lucas->a person']"
+11:18:55 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=17
+11:18:58 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.834 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4085.6 vram_gpu_total_mb=4096 extra.seed=497426041 extra.tokens=17 extra.intento=1 extra.ip=False
+11:18:58 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=22
+11:19:01 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.796 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=123643476 extra.tokens=22 extra.intento=1 extra.ip=False
+11:19:01 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Lucas->a person']"
+11:19:01 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=17
+11:19:04 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.857 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1634834830 extra.tokens=17 extra.intento=1 extra.ip=False
+11:19:04 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  21%|██▏       | 42/196 [00:00<00:00, 415.61it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1138.43it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  5.79it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 12.10it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 12.79it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:19:07 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.156 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:19:07 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=56
+11:19:11 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.319 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=56 extra.intento=1 extra.ip=False
+11:19:11 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=75
+11:19:14 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.866 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=75 extra.intento=1 extra.ip=False
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (93 > 77). Running this sequence through the model will result in indexing errors
+11:19:14 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=3 cambios="['Lucas->boy age 12']"
+11:19:14 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=70 eliminados="['estilo:dull', 'estilo:deep indigo', 'estilo:slate', 'estilo:ochre', 'accion:slowly turning its head as boy age 12 speaks about midnight.']"
+11:19:17 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.864 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=False
+11:19:17 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=71 eliminados="['estilo:dull', 'estilo:deep indigo', 'estilo:slate', 'estilo:ochre', 'accion:wind blowing through trees in an isolated house.', 'accion:a notebook open on it']"
+11:19:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.849 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=71 extra.intento=1 extra.ip=False
+11:19:20 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Lucas->boy age 12']"
+11:19:20 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=53
+11:19:22 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.85 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=53 extra.intento=1 extra.ip=False
+11:19:23 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  26%|██▌       | 51/196 [00:00<00:00, 506.97it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1194.29it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  5.84it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 12.24it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 12.92it/s]
+11:19:25 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.611 dispositivo=cuda vram_torch_pico_mb=2056.6 vram_torch_reservada_pico_mb=2108 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2168.5 vram_gpu_total_mb=4096
+11:19:31 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=5.671 dispositivo=cuda vram_torch_pico_mb=2667.3 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=2334.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=50
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 10/520 [00:00<00:05, 87.33it/s]
+Loading weights:   4%|▎         | 19/520 [00:00<00:08, 61.02it/s]
+Loading weights:   5%|▌         | 26/520 [00:00<00:08, 56.00it/s]
+Loading weights:   6%|▋         | 33/520 [00:00<00:08, 54.89it/s]
+Loading weights:   8%|▊         | 40/520 [00:00<00:08, 58.91it/s]
+Loading weights:   9%|▉         | 49/520 [00:00<00:07, 62.10it/s]
+Loading weights:  11%|█         | 56/520 [00:00<00:07, 58.47it/s]
+Loading weights:  12%|█▏        | 62/520 [00:01<00:08, 57.21it/s]
+Loading weights:  13%|█▎        | 68/520 [00:01<00:09, 48.20it/s]
+Loading weights:  14%|█▍        | 74/520 [00:01<00:10, 44.59it/s]
+Loading weights:  16%|█▌        | 82/520 [00:01<00:08, 51.79it/s]
+Loading weights:  18%|█▊        | 96/520 [00:01<00:05, 73.27it/s]
+Loading weights:  20%|██        | 105/520 [00:01<00:05, 77.50it/s]
+Loading weights:  22%|██▏       | 115/520 [00:01<00:05, 76.86it/s]
+Loading weights:  24%|██▍       | 124/520 [00:01<00:05, 71.82it/s]
+Loading weights:  25%|██▌       | 132/520 [00:02<00:05, 64.82it/s]
+Loading weights:  27%|██▋       | 139/520 [00:02<00:05, 65.67it/s]
+Loading weights:  28%|██▊       | 146/520 [00:02<00:05, 64.48it/s]
+Loading weights:  30%|███       | 157/520 [00:02<00:04, 75.77it/s]
+Loading weights:  32%|███▏      | 167/520 [00:02<00:04, 82.16it/s]
+Loading weights:  34%|███▍      | 176/520 [00:02<00:05, 66.00it/s]
+Loading weights:  35%|███▌      | 184/520 [00:02<00:04, 68.40it/s]
+Loading weights:  37%|███▋      | 192/520 [00:02<00:04, 71.21it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 175.01it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:19:36 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.832 dispositivo=cuda vram_torch_pico_mb=2099.7 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=3462.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.scale=0.4
+11:19:36 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=56
+11:19:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=8.729 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=2350.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=56 extra.intento=1 extra.ip=True
+11:19:45 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=75
+11:19:53 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=8.413 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=75 extra.intento=1 extra.ip=True
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (93 > 77). Running this sequence through the model will result in indexing errors
+11:19:53 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=3 cambios="['Lucas->boy age 12']"
+11:19:53 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=70 eliminados="['estilo:dull', 'estilo:deep indigo', 'estilo:slate', 'estilo:ochre', 'accion:slowly turning its head as boy age 12 speaks about midnight.']"
+11:20:02 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=8.44 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=True
+11:20:02 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=71 eliminados="['estilo:dull', 'estilo:deep indigo', 'estilo:slate', 'estilo:ochre', 'accion:wind blowing through trees in an isolated house.', 'accion:a notebook open on it']"
+11:20:10 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=8.452 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=71 extra.intento=1 extra.ip=True
+11:20:10 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Lucas->boy age 12']"
+11:20:10 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=53
+11:20:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=8.449 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=53 extra.intento=1 extra.ip=True
+11:20:19 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+11:20:20 INFO    run_experiment | experimento_idea  indice=2 idea="El último dragón vive escondido en una biblioteca" genero=fantasia
+11:20:20 INFO    storybook.pipeline | progreso  etapa=texto avance=0 mensaje="Escribiendo la historia (LLM local)"
+11:20:22 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+11:20:46 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+11:20:46 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="old man age 70, white hair, wears a long gray coat with pockets full of books, glasses on nose, speaks in riddles"
+11:20:46 INFO    storybook.schemas | protagonista_normalizado  elegido=kai_kai antes="['kai_kai', 'dragoon_zen']"
+11:20:46 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=23.941
+11:20:54 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=7.898
+11:21:02 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.553
+11:21:12 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=9.974
+11:21:22 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=9.252
+11:21:31 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=9.362
+11:21:36 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:21:36 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+11:21:36 INFO    storybook.pipeline | progreso  etapa=texto avance=0.4 mensaje="Escribiendo la historia (LLM local): listo"
+11:21:36 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.4 mensaje="Ilustrando las 5 escenas"
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  19%|█▉        | 37/196 [00:00<00:00, 369.10it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1049.83it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  5.22it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 11.12it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 11.71it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:21:39 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.596 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:21:41 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=1.918 dispositivo=cuda vram_torch_pico_mb=2808.5 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=3636.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=61
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   3%|▎         | 16/520 [00:00<00:03, 144.77it/s]
+Loading weights:   6%|▌         | 31/520 [00:00<00:04, 116.27it/s]
+Loading weights:   8%|▊         | 44/520 [00:00<00:04, 116.47it/s]
+Loading weights:  11%|█         | 56/520 [00:00<00:05, 87.16it/s] 
+Loading weights:  14%|█▍        | 75/520 [00:00<00:04, 106.99it/s]
+Loading weights:  17%|█▋        | 87/520 [00:00<00:04, 100.49it/s]
+Loading weights:  19%|█▉        | 98/520 [00:00<00:04, 93.27it/s] 
+Loading weights:  21%|██        | 110/520 [00:01<00:04, 90.06it/s]
+Loading weights:  23%|██▎       | 120/520 [00:01<00:04, 81.56it/s]
+Loading weights:  25%|██▍       | 129/520 [00:01<00:05, 73.40it/s]
+Loading weights:  26%|██▋       | 137/520 [00:01<00:05, 73.28it/s]
+Loading weights:  28%|██▊       | 145/520 [00:01<00:05, 72.69it/s]
+Loading weights:  30%|███       | 157/520 [00:01<00:05, 72.00it/s]
+Loading weights:  32%|███▏      | 167/520 [00:01<00:04, 78.44it/s]
+Loading weights:  34%|███▍      | 176/520 [00:02<00:04, 69.66it/s]
+Loading weights:  36%|███▌      | 185/520 [00:02<00:04, 71.31it/s]
+Loading weights:  37%|███▋      | 193/520 [00:02<00:04, 68.75it/s]
+Loading weights:  39%|███▊      | 201/520 [00:02<00:05, 63.69it/s]
+Loading weights:  41%|████      | 211/520 [00:02<00:04, 70.92it/s]
+Loading weights:  42%|████▎     | 221/520 [00:02<00:03, 77.30it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 191.65it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:21:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.446 dispositivo=cuda vram_torch_pico_mb=2240.9 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=3636.5 vram_gpu_pico_mb=3636.5 vram_gpu_total_mb=4096 extra.scale=0.4
+11:21:45 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=61
+11:21:48 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.072 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=2480.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=61 extra.intento=1 extra.ip=True
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (87 > 77). Running this sequence through the model will result in indexing errors
+11:21:48 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=75 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges']"
+11:21:52 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=3.282 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4076.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=75 extra.intento=1 extra.ip=True
+11:21:52 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=73 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:glowing in the dark.', 'personajes:breathes smoke that turns into ink', 'personajes:eyes glow faintly blue', 'personajes:scales like aged parchment']"
+11:21:55 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=3.288 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4076.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=73 extra.intento=1 extra.ip=True
+11:21:55 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=72 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:reading ancient books with golden letters. Shadows move as wind passes through cracks.', 'personajes:breathes smoke that turns into ink', 'personajes:eyes glow faintly blue']"
+11:21:58 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=3.285 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4076.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=72 extra.intento=1 extra.ip=True
+11:21:58 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=70 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:books glowing softly in the stone hall.']"
+11:22:02 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=3.283 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4076.5 vram_gpu_pico_mb=4076.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=70 extra.intento=1 extra.ip=True
+11:22:02 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+11:22:02 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.65 mensaje="Ilustrando las 5 escenas: listo"
+11:22:02 INFO    storybook.pipeline | progreso  etapa=voz avance=0.65 mensaje=Narrando
+11:22:04 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=1.903 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096
+11:22:05 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_1 segundos=1.214 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=41.275 extra.sample_rate=22050
+11:22:06 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_2 segundos=1.221 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=40.451 extra.sample_rate=22050
+11:22:08 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_3 segundos=1.645 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=48.543 extra.sample_rate=22050
+11:22:09 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_4 segundos=1.166 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=41.147 extra.sample_rate=22050
+11:22:10 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_5 segundos=1.359 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=42.053 extra.sample_rate=22050
+11:22:10 INFO    storybook.voice.tts | etapa_voz_terminada  escenas="[1, 2, 3, 4, 5]" total_s=213.469
+11:22:10 INFO    storybook.pipeline | progreso  etapa=voz avance=0.72 mensaje="Narrando: listo"
+11:22:10 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.72 mensaje="Creando el ambiente sonoro"
+11:22:11 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096
+11:22:11 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  9.66it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:   3%|▎         | 7/205 [00:00<00:14, 14.10it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 403.06it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.46it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.37it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  16%|█▌        | 31/196 [00:00<00:00, 275.52it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 870.64it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 820.06it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.42it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:03<00:00,  1.25it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.97it/s]
+The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
+11:22:14 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=3.931 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=914.5 vram_gpu_total_mb=4096
+11:22:16 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=1.293 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1066.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1235
+11:22:17 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip demasiado bajo (-50 dBFS)"
+11:22:18 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip demasiado bajo (-64 dBFS)"
+11:22:18 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=2.656 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+11:22:18 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=2 backend=audioldm error="SoundError: clip demasiado bajo (-64 dBFS) (2 intentos)"
+11:22:20 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=3 backend=audioldm problema="clip casi en silencio el 42% del tiempo"
+11:22:21 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=2.668 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=2237
+11:22:22 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=1.307 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1238
+11:22:24 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=1.269 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1239
+11:22:24 INFO    storybook.gpu | etapa_medida  etapa=sonido_library_carga segundos=0.001 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:22:24 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=library error="SoundError: biblioteca vacía o sin clips CC0 en C:\Users\diego\Documents\StoryBook-IA\assets\sfx"
+11:22:24 INFO    storybook.gpu | etapa_medida  etapa=sonido_procedural_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:22:24 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=0.108 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1236
+11:22:24 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{1: 'audioldm', 2: 'procedural', 3: 'audioldm', 4: 'audioldm', 5: 'audioldm'}" fallbacks="['sonido:sa3:no_disponible', 'sonido:escena_2:audioldm_fallo', 'sonido:library:no_disponible']"
+11:22:24 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.92 mensaje="Creando el ambiente sonoro: listo"
+11:22:24 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.92 mensaje="Mezclando voz y ambiente"
+11:22:24 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_1 segundos=0.392 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=42.775 extra.lufs_voz_original=-15.01 extra.lufs_ambiente_original=-21.18 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.95 extra.limitacion_db=0 extra.pico_mezcla=0.734
+11:22:24 INFO    storybook.sound.mixer | mezcla_escena  escena=1 fuente=audioldm duracion_s=42.775 lufs_voz_original=-15.01 lufs_ambiente_original=-21.18 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.95 limitacion_db=0 pico_mezcla=0.734
+11:22:25 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.382 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=41.951 extra.lufs_voz_original=-15.06 extra.lufs_ambiente_original=-17.78 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.938 extra.limitacion_db=0 extra.pico_mezcla=0.742
+11:22:25 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=procedural duracion_s=41.951 lufs_voz_original=-15.06 lufs_ambiente_original=-17.78 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.938 limitacion_db=0 pico_mezcla=0.742
+11:22:25 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_3 segundos=0.467 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=50.043 extra.lufs_voz_original=-15.48 extra.lufs_ambiente_original=-13.61 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.938 extra.limitacion_db=0 extra.pico_mezcla=0.773
+11:22:25 INFO    storybook.sound.mixer | mezcla_escena  escena=3 fuente=audioldm duracion_s=50.043 lufs_voz_original=-15.48 lufs_ambiente_original=-13.61 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.938 limitacion_db=0 pico_mezcla=0.773
+11:22:26 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_4 segundos=0.392 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=42.647 extra.lufs_voz_original=-14.81 extra.lufs_ambiente_original=-26.8 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.937 extra.limitacion_db=0 extra.pico_mezcla=0.745
+11:22:26 INFO    storybook.sound.mixer | mezcla_escena  escena=4 fuente=audioldm duracion_s=42.647 lufs_voz_original=-14.81 lufs_ambiente_original=-26.8 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.937 limitacion_db=0 pico_mezcla=0.745
+11:22:26 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_5 segundos=0.405 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=43.553 extra.lufs_voz_original=-15.11 extra.lufs_ambiente_original=-24.04 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.94 extra.limitacion_db=0 extra.pico_mezcla=0.785
+11:22:26 INFO    storybook.sound.mixer | mezcla_escena  escena=5 fuente=audioldm duracion_s=43.553 lufs_voz_original=-15.11 lufs_ambiente_original=-24.04 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.94 limitacion_db=0 pico_mezcla=0.785
+11:22:26 INFO    storybook.pipeline | progreso  etapa=mezcla avance=1 mensaje="Mezclando voz y ambiente: listo"
+11:22:26 INFO    storybook.pipeline | historia_generada  run_id=20261111_112020_el_ultimo_dragon_vive_escondid segundos="{'texto': 76.3, 'imagen': 25.78, 'voz': 8.64, 'sonido': 13.6, 'mezcla': 2.11, 'total': 126.45}" estado=completa_con_fallbacks
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  27%|██▋       | 53/196 [00:00<00:00, 503.99it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1428.89it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.27it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 14.33it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 15.36it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:23:10 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.257 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:23:10 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=16
+11:23:13 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.104 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1780144293 extra.tokens=16 extra.intento=1 extra.ip=False
+11:23:13 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=18
+11:23:16 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.799 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=3156217006 extra.tokens=18 extra.intento=1 extra.ip=False
+11:23:16 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=20
+11:23:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.808 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=2519765189 extra.tokens=20 extra.intento=1 extra.ip=False
+11:23:19 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=23
+11:23:22 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.813 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=2102568473 extra.tokens=23 extra.intento=1 extra.ip=False
+11:23:22 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=23
+11:23:25 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.812 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=4205896590 extra.tokens=23 extra.intento=1 extra.ip=False
+11:23:25 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  22%|██▏       | 44/196 [00:00<00:00, 430.50it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1501.74it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.80it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 15.34it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 16.40it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:23:28 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.875 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:23:28 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=61
+11:23:31 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.11 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=61 extra.intento=1 extra.ip=False
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (87 > 77). Running this sequence through the model will result in indexing errors
+11:23:31 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=75 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges']"
+11:23:34 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.828 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=75 extra.intento=1 extra.ip=False
+11:23:34 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=73 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:glowing in the dark.', 'personajes:breathes smoke that turns into ink', 'personajes:eyes glow faintly blue', 'personajes:scales like aged parchment']"
+11:23:37 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.829 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=73 extra.intento=1 extra.ip=False
+11:23:37 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=72 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:reading ancient books with golden letters. Shadows move as wind passes through cracks.', 'personajes:breathes smoke that turns into ink', 'personajes:eyes glow faintly blue']"
+11:23:39 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.817 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=72 extra.intento=1 extra.ip=False
+11:23:40 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=70 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:books glowing softly in the stone hall.']"
+11:23:42 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.821 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=70 extra.intento=1 extra.ip=False
+11:23:43 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  23%|██▎       | 45/196 [00:00<00:00, 438.84it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1399.47it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.34it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 14.46it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 15.46it/s]
+11:23:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.437 dispositivo=cuda vram_torch_pico_mb=2056.6 vram_torch_reservada_pico_mb=2108 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2168.5 vram_gpu_total_mb=4096
+11:23:50 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=5.583 dispositivo=cuda vram_torch_pico_mb=2667.3 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=2334.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=61
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   5%|▍         | 24/520 [00:00<00:02, 207.47it/s]
+Loading weights:   9%|▊         | 45/520 [00:00<00:03, 135.96it/s]
+Loading weights:  12%|█▏        | 60/520 [00:00<00:03, 133.65it/s]
+Loading weights:  14%|█▍        | 74/520 [00:00<00:03, 134.56it/s]
+Loading weights:  17%|█▋        | 88/520 [00:00<00:03, 120.09it/s]
+Loading weights:  19%|█▉        | 101/520 [00:00<00:03, 115.88it/s]
+Loading weights:  23%|██▎       | 119/520 [00:00<00:03, 127.02it/s]
+Loading weights:  26%|██▋       | 137/520 [00:01<00:02, 130.24it/s]
+Loading weights:  31%|███       | 160/520 [00:01<00:02, 142.44it/s]
+Loading weights:  34%|███▎      | 175/520 [00:01<00:02, 138.20it/s]
+Loading weights:  36%|███▋      | 189/520 [00:01<00:03, 104.05it/s]
+Loading weights:  39%|███▊      | 201/520 [00:01<00:03, 103.79it/s]
+Loading weights:  41%|████      | 213/520 [00:01<00:03, 82.21it/s] 
+Loading weights:  43%|████▎     | 225/520 [00:01<00:03, 88.47it/s]
+Loading weights:  45%|████▌     | 235/520 [00:02<00:03, 81.53it/s]
+Loading weights:  48%|████▊     | 248/520 [00:02<00:02, 90.72it/s]
+Loading weights:  50%|████▉     | 258/520 [00:02<00:03, 79.08it/s]
+Loading weights:  53%|█████▎    | 275/520 [00:02<00:02, 98.85it/s]
+Loading weights:  55%|█████▌    | 287/520 [00:02<00:02, 99.28it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 196.18it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:23:55 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.264 dispositivo=cuda vram_torch_pico_mb=2099.7 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=3462.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.scale=0.4
+11:23:55 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=61
+11:24:03 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=8.701 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=2350.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=61 extra.intento=1 extra.ip=True
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (87 > 77). Running this sequence through the model will result in indexing errors
+11:24:04 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=75 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges']"
+11:24:12 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=8.479 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=75 extra.intento=1 extra.ip=True
+11:24:12 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=73 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:glowing in the dark.', 'personajes:breathes smoke that turns into ink', 'personajes:eyes glow faintly blue', 'personajes:scales like aged parchment']"
+11:24:21 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=8.504 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=73 extra.intento=1 extra.ip=True
+11:24:21 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=72 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:reading ancient books with golden letters. Shadows move as wind passes through cracks.', 'personajes:breathes smoke that turns into ink', 'personajes:eyes glow faintly blue']"
+11:24:29 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=8.497 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=72 extra.intento=1 extra.ip=True
+11:24:29 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=70 eliminados="['estilo:soft golden glow from old book spines', 'estilo:burnt oranges', 'estilo:deep greens', 'accion:books glowing softly in the stone hall.']"
+11:24:38 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=8.496 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1642669939 extra.tokens=70 extra.intento=1 extra.ip=True
+11:24:38 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+11:24:39 INFO    run_experiment | experimento_idea  indice=3 idea="Una astronauta despierta sola en una estación espacial a la deriva" genero=ciencia_ficcion
+11:24:39 INFO    storybook.pipeline | progreso  etapa=texto avance=0 mensaje="Escribiendo la historia (LLM local)"
+11:24:41 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+11:25:03 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+11:25:03 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=paleta
+11:25:03 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=21.916
+11:25:13 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=9.516
+11:25:21 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.265
+11:25:29 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.206
+11:25:39 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=10.038
+11:25:48 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.9
+11:25:53 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:25:53 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+11:25:53 INFO    storybook.pipeline | progreso  etapa=texto avance=0.4 mensaje="Escribiendo la historia (LLM local): listo"
+11:25:53 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.4 mensaje="Ilustrando las 5 escenas"
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  16%|█▋        | 32/196 [00:00<00:00, 290.68it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1467.11it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  6.78it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 13.25it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 14.20it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:25:55 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.912 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:25:57 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=1.901 dispositivo=cuda vram_torch_pico_mb=2808.5 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=3636.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=56
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 11/520 [00:00<00:06, 83.65it/s]
+Loading weights:   5%|▍         | 25/520 [00:00<00:04, 110.01it/s]
+Loading weights:   8%|▊         | 42/520 [00:00<00:03, 128.92it/s]
+Loading weights:  13%|█▎        | 69/520 [00:00<00:02, 167.21it/s]
+Loading weights:  17%|█▋        | 86/520 [00:00<00:02, 157.34it/s]
+Loading weights:  21%|██        | 110/520 [00:00<00:02, 172.23it/s]
+Loading weights:  25%|██▍       | 128/520 [00:00<00:03, 116.75it/s]
+Loading weights:  27%|██▋       | 142/520 [00:01<00:03, 116.67it/s]
+Loading weights:  30%|███       | 156/520 [00:01<00:03, 109.56it/s]
+Loading weights:  32%|███▏      | 168/520 [00:01<00:03, 93.96it/s] 
+Loading weights:  34%|███▍      | 179/520 [00:01<00:04, 81.82it/s]
+Loading weights:  36%|███▌      | 188/520 [00:01<00:04, 71.00it/s]
+Loading weights:  38%|███▊      | 196/520 [00:02<00:05, 59.14it/s]
+Loading weights:  41%|████      | 211/520 [00:02<00:04, 73.22it/s]
+Loading weights:  42%|████▏     | 220/520 [00:02<00:04, 75.00it/s]
+Loading weights:  45%|████▍     | 233/520 [00:02<00:03, 87.00it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 218.72it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:26:01 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.203 dispositivo=cuda vram_torch_pico_mb=2240.9 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=3636.5 vram_gpu_pico_mb=3636.5 vram_gpu_total_mb=4096 extra.scale=0.4
+11:26:01 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=61
+11:26:05 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.986 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=2480.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=61 extra.intento=1 extra.ip=True
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (83 > 77). Running this sequence through the model will result in indexing errors
+11:26:05 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=2 cambios="['Ana->woman age 32', 'Unit 7->robot age unknown']"
+11:26:05 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=74 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:26:09 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=3.608 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=74 extra.intento=1 extra.ip=True
+11:26:09 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=68 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:26:12 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=3.587 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=68 extra.intento=1 extra.ip=True
+11:26:12 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Ana->woman age 32', 'Unit 7->robot age unknown']"
+11:26:12 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=72 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:26:16 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=3.581 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=72 extra.intento=1 extra.ip=True
+11:26:16 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Ana->woman age 32']"
+11:26:16 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=62
+11:26:20 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=3.603 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=62 extra.intento=1 extra.ip=True
+11:26:20 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+11:26:20 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.65 mensaje="Ilustrando las 5 escenas: listo"
+11:26:20 INFO    storybook.pipeline | progreso  etapa=voz avance=0.65 mensaje=Narrando
+11:26:22 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=1.985 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096
+11:26:24 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_1 segundos=1.731 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=50.877 extra.sample_rate=22050
+11:26:25 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_2 segundos=1.546 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=43.655 extra.sample_rate=22050
+11:26:27 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_3 segundos=1.556 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=46.384 extra.sample_rate=22050
+11:26:28 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_4 segundos=1.638 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=49.077 extra.sample_rate=22050
+11:26:30 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_5 segundos=1.275 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=40.114 extra.sample_rate=22050
+11:26:30 INFO    storybook.voice.tts | etapa_voz_terminada  escenas="[1, 2, 3, 4, 5]" total_s=230.107
+11:26:30 INFO    storybook.pipeline | progreso  etapa=voz avance=0.72 mensaje="Narrando: listo"
+11:26:30 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.72 mensaje="Creando el ambiente sonoro"
+11:26:30 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096
+11:26:30 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  9.69it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:   3%|▎         | 7/205 [00:00<00:14, 13.55it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 390.31it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.43it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.40it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  16%|█▌        | 31/196 [00:00<00:00, 264.97it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 849.27it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 795.09it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.44it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:03<00:00,  1.27it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.99it/s]
+The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
+11:26:34 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=3.917 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=1038.5 vram_gpu_total_mb=4096
+11:26:35 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=1.275 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1066.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1235
+11:26:36 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=1.187 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1236
+11:26:37 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=1.228 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1237
+11:26:39 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=1.221 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1238
+11:26:40 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=1.278 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1239
+11:26:40 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{1: 'audioldm', 2: 'audioldm', 3: 'audioldm', 4: 'audioldm', 5: 'audioldm'}" fallbacks=['sonido:sa3:no_disponible']
+11:26:40 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.92 mensaje="Creando el ambiente sonoro: listo"
+11:26:40 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.92 mensaje="Mezclando voz y ambiente"
+11:26:41 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_1 segundos=0.465 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=52.377 extra.lufs_voz_original=-15.37 extra.lufs_ambiente_original=-43.38 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.939 extra.limitacion_db=0 extra.pico_mezcla=0.774
+11:26:41 INFO    storybook.sound.mixer | mezcla_escena  escena=1 fuente=audioldm duracion_s=52.377 lufs_voz_original=-15.37 lufs_ambiente_original=-43.38 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.939 limitacion_db=0 pico_mezcla=0.774
+11:26:41 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.389 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=45.155 extra.lufs_voz_original=-14.33 extra.lufs_ambiente_original=-5.94 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.934 extra.limitacion_db=0 extra.pico_mezcla=0.693
+11:26:41 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=audioldm duracion_s=45.155 lufs_voz_original=-14.33 lufs_ambiente_original=-5.94 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.934 limitacion_db=0 pico_mezcla=0.693
+11:26:42 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_3 segundos=0.412 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=47.884 extra.lufs_voz_original=-15.62 extra.lufs_ambiente_original=-18.88 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.934 extra.limitacion_db=0 extra.pico_mezcla=0.848
+11:26:42 INFO    storybook.sound.mixer | mezcla_escena  escena=3 fuente=audioldm duracion_s=47.884 lufs_voz_original=-15.62 lufs_ambiente_original=-18.88 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.934 limitacion_db=0 pico_mezcla=0.848
+11:26:42 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_4 segundos=0.449 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=50.577 extra.lufs_voz_original=-15.71 extra.lufs_ambiente_original=-19.66 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.949 extra.limitacion_db=0 extra.pico_mezcla=0.816
+11:26:42 INFO    storybook.sound.mixer | mezcla_escena  escena=4 fuente=audioldm duracion_s=50.577 lufs_voz_original=-15.71 lufs_ambiente_original=-19.66 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.949 limitacion_db=0 pico_mezcla=0.816
+11:26:42 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_5 segundos=0.377 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=41.614 extra.lufs_voz_original=-14.69 extra.lufs_ambiente_original=-20.72 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.938 extra.limitacion_db=0 extra.pico_mezcla=0.714
+11:26:42 INFO    storybook.sound.mixer | mezcla_escena  escena=5 fuente=audioldm duracion_s=41.614 lufs_voz_original=-14.69 lufs_ambiente_original=-20.72 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.938 limitacion_db=0 pico_mezcla=0.714
+11:26:42 INFO    storybook.pipeline | progreso  etapa=mezcla avance=1 mensaje="Mezclando voz y ambiente: listo"
+11:26:42 INFO    storybook.pipeline | historia_generada  run_id=20261111_112439_una_astronauta_despierta_sola segundos="{'texto': 74.09, 'imagen': 27.04, 'voz': 9.86, 'sonido': 10.39, 'mezcla': 2.17, 'total': 123.58}" estado=completa_con_fallbacks
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  22%|██▏       | 43/196 [00:00<00:00, 423.60it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1337.81it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  6.63it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 13.12it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 14.03it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:27:27 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.328 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:27:27 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=21
+11:27:30 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.21 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=4221618269 extra.tokens=21 extra.intento=1 extra.ip=False
+11:27:30 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=2 cambios="['Ana->a person', 'Unit 7->a person']"
+11:27:30 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=20
+11:27:33 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.799 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1153367403 extra.tokens=20 extra.intento=1 extra.ip=False
+11:27:33 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=17
+11:27:36 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.802 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=211726308 extra.tokens=17 extra.intento=1 extra.ip=False
+11:27:36 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Ana->a person', 'Unit 7->a person']"
+11:27:36 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=18
+11:27:39 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.804 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=885984994 extra.tokens=18 extra.intento=1 extra.ip=False
+11:27:39 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Ana->a person']"
+11:27:39 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=20
+11:27:42 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.815 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=3757447270 extra.tokens=20 extra.intento=1 extra.ip=False
+11:27:42 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  27%|██▋       | 52/196 [00:00<00:00, 507.39it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1309.38it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  6.69it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 13.76it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 14.58it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:27:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.968 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:27:45 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=61
+11:27:48 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.411 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=61 extra.intento=1 extra.ip=False
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (83 > 77). Running this sequence through the model will result in indexing errors
+11:27:48 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=2 cambios="['Ana->woman age 32', 'Unit 7->robot age unknown']"
+11:27:48 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=74 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:27:51 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.849 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=74 extra.intento=1 extra.ip=False
+11:27:51 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=68 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:27:54 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.835 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=68 extra.intento=1 extra.ip=False
+11:27:54 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Ana->woman age 32', 'Unit 7->robot age unknown']"
+11:27:54 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=72 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:27:57 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.852 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=72 extra.intento=1 extra.ip=False
+11:27:57 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Ana->woman age 32']"
+11:27:57 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=62
+11:28:00 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.853 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=62 extra.intento=1 extra.ip=False
+11:28:00 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  20%|██        | 40/196 [00:00<00:00, 399.97it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1238.30it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  6.38it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 13.21it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 13.99it/s]
+11:28:03 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.497 dispositivo=cuda vram_torch_pico_mb=2056.6 vram_torch_reservada_pico_mb=2108 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2168.5 vram_gpu_total_mb=4096
+11:28:08 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=5.57 dispositivo=cuda vram_torch_pico_mb=2667.3 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=2334.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=56
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 11/520 [00:00<00:05, 95.99it/s]
+Loading weights:   4%|▍         | 21/520 [00:00<00:05, 83.58it/s]
+Loading weights:   8%|▊         | 40/520 [00:00<00:04, 114.82it/s]
+Loading weights:  11%|█         | 56/520 [00:00<00:03, 117.52it/s]
+Loading weights:  13%|█▎        | 68/520 [00:00<00:04, 96.97it/s] 
+Loading weights:  15%|█▌        | 79/520 [00:00<00:05, 87.05it/s]
+Loading weights:  17%|█▋        | 88/520 [00:01<00:05, 75.30it/s]
+Loading weights:  19%|█▉        | 101/520 [00:01<00:04, 87.67it/s]
+Loading weights:  21%|██▏       | 111/520 [00:01<00:04, 89.72it/s]
+Loading weights:  24%|██▍       | 124/520 [00:01<00:04, 92.57it/s]
+Loading weights:  26%|██▌       | 134/520 [00:01<00:04, 83.01it/s]
+Loading weights:  28%|██▊       | 143/520 [00:01<00:05, 70.98it/s]
+Loading weights:  29%|██▉       | 151/520 [00:01<00:05, 72.41it/s]
+Loading weights:  31%|███       | 159/520 [00:01<00:05, 71.18it/s]
+Loading weights:  33%|███▎      | 170/520 [00:02<00:04, 75.05it/s]
+Loading weights:  34%|███▍      | 178/520 [00:02<00:04, 71.38it/s]
+Loading weights:  36%|███▌      | 186/520 [00:02<00:05, 62.74it/s]
+Loading weights:  38%|███▊      | 200/520 [00:02<00:04, 74.56it/s]
+Loading weights:  40%|████      | 208/520 [00:02<00:04, 72.99it/s]
+Loading weights:  42%|████▏     | 216/520 [00:02<00:04, 72.14it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 191.14it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:28:13 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.768 dispositivo=cuda vram_torch_pico_mb=2099.7 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=3462.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.scale=0.4
+11:28:13 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=61
+11:28:22 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=8.668 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=2350.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=61 extra.intento=1 extra.ip=True
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (83 > 77). Running this sequence through the model will result in indexing errors
+11:28:22 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=2 cambios="['Ana->woman age 32', 'Unit 7->robot age unknown']"
+11:28:22 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=74 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:28:30 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=8.417 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=74 extra.intento=1 extra.ip=True
+11:28:31 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=68 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:28:39 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=8.41 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=68 extra.intento=1 extra.ip=True
+11:28:39 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Ana->woman age 32', 'Unit 7->robot age unknown']"
+11:28:39 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=72 eliminados="['estilo:cool blue and silver lighting with soft shadows']"
+11:28:48 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=8.427 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=72 extra.intento=1 extra.ip=True
+11:28:48 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Ana->woman age 32']"
+11:28:48 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=62
+11:28:56 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=8.447 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1517932055 extra.tokens=62 extra.intento=1 extra.ip=True
+11:28:57 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+11:28:57 INFO    run_experiment | experimento_idea  indice=4 idea="Un perro y un gato deben cruzar la ciudad para volver a casa" genero=infantil
+11:28:57 INFO    storybook.pipeline | progreso  etapa=texto avance=0 mensaje="Escribiendo la historia (LLM local)"
+11:29:00 INFO    storybook.story.planner | planificador_inicio  estrategia=por_etapas modelo=qwen3:4b-instruct-2507-q4_K_M
+11:29:24 INFO    storybook.schemas | campo_recortado_a_presupuesto_clip  campo=descripcion_visual_fija antes="cat age 3, blue eyes, short black fur, wears a tiny yellow scarf tied at the neck, always sits on windowsills, graceful and quiet"
+11:29:24 INFO    storybook.story.planner | llm_llamada  etapa=plan intentos=1 s=24.67
+11:29:33 INFO    storybook.story.planner | llm_llamada  etapa=escena_1 intentos=1 s=9.024
+11:29:42 INFO    storybook.story.planner | llm_llamada  etapa=escena_2 intentos=1 s=8.514
+11:29:51 INFO    storybook.story.planner | llm_llamada  etapa=escena_3 intentos=1 s=8.696
+11:29:59 INFO    storybook.story.planner | llm_llamada  etapa=escena_4 intentos=1 s=7.895
+11:30:07 INFO    storybook.story.planner | llm_llamada  etapa=escena_5 intentos=1 s=8.726
+11:30:12 INFO    storybook.story.auditor | auditoria  contradicciones=0 criticas=[]
+11:30:12 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+11:30:12 INFO    storybook.pipeline | progreso  etapa=texto avance=0.4 mensaje="Escribiendo la historia (LLM local): listo"
+11:30:12 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.4 mensaje="Ilustrando las 5 escenas"
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  23%|██▎       | 45/196 [00:00<00:00, 448.66it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1543.69it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.07it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 13.91it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 14.92it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:30:14 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.949 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:30:16 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=1.888 dispositivo=cuda vram_torch_pico_mb=2808.5 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=3636.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=62
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   5%|▍         | 24/520 [00:00<00:02, 228.18it/s]
+Loading weights:   9%|▉         | 47/520 [00:00<00:02, 224.77it/s]
+Loading weights:  13%|█▎        | 70/520 [00:00<00:02, 223.59it/s]
+Loading weights:  18%|█▊        | 93/520 [00:00<00:01, 219.63it/s]
+Loading weights:  22%|██▏       | 115/520 [00:00<00:03, 126.62it/s]
+Loading weights:  26%|██▌       | 136/520 [00:00<00:02, 141.89it/s]
+Loading weights:  30%|██▉       | 154/520 [00:01<00:02, 132.21it/s]
+Loading weights:  33%|███▎      | 172/520 [00:01<00:02, 141.84it/s]
+Loading weights:  36%|███▋      | 189/520 [00:01<00:02, 137.77it/s]
+Loading weights:  39%|███▉      | 205/520 [00:01<00:02, 134.18it/s]
+Loading weights:  43%|████▎     | 224/520 [00:01<00:02, 146.27it/s]
+Loading weights:  47%|████▋     | 246/520 [00:01<00:01, 156.60it/s]
+Loading weights:  51%|█████     | 263/520 [00:01<00:01, 153.66it/s]
+Loading weights:  54%|█████▎    | 279/520 [00:01<00:02, 112.31it/s]
+Loading weights:  56%|█████▌    | 292/520 [00:02<00:02, 103.90it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 245.82it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:30:20 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.171 dispositivo=cuda vram_torch_pico_mb=2240.9 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=3636.5 vram_gpu_pico_mb=3636.5 vram_gpu_total_mb=4096 extra.scale=0.4
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (120 > 77). Running this sequence through the model will result in indexing errors
+11:30:20 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=1 tokens=75 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:30:24 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=4.108 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=2480.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=75 extra.intento=1 extra.ip=True
+11:30:24 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=74 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:flowers changing color in the evening light.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur']"
+11:30:28 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=3.561 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=74 extra.intento=1 extra.ip=True
+11:30:28 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=70 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:a boy drawing on the ground with fingers.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:30:32 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=3.592 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=True
+11:30:32 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Milo->cat age 3', 'Lucas->boy age 7', 'Bax->dog age 5']"
+11:30:32 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=70 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:with boy age 7 and dog age 5 following.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:30:35 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=3.592 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=True
+11:30:35 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=69 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:flowers glowing in the background.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:30:39 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=3.572 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4068.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=69 extra.intento=1 extra.ip=True
+11:30:39 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+11:30:39 INFO    storybook.pipeline | progreso  etapa=imagen avance=0.65 mensaje="Ilustrando las 5 escenas: listo"
+11:30:39 INFO    storybook.pipeline | progreso  etapa=voz avance=0.65 mensaje=Narrando
+11:30:41 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=1.841 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096
+11:30:42 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_1 segundos=1.37 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=41.461 extra.sample_rate=22050
+11:30:44 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_2 segundos=1.425 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=45.327 extra.sample_rate=22050
+11:30:45 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_3 segundos=1.325 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=42.808 extra.sample_rate=22050
+11:30:47 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_4 segundos=1.267 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=40.451 extra.sample_rate=22050
+11:30:48 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_5 segundos=1.496 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=50.145 extra.sample_rate=22050
+11:30:48 INFO    storybook.voice.tts | etapa_voz_terminada  escenas="[1, 2, 3, 4, 5]" total_s=220.192
+11:30:48 INFO    storybook.pipeline | progreso  etapa=voz avance=0.72 mensaje="Narrando: listo"
+11:30:48 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.72 mensaje="Creando el ambiente sonoro"
+11:30:48 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0.001 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=2 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=228.5 vram_gpu_total_mb=4096
+11:30:48 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  9.65it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:   3%|▎         | 7/205 [00:00<00:13, 14.64it/s][A
+Loading weights: 100%|██████████| 205/205 [00:00<00:00, 394.08it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.43it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.35it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  16%|█▌        | 31/196 [00:00<00:00, 285.68it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 808.67it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 773.07it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.40it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:03<00:00,  1.28it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  2.00it/s]
+The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
+11:30:52 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=3.869 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=850.5 vram_gpu_total_mb=4096
+11:30:53 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=1 backend=audioldm problema="clip casi en silencio el 89% del tiempo"
+11:30:55 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=1 backend=audioldm problema="clip casi en silencio el 87% del tiempo"
+11:30:55 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=2.52 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1066.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+11:30:55 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=1 backend=audioldm error="SoundError: clip casi en silencio el 87% del tiempo (2 intentos)"
+11:30:56 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip casi en silencio el 95% del tiempo"
+11:30:57 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=2 backend=audioldm problema="clip demasiado bajo (-47 dBFS)"
+11:30:57 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=2.479 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+11:30:57 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=2 backend=audioldm error="SoundError: clip demasiado bajo (-47 dBFS) (2 intentos)"
+11:30:58 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=1.172 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1237
+11:31:00 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=4 backend=audioldm problema="clip demasiado bajo (-75 dBFS)"
+11:31:01 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=4 backend=audioldm problema="clip casi en silencio el 89% del tiempo"
+11:31:01 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=2.795 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
+11:31:01 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=4 backend=audioldm error="SoundError: clip casi en silencio el 89% del tiempo (2 intentos)"
+11:31:02 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=5 backend=audioldm problema="clip demasiado bajo (-71 dBFS)"
+11:31:04 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=5 backend=audioldm problema="clip demasiado bajo (-61 dBFS)"
+11:31:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=2.562 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1279.6 vram_gpu_pico_mb=1279.6 vram_gpu_total_mb=4096
+11:31:04 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=5 backend=audioldm error="SoundError: clip demasiado bajo (-61 dBFS) (2 intentos)"
+11:31:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_library_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:31:04 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=library error="SoundError: biblioteca vacía o sin clips CC0 en C:\Users\diego\Documents\StoryBook-IA\assets\sfx"
+11:31:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_procedural_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
+11:31:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=0.058 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1235
+11:31:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=0.059 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1236
+11:31:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=0.107 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1238
+11:31:04 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=0.121 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1239
+11:31:04 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{1: 'procedural', 2: 'procedural', 3: 'audioldm', 4: 'procedural', 5: 'procedural'}" fallbacks="['sonido:sa3:no_disponible', 'sonido:escena_1:audioldm_fallo', 'sonido:escena_2:audioldm_fallo', 'sonido:escena_4:audioldm_fallo', 'sonido:escena_5:audioldm_fallo', 'sonido:library:no_disponible']"
+11:31:04 INFO    storybook.pipeline | progreso  etapa=sonido avance=0.92 mensaje="Creando el ambiente sonoro: listo"
+11:31:04 INFO    storybook.pipeline | progreso  etapa=mezcla avance=0.92 mensaje="Mezclando voz y ambiente"
+11:31:05 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_1 segundos=0.372 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=42.961 extra.lufs_voz_original=-15.11 extra.lufs_ambiente_original=-18.73 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.931 extra.limitacion_db=0 extra.pico_mezcla=0.755
+11:31:05 INFO    storybook.sound.mixer | mezcla_escena  escena=1 fuente=procedural duracion_s=42.961 lufs_voz_original=-15.11 lufs_ambiente_original=-18.73 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.931 limitacion_db=0 pico_mezcla=0.755
+11:31:05 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_2 segundos=0.397 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=46.827 extra.lufs_voz_original=-14.87 extra.lufs_ambiente_original=-16.65 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.941 extra.limitacion_db=0 extra.pico_mezcla=0.743
+11:31:05 INFO    storybook.sound.mixer | mezcla_escena  escena=2 fuente=procedural duracion_s=46.827 lufs_voz_original=-14.87 lufs_ambiente_original=-16.65 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.941 limitacion_db=0 pico_mezcla=0.743
+11:31:05 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_3 segundos=0.387 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=44.308 extra.lufs_voz_original=-14.94 extra.lufs_ambiente_original=-16.54 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.944 extra.limitacion_db=0 extra.pico_mezcla=0.747
+11:31:05 INFO    storybook.sound.mixer | mezcla_escena  escena=3 fuente=audioldm duracion_s=44.308 lufs_voz_original=-14.94 lufs_ambiente_original=-16.54 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.944 limitacion_db=0 pico_mezcla=0.747
+11:31:06 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_4 segundos=0.374 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=41.951 extra.lufs_voz_original=-15.16 extra.lufs_ambiente_original=-17.46 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.942 extra.limitacion_db=0 extra.pico_mezcla=0.772
+11:31:06 INFO    storybook.sound.mixer | mezcla_escena  escena=4 fuente=procedural duracion_s=41.951 lufs_voz_original=-15.16 lufs_ambiente_original=-17.46 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.942 limitacion_db=0 pico_mezcla=0.772
+11:31:06 INFO    storybook.gpu | etapa_medida  etapa=mezcla_escena_5 segundos=0.446 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.duracion_s=51.645 extra.lufs_voz_original=-15.91 extra.lufs_ambiente_original=-17.2 extra.lufs_voz=-18 extra.lufs_ambiente=-30 extra.ambiente_bajo_voz_db=12 extra.ambiente_bajo_voz_hablando_db=18 extra.ducking_db=6 extra.fraccion_con_voz=0.926 extra.limitacion_db=0 extra.pico_mezcla=0.814
+11:31:06 INFO    storybook.sound.mixer | mezcla_escena  escena=5 fuente=procedural duracion_s=51.645 lufs_voz_original=-15.91 lufs_ambiente_original=-17.2 lufs_voz=-18 lufs_ambiente=-30 ambiente_bajo_voz_db=12 ambiente_bajo_voz_hablando_db=18 ducking_db=6 fraccion_con_voz=0.926 limitacion_db=0 pico_mezcla=0.814
+11:31:06 INFO    storybook.pipeline | progreso  etapa=mezcla avance=1 mensaje="Mezclando voz y ambiente: listo"
+11:31:06 INFO    storybook.pipeline | historia_generada  run_id=20261111_112857_un_perro_y_un_gato_deben_cruza segundos="{'texto': 74.7, 'imagen': 27.09, 'voz': 8.86, 'sonido': 16.15, 'mezcla': 2.07, 'total': 128.88}" estado=completa_con_fallbacks
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  27%|██▋       | 52/196 [00:00<00:00, 492.71it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1435.35it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  6.40it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 13.01it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 13.83it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:31:47 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.304 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+11:31:47 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=19
+11:31:50 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.131 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=4142002422 extra.tokens=19 extra.intento=1 extra.ip=False
+11:31:50 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=19
+11:31:53 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.793 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=2215153082 extra.tokens=19 extra.intento=1 extra.ip=False
+11:31:53 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=23
+11:31:56 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.793 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=2618047157 extra.tokens=23 extra.intento=1 extra.ip=False
+11:31:56 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Milo->a person', 'Lucas->a person', 'Bax->a person']"
+11:31:56 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=21
+11:31:59 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.795 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=717048807 extra.tokens=21 extra.intento=1 extra.ip=False
+11:31:59 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=19
+11:32:02 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.798 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=2078392042 extra.tokens=19 extra.intento=1 extra.ip=False
+11:32:02 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  22%|██▏       | 43/196 [00:00<00:00, 427.46it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1413.05it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.06it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 14.27it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 15.18it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+11:32:05 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.04 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2276.5 vram_gpu_total_mb=4096
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (120 > 77). Running this sequence through the model will result in indexing errors
+11:32:05 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=1 tokens=75 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:32:08 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=3.26 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=2446.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=75 extra.intento=1 extra.ip=False
+11:32:08 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=74 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:flowers changing color in the evening light.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur']"
+11:32:11 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=2.807 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=74 extra.intento=1 extra.ip=False
+11:32:11 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=70 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:a boy drawing on the ground with fingers.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:32:14 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=2.806 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=False
+11:32:14 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Milo->cat age 3', 'Lucas->boy age 7', 'Bax->dog age 5']"
+11:32:14 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=70 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:with boy age 7 and dog age 5 following.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:32:17 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=2.814 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=False
+11:32:17 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=69 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:flowers glowing in the background.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:32:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=2.814 dispositivo=cuda vram_torch_pico_mb=3112.6 vram_torch_reservada_pico_mb=3980 vram_gpu_base_mb=4078.5 vram_gpu_pico_mb=4078.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=69 extra.intento=1 extra.ip=False
+11:32:20 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  26%|██▌       | 50/196 [00:00<00:00, 492.67it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1502.05it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.78it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 14.74it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00, 15.89it/s]
+11:32:22 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.392 dispositivo=cuda vram_torch_pico_mb=2056.6 vram_torch_reservada_pico_mb=2108 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=2168.5 vram_gpu_total_mb=4096
+11:32:28 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=5.552 dispositivo=cuda vram_torch_pico_mb=2667.3 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=2334.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=62
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   3%|▎         | 17/520 [00:00<00:03, 165.89it/s]
+Loading weights:   7%|▋         | 34/520 [00:00<00:04, 103.19it/s]
+Loading weights:  10%|█         | 54/520 [00:00<00:03, 133.83it/s]
+Loading weights:  14%|█▍        | 72/520 [00:00<00:03, 134.72it/s]
+Loading weights:  17%|█▋        | 87/520 [00:00<00:03, 122.45it/s]
+Loading weights:  20%|█▉        | 102/520 [00:00<00:03, 127.63it/s]
+Loading weights:  22%|██▏       | 116/520 [00:00<00:03, 124.95it/s]
+Loading weights:  28%|██▊       | 148/520 [00:01<00:02, 170.84it/s]
+Loading weights:  32%|███▏      | 166/520 [00:01<00:02, 150.04it/s]
+Loading weights:  35%|███▌      | 182/520 [00:01<00:02, 140.35it/s]
+Loading weights:  38%|███▊      | 197/520 [00:01<00:02, 118.09it/s]
+Loading weights:  41%|████      | 212/520 [00:01<00:02, 119.49it/s]
+Loading weights:  43%|████▎     | 225/520 [00:01<00:02, 119.84it/s]
+Loading weights:  47%|████▋     | 243/520 [00:01<00:02, 132.19it/s]
+Loading weights:  50%|█████     | 260/520 [00:01<00:01, 134.48it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 252.94it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+11:32:31 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=3.501 dispositivo=cuda vram_torch_pico_mb=2099.7 vram_torch_reservada_pico_mb=3236 vram_gpu_base_mb=3462.5 vram_gpu_pico_mb=3462.5 vram_gpu_total_mb=4096 extra.scale=0.4
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (120 > 77). Running this sequence through the model will result in indexing errors
+11:32:31 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=1 tokens=75 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:32:40 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=8.689 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=2350.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=75 extra.intento=1 extra.ip=True
+11:32:40 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=2 tokens=74 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:flowers changing color in the evening light.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur']"
+11:32:48 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=8.408 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=74 extra.intento=1 extra.ip=True
+11:32:48 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=70 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:a boy drawing on the ground with fingers.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:32:57 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=8.407 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=True
+11:32:57 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Milo->cat age 3', 'Lucas->boy age 7', 'Bax->dog age 5']"
+11:32:57 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=70 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:with boy age 7 and dog age 5 following.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:33:05 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=8.41 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=70 extra.intento=1 extra.ip=True
+11:33:05 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=69 eliminados="['estilo:warm light', 'estilo:soft', 'estilo:sky blue', 'estilo:soft greens', 'estilo:pastel yellows', 'accion:flowers glowing in the background.', 'personajes:slightly clumsy build', 'personajes:playful and bold', 'personajes:wears a blue collar with a star', 'personajes:floppy ears', 'personajes:golden fur', 'personajes:always sits on windowsills']"
+11:33:14 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=8.42 dispositivo=cuda vram_torch_pico_mb=3014.5 vram_torch_reservada_pico_mb=3844 vram_gpu_base_mb=4070.5 vram_gpu_pico_mb=4070.5 vram_gpu_total_mb=4096 extra.seed=1734591273 extra.tokens=69 extra.intento=1 extra.ip=True
+11:33:14 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+# Batería de experimentos 20261111_111458
+
+## Resumen por configuración
+
+| Configuración | Pruebas | Con 5 escenas | CLIP img-img (media) | CLIP img-img (mín.) | CLIP img-texto | WER | Imágenes (mediana) | Total (mediana) | VRAM pico |
+|---|---|---|---|---|---|---|---|---|---|
+| `c3_ipadapter` | 4 | 4 | 0.765 | 0.618 | 0.319 | 0.043 | 27.1 s | 127.7 s | 4076 MB |
+| `c1_baseline` | 4 | 4 | 0.501 | 0.326 | 0.343 | — | 17.2 s | — | 4086 MB |
+| `c2_bible` | 4 | 4 | 0.616 | 0.382 | 0.335 | — | 17.2 s | — | 4078 MB |
+| `calidad` | 4 | 4 | 0.778 | 0.614 | 0.347 | — | 54.9 s | — | 4070 MB |
+
+- CLIP img-img: similitud coseno media entre las 5 ilustraciones de una historia (consistencia visual). El mínimo es el par menos parecido.
+- CLIP img-texto: similitud entre cada ilustración y su prompt (pertinencia).
+- WER: error de palabras de Whisper small sobre la narración (inteligibilidad).
+
+## Consistencia visual por historia (CLIP img-img, media)
+
+| Idea | Género | `c3_ipadapter` | `c1_baseline` | `c2_bible` | `calidad` |
+|---|---|---|---|---|---|
+| Una casa antigua donde todos los relojes se detienen a media | terror | 0.796 | 0.474 | 0.618 | 0.821 |
+| El último dragón vive escondido en una biblioteca | fantasía | 0.732 | 0.528 | 0.547 | 0.783 |
+| Una astronauta despierta sola en una estación espacial a la  | ciencia ficción | 0.802 | 0.543 | 0.734 | 0.801 |
+| Un perro y un gato deben cruzar la ciudad para volver a casa | infantil | 0.731 | 0.459 | 0.563 | 0.707 |
+
+## Pertinencia por historia (CLIP img-texto, media)
+
+| Idea | Género | `c3_ipadapter` | `c1_baseline` | `c2_bible` | `calidad` |
+|---|---|---|---|---|---|
+| Una casa antigua donde todos los relojes se detienen a media | terror | 0.307 | 0.361 | 0.319 | 0.362 |
+| El último dragón vive escondido en una biblioteca | fantasía | 0.282 | 0.332 | 0.306 | 0.366 |
+| Una astronauta despierta sola en una estación espacial a la  | ciencia ficción | 0.370 | 0.323 | 0.388 | 0.353 |
+| Un perro y un gato deben cruzar la ciudad para volver a casa | infantil | 0.315 | 0.355 | 0.326 | 0.306 |
+
+## Fallos y alternativas automáticas
+
+- `20261111_111458_1_c3_ipadapter`: sonido:sa3:no_disponible; sonido:escena_1:audioldm_fallo; sonido:escena_3:audioldm_fallo; sonido:escena_5:audioldm_fallo; sonido:library:no_disponible
+- `20261111_111458_2_c3_ipadapter`: sonido:sa3:no_disponible; sonido:escena_2:audioldm_fallo; sonido:library:no_disponible
+- `20261111_111458_3_c3_ipadapter`: sonido:sa3:no_disponible
+- `20261111_111458_4_c3_ipadapter`: sonido:sa3:no_disponible; sonido:escena_1:audioldm_fallo; sonido:escena_2:audioldm_fallo; sonido:escena_4:audioldm_fallo; sonido:escena_5:audioldm_fallo; sonido:library:no_disponible
+
+## Hojas de contactos
+
+- `f6_hojas/20261111_111458_20261111_111458_una_casa_c3_ipadapter.jpg`
+- `f6_hojas/20261111_111458_20261111_111458_una_casa_c1_baseline.jpg`
+- `f6_hojas/20261111_111458_20261111_111458_una_casa_c2_bible.jpg`
+- `f6_hojas/20261111_111458_20261111_111458_una_casa_calidad.jpg`
+- `f6_hojas/20261111_111458_20261111_112020_el_ultim_c3_ipadapter.jpg`
+- `f6_hojas/20261111_111458_20261111_112020_el_ultim_c1_baseline.jpg`
+- `f6_hojas/20261111_111458_20261111_112020_el_ultim_c2_bible.jpg`
+- `f6_hojas/20261111_111458_20261111_112020_el_ultim_calidad.jpg`
+- `f6_hojas/20261111_111458_20261111_112439_una_astr_c3_ipadapter.jpg`
+- `f6_hojas/20261111_111458_20261111_112439_una_astr_c1_baseline.jpg`
+- `f6_hojas/20261111_111458_20261111_112439_una_astr_c2_bible.jpg`
+- `f6_hojas/20261111_111458_20261111_112439_una_astr_calidad.jpg`
+- `f6_hojas/20261111_111458_20261111_112857_un_perro_c3_ipadapter.jpg`
+- `f6_hojas/20261111_111458_20261111_112857_un_perro_c1_baseline.jpg`
+- `f6_hojas/20261111_111458_20261111_112857_un_perro_c2_bible.jpg`
+- `f6_hojas/20261111_111458_20261111_112857_un_perro_calidad.jpg`
+
+16 pruebas (0 fallidas) agregadas a C:\Users\diego\Documents\StoryBook-IA\experiments\results.csv.
+Resumen: C:\Users\diego\Documents\StoryBook-IA\docs\evidencias\f6_experimentos_20261111_111458.md
