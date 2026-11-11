@@ -23,6 +23,7 @@ from storybook.sound.generator import (
     negativo_compatible,
     nombre_archivo_sonido,
     preparar_prompt_audio,
+    prompts_para_backend,
 )
 from storybook.sound.library import BibliotecaSonidos
 from storybook.sound.mixer import (
@@ -441,3 +442,15 @@ def test_negativo_compatible_no_contradice_al_prompt() -> None:
         "low quality, speech, singing"
     )
     assert negativo_compatible(negativo, "Ocean waves crash.") == negativo
+
+
+def test_sufijo_de_calidad_solo_para_audioldm() -> None:
+    """Prueba de 6.2: con ", high quality, clear", 20/20 escenas aptas (13/20 sin él)."""
+    cfg = SoundConfig()
+    prompt, negativo = prompts_para_backend("audioldm", "Soft wind blows through trees.", cfg)
+    assert prompt == "Wind blows through trees, high quality, clear"
+    assert negativo == "speech, voice, singing, music"  # "low quality" contradiría al sufijo
+    prompt, negativo = prompts_para_backend("sao", "Soft wind blows through trees.", cfg)
+    assert prompt == "Wind blows through trees." and negativo == cfg.negative_prompt
+    sin = cfg.model_copy(update={"audioldm_sufijo": ""})
+    assert prompts_para_backend("audioldm", "Wind howls.", sin)[0] == "Wind howls."

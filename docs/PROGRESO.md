@@ -121,7 +121,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 - [x] 6.2 [WINDOWS] Ejecutar la batería completa: C1/C2/C3 × 4 géneros, más 4B vs 8B (opcional: Qwen3-0.6B, del resumen de clase), LCM vs 25 pasos y SA3 vs AudioLDM → `experiments/results.csv` + evidencias. (dep: 5.4, 6.1)
   - **Hecha el 11 nov, 11:15–11:33:** 16 pruebas (4 ideas × C3, C1, C2 y `calidad`), todas con 5 escenas. Resumen en `docs/evidencias/f6_experimentos_20261111_111458.md` y hojas de contactos en `docs/evidencias/f6_hojas/`.
   - 4B frente a 8B: se usa lo medido en 1.4. SA3 no está disponible (acceso restringido), así que la comparación de sonido es AudioLDM frente a procedural.
-  - Complemento opcional: `-Paso audioldm` prueba variantes de prompt y guidance para AudioLDM.
+  - Complemento (`-Paso audioldm`, 11 nov, 11:42): con el sufijo ", high quality, clear", AudioLDM da un ambiente apto en 20 de 20 escenas (sin él, 13 de 20). Adoptado en la configuración.
 - [ ] 6.3 [AUTO] Análisis de `results.csv`: gráficas, tablas y conclusiones en `docs/informe/`. (dep: 6.2)
 
 ## F7 · Documentación y video
@@ -136,7 +136,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso audioldm` (unos 5 min). Prueba si un sufijo de calidad o más guidance evitan los clips mudos de AudioLDM. Si alguna variante gana con claridad, se adopta en la configuración antes del análisis (6.3).
+- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso muestras` (1–2 min). Reintenta con AudioLDM, ya con el sufijo de calidad, las 6 escenas de los ejemplos que quedaron con sonido procedural, y vuelve a exportar `samples/`.
   - Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
@@ -640,3 +640,31 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - El LLM repite "wind" + "heartbeat" en casi todos los `prompt_sonido`, sin importar el género.
   - En "Un perro y un gato…" el protagonista es un niño con un gato: el perro desaparece.
   - Las columnas `*_1a5` de `results.csv` quedan por llenar a mano al revisar las hojas y los audios.
+
+### 2026-11-11 11:53 · Windows (`-Paso audioldm`) + sesión interactiva · sufijo de calidad adoptado
+- **Prueba** (`docs/evidencias/f6_audioldm_prompts.md` y `.json`, commit 61d15a5):
+  - Prompts: los 20 `prompt_sonido` de la batería 20261111_111458.
+  - Seeds: 101 y 1101. Una escena pasa si alguna de las 2 sirve, como los 2 intentos de producción.
+
+| Variante | Escenas que pasan | Clips aptos | Nivel mediano |
+|---|---|---|---|
+| base (producción, guidance 2,5) | 13/20 | 24/40 | −18,2 dBFS |
+| sufijo ", high quality, clear" | **20/20** | 39/40 | −14,6 dBFS |
+| guidance 4,0 | 12/20 | 20/40 | −21,4 dBFS |
+| sufijo + guidance 4,0 | **20/20** | 40/40 | −9,2 dBFS |
+
+- **Lectura de los resultados:**
+  - El sufijo resuelve justo los prompts que fallaban, que en base daban de −32 a −63 dBFS: "wind rustling through trees", "wind through trees…" y "birds sing". Con sufijo dan de −7 a −29 dBFS.
+  - Subir el guidance, por sí solo, empeora el resultado.
+  - Al llevar "high quality", "low quality" sale del negative prompt (`negativo_compatible`). La mejora medida es la suma de las dos cosas, y así se reproduce en producción.
+- **Decisión:** se adopta solo el sufijo y el guidance queda en 2,5. Es el cambio mínimo, y el guidance alto no mostró beneficio propio: la diferencia entre 39/40 y 40/40 es ruido.
+- **Cambios:**
+  - `SoundConfig.audioldm_sufijo` (por defecto ", high quality, clear") y `configs/default.yaml`.
+  - `sound/generator.prompts_para_backend` arma el prompt y el negativo para cada modelo; el sufijo se aplica solo a AudioLDM.
+  - `scripts/f6_audioldm_prompts.py` apaga el sufijo de producción para que la variante base siga siendo reproducible.
+  - `scripts/exportar_muestras.py` tiene `--las-de-samples` (rehace las historias que ya están en `samples/`) y `--rehacer-procedurales` (reintenta AudioLDM en las escenas procedurales). `-Paso muestras` usa los dos.
+- Verificación: **311 tests en verde**, ruff limpio. Tests nuevos:
+  - sufijo solo para AudioLDM y negativo sin "low quality";
+  - la prueba apaga el sufijo de producción;
+  - reintento de escenas procedurales y selección de las historias de `samples/`.
+- **Validar en Windows** (`-Paso muestras`): las 6 escenas procedurales de los ejemplos deberían pasar a AudioLDM.

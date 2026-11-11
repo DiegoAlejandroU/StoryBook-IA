@@ -38,8 +38,8 @@ from storybook.sound.generator import (
     a_mono,
     fraccion_en_silencio,
     nivel_dbfs,
-    preparar_prompt_audio,
     problema_de_ambiente,
+    prompts_para_backend,
 )
 from storybook.storage import cargar_bible
 
@@ -93,13 +93,16 @@ def ablacion(
     import soundfile as sf
 
     cfg_original = backend.cfg
+    # Cada variante pone su propio sufijo: se apaga el de la configuración de producción
+    # (adoptado después de esta prueba) para que "base" siga siendo el prompt sin sufijo.
+    sin_sufijo = cfg_original.model_copy(update={"audioldm_sufijo": ""})
     filas: list[dict[str, Any]] = []
     try:
         for variante, (sufijo, guia) in variantes.items():
             backend.cfg = (
-                cfg_original.model_copy(update={"audioldm_guidance": guia})
+                sin_sufijo.model_copy(update={"audioldm_guidance": guia})
                 if guia is not None
-                else cfg_original
+                else sin_sufijo
             )
             for historia, escena in escenas:
                 modificada = con_sufijo(escena, sufijo)
@@ -115,7 +118,9 @@ def ablacion(
                             "escena": escena.numero,
                             "seed": seed,
                             "guidance": backend.cfg.audioldm_guidance,
-                            "prompt_efectivo": preparar_prompt_audio(modificada.prompt_sonido),
+                            "prompt_efectivo": prompts_para_backend(
+                                "audioldm", modificada.prompt_sonido, backend.cfg
+                            )[0],
                             "nivel_dbfs": round(nivel_dbfs(audio), 1),
                             "fraccion_silencio": round(fraccion_en_silencio(audio, frecuencia), 3),
                             "apto": problema is None,

@@ -70,6 +70,22 @@ def test_rehace_el_ambiente_debil_y_exporta(tmp_path: Path) -> None:
     destino = tmp_path / "samples" / historia.carpeta.name
     assert sf.info(str(destino / "mix_3.ogg")).format == "OGG"
 
+    # Reintento de AudioLDM en las escenas que quedaron procedurales (después del sufijo de 6.2)
+    assert exp.escenas_con_ambiente_debil(historia.carpeta, incluir_procedurales=True) == [3]
+    assert exp.historias_de_samples(tmp_path / "samples", tmp_path / "outputs") == [
+        historia.carpeta
+    ]
+    assert exp.historias_de_samples(tmp_path / "no_hay", tmp_path / "outputs") == []
+    lineas, errores = exp.procesar(
+        [historia.carpeta], pipeline, tmp_path / "samples", incluir_procedurales=True
+    )
+    assert errores == [] and "ambiente rehecho en escenas [3]" in lineas[0]
+    manifest = json.loads((historia.carpeta / "manifest.json").read_text(encoding="utf-8"))
+    assert [r["escenas"] for r in manifest["regeneraciones"] if r["tipo"] == "sonido"] == [
+        [3],
+        [3],
+    ]
+
 
 def test_ogg_por_bloques_conserva_la_duracion(tmp_path: Path) -> None:
     from storybook.storage import _wav_a_ogg

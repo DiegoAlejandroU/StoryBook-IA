@@ -287,6 +287,7 @@ Flujo:
     - Control de los clips generativos (`problema_de_ambiente`): máximo 40 % del clip 20 dB bajo su parte más fuerte y nivel mínimo de −45 dBFS. Si un clip falla, se reintenta con seed +1000 y luego se pasa al siguiente backend. En la prueba 5.4 AudioLDM dio clips a −72 dBFS.
     - `Pipeline.rehacer_sonido` rehace el ambiente y la mezcla de escenas concretas sin tocar texto, imágenes ni voz. Lo usa `scripts/exportar_muestras.py`.
     - Prompts de audio (`preparar_prompt_audio`, `negativo_compatible`): se quitan los adjetivos de intensidad baja ("soft", "gently", "faint") y las menciones de silencio, que hacían que AudioLDM diera clips casi mudos. Del negative prompt se quita lo que el prompt pide (p. ej. "singing" si hay "birds sing").
+    - **Sufijo de calidad para AudioLDM** (`audioldm_sufijo`, por defecto ", high quality, clear"), decidido en 6.2. Con los 20 prompts de la batería y 2 seeds, pasaron 20 de 20 escenas, frente a 13 de 20 sin sufijo y 12 de 20 con guidance 4,0 (`docs/evidencias/f6_audioldm_prompts.md`). Al aplicar el sufijo, "low quality" sale del negative prompt (`prompts_para_backend`), igual que en la prueba.
   - Integración (5.1–5.3, 10 nov):
     - `pipeline.Pipeline` (texto → imagen → voz → sonido → mezcla, con fallbacks y manifest incluso si falla) y `storage`.
     - `mock.dependencias_simuladas()` para la UI sin GPU y los tests.

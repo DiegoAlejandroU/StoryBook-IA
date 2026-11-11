@@ -36,9 +36,11 @@ class AudioLDMFalso:
     def __init__(self) -> None:
         self.cfg = SoundConfig()
         self.guias: list[float] = []
+        self.sufijos: set[str] = set()
 
     def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
         self.guias.append(self.cfg.audioldm_guidance)
+        self.sufijos.add(self.cfg.audioldm_sufijo)
         sr = 16_000
         ruido = np.random.default_rng(seed).standard_normal(int(duracion_s * sr)) * 0.1
         audible = "high quality" in escena.prompt_sonido
@@ -66,6 +68,8 @@ def test_ablacion_resumen_y_reporte(bible: StoryBible, tmp_path: Path) -> None:
     filas = f6a.ablacion(backend, escenas, 1.0, carpeta=tmp_path)
     assert len(filas) == 4 * 2 * 2  # variantes × escenas × seeds
     assert backend.cfg.audioldm_guidance == 2.5  # se restaura al terminar
+    assert backend.cfg.audioldm_sufijo == ", high quality, clear"
+    assert backend.sufijos == {""}  # la prueba apaga el sufijo de producción
     assert set(backend.guias) == {2.5, 4.0}
     resumen = {r["variante"]: r for r in f6a.resumir(filas)}
     assert resumen["base"]["escenas_que_pasan"] == 0 and resumen["guia_alta"]["clips_aptos"] == 0

@@ -230,6 +230,9 @@ class SoundConfig(_Strict):
     audioldm_repo_id: str = "cvssp/audioldm"
     audioldm_steps: int = Field(default=25, ge=4, le=200)
     audioldm_guidance: float = Field(default=2.5, ge=0.0, le=15.0)
+    # Prueba de 6.2 (docs/evidencias/f6_audioldm_prompts.md): con este sufijo, 20 de 20
+    # escenas dieron un ambiente apto (sin él, 13 de 20). "" lo desactiva.
+    audioldm_sufijo: str = Field(default=", high quality, clear", max_length=60)
     duration_s: float = Field(default=8.0, ge=2.0, le=30.0)
     negative_prompt: str = "low quality, speech, voice, singing, music"
     cpu_offload: bool = True

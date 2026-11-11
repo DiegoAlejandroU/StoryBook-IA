@@ -93,6 +93,19 @@ def preparar_prompt_audio(prompt: str) -> str:
     return texto if re.search(r"[a-zA-Z]{3,}", texto) else prompt
 
 
+def prompts_para_backend(nombre: str, prompt_sonido: str, cfg: SoundConfig) -> tuple[str, str]:
+    """(prompt, negative prompt) que recibe el modelo de audio ``nombre``.
+
+    A AudioLDM se le agrega ``cfg.audioldm_sufijo`` (", high quality, clear"). Como el
+    negativo se calcula después, "low quality" sale del negativo para no contradecir al
+    sufijo: así se midió en la prueba de 6.2.
+    """
+    prompt = preparar_prompt_audio(prompt_sonido)
+    if nombre == "audioldm" and cfg.audioldm_sufijo:
+        prompt = prompt.rstrip(" .;,") + cfg.audioldm_sufijo
+    return prompt, negativo_compatible(cfg.negative_prompt, prompt)
+
+
 def negativo_compatible(negativo: str, prompt: str) -> str:
     """Quita del negative prompt los términos que el prompt pide.
 
@@ -467,8 +480,7 @@ class DiffusersSonidoBackend:
 
         generador = torch.Generator("cuda").manual_seed(seed)
         cfg, pipe = self.cfg, self.pipe
-        prompt = preparar_prompt_audio(escena.prompt_sonido)
-        negativo = negativo_compatible(cfg.negative_prompt, prompt)
+        prompt, negativo = prompts_para_backend(self.nombre, escena.prompt_sonido, cfg)
         self.ultimo_detalle = {"prompt_efectivo": prompt, "negativo_efectivo": negativo}
         if self.nombre == "audioldm":
             salida = pipe(

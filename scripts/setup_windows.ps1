@@ -156,7 +156,7 @@ function Paso-Git {
         if ($Paso -eq "f2") { $titulo = "chore: codigo usado en las pruebas reales de imagen y voz (tareas 2.3 y 3.3)" }
         if ($Paso -eq "f2v") { $titulo = "chore: codigo usado en las variantes de imagen (tarea 2.3)" }
         if ($Paso -eq "f4") { $titulo = "chore: codigo usado en la prueba real de sonido y mezcla (tarea 4.4)" }
-        if ($Paso -eq "muestras") { $titulo = "chore: codigo para rehacer ambientes y exportar ejemplos (tarea 5.4)" }
+        if ($Paso -eq "muestras") { $titulo = "chore: codigo para rehacer ambientes y exportar ejemplos" }
         if ($Paso -eq "experimentos") { $titulo = "chore: codigo usado en la bateria de experimentos (tarea 6.2)" }
         if ($Paso -eq "audioldm") { $titulo = "chore: codigo de la prueba de prompts de AudioLDM (tarea 6.2)" }
         # Sin "Co-Authored-By" ni menciones a asistentes: el unico autor es Diego (pedido explicito).
@@ -409,15 +409,18 @@ if ($Paso -eq "offline") {
     if ($codigo -ne 0) { Fin $codigo }
 }
 if ($Paso -eq "muestras") {
-    Titulo "Tarea 5.4 - Rehacer ambientes debiles y exportar las historias de ejemplo a samples/"
+    Titulo "Historias de ejemplo - Rehacer ambientes debiles o procedurales y exportar a samples/"
     $perfilMu = if ($Perfil -eq "llm_8b") { "experiments/llm_8b" } else { $Perfil }
-    $argsMu = @("run", "python", "scripts/exportar_muestras.py", "--perfil", $perfilMu)
+    # Las historias que ya estan en samples/ (si no hay, las 3 reales mas recientes). Las escenas
+    # que quedaron con sonido procedural se reintentan con AudioLDM (sufijo de calidad, 6.2).
+    $argsMu = @("run", "python", "scripts/exportar_muestras.py", "--perfil", $perfilMu,
+        "--las-de-samples", "--rehacer-procedurales")
     $salidaMu = Join-Path $Evid "exportar_muestras.txt"
     if (Test-Path $salidaMu) { Remove-Item $salidaMu }
     $codigo = Ejecutar "uv" $argsMu $salidaMu
     # Las historias de ejemplo (audios en OGG, ~7 MB cada una) se versionan con las evidencias.
     if (Test-Path "samples") { & git add -- samples 2>$null | Out-Null }
-    Guardar-Evidencias "chore: historias de ejemplo en samples (tarea 5.4)" | Out-Null
+    Guardar-Evidencias "chore: historias de ejemplo en samples" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 if ($Paso -eq "experimentos") {

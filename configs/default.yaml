@@ -66,7 +66,8 @@ sound:
   sao_guidance: 7.0
   audioldm_repo_id: cvssp/audioldm             # sugerido en clase; no es gated (CC BY-NC-SA 4.0)
   audioldm_steps: 25
-  audioldm_guidance: 2.5
+  audioldm_guidance: 2.5                       # 4.0 no ayudó en la prueba de 6.2 (12/20 escenas)
+  audioldm_sufijo: ", high quality, clear"     # 6.2: 20/20 escenas con ambiente apto (13/20 sin él)
   duration_s: 8.0                             # el mezclador hace loop + crossfade hasta la voz
   negative_prompt: "low quality, speech, voice, singing, music"
   cpu_offload: true

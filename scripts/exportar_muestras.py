@@ -12,6 +12,7 @@ Uso (PowerShell, desde la carpeta del proyecto):
     uv run python scripts/exportar_muestras.py          # las 3 historias reales más recientes
     uv run python scripts/exportar_muestras.py --n 2
     uv run python scripts/exportar_muestras.py outputs/<carpeta_de_la_historia>
+    uv run python scripts/exportar_muestras.py --las-de-samples --rehacer-procedurales
 """
 
 from __future__ import annotations
@@ -47,8 +48,23 @@ def historias_reales_recientes(raiz: Path, n: int) -> list[Path]:
     return elegidas
 
 
-def escenas_con_ambiente_debil(carpeta: Path) -> list[int]:
-    """Escenas cuyo ambiente generativo es demasiado bajo o casi silencio (o falta)."""
+def historias_de_samples(samples: Path | None = None, outputs: Path | None = None) -> list[Path]:
+    """Las historias de ``outputs/`` que ya están exportadas en ``samples/`` (para rehacerlas)."""
+    samples = samples or config.SAMPLES_DIR
+    outputs = outputs or config.OUTPUTS_DIR
+    if not samples.is_dir():
+        return []
+    return sorted(
+        outputs / d.name for d in samples.iterdir() if d.is_dir() and (outputs / d.name).is_dir()
+    )
+
+
+def escenas_con_ambiente_debil(carpeta: Path, incluir_procedurales: bool = False) -> list[int]:
+    """Escenas cuyo ambiente generativo es demasiado bajo o casi silencio (o falta).
+
+    Con ``incluir_procedurales`` también las que quedaron con sonido procedural, para
+    intentar de nuevo con AudioLDM (p. ej. después de adoptar el sufijo de calidad en 6.2).
+    """
     manifest = cargar_manifest(carpeta)
     backends = {
         int(s["escena"]): str(s.get("backend", ""))
@@ -58,6 +74,9 @@ def escenas_con_ambiente_debil(carpeta: Path) -> list[int]:
     for numero in range(1, NUM_ESCENAS + 1):
         ruta = carpeta / f"sfx_{numero}.wav"
         if not ruta.is_file():
+            debiles.append(numero)
+            continue
+        if incluir_procedurales and backends.get(numero) == "procedural":
             debiles.append(numero)
             continue
         if backends.get(numero) not in GENERATIVOS:
@@ -73,14 +92,17 @@ def escenas_con_ambiente_debil(carpeta: Path) -> list[int]:
 
 
 def procesar(
-    carpetas: Sequence[Path], pipeline: Any, destino: Path | None = None
+    carpetas: Sequence[Path],
+    pipeline: Any,
+    destino: Path | None = None,
+    incluir_procedurales: bool = False,
 ) -> tuple[list[str], list[str]]:
     """Rehace los ambientes débiles y exporta cada historia. Devuelve (líneas, errores)."""
     lineas: list[str] = []
     errores: list[str] = []
     for carpeta in carpetas:
         try:
-            debiles = escenas_con_ambiente_debil(carpeta)
+            debiles = escenas_con_ambiente_debil(carpeta, incluir_procedurales)
             if debiles:
                 historia = pipeline.rehacer_sonido(carpeta, debiles)
                 nuevos = historia.manifest["regeneraciones"][-1]["backends"]
@@ -104,15 +126,25 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("carpetas", nargs="*", type=Path)
     parser.add_argument("--n", type=int, default=3)
     parser.add_argument("--perfil", default="rapido")
+    parser.add_argument(
+        "--las-de-samples", action="store_true", help="las historias que ya están en samples/"
+    )
+    parser.add_argument(
+        "--rehacer-procedurales",
+        action="store_true",
+        help="reintentar AudioLDM en las escenas que quedaron con sonido procedural",
+    )
     args = parser.parse_args(argv)
     setup_logging()
     from storybook.pipeline import Pipeline
 
-    carpetas = args.carpetas or historias_reales_recientes(config.OUTPUTS_DIR, args.n)
+    carpetas = args.carpetas or (historias_de_samples() if args.las_de_samples else [])
+    carpetas = carpetas or historias_reales_recientes(config.OUTPUTS_DIR, args.n)
     if not carpetas:
         sys.stdout.write("No hay historias reales completas en outputs/.\n")
         return 1
-    lineas, errores = procesar(carpetas, Pipeline(config.load_config(args.perfil)))
+    pipeline = Pipeline(config.load_config(args.perfil))
+    lineas, errores = procesar(carpetas, pipeline, incluir_procedurales=args.rehacer_procedurales)
     salida = ["", "Historias de ejemplo:", *lineas, *(f"- ERROR: {e}" for e in errores), ""]
     sys.stdout.write("\n".join(salida))
     return 2 if errores else 0
