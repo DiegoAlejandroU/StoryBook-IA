@@ -24,6 +24,8 @@
   Tarea 6.2 (bateria de experimentos: C3 completa + C1, C2 y calidad por idea; Ollama abierto):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso experimentos
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso experimentos -Ideas 1
+  Complemento de 6.2 (AudioLDM: variantes de prompt y guidance sobre la ultima bateria):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso audioldm
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -32,7 +34,7 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos", "audioldm")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [ValidateRange(1, 4)]
@@ -156,6 +158,7 @@ function Paso-Git {
         if ($Paso -eq "f4") { $titulo = "chore: codigo usado en la prueba real de sonido y mezcla (tarea 4.4)" }
         if ($Paso -eq "muestras") { $titulo = "chore: codigo para rehacer ambientes y exportar ejemplos (tarea 5.4)" }
         if ($Paso -eq "experimentos") { $titulo = "chore: codigo usado en la bateria de experimentos (tarea 6.2)" }
+        if ($Paso -eq "audioldm") { $titulo = "chore: codigo de la prueba de prompts de AudioLDM (tarea 6.2)" }
         # Sin "Co-Authored-By" ni menciones a asistentes: el unico autor es Diego (pedido explicito).
         if ((Ejecutar "git" @("commit", "-m", $titulo)) -ne 0) { return 1 }
     } else {
@@ -335,7 +338,7 @@ Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
 # f1 y f2 tambien hacen commit del codigo antes de generar: la evidencia debe corresponder a un commit.
-if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4", "muestras", "experimentos")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4", "muestras", "experimentos", "audioldm")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -426,6 +429,14 @@ if ($Paso -eq "experimentos") {
     # results.csv consolidado; el resumen y las hojas de contactos van en docs/evidencias.
     if (Test-Path "experiments/results.csv") { & git add -- experiments/results.csv 2>$null | Out-Null }
     Guardar-Evidencias "chore: evidencias de la bateria de experimentos (tarea 6.2)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "audioldm") {
+    Titulo "Tarea 6.2 (complemento) - AudioLDM: variantes de prompt y guidance"
+    $salidaAl = Join-Path $Evid "f6_audioldm_prompts.txt"
+    if (Test-Path $salidaAl) { Remove-Item $salidaAl }
+    $codigo = Ejecutar "uv" @("run", "python", "scripts/f6_audioldm_prompts.py") $salidaAl
+    Guardar-Evidencias "chore: evidencias de la prueba de prompts de AudioLDM (tarea 6.2)" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 if ($Paso -eq "f4") {

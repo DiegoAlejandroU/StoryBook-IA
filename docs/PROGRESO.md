@@ -118,7 +118,10 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - `scripts/make_contact_sheet.py`;
   - tests con datos falsos. (dep: 5.1)
   - Hecho en la sesión interactiva del 10 nov (ver la bitácora de las 14:54). Para 6.2: `setup_windows.ps1 -Paso experimentos`.
-- [ ] 6.2 [WINDOWS] Ejecutar la batería completa: C1/C2/C3 × 4 géneros, más 4B vs 8B (opcional: Qwen3-0.6B, del resumen de clase), LCM vs 25 pasos y SA3 vs AudioLDM → `experiments/results.csv` + evidencias. (dep: 5.4, 6.1)
+- [x] 6.2 [WINDOWS] Ejecutar la batería completa: C1/C2/C3 × 4 géneros, más 4B vs 8B (opcional: Qwen3-0.6B, del resumen de clase), LCM vs 25 pasos y SA3 vs AudioLDM → `experiments/results.csv` + evidencias. (dep: 5.4, 6.1)
+  - **Hecha el 11 nov, 11:15–11:33:** 16 pruebas (4 ideas × C3, C1, C2 y `calidad`), todas con 5 escenas. Resumen en `docs/evidencias/f6_experimentos_20261111_111458.md` y hojas de contactos en `docs/evidencias/f6_hojas/`.
+  - 4B frente a 8B: se usa lo medido en 1.4. SA3 no está disponible (acceso restringido), así que la comparación de sonido es AudioLDM frente a procedural.
+  - Complemento opcional: `-Paso audioldm` prueba variantes de prompt y guidance para AudioLDM.
 - [ ] 6.3 [AUTO] Análisis de `results.csv`: gráficas, tablas y conclusiones en `docs/informe/`. (dep: 6.2)
 
 ## F7 · Documentación y video
@@ -133,7 +136,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente:** con Ollama abierto y el Wi-Fi encendido (para el commit), `setup_windows.ps1 -Paso experimentos` (tarea 6.2, unos 25–30 min).
+- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso audioldm` (unos 5 min). Prueba si un sufijo de calidad o más guidance evitan los clips mudos de AudioLDM. Si alguna variante gana con claridad, se adopta en la configuración antes del análisis (6.3).
   - Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
@@ -606,3 +609,34 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
 - Verificación: **307 tests en verde**, ruff limpio. Tests nuevos:
   - 2 de prompts de audio;
   - 7 de 6.1: CSV, resumen, hoja de contactos, CLI, sin fuentes del sistema y batería completa con backends simulados, incluida una variante inexistente.
+
+### 2026-11-11 11:38 · Windows (`-Paso experimentos`) · 6.2 hecha
+- **Corrida:** 11:15 a 11:33 (18 min), 16 pruebas y ninguna fallida. Commits 046a765 (código) y 89eb929 (evidencias), subidos a GitHub.
+
+| Configuración | CLIP img-img (media / mín.) | CLIP img-texto | Imágenes (mediana) | VRAM pico |
+|---|---|---|---|---|
+| C3 (Bible + seed fija + IP-Adapter 0,4, LCM 6 pasos) | **0,765** / 0,618 | 0,319 | 27,1 s | 4076 MB |
+| C2 (Bible + seed fija, sin IP-Adapter) | 0,616 / 0,382 | 0,335 | 17,2 s | 4078 MB |
+| C1 (sin Bible, seeds aleatorias) | 0,501 / 0,326 | 0,343 | 17,2 s | 4086 MB |
+| `calidad` (C3 con DPM++ 25 pasos) | **0,778** / 0,614 | 0,347 | 54,9 s | 4070 MB |
+
+- **Consistencia visual:** C3 > C2 > C1 en las 4 historias. La Bible sola sube la similitud entre ilustraciones de 0,50 a 0,62; con IP-Adapter llega a 0,77. Es la hipótesis del proyecto, ahora con datos.
+- **Costo de la consistencia:**
+  - El CLIP img-texto baja un poco con IP-Adapter (0,343 en C1 frente a 0,319 en C3): la referencia del personaje compite con el prompt.
+  - En las hojas de contactos de C3 casi todas las escenas son retratos del personaje mirando a la cámara, con poca acción.
+  - En "El Camino de los Amigos" aparecen clones del protagonista cuando el prompt pide un grupo (escena 2, también en `calidad`).
+  - C1 muestra escenas más variadas, pero el personaje cambia por completo; en la escena 3 de la historia de terror aparece un robot.
+- **LCM 6 pasos frente a DPM++ 25 pasos:** casi la misma consistencia (0,765 frente a 0,778) y CLIP img-texto algo mayor (0,347), por el doble de tiempo de imagen (55 s frente a 27 s). Se confirma LCM para el perfil rápido.
+- **Texto y voz:**
+  - LLM de 74 a 90 s por historia.
+  - WER medio de 0,035 a 0,048 (la narración se entiende bien).
+  - Historia completa en 124–129 s. La primera tardó 182 s porque las imágenes tomaron 65 s con los modelos aún sin cachear.
+- **VRAM:** el pico de NVML (toda la GPU) llega a unos 4070–4086 MB de 4096 MB en todas las configuraciones. Funciona, pero sin margen; en 6.3 conviene reportar también el pico de torch, que también está en los manifests.
+- **Sonido:**
+  - AudioLDM quedó en 12 de 20 escenas: ciencia ficción 5/5, fantasía 4/5, terror 2/5 e infantil 1/5. Las otras 8 pasaron a procedural.
+  - Quitar "soft", "gently" y "faint" no bastó: con el prompt ya limpio, "wind (rustling/blowing) through trees…" sigue dando clips de −47 a −75 dBFS o con huecos del 59–89 %. En cambio, "wind howls…", "machinery hums…" o "wind blows through narrow streets" salen bien.
+  - Se prepara `scripts/f6_audioldm_prompts.py` (`-Paso audioldm`): con los 20 prompts de esta batería y 2 seeds, compara 4 variantes (base, sufijo ", high quality, clear", guidance 4,0, ambas). Tiene 3 tests con un backend falso.
+- **Para el informe (6.3), observaciones de la historia:**
+  - El LLM repite "wind" + "heartbeat" en casi todos los `prompt_sonido`, sin importar el género.
+  - En "Un perro y un gato…" el protagonista es un niño con un gato: el perro desaparece.
+  - Las columnas `*_1a5` de `results.csv` quedan por llenar a mano al revisar las hojas y los audios.
