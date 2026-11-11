@@ -131,6 +131,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 - [x] 7.2 [AUTO] Borrador del informe técnico en `docs/informe/informe.md` con las 12 secciones de CLAUDE.md §16, marcando `[DATO PENDIENTE]` donde falten resultados reales. (dep: 7.1)
   - Hecho el 11 nov: `docs/informe/informe.md` y un primer `informe.pdf` (21 páginas). Quedan 3 `[DATO PENDIENTE]`: nombre del docente, lista 1–5 y enlace del video.
 - [ ] 7.3 [WINDOWS] Completar el informe con los datos reales y exportarlo a PDF; grabar el video demo. (dep: 6.2, 7.2)
+  - **Video pospuesto** por decisión de Diego (11 nov): por ahora la prioridad es que la app funcione para mostrársela al docente.
 
 ## F8 · Sustentación
 - [x] 8.1 [AUTO] `docs/sustentacion.md`: guion de la demo, plan B, 30 preguntas probables del jurado con respuestas cortas y fundamentadas. (dep: 7.1)
@@ -140,11 +141,11 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente (Diego):**
-  1. Con el Wi-Fi encendido, `setup_windows.ps1 -Paso git`, para subir 7.2, 8.1 y el modo respaldo.
-  2. Probar `StoryBook.cmd respaldo`: el aviso amarillo debe aparecer y una escena regenerada debe salir con sonido procedural.
-  3. Para 7.3, dar el nombre del docente, revisar la lista 1–5 y grabar el video siguiendo el guion de `docs/sustentacion.md`; Claude regenera el PDF con esos datos.
-  4. Después, el ensayo cronometrado (8.2).
+- **Estado:** la app funciona de punta a punta desde la interfaz (prueba de Diego, 11 nov 12:37). Lista para mostrársela al docente.
+- **Pendiente:**
+  - 8.2 (ensayo cronometrado con idea y género al azar);
+  - 7.3 (video, pospuesto);
+  - 3 datos del informe: docente, lista 1–5 y video.
   - Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
@@ -763,3 +764,27 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - Sirve para la sustentación (CLAUDE.md §17) y para el video (CLAUDE.md §16.3: "demostración de un fallback").
   - Test nuevo, y verificado con Playwright que el aviso aparece y la app no da errores.
 - Verificación: **317 tests en verde**, ruff limpio.
+
+### 2026-11-11 12:33 · Windows (`-Paso git`) · decisión de Diego
+- `-Paso git` (12:32): commit bb66fbe con 14 archivos (7.2, 8.1 y el modo respaldo), subido a GitHub.
+- **Decisión:** por ahora no se graba video; la prioridad es que la app funcione para mostrársela al docente. El video (7.3) queda pospuesto.
+- **Pendiente:** primera prueba de la app real desde la interfaz, con `StoryBook.cmd`. Hasta ahora las historias reales se generaron con scripts (`verify_offline.py`, `run_experiment.py`), no con el botón "Generar historia".
+
+### 2026-11-11 12:42 · Windows (prueba de la app desde la interfaz) · la app funciona de punta a punta
+- **Primera historia real generada con el botón "Generar historia"** (`StoryBook.cmd`, perfil rápido):
+  - idea "Una mujer en un edificio escapando de un zombie", terror;
+  - título "Silencia en las Torres";
+  - carpeta `outputs/20261111_123746_una_mujer_en_un_edificio_escap`.
+- **Tiempos:** 189 s en total (texto 107 s, imágenes 60 s, voz 10 s, sonido 11 s, mezcla 2 s). Fue la primera generación del día, en frío; en caliente la batería midió unos 128 s. Por eso la guía de la sustentación pide una historia de calentamiento.
+- **Sonido:** AudioLDM en las 5 escenas, sin rechazos, lo que confirma el sufijo de calidad en la app real.
+- Única alternativa usada: `sonido:sa3:no_disponible`. Sin errores; los 28 archivos completos.
+- Diego revisó las escenas, los audios y un ejemplo de `samples/`: "Yo veo todo perfecto".
+
+### 2026-11-11 13:18 · repositorio de GitHub recreado (a pedido de Diego) · —
+- **Problema:** el recuadro *Contributors* de GitHub seguía mostrando "claude Claude", aunque el historial ya estaba limpio.
+  - Lo comprobó Claude clonando el repositorio desde GitHub: 43 commits, autor y committer siempre Diego, ningún "Co-Authored-By" ni mención a Claude, y solo la rama `main`.
+  - Era la caché de GitHub, calculada con los commits anteriores a la limpieza; el dueño no puede quitar esa entrada a mano.
+  - En Settings → Advanced Security no existe ninguna opción de atribución a IA.
+- **Solución elegida por Diego:** borrar el repositorio en GitHub y crearlo de nuevo, vacío y público, con el mismo nombre (`DiegoAlejandroU/StoryBook-IA`). Claude lo hizo en Chrome, con confirmación explícita de Diego.
+- **El historial no se perdió:** la carpeta local tiene `main` en bb66fbe, el mismo commit que había en GitHub.
+- **Siguiente (Diego):** `setup_windows.ps1 -Paso git`, para subir el historial completo al repositorio nuevo.
