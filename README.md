@@ -29,6 +29,9 @@ Ingeniería de Sistemas · Universidad Santo Tomás, Seccional Tunja · 2026.
 | Disco | 25 GB libres | — |
 | Software | [uv](https://docs.astral.sh/uv/), [Ollama](https://ollama.com), Git | — |
 
+Sin GPU NVIDIA, la aplicación solo funciona en modo simulado (`--mock`) y para abrir las
+historias de ejemplo de `samples/`: generar texto, imágenes y sonido reales requiere la GPU.
+
 Python 3.12 instalado desde python.org (o `winget install Python.Python.3.12`). No se usa el Python que descarga `uv` porque el Control inteligente de aplicaciones de Windows puede bloquearlo. No se requiere ffmpeg.
 
 ## Instalación (PowerShell)
@@ -83,6 +86,9 @@ síntesis procedural.
 Con doble clic en **`StoryBook.cmd`**, en la carpeta del proyecto. Abre Ollama si hace falta,
 inicia la app y la muestra en el navegador (http://localhost:8501). Para cerrarla, cierra la
 ventana negra.
+
+`StoryBook.cmd respaldo` abre la app con los modelos reales pero sin sonido generativo: sirve
+para mostrar en vivo que los ambientes pasan a la síntesis procedural.
 
 Equivalente en PowerShell:
 
@@ -172,6 +178,7 @@ uv run python -m storybook.evaluation.report       # resumen de experiments/resu
 | *Detalles técnicos* dice `sonido:sa3:no_disponible` | Stable Audio exige aceptar su licencia y un token | Es normal: el sonido lo genera AudioLDM y, si falla, la síntesis procedural. |
 | Las escenas muestran una ilustración de respaldo (lisa, con aviso) | El modelo de imagen no cargó | Revisar el mensaje en *Detalles técnicos* y usar **Regenerar ilustración y ambiente**. |
 | El navegador no abre la app | El puerto 8501 está ocupado | Cerrar la otra ventana de StoryBook, o abrir http://localhost:8501 a mano. |
+| Aviso de Hugging Face sobre *symlinks* al descargar modelos | Windows sin modo de desarrollador | Es inofensivo: la caché funciona igual (copia los archivos en vez de enlazarlos). |
 | Algo falló en `setup_windows.ps1` | — | El detalle queda en `docs\evidencias\setup_windows.log`. |
 
 ## Prueba por modalidad (Fase 0)

@@ -2,6 +2,8 @@
 rem StoryBook IA - lanzador de doble clic (tarea 5.2).
 rem   StoryBook.cmd        abre la app con los modelos reales (necesita Ollama).
 rem   StoryBook.cmd mock   abre la app en modo simulado (sin GPU ni Ollama).
+rem   StoryBook.cmd respaldo  modelos reales, pero sin sonido generativo: muestra en vivo
+rem                           que la cadena pasa a la sintesis procedural (sustentacion).
 setlocal
 cd /d "%~dp0"
 title StoryBook IA
@@ -21,6 +23,7 @@ if not exist ".venv" (
 )
 
 set "MODO=%~1"
+if /i "%MODO%"=="respaldo" set "STORYBOOK_SIN_AUDIO_GENERATIVO=1"
 if /i "%MODO%"=="mock" goto abrir
 
 rem Ollama: si no responde, se abre y se espera hasta 60 s.

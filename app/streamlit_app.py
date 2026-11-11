@@ -20,6 +20,7 @@ import streamlit as st
 from storybook import config, ui_logica
 from storybook.pipeline import Pipeline, PipelineError
 from storybook.schemas import Genero, InputValidationError
+from storybook.sound.generator import audio_generativo_desactivado
 from storybook.storage import HistoriaGuardada, cargar_historia, listar_historias
 
 MODO_SIMULADO = ui_logica.es_mock(sys.argv)
@@ -98,6 +99,11 @@ def barra_lateral() -> None:
         st.title("StoryBook IA")
         if MODO_SIMULADO:
             st.warning("Modo simulado: sin GPU ni modelos. La historia es siempre la de ejemplo.")
+        if audio_generativo_desactivado():
+            st.warning(
+                "Demostración de respaldo: el sonido generativo está desactivado. Los ambientes "
+                "se crean con la síntesis procedural."
+            )
 
         with st.form("nueva_historia"):
             st.subheader("Nueva historia")

@@ -454,3 +454,16 @@ def test_sufijo_de_calidad_solo_para_audioldm() -> None:
     assert prompt == "Wind blows through trees." and negativo == cfg.negative_prompt
     sin = cfg.model_copy(update={"audioldm_sufijo": ""})
     assert prompts_para_backend("audioldm", "Wind howls.", sin)[0] == "Wind howls."
+
+
+def test_demostracion_de_respaldo_sin_audio_generativo(
+    bible: StoryBible, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """StoryBook.cmd respaldo: los generativos quedan fuera y entra la síntesis procedural."""
+    monkeypatch.setenv("STORYBOOK_SIN_AUDIO_GENERATIVO", "1")
+    falsos = {"audioldm": FakeSonido("audioldm"), "procedural": ProceduralBackend()}
+    etapa = _generador(falsos, ["audioldm", "procedural"]).generar(bible, tmp_path)  # type: ignore[arg-type]
+    assert [s.backend for s in etapa.sonidos] == ["procedural"] * 5
+    assert etapa.fallbacks == ["sonido:audioldm:no_disponible"]
+    assert falsos["audioldm"].cargas == 0
+    assert any("desactivado para demostrar" in e for e in etapa.errores)

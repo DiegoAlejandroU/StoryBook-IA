@@ -18,6 +18,7 @@ los fallbacks y errores (van al manifest).
 
 from __future__ import annotations
 
+import os
 import re
 import time
 from collections.abc import Callable, Sequence
@@ -56,6 +57,10 @@ FRACCION_HUECO_MAX: Final = 0.4
 # clips a -72 dBFS ("soft wind… birds sing gently"): en la mezcla el ambiente no se oía.
 NIVEL_MINIMO_DBFS: Final = -45.0
 VENTANA_HUECO_S: Final = 0.05
+# Demostración en vivo del respaldo (sustentación): con esta variable en "1" los modelos de
+# sonido generativos se tratan como no disponibles y la cadena pasa a biblioteca y procedural.
+# StoryBook.cmd la activa con el argumento "respaldo".
+SIN_AUDIO_GENERATIVO: Final = "STORYBOOK_SIN_AUDIO_GENERATIVO"
 # Prompts para los modelos de audio. En 5.4, 5 de los 6 prompt_sonido con adjetivos de
 # intensidad baja ("soft wind", "birds sing gently", "faint water") dieron clips casi mudos en
 # todos los intentos; los 9 prompts sin ellos salieron bien. El volumen lo fija la mezcla
@@ -75,6 +80,10 @@ SUBTIPO_WAV: Final = "PCM_16"
 
 class SoundError(Exception):
     """Error de un backend de sonido (se recupera pasando al siguiente)."""
+
+
+def audio_generativo_desactivado() -> bool:
+    return os.environ.get(SIN_AUDIO_GENERATIVO, "") == "1"
 
 
 def preparar_prompt_audio(prompt: str) -> str:
@@ -292,6 +301,10 @@ class GeneradorSonido:
     ) -> list[Escena]:
         """Genera con ``nombre`` las escenas pendientes; devuelve las que siguen sin sonido."""
         try:
+            if nombre in GENERATIVOS and audio_generativo_desactivado():
+                raise SoundError(
+                    f"desactivado para demostrar el respaldo ({SIN_AUDIO_GENERATIVO}=1)"
+                )
             backend = self.fabrica(nombre)
             with track_stage(f"sonido_{nombre}_carga") as m_carga:
                 backend.cargar()

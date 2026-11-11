@@ -128,17 +128,23 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ## F7 · Documentación y video
 - [x] 7.1 [AUTO] Completar `README.md` (ya existe la base de F0), `MODELS.md` y `docs/arquitectura.md` con diagramas Mermaid de componentes y de flujo de datos. Marcar `[DATO PENDIENTE]` donde falten mediciones. (dep: 5.1)
   - Hecho en la sesión interactiva del 11 nov (ver la bitácora). Sin `[DATO PENDIENTE]`: las mediciones ya existen.
-- [~] 7.2 [AUTO] **Reservada para la sesión interactiva (11 nov, 12:20); la ejecución automática no debe tomarla.** Borrador del informe técnico en `docs/informe/informe.md` con las 12 secciones de CLAUDE.md §16, marcando `[DATO PENDIENTE]` donde falten resultados reales. (dep: 7.1)
+- [x] 7.2 [AUTO] Borrador del informe técnico en `docs/informe/informe.md` con las 12 secciones de CLAUDE.md §16, marcando `[DATO PENDIENTE]` donde falten resultados reales. (dep: 7.1)
+  - Hecho el 11 nov: `docs/informe/informe.md` y un primer `informe.pdf` (21 páginas). Quedan 3 `[DATO PENDIENTE]`: nombre del docente, lista 1–5 y enlace del video.
 - [ ] 7.3 [WINDOWS] Completar el informe con los datos reales y exportarlo a PDF; grabar el video demo. (dep: 6.2, 7.2)
 
 ## F8 · Sustentación
-- [ ] 8.1 [AUTO] `docs/sustentacion.md`: guion de la demo, plan B, 30 preguntas probables del jurado con respuestas cortas y fundamentadas. (dep: 7.1)
+- [x] 8.1 [AUTO] `docs/sustentacion.md`: guion de la demo, plan B, 30 preguntas probables del jurado con respuestas cortas y fundamentadas. (dep: 7.1)
+  - Hecho el 11 nov: `docs/sustentacion.md`. Para el respaldo en vivo: `StoryBook.cmd respaldo`.
 - [ ] 8.2 [WINDOWS] Ensayo cronometrado con idea y género al azar. (dep: 5.4, 8.1)
 
 ---
 
 ## Pendientes para Diego
-- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso git`, para subir la documentación y las correcciones de 6.3 y 7.1. Claude sigue con 7.2 (borrador del informe) y 8.1 (guion de la sustentación). Luego vienen 7.3 (informe en PDF y video) y 8.2 (ensayo).
+- **Siguiente (Diego):**
+  1. Con el Wi-Fi encendido, `setup_windows.ps1 -Paso git`, para subir 7.2, 8.1 y el modo respaldo.
+  2. Probar `StoryBook.cmd respaldo`: el aviso amarillo debe aparecer y una escena regenerada debe salir con sonido procedural.
+  3. Para 7.3, dar el nombre del docente, revisar la lista 1–5 y grabar el video siguiendo el guion de `docs/sustentacion.md`; Claude regenera el PDF con esos datos.
+  4. Después, el ensayo cronometrado (8.2).
   - Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
@@ -725,3 +731,35 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - **Perfiles con tiempos medidos:** "Rápido · unos 2 minutos" y "Calidad · imágenes con 25 pasos, unos 3 minutos". Antes decía "3 a 5" y "5 a 12 minutos", estimaciones previas a las mediciones.
 - **Observación para el informe:** en "La Biblia del Dragón" el LLM nombró a los personajes "Kai Kai" y "Morin Morin" (nombre duplicado en el plan; no es un error del código).
 - Verificación: **316 tests en verde**, ruff limpio.
+
+### 2026-11-11 12:27 · Windows (`-Paso git`) + sesión interactiva (Claude) · 7.2 hecha
+- `-Paso git` (12:21): commit 24f465e con 19 archivos (6.3 y 7.1), subido a GitHub.
+- **`docs/informe/informe.md`:** las 12 secciones de CLAUDE.md §16, más portada, resumen, referencias (18) y anexos.
+  - Datos: los de las evidencias y de `analisis_experimentos.md`.
+  - Figuras:
+    - los 4 diagramas de `docs/arquitectura.md`, convertidos a PNG con `mmdc` (`docs/informe/diagramas/`);
+    - las 5 gráficas;
+    - la captura del visor;
+    - las hojas de contactos de C1 y C3 (terror).
+  - Ética: transparencia, reglas de contenido por género, sesgos observados, voz sin clonación, licencias (AudioLDM es CC BY-NC-SA, así que el uso es académico), privacidad y costo computacional (estimado en 3–5 Wh por historia con el límite de 75 W; es una estimación, no una medición).
+- **`docs/informe/informe.pdf`:** 21 páginas A4, con portada, encabezado y numeración. Se genera en el entorno de Claude (Markdown → HTML → Chromium); se regenera cuando cambie `informe.md`.
+- **`[DATO PENDIENTE]`** (tarea 7.3):
+  - nombre del docente;
+  - lista de verificación 1–5 por historia;
+  - enlace del video.
+- `README.md`: nota sobre equipos sin GPU NVIDIA (solo el modo simulado y los ejemplos) y aviso de *symlinks* de Hugging Face en la tabla de problemas.
+
+### 2026-11-11 12:30 · sesión interactiva (Claude) · 8.1 hecha → **todas las tareas [AUTO] completas**
+- **`docs/sustentacion.md`:**
+  - lista de verificación previa, que incluye una generación de calentamiento porque la primera del día tarda 182 s;
+  - guion de demo de 10 minutos con tiempos, qué mostrar y qué decir;
+  - plan B para 6 fallas;
+  - las 5 respuestas centrales de la defensa (CLAUDE.md §17);
+  - 30 preguntas probables con respuestas cortas basadas en los datos medidos;
+  - tabla de datos para tener a mano.
+- **Respaldo en vivo:** `StoryBook.cmd respaldo` pone `STORYBOOK_SIN_AUDIO_GENERATIVO=1`.
+  - `GeneradorSonido` trata los modelos generativos como no disponibles, sin cargarlos, y la cadena pasa a biblioteca y procedural, quedando registrado en el manifest.
+  - La barra lateral muestra un aviso amarillo.
+  - Sirve para la sustentación (CLAUDE.md §17) y para el video (CLAUDE.md §16.3: "demostración de un fallback").
+  - Test nuevo, y verificado con Playwright que el aviso aparece y la app no da errores.
+- Verificación: **317 tests en verde**, ruff limpio.

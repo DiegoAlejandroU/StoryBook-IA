@@ -297,6 +297,7 @@ Flujo:
     - `scripts/verify_offline.py` bloquea y registra toda conexión que no sea a localhost.
     - `samples/` guarda los audios en OGG Vorbis (`storage.exportar_muestra`), escritos por bloques: en Windows, escribir un OGG largo de una vez desborda la pila (0xC00000FD).
     - *Detalles técnicos* muestra solo las alternativas vigentes (`ui_logica.fallbacks_vigentes`): una regeneración anula los avisos anteriores de esa escena, y "<backend> no disponible" solo aparece si alguna escena usa un backend posterior en la cadena.
+    - `StoryBook.cmd respaldo` (variable `STORYBOOK_SIN_AUDIO_GENERATIVO=1`) desactiva los modelos de sonido generativos, para mostrar en vivo que la cadena pasa a la síntesis procedural. Guion de la sustentación en `docs/sustentacion.md`.
     - Documentación de la entrega: `README.md` (con capturas en `docs/informe/capturas/`), `MODELS.md` (revisiones y mediciones) y `docs/arquitectura.md` (diagramas Mermaid verificados con `mmdc`).
   - Voz elegida por Diego al escucharlas (3.3): `es_MX-claude-high`. WER mediano del 8,3 % con Whisper small; los errores son sobre todo de nombres propios.
 - **Voz (CPU):**
