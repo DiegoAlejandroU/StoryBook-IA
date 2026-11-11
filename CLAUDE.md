@@ -286,6 +286,7 @@ Flujo:
     - `ambience_N.wav` va sin ducking, para el reproductor separado; `mix_N.wav` con ducking.
     - Control de los clips generativos (`problema_de_ambiente`): máximo 40 % del clip 20 dB bajo su parte más fuerte y nivel mínimo de −45 dBFS. Si un clip falla, se reintenta con seed +1000 y luego se pasa al siguiente backend. En la prueba 5.4 AudioLDM dio clips a −72 dBFS.
     - `Pipeline.rehacer_sonido` rehace el ambiente y la mezcla de escenas concretas sin tocar texto, imágenes ni voz. Lo usa `scripts/exportar_muestras.py`.
+    - Prompts de audio (`preparar_prompt_audio`, `negativo_compatible`): se quitan los adjetivos de intensidad baja ("soft", "gently", "faint") y las menciones de silencio, que hacían que AudioLDM diera clips casi mudos. Del negative prompt se quita lo que el prompt pide (p. ej. "singing" si hay "birds sing").
   - Integración (5.1–5.3, 10 nov):
     - `pipeline.Pipeline` (texto → imagen → voz → sonido → mezcla, con fallbacks y manifest incluso si falla) y `storage`.
     - `mock.dependencias_simuladas()` para la UI sin GPU y los tests.
@@ -397,6 +398,7 @@ Plan:
   - LCM frente a 25 pasos frente a SD-Turbo.
   - Piper frente a Kokoro.
 - **Batería de pruebas:** al menos 4 combinaciones (terror, fantasía, ciencia ficción, infantil) por configuración.
+  - Implementada en `scripts/run_experiment.py` (6.1). Por idea: la historia completa con C3 (producción) y, sobre el mismo texto, solo imágenes con C1, C2 y `calidad` (DPM++ 25 pasos). Resultados en `experiments/results.csv` y resumen en `docs/evidencias/f6_experimentos_<id>.md`.
 - **Registro por prueba:**
   - Identificación: ID, fecha, idea, género, configuración.
   - Reproducibilidad: modelos con versión, seeds, parámetros.

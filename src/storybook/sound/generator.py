@@ -18,6 +18,7 @@ los fallbacks y errores (van al manifest).
 
 from __future__ import annotations
 
+import re
 import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
@@ -55,12 +56,55 @@ FRACCION_HUECO_MAX: Final = 0.4
 # clips a -72 dBFS ("soft wind… birds sing gently"): en la mezcla el ambiente no se oía.
 NIVEL_MINIMO_DBFS: Final = -45.0
 VENTANA_HUECO_S: Final = 0.05
+# Prompts para los modelos de audio. En 5.4, 5 de los 6 prompt_sonido con adjetivos de
+# intensidad baja ("soft wind", "birds sing gently", "faint water") dieron clips casi mudos en
+# todos los intentos; los 9 prompts sin ellos salieron bien. El volumen lo fija la mezcla
+# (12-18 dB bajo la voz), así que esos adjetivos y las menciones de silencio se quitan.
+_INTENSIDAD_BAJA: Final = re.compile(
+    r"\b(?:soft|softly|gentle|gently|faint|faintly|quiet|quietly|subtle|subtly|barely|"
+    r"slight|slightly|hushed|muted)\b",
+    re.IGNORECASE,
+)
+_SILENCIO: Final = re.compile(
+    r"\b(?:(?:beneath|under|into|in|through)\s+(?:the\s+)?)?(?:silence|stillness)\b",
+    re.IGNORECASE,
+)
 DESFASE_SEED_REINTENTO: Final = 1000
 SUBTIPO_WAV: Final = "PCM_16"
 
 
 class SoundError(Exception):
     """Error de un backend de sonido (se recupera pasando al siguiente)."""
+
+
+def preparar_prompt_audio(prompt: str) -> str:
+    """Quita adjetivos de intensidad baja y menciones de silencio de un ``prompt_sonido``.
+
+    "Soft wind blows through trees, birds sing gently." -> "Wind blows through trees, birds sing."
+    """
+    texto = _SILENCIO.sub(" ", _INTENSIDAD_BAJA.sub(" ", prompt))
+    texto = re.sub(r"\s+", " ", texto)
+    texto = re.sub(r"\s+([,.;:!?])", r"\1", texto)  # "trees ," -> "trees,"
+    texto = re.sub(r"([,;:])\s*(?=[.!?]|$)", "", texto)  # coma colgando antes del punto
+    texto = re.sub(r"(^|[.!?]\s*)[,;:]\s*", r"\1", texto)  # coma al inicio de una frase
+    texto = re.sub(r"(?:^|(?<=[.!?]))\s*[.!?]", "", texto).strip()  # frases vacías
+    frases = re.split(r"(?<=[.!?])\s+", texto)
+    texto = " ".join(f[:1].upper() + f[1:] for f in frases if f.strip(" .!?,;:"))
+    return texto if re.search(r"[a-zA-Z]{3,}", texto) else prompt
+
+
+def negativo_compatible(negativo: str, prompt: str) -> str:
+    """Quita del negative prompt los términos que el prompt pide.
+
+    Con "birds sing" y el negativo "singing", AudioLDM recibe órdenes opuestas.
+    Se comparan raíces de 4 letras: "sing"/"singing", "voice"/"voices".
+    """
+    raices = {p[:4] for p in re.findall(r"[a-z]+", prompt.lower()) if len(p) >= 3}
+    terminos = [t.strip() for t in negativo.split(",") if t.strip()]
+    conservados = [
+        t for t in terminos if not any(p[:4] in raices for p in re.findall(r"[a-z]+", t.lower()))
+    ]
+    return ", ".join(conservados)
 
 
 class BackendSonido(Protocol):
@@ -391,6 +435,7 @@ class DiffusersSonidoBackend:
         }[nombre]
         self.pipe: Any = None
         self.snapshot: Path | None = None
+        self.ultimo_detalle: dict[str, Any] = {}
 
     def cargar(self) -> None:
         snapshot = local_snapshot(self.repo)  # ModelNotDownloadedError si falta
@@ -421,11 +466,14 @@ class DiffusersSonidoBackend:
         import torch
 
         generador = torch.Generator("cuda").manual_seed(seed)
-        prompt, cfg, pipe = escena.prompt_sonido, self.cfg, self.pipe
+        cfg, pipe = self.cfg, self.pipe
+        prompt = preparar_prompt_audio(escena.prompt_sonido)
+        negativo = negativo_compatible(cfg.negative_prompt, prompt)
+        self.ultimo_detalle = {"prompt_efectivo": prompt, "negativo_efectivo": negativo}
         if self.nombre == "audioldm":
             salida = pipe(
                 prompt,
-                negative_prompt=cfg.negative_prompt,
+                negative_prompt=negativo,
                 audio_length_in_s=duracion_s,
                 num_inference_steps=cfg.audioldm_steps,
                 guidance_scale=cfg.audioldm_guidance,
@@ -442,7 +490,7 @@ class DiffusersSonidoBackend:
             return a_mono(salida.audios[0]), int(pipe.vae.config.sampling_rate)
         salida = pipe(
             prompt,
-            negative_prompt=cfg.negative_prompt,
+            negative_prompt=negativo,
             audio_end_in_s=duracion_s,
             num_inference_steps=cfg.sao_steps,
             guidance_scale=cfg.sao_guidance,

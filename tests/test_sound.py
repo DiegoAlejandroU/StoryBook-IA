@@ -20,7 +20,9 @@ from storybook.sound.generator import (
     SoundError,
     a_mono,
     crear_backend,
+    negativo_compatible,
     nombre_archivo_sonido,
+    preparar_prompt_audio,
 )
 from storybook.sound.library import BibliotecaSonidos
 from storybook.sound.mixer import (
@@ -402,3 +404,40 @@ def test_medir_lufs_bajo_la_compuerta_absoluta() -> None:
     muy_bajo = np.random.default_rng(0).standard_normal(44_100 * 3) * 10 ** (-80 / 20)
     valor = medir_lufs(muy_bajo, 44_100)
     assert math.isfinite(valor) and valor < -70
+
+
+@pytest.mark.parametrize(
+    ("entrada", "esperado"),
+    [
+        (
+            "Soft wind blows through trees, birds sing gently.",
+            "Wind blows through trees, birds sing.",
+        ),
+        (
+            "Faint water stream in forest, slow heartbeat beneath silence",
+            "Water stream in forest, slow heartbeat",
+        ),
+        (
+            "Wind whispers through old stones. A slow heartbeat pulses under the silence. "
+            "Distant forest sounds fade into stillness.",
+            "Wind whispers through old stones. A slow heartbeat pulses. "
+            "Distant forest sounds fade.",
+        ),
+        ("Ocean waves crash against rocks.", "Ocean waves crash against rocks."),
+        ("Silence.", "Silence."),  # si no queda nada útil, se deja el original
+    ],
+)
+def test_preparar_prompt_audio_quita_intensidad_baja(entrada: str, esperado: str) -> None:
+    """En 5.4 los prompts con "soft"/"gently"/"faint" dieron clips casi mudos en AudioLDM."""
+    assert preparar_prompt_audio(entrada) == esperado
+
+
+def test_negativo_compatible_no_contradice_al_prompt() -> None:
+    negativo = "low quality, speech, voice, singing, music"
+    assert negativo_compatible(negativo, "Birds sing in the trees.") == (
+        "low quality, speech, voice, music"
+    )
+    assert negativo_compatible(negativo, "A music box plays, children's voices echo.") == (
+        "low quality, speech, singing"
+    )
+    assert negativo_compatible(negativo, "Ocean waves crash.") == negativo

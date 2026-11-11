@@ -104,19 +104,20 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
     - Con `StoryBook.cmd mock` abre la UI con backends falsos.
     - Documentarlo en el README.
 - [x] 5.3 [AUTO] `scripts/verify_offline.py`: bloquea sockets salvo localhost, corre el pipeline con backends falsos o reales según una bandera e informa cualquier intento de conexión externa. (dep: 5.1)
-- [ ] 5.4 [WINDOWS] Prueba de punta a punta real con el Wi-Fi apagado; generar 2–3 historias para `samples/`. (dep: 2.3, 3.3, 4.4, 5.2)
+- [x] 5.4 [WINDOWS] Prueba de punta a punta real con el Wi-Fi apagado; generar 2–3 historias para `samples/`. (dep: 2.3, 3.3, 4.4, 5.2)
   - Con el Wi-Fi apagado: `setup_windows.ps1 -Paso offline` (1 historia real con la red vigilada); con `-Muestras` hace 3 y las copia a `samples/`.
   - `samples/` se versiona con los audios en OGG Vorbis (`storage.exportar_muestra`): unos 7 MB por historia, frente a ~55 MB en WAV.
   - **Prueba sin Internet hecha (10 nov, 13:58):** "El Faro de Lucian", completa en **133 s** (texto 73 s, imágenes 40 s, voz 8 s, sonido 10 s, mezcla 2 s). Ninguna conexión fuera del equipo. Falta generar las 2–3 historias de `samples/`.
   - **3 historias reales generadas sin Internet (10 nov, 14:17–14:24),** entre 126 y 138 s cada una. La exportación a `samples/` falló (ver bitácora de las 14:45).
-  - Para terminar: `setup_windows.ps1 -Paso muestras` (con Internet). Rehace solo los ambientes débiles de esas 3 historias y las exporta a `samples/` sin volver a generar texto ni imágenes.
+  - **Ejemplos en `samples/` (10 nov, 14:42, `-Paso muestras`):** "El Faro de Lucian", "La Biblia del Dragón" y "El Camino de los Amigos", de 7,3 a 7,9 MB cada una y 23 archivos (15 audios OGG). Subidos a GitHub (commit 83460fc).
 
 ## F6 · Experimentos
-- [ ] 6.1 [AUTO] Ya existe `evaluation/clip_metrics.py`. Falta:
+- [x] 6.1 [AUTO] Ya existe `evaluation/clip_metrics.py`. Falta:
   - `evaluation/report.py`;
   - `scripts/run_experiment.py` (escribe en `experiments/results.csv` con las columnas existentes);
   - `scripts/make_contact_sheet.py`;
   - tests con datos falsos. (dep: 5.1)
+  - Hecho en la sesión interactiva del 10 nov (ver la bitácora de las 14:54). Para 6.2: `setup_windows.ps1 -Paso experimentos`.
 - [ ] 6.2 [WINDOWS] Ejecutar la batería completa: C1/C2/C3 × 4 géneros, más 4B vs 8B (opcional: Qwen3-0.6B, del resumen de clase), LCM vs 25 pasos y SA3 vs AudioLDM → `experiments/results.csv` + evidencias. (dep: 5.4, 6.1)
 - [ ] 6.3 [AUTO] Análisis de `results.csv`: gráficas, tablas y conclusiones en `docs/informe/`. (dep: 6.2)
 
@@ -132,9 +133,7 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 ---
 
 ## Pendientes para Diego
-- **Siguiente:** con el Wi-Fi encendido, `setup_windows.ps1 -Paso muestras`.
-  - Rehace los ambientes débiles de las 3 historias de la prueba sin Internet, las exporta a `samples/` y sube todo a GitHub.
-  - Sube también el commit local de evidencias de la prueba sin Internet.
+- **Siguiente:** con Ollama abierto y el Wi-Fi encendido (para el commit), `setup_windows.ps1 -Paso experimentos` (tarea 6.2, unos 25–30 min).
   - Las ejecuciones automáticas no usan git: el historial depende de los commits que hace `setup_windows.ps1` en Windows.
 - El ZIP original de F0 y las copias sueltas que quedaron en la raíz (`check_env.py`, `schemas.py`) se movieron a `.cache/f0-original/` (ignorado por git). Se pueden borrar cuando quieras.
 
@@ -569,3 +568,41 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - `medir_lufs` finito bajo la compuerta;
   - rehacer y exportar con un ambiente débil simulado;
   - OGG por bloques que conserva la duración.
+
+### 2026-11-10 14:50 · Windows (`-Paso muestras`) · 5.4 hecha → **F5 completa**
+- **Resultado** (`docs/evidencias/exportar_muestras.txt`):
+  - "El Camino de los Amigos": ambiente rehecho en las escenas 2, 4 y 5. AudioLDM volvió a dar clips de −67 a −75 dBFS en los dos intentos de cada escena, y las tres pasaron a procedural.
+  - "La Biblia del Dragón": escena 2 rehecha, también con procedural (−71/−72 dBFS en AudioLDM).
+  - "El Faro de Lucian": sin cambios.
+  - Las 3 historias quedaron exportadas a `samples/` (7,3–7,9 MB cada una) y subidas a GitHub: commit del código 8e36591 y commit de los ejemplos 83460fc, que también subió el commit local de la prueba sin Internet.
+- **Revisión de los 15 OGG de cada historia** (leídos con soundfile en el shell Linux):
+  - Todos decodifican.
+  - Duraciones: voz de 39,5 a 50,2 s; ambiente y mezcla, 1,5 s más largos (pre-roll y post-roll).
+  - Niveles RMS: voz de −14,3 a −15,4 dB, ambiente de −26 a −34 dB y mezcla de −17,7 a −17,9 dB. El ambiente queda audible en las 15 escenas de cada historia.
+  - En total, 9 escenas con AudioLDM y 6 con procedural.
+- **Hallazgo sobre AudioLDM:** 5 de los 6 `prompt_sonido` con adjetivos de intensidad baja ("soft", "gently", "faint") dieron clips casi mudos en todos los intentos. Los 9 prompts sin esos adjetivos salieron bien. Se corrige a continuación (ver la siguiente entrada).
+
+### 2026-11-10 14:54 · sesión interactiva (Claude) · 6.1 hecha + corrección del sonido
+- **AudioLDM, prompts sin intensidad baja** (`sound/generator.py`):
+  - `preparar_prompt_audio` quita "soft", "gently", "faint", "quiet" y similares, y las menciones de silencio ("beneath silence", "into stillness"). El volumen lo fija la mezcla, así que esas palabras no aportan nada.
+  - Ejemplo: "Soft wind blows through trees, birds sing gently." → "Wind blows through trees, birds sing.".
+  - `negativo_compatible` quita del negative prompt lo que el prompt pide. Con "birds sing" y el negativo "singing", AudioLDM recibía órdenes opuestas.
+  - El prompt y el negativo efectivos quedan en el manifest (`prompt_efectivo`, `negativo_efectivo`).
+  - Se valida en la batería 6.2: la columna `sonido` de `results.csv` muestra cuántas escenas quedaron con AudioLDM.
+- **6.1, batería de experimentos:**
+  - `scripts/run_experiment.py`. Para cada idea (4 por defecto: terror, fantasía, ciencia ficción e infantil):
+    1. Genera la historia completa con `experiments/c3_ipadapter`, la configuración de producción. Mide tiempos por etapa, VRAM pico, CLIP (img-img e img-texto) y el WER de la narración con Whisper small.
+    2. Sobre el mismo texto (la Bible sin seeds), genera solo las imágenes con C1 (sin Bible, seeds aleatorias), C2 (Bible sin IP-Adapter) y `calidad` (DPM++ 25 pasos). Así la única diferencia entre configuraciones es la estrategia de imagen, y sale también LCM frente a 25 pasos.
+    - Cada prueba es una fila de `experiments/results.csv`; las columnas `*_1a5` se llenan a mano.
+    - Si una idea o una variante falla, queda como fila con el error y la batería sigue.
+    - El resumen va a `docs/evidencias/f6_experimentos_<id>.md` y las hojas de contactos a `docs/evidencias/f6_hojas/`.
+    - Opciones: `--ideas N`, `--variantes …`, `--completa experiments/llm_8b` (8B, opcional), `--sin-clip`, `--sin-wer`.
+  - `src/storybook/evaluation/report.py`: lectura y escritura de `results.csv` (valida el encabezado), resumen por configuración y tablas por historia en Markdown. También se puede usar sola: `uv run python -m storybook.evaluation.report`.
+  - `src/storybook/evaluation/contact_sheet.py` y su CLI `scripts/make_contact_sheet.py`: cuadrícula JPEG con la character sheet y las 5 escenas, con número y fase. Usa Arial o DejaVu para las tildes y, si no hay ninguna, las quita.
+  - `setup_windows.ps1 -Paso experimentos [-Ideas N]`: commit del código, batería y commit de `results.csv` con las evidencias.
+  - Comparaciones que no se repiten en la batería:
+    - 4B frente a 8B ya está medido en 1.4 (`f1_resumen*.md`).
+    - SA3 no está disponible (repositorio con acceso restringido), así que la comparación de sonido es AudioLDM frente a procedural (columna `sonido`).
+- Verificación: **307 tests en verde**, ruff limpio. Tests nuevos:
+  - 2 de prompts de audio;
+  - 7 de 6.1: CSV, resumen, hoja de contactos, CLI, sin fuentes del sistema y batería completa con backends simulados, incluida una variante inexistente.
