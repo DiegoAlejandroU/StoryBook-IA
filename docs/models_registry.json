@@ -51,7 +51,7 @@
     "archivos": 1,
     "nota": "",
     "extra": {},
-    "actualizado": "2026-11-10T06:39:32"
+    "actualizado": "2026-11-13T12:21:47"
   },
   "h94/IP-Adapter": {
     "repo_id": "h94/IP-Adapter",
@@ -60,13 +60,13 @@
     "revision": "018e402774aeeddd60609b4ecdb7e298259dc729",
     "licencia": "apache-2.0",
     "gated": false,
-    "tamano_mb": 2453.8,
-    "archivos": 3,
+    "tamano_mb": 3119.9,
+    "archivos": 4,
     "nota": "",
     "extra": {
-      "peso": "models/ip-adapter_sd15.safetensors"
+      "peso": "sdxl_models/ip-adapter_sdxl_vit-h.safetensors"
     },
-    "actualizado": "2026-11-10T06:39:32"
+    "actualizado": "2026-11-13T12:21:47"
   },
   "rhasspy/piper-voices:es_MX-claude-high": {
     "repo_id": "rhasspy/piper-voices:es_MX-claude-high",
@@ -153,5 +153,33 @@
       "model_card": "# Model card for ald (medium)\n\n* Language: es_MX (Spanish, Mexico)\n* Speakers: 1\n* Quality: medium\n* Samplerate: 22,050Hz\n\n## Dataset\n\n* URL: https://huggingface.co/datasets/rmcpantoja/Ald_Mexican_Spanish_speech_dataset\n* License: http://unlicense.org\n\n## Training\n\nFinetuned from Spanish davefx voice (medium quality).\n"
     },
     "actualizado": "2026-11-10T12:19:24"
+  },
+  "Lykon/dreamshaper-xl-lightning": {
+    "repo_id": "Lykon/dreamshaper-xl-lightning",
+    "modalidad": "image",
+    "estado": "ok",
+    "revision": "561086c22aba3925b1e8803a73857f061635c7c3",
+    "licencia": "openrail++",
+    "gated": false,
+    "tamano_mb": 6619.6,
+    "archivos": 18,
+    "nota": "",
+    "extra": {
+      "variante": "fp16"
+    },
+    "actualizado": "2026-11-13T12:21:47"
+  },
+  "madebyollin/sdxl-vae-fp16-fix": {
+    "repo_id": "madebyollin/sdxl-vae-fp16-fix",
+    "modalidad": "image",
+    "estado": "ok",
+    "revision": "207b116dae70ace3637169f1ddd2434b91b3a8cd",
+    "licencia": "mit",
+    "gated": false,
+    "tamano_mb": 319.1,
+    "archivos": 2,
+    "nota": "",
+    "extra": {},
+    "actualizado": "2026-11-13T12:21:47"
   }
 }

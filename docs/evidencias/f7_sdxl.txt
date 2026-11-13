@@ -1,0 +1,187 @@
+﻿12:22:13 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
+12:22:13 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
+12:22:13 INFO    open_clip.factory | Instantiating model architecture: CLIP
+12:22:14 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
+12:22:15 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
+12:22:15 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
+12:22:15 INFO    open_clip.factory | Parsing tokenizer identifier. Schema: None, Identifier: ViT-B-32
+12:22:15 INFO    open_clip.factory | Attempting to load config from built-in: ViT-B-32
+12:22:15 INFO    open_clip.factory | Using default SimpleTokenizer.
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  17%|█▋        | 34/196 [00:00<00:00, 338.25it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1116.40it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  1.98it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.50it/s]CLIPFeatureExtractor appears to have been deprecated in transformers. Using CLIPImageProcessor instead.
+System.Management.Automation.RemoteException
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  8.17it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.06it/s]
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+The config attributes {'skip_prk_steps': True} were passed to LCMScheduler, but are not expected and will be ignored. Please verify your scheduler_config.json configuration file.
+12:22:29 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=12.177 dispositivo=cuda vram_torch_pico_mb=2197.9 vram_torch_reservada_pico_mb=2220 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=2352.5 vram_gpu_total_mb=4096
+12:22:32 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=2.67 dispositivo=cuda vram_torch_pico_mb=2808.5 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=2416.5 vram_gpu_pico_mb=3634.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=61
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 12/520 [00:00<00:11, 44.21it/s]
+Loading weights:   3%|▎         | 17/520 [00:00<00:11, 44.87it/s]
+Loading weights:   5%|▌         | 27/520 [00:00<00:08, 61.00it/s]
+Loading weights:   7%|▋         | 34/520 [00:00<00:08, 54.26it/s]
+Loading weights:   9%|▉         | 47/520 [00:00<00:06, 67.66it/s]
+Loading weights:  11%|█         | 58/520 [00:00<00:06, 73.95it/s]
+Loading weights:  14%|█▍        | 75/520 [00:01<00:04, 93.15it/s]
+Loading weights:  16%|█▋        | 85/520 [00:01<00:04, 93.17it/s]
+Loading weights:  19%|█▉        | 98/520 [00:01<00:04, 87.33it/s]
+Loading weights:  21%|██        | 109/520 [00:01<00:04, 90.09it/s]
+Loading weights:  23%|██▎       | 119/520 [00:01<00:04, 87.37it/s]
+Loading weights:  25%|██▌       | 132/520 [00:01<00:04, 90.84it/s]
+Loading weights:  27%|██▋       | 142/520 [00:01<00:04, 92.42it/s]
+Loading weights:  30%|██▉       | 154/520 [00:01<00:03, 98.71it/s]
+Loading weights:  32%|███▏      | 165/520 [00:02<00:04, 87.81it/s]
+Loading weights:  34%|███▎      | 175/520 [00:02<00:04, 73.66it/s]
+Loading weights:  36%|███▌      | 187/520 [00:02<00:04, 78.99it/s]
+Loading weights:  38%|███▊      | 197/520 [00:02<00:04, 80.22it/s]
+Loading weights:  41%|████      | 211/520 [00:02<00:03, 94.12it/s]
+Loading weights:  42%|████▎     | 221/520 [00:02<00:04, 72.90it/s]
+Loading weights:  44%|████▍     | 230/520 [00:02<00:03, 73.52it/s]
+Loading weights:  48%|████▊     | 249/520 [00:03<00:02, 98.13it/s]
+Loading weights: 100%|██████████| 520/520 [00:03<00:00, 170.43it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+12:22:37 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=4.902 dispositivo=cuda vram_torch_pico_mb=2240.9 vram_torch_reservada_pico_mb=3410 vram_gpu_base_mb=3634.5 vram_gpu_pico_mb=3634.5 vram_gpu_total_mb=4096 extra.scale=0.4
+12:22:37 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=1 cambios="['Kai->boy age 10']"
+12:22:37 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=56
+12:22:41 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=4.126 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=2478.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=56 extra.intento=1 extra.ip=True extra.ip_escala=0.4 extra.foco=boy_kai
+12:22:41 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=2 cambios="['Old Man Toro->old man age 60']"
+12:22:41 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=57
+12:22:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=3.571 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=57 extra.intento=1 extra.ip=True extra.ip_escala=0 extra.foco=old_man_toro
+12:22:45 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=3 cambios="['Mira->robot age 200', 'Kai->boy age 10', 'Toro->old man age 60', 'Julio->monkey age 8']"
+12:22:45 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=73 eliminados="['estilo:dappled light']"
+12:22:48 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=3.54 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=73 extra.intento=1 extra.ip=True extra.ip_escala=0.24 extra.foco=boy_kai
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (80 > 77). Running this sequence through the model will result in indexing errors
+12:22:49 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Kai->boy age 10', 'Mira->robot age 200', 'Toro->old man age 60', 'Julio->monkey age 8']"
+12:22:49 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=73 eliminados="['estilo:dappled light', 'estilo:golden hour']"
+12:22:52 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=3.553 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=73 extra.intento=1 extra.ip=True extra.ip_escala=0.24 extra.foco=boy_kai
+12:22:52 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Kai->boy age 10', 'Toro->old man age 60', 'Julio->monkey age 8', 'Mira->robot age 200']"
+12:22:52 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=75 eliminados="['estilo:dappled light', 'estilo:golden hour']"
+12:22:56 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=3.548 dispositivo=cuda vram_torch_pico_mb=3155.6 vram_torch_reservada_pico_mb=4034 vram_gpu_base_mb=4066.5 vram_gpu_pico_mb=4066.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=75 extra.intento=1 extra.ip=True extra.ip_escala=0.24 extra.foco=boy_kai
+12:22:56 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+12:22:57 INFO    f7_sdxl | perfil_terminado  perfil=rapido ok=True
+System.Management.Automation.RemoteException
+Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  18%|█▊        | 35/196 [00:00<00:00, 347.84it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1064.15it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  14%|█▍        | 1/7 [00:00<00:02,  2.88it/s]
+Loading pipeline components...:  43%|████▎     | 3/7 [00:00<00:01,  3.68it/s]
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/517 [00:00<?, ?it/s][A
+System.Management.Automation.RemoteException
+Loading weights:   5%|▌         | 28/517 [00:00<00:01, 278.33it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  11%|█         | 56/517 [00:00<00:01, 243.90it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  16%|█▌        | 81/517 [00:00<00:02, 193.86it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  20%|█▉        | 102/517 [00:00<00:02, 145.01it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  23%|██▎       | 119/517 [00:00<00:02, 141.80it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  26%|██▌       | 135/517 [00:00<00:02, 134.81it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  29%|██▉       | 150/517 [00:00<00:02, 129.99it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  34%|███▍      | 175/517 [00:01<00:02, 159.75it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  37%|███▋      | 193/517 [00:01<00:02, 137.70it/s][A
+Loading weights: 100%|██████████| 517/517 [00:01<00:00, 386.13it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  71%|███████▏  | 5/7 [00:02<00:01,  1.81it/s]
+Loading pipeline components...: 100%|██████████| 7/7 [00:02<00:00,  2.75it/s]
+12:23:07 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=10.643 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096
+12:23:18 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=10.151 dispositivo=cuda vram_torch_pico_mb=2733.6 vram_torch_reservada_pico_mb=3040 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=3266.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=61
+System.Management.Automation.RemoteException
+Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
+Loading weights:   2%|▏         | 11/520 [00:00<00:04, 109.34it/s]
+Loading weights:   4%|▍         | 22/520 [00:00<00:05, 98.66it/s] 
+Loading weights:   6%|▌         | 32/520 [00:00<00:05, 81.63it/s]
+Loading weights:   9%|▊         | 45/520 [00:00<00:05, 87.02it/s]
+Loading weights:  10%|█         | 54/520 [00:00<00:05, 84.12it/s]
+Loading weights:  12%|█▏        | 63/520 [00:00<00:06, 71.19it/s]
+Loading weights:  14%|█▎        | 71/520 [00:00<00:07, 64.14it/s]
+Loading weights:  16%|█▌        | 82/520 [00:01<00:05, 74.09it/s]
+Loading weights:  19%|█▉        | 98/520 [00:01<00:05, 83.73it/s]
+Loading weights:  21%|██▏       | 111/520 [00:01<00:04, 94.72it/s]
+Loading weights:  23%|██▎       | 121/520 [00:01<00:05, 79.40it/s]
+Loading weights:  26%|██▌       | 133/520 [00:01<00:04, 78.83it/s]
+Loading weights:  28%|██▊       | 143/520 [00:01<00:04, 83.33it/s]
+Loading weights:  30%|██▉       | 155/520 [00:01<00:04, 86.64it/s]
+Loading weights:  32%|███▏      | 165/520 [00:01<00:04, 85.77it/s]
+Loading weights:  35%|███▍      | 180/520 [00:02<00:03, 100.76it/s]
+Loading weights:  38%|███▊      | 198/520 [00:02<00:03, 103.68it/s]
+Loading weights:  40%|████      | 209/520 [00:02<00:03, 95.47it/s] 
+Loading weights:  42%|████▏     | 219/520 [00:02<00:03, 76.93it/s]
+Loading weights:  44%|████▍     | 228/520 [00:02<00:03, 78.13it/s]
+Loading weights:  98%|█████████▊| 507/520 [00:02<00:00, 701.85it/s]
+Loading weights: 100%|██████████| 520/520 [00:02<00:00, 183.87it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+12:23:29 INFO    storybook.image.generator | unet_fp8_restaurado  capas=794
+12:23:29 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=11.491 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=8 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.scale=0.4
+12:23:29 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=1 cambios="['Kai->boy age 10']"
+12:23:29 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=56
+12:23:41 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=12.106 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=230.5 vram_gpu_pico_mb=3974.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=56 extra.intento=1 extra.ip=True extra.ip_escala=0.4 extra.foco=boy_kai
+12:23:41 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=2 cambios="['Old Man Toro->old man age 60']"
+12:23:41 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=57
+12:23:52 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=10.769 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=236.5 vram_gpu_pico_mb=4006.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=57 extra.intento=1 extra.ip=True extra.ip_escala=0 extra.foco=old_man_toro
+12:23:52 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=3 cambios="['Mira->robot age 200', 'Kai->boy age 10', 'Toro->old man age 60', 'Julio->monkey age 8']"
+12:23:52 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=3 tokens=73 eliminados="['estilo:dappled light']"
+12:24:03 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=10.895 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=232.5 vram_gpu_pico_mb=3974.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=73 extra.intento=1 extra.ip=True extra.ip_escala=0.24 extra.foco=boy_kai
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (80 > 77). Running this sequence through the model will result in indexing errors
+12:24:03 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=4 cambios="['Kai->boy age 10', 'Mira->robot age 200', 'Toro->old man age 60', 'Julio->monkey age 8']"
+12:24:03 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=4 tokens=73 eliminados="['estilo:dappled light', 'estilo:golden hour']"
+12:24:14 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=10.933 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=236.5 vram_gpu_pico_mb=3974.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=73 extra.intento=1 extra.ip=True extra.ip_escala=0.24 extra.foco=boy_kai
+12:24:14 INFO    storybook.image.prompt_builder | prompt_imagen_nombres_sustituidos  escena=5 cambios="['Kai->boy age 10', 'Toro->old man age 60', 'Julio->monkey age 8', 'Mira->robot age 200']"
+12:24:14 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=5 tokens=75 eliminados="['estilo:dappled light', 'estilo:golden hour']"
+12:24:25 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=10.96 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=236.5 vram_gpu_pico_mb=3974.5 vram_gpu_total_mb=4096 extra.seed=58633345 extra.tokens=75 extra.intento=1 extra.ip=True extra.ip_escala=0.24 extra.foco=boy_kai
+12:24:26 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+12:24:27 INFO    f7_sdxl | perfil_terminado  perfil=sdxl ok=True
+# F7 · Modelo de imagen más grande: SDXL frente a SD 1.5 (2026-11-13)
+
+Historia: "El Río Olvidado" (`20261113_105217_un_grupo_de_amigos_animales_en`). Mismo texto, mismas seeds; solo cambia el modelo de imagen. `original` son las imágenes de la historia tal como se generaron (antes de la corrección del personaje foco).
+
+| Perfil | Total | Carga | Por imagen | VRAM torch (pico / reservada) | VRAM GPU | CLIP img-img (media / mín.) | CLIP img-texto | Respaldos |
+|---|---|---|---|---|---|---|---|---|
+| `original` | — | — | — | — / — | — | 0.7339 / 0.4508 | 0.2817 | — |
+| `rapido` | 40.1 s | 12.177 s | 3.55 s | 3155.6 MB / 4034.0 MB | 4066.5 MB | 0.7339 / 0.4508 | 0.2817 | 0 |
+| `sdxl` | 88.99 s | 10.643 s | 10.93 s | 3477.2 MB / 3780.0 MB | 4006.5 MB | 0.6582 / 0.3752 | 0.3476 | 0 |
+
+## `rapido`: personaje foco e IP-Adapter por escena
+
+| Escena | Foco | IP-Adapter | s | Prompt |
+|---|---|---|---|---|
+| 1 | boy_kai | 0.4 | 4.126 | boy age 10, a boy with curly hair, boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small |
+| 2 | old_man_toro | 0.0 | 3.571 | old man age 60 stands in a clearing, old man age 60, white beard, wears a woven hat and tunic, carries a staff |
+| 3 | boy_kai | 0.24 | 3.54 | robot age 200, a robot, walks through dense jungle with boy age 10 and old man age 60, monkey age 8 hangs from |
+| 4 | boy_kai | 0.24 | 3.553 | boy age 10 and robot age 200 stand at a lake of moving stones, old man age 60 watches calmly, monkey age 8 han |
+| 5 | boy_kai | 0.24 | 3.548 | boy age 10, old man age 60, monkey age 8 and robot age 200 stand by a glowing river in the jungle. Wide shot.  |
+
+## `sdxl`: personaje foco e IP-Adapter por escena
+
+| Escena | Foco | IP-Adapter | s | Prompt |
+|---|---|---|---|---|
+| 1 | boy_kai | 0.4 | 12.106 | boy age 10, a boy with curly hair, boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small |
+| 2 | old_man_toro | 0.0 | 10.769 | old man age 60 stands in a clearing, old man age 60, white beard, wears a woven hat and tunic, carries a staff |
+| 3 | boy_kai | 0.24 | 10.895 | robot age 200, a robot, walks through dense jungle with boy age 10 and old man age 60, monkey age 8 hangs from |
+| 4 | boy_kai | 0.24 | 10.933 | boy age 10 and robot age 200 stand at a lake of moving stones, old man age 60 watches calmly, monkey age 8 han |
+| 5 | boy_kai | 0.24 | 10.96 | boy age 10, old man age 60, monkey age 8 and robot age 200 stand by a glowing river in the jungle. Wide shot.  |
+
+Hojas de contactos: `docs/evidencias/f7_hojas/`.

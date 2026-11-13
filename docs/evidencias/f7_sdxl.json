@@ -1,0 +1,145 @@
+{
+  "historia": "20261113_105217_un_grupo_de_amigos_animales_en",
+  "resultados": [
+    {
+      "perfil": "original",
+      "clip_img_img_media": 0.7339,
+      "clip_img_img_min": 0.4508,
+      "clip_img_txt_media": 0.2817
+    },
+    {
+      "perfil": "rapido",
+      "total_s": 40.1,
+      "carga_s": 12.177,
+      "sheet_s": 2.67,
+      "por_imagen_mediana_s": 3.55,
+      "vram_torch_pico_mb": 3155.6,
+      "vram_torch_reservada_mb": 4034.0,
+      "vram_gpu_pico_mb": 4066.5,
+      "respaldos": 0,
+      "fallbacks": [],
+      "errores": [],
+      "escenas": [
+        {
+          "escena": 1,
+          "foco": "boy_kai",
+          "ip_escala": 0.4,
+          "segundos": 4.126,
+          "prompt": "boy age 10, a boy with curly hair, boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns, golden hour, dappled light"
+        },
+        {
+          "escena": 2,
+          "foco": "old_man_toro",
+          "ip_escala": 0.0,
+          "segundos": 3.571,
+          "prompt": "old man age 60 stands in a clearing, old man age 60, white beard, wears a woven hat and tunic, carries a staff with carved patterns, calm and wise, watercolor textures with subtle brush strokes, emerald greens, ochre browns, golden hour, dappled light"
+        },
+        {
+          "escena": 3,
+          "foco": "boy_kai",
+          "ip_escala": 0.24,
+          "segundos": 3.54,
+          "prompt": "robot age 200, a robot, walks through dense jungle with boy age 10 and old man age 60, monkey age 8 hangs from ceiling., boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns, golden hour"
+        },
+        {
+          "escena": 4,
+          "foco": "boy_kai",
+          "ip_escala": 0.24,
+          "segundos": 3.553,
+          "prompt": "boy age 10 and robot age 200 stand at a lake of moving stones, old man age 60 watches calmly, monkey age 8 hangs from the ceiling., boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns"
+        },
+        {
+          "escena": 5,
+          "foco": "boy_kai",
+          "ip_escala": 0.24,
+          "segundos": 3.548,
+          "prompt": "boy age 10, old man age 60, monkey age 8 and robot age 200 stand by a glowing river in the jungle. Wide shot. Sunlight filters through trees., boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns"
+        }
+      ],
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "a7e52b98680b1ba8ff7bce97c7f9f2e2e5337917",
+        "lcm_lora_revision": "cf2fced511dbe7e26c8d1d397e728fbab875db4b",
+        "arquitectura": "sd15",
+        "vae_revision": null,
+        "unet_fp8": false,
+        "cpu_offload": false
+      },
+      "clip_img_img_media": 0.7339,
+      "clip_img_img_min": 0.4508,
+      "clip_img_txt_media": 0.2817
+    },
+    {
+      "perfil": "sdxl",
+      "total_s": 88.99,
+      "carga_s": 10.643,
+      "sheet_s": 10.151,
+      "por_imagen_mediana_s": 10.93,
+      "vram_torch_pico_mb": 3477.2,
+      "vram_torch_reservada_mb": 3780.0,
+      "vram_gpu_pico_mb": 4006.5,
+      "respaldos": 0,
+      "fallbacks": [],
+      "errores": [],
+      "escenas": [
+        {
+          "escena": 1,
+          "foco": "boy_kai",
+          "ip_escala": 0.4,
+          "segundos": 12.106,
+          "prompt": "boy age 10, a boy with curly hair, boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns, golden hour, dappled light"
+        },
+        {
+          "escena": 2,
+          "foco": "old_man_toro",
+          "ip_escala": 0.0,
+          "segundos": 10.769,
+          "prompt": "old man age 60 stands in a clearing, old man age 60, white beard, wears a woven hat and tunic, carries a staff with carved patterns, calm and wise, watercolor textures with subtle brush strokes, emerald greens, ochre browns, golden hour, dappled light"
+        },
+        {
+          "escena": 3,
+          "foco": "boy_kai",
+          "ip_escala": 0.24,
+          "segundos": 10.895,
+          "prompt": "robot age 200, a robot, walks through dense jungle with boy age 10 and old man age 60, monkey age 8 hangs from ceiling., boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns, golden hour"
+        },
+        {
+          "escena": 4,
+          "foco": "boy_kai",
+          "ip_escala": 0.24,
+          "segundos": 10.933,
+          "prompt": "boy age 10 and robot age 200 stand at a lake of moving stones, old man age 60 watches calmly, monkey age 8 hangs from the ceiling., boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns"
+        },
+        {
+          "escena": 5,
+          "foco": "boy_kai",
+          "ip_escala": 0.24,
+          "segundos": 10.96,
+          "prompt": "boy age 10, old man age 60, monkey age 8 and robot age 200 stand by a glowing river in the jungle. Wide shot. Sunlight filters through trees., boy age 10, curly brown hair, wears a leaf-patterned shirt, carries a small backpack, energetic and curious, watercolor textures with subtle brush strokes, emerald greens, ochre browns"
+        }
+      ],
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "561086c22aba3925b1e8803a73857f061635c7c3",
+        "lcm_lora_revision": null,
+        "arquitectura": "sdxl",
+        "vae_revision": "207b116dae70ace3637169f1ddd2434b91b3a8cd",
+        "unet_fp8": true,
+        "cpu_offload": true
+      },
+      "clip_img_img_media": 0.6582,
+      "clip_img_img_min": 0.3752,
+      "clip_img_txt_media": 0.3476
+    }
+  ]
+}
