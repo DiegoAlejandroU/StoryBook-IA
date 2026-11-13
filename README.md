@@ -97,14 +97,22 @@ uv run streamlit run app/streamlit_app.py              # modelos reales (Ollama 
 uv run streamlit run app/streamlit_app.py -- --mock    # modo simulado, sin GPU ni Ollama
 ```
 
-En la app:
+En la app (con forma de libro y sin scroll):
 
 1. Escribe una idea, elige el género y el perfil (rápido o calidad) y presiona
-   **Generar historia**.
-2. Recorre las 5 escenas con **Anterior** y **Siguiente**. Cada escena muestra su
-   ilustración, el texto y tres reproductores: narración, ambiente sonoro y mezcla.
-3. **Regenerar ilustración y ambiente** crea una imagen y un sonido nuevos para la escena.
-4. En **Historias guardadas** se abren las historias anteriores (`outputs/`) y los
+   **Generar historia**. Primero aparece la portada con el índice de las 5 escenas. La
+   escena 1 se abre sola en cuanto tiene ilustración, texto, narración y ambiente, y las
+   demás se generan mientras la lees: el botón de la escena en curso muestra un reloj de
+   arena y se puede abrir para ver qué se está haciendo.
+2. Hojea el libro con **Anterior** y **Siguiente**, con los números de escena o con las
+   teclas ← y →. La narración con su ambiente suena al pasar la página; se puede apagar en
+   el panel derecho.
+3. El panel derecho muestra los detalles técnicos de la escena (personaje en foco,
+   referencia del protagonista con IP-Adapter, seed, tiempos, backend del ambiente, mezcla,
+   prompts usados y las pistas por separado) y de la historia (modelos, tiempo hasta la
+   primera escena y total, alternativas usadas).
+4. **Regenerar ilustración y ambiente** crea una imagen y un sonido nuevos para la escena.
+5. En **Historias guardadas** se abren las historias anteriores (`outputs/`) y los
    ejemplos (`samples/`).
 
 Cada historia queda en `outputs/<run_id>/` con `story.json`, las imágenes, los audios y
@@ -128,11 +136,11 @@ Lucian" (misterio), "La Biblia del Dragón" (fantasía) y "El Camino de los Amig
 (infantil). Los audios van en OGG, unos 8 MB por historia. Se abren desde
 **Historias guardadas** sin GPU ni Ollama, y sirven de plan B en una demo.
 
-![Visor de una escena: ilustración, texto y tres reproductores](docs/informe/capturas/visor_escena.jpg)
+![El libro abierto en una escena: ilustración, texto, navegación, narración y detalles técnicos](docs/informe/capturas/visor_escena.jpg)
 
-| Inicio | Detalles técnicos de una escena |
+| Portada e índice | Mientras se genera (modo simulado) |
 |---|---|
-| ![Pantalla de inicio](docs/informe/capturas/inicio.jpg) | ![Backend de sonido, tiempo y alternativas usadas](docs/informe/capturas/detalles_tecnicos.jpg) |
+| ![Portada con el título y el índice de las 5 escenas](docs/informe/capturas/inicio.jpg) | ![La escena 1 ya se lee mientras la 2 se genera](docs/informe/capturas/detalles_tecnicos.jpg) |
 
 ## Resultados medidos (equipo de referencia)
 

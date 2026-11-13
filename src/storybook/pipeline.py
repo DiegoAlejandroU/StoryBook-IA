@@ -30,6 +30,7 @@ from typing import Any, Final
 
 from storybook import __version__, config
 from storybook.logging_utils import get_logger, kv
+from storybook.progresivo import AlEstarLista, AlPlanificar
 from storybook.schemas import SEED_MAX, StoryBible, StoryRequest, validar_entrada
 from storybook.storage import (
     ARCHIVO_MANIFEST,
@@ -70,6 +71,9 @@ class Dependencias:
     backend_imagen: Any = None
     backend_voz: Any = None
     fabrica_sonido: Callable[[str], Any] | None = None
+    # Generación por escenas: cliente del LLM (``OllamaClient`` o uno falso con
+    # ``generar_validado`` y ``unload``); ``None`` abre Ollama con la configuración.
+    llm: Any = None
 
 
 def escribir_con_ollama(
@@ -111,6 +115,11 @@ def escribir_con_ollama(
         "llamadas": [r.a_dict() for r in llamadas],
         "auditoria": auditoria.a_dict() if auditoria else None,
     }
+
+
+def _estado_fallido(manifest: dict[str, Any]) -> str:
+    """ "incompleta" si alguna escena alcanzó a quedar lista (por escenas), si no "fallida"."""
+    return "incompleta" if manifest.get("escenas_listas") else "fallida"
 
 
 def _hardware() -> dict[str, Any]:
@@ -294,6 +303,60 @@ class Pipeline:
         logger.info(
             "historia_generada",
             extra=kv(run_id=carpeta.name, segundos=manifest["segundos"], estado=manifest["estado"]),
+        )
+        return cargar_historia(carpeta)
+
+    def generar_por_escenas(
+        self,
+        idea: str,
+        genero: str,
+        genero_otro: str | None = None,
+        progreso: Progreso | None = None,
+        al_estar_lista: AlEstarLista | None = None,
+        al_planificar: AlPlanificar | None = None,
+    ) -> HistoriaGuardada:
+        """Como ``generar``, pero escena por escena: ``al_estar_lista`` recibe cada escena
+        apenas tiene texto, imagen, voz y ambiente, mientras la siguiente se genera (ver
+        ``storybook.progresivo``). ``al_planificar`` avisa antes, con el título y el plan."""
+        from storybook.progresivo import GeneracionPorEscenas, manifest_por_escenas
+        from storybook.story.por_escenas import EscritorError
+
+        solicitud = validar_entrada(idea, genero, genero_otro)
+        carpeta = crear_carpeta_run(solicitud.idea, self.raiz)
+        manifest = manifest_por_escenas(self._manifest_base(carpeta, solicitud))
+        guardar_json(carpeta / ARCHIVO_MANIFEST, manifest)
+        inicio_total = time.perf_counter()
+        corrida = GeneracionPorEscenas(
+            self, solicitud, carpeta, manifest, progreso, al_estar_lista, al_planificar
+        )
+        try:
+            corrida.ejecutar()
+            manifest["estado"] = "completa_con_fallbacks" if manifest["fallbacks"] else "completa"
+        except (PipelineError, EscritorError) as exc:
+            manifest.update(estado=_estado_fallido(manifest), error=str(exc))
+            raise PipelineError(str(exc)) from exc
+        except Exception as exc:
+            manifest.update(estado=_estado_fallido(manifest), error=f"{type(exc).__name__}: {exc}")
+            logger.exception("pipeline_fallido", extra=kv(run_id=carpeta.name))
+            listas = len(manifest.get("escenas_listas", []))
+            momento = f" después de la escena {listas}" if listas else ""
+            raise PipelineError(
+                f"La generación se detuvo{momento}: {type(exc).__name__}: {exc}"
+            ) from exc
+        finally:
+            manifest["segundos"].update(corrida.segundos)
+            manifest["segundos"]["total"] = round(time.perf_counter() - inicio_total, 2)
+            guardar_json(carpeta / ARCHIVO_MANIFEST, manifest)
+        self._avisar(progreso, "listo", 1.0, "Historia completa")
+        logger.info(
+            "historia_generada",
+            extra=kv(
+                run_id=carpeta.name,
+                modo="por_escenas",
+                primera_escena_s=manifest["segundos"].get("primera_escena"),
+                total_s=manifest["segundos"]["total"],
+                estado=manifest["estado"],
+            ),
         )
         return cargar_historia(carpeta)
 

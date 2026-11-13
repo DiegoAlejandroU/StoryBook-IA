@@ -78,8 +78,10 @@ Reglas obligatorias:
      en total.
    - descripcion_visual_fija: máximo {_palabras(TOKENS_MAX_DESCRIPTOR)} palabras, en este orden:
      {ORDEN_DESCRIPTOR}. No describas el estado de ánimo.
-   - prompt_imagen: máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras, SOLO acción, composición
-     y entorno. No repitas la descripción del personaje ni el estilo: se añaden automáticamente.
+   - prompt_imagen: máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras: UN sujeto principal
+     (el protagonista si está en la escena, con su nombre exacto) haciendo la acción, la
+     composición y el entorno; máximo 2 personajes, nombrados por su nombre. No repitas la
+     descripción del personaje ni el estilo: se añaden automáticamente.
    - prompt_sonido: máximo {PALABRAS_MAX_PROMPT_SONIDO} palabras: un ambiente y 1-2 efectos.
      Sin voces ni música.
 5. etiquetas_sonido: 1 a 3 valores de esta lista: {", ".join(e.value for e in EtiquetaSonido)}.
@@ -155,8 +157,11 @@ Reglas obligatorias:
    palabras se rechaza.
 2. Respeta el canon y los resúmenes previos: no contradigas nombres, rasgos, objetos, lugares ni
    relaciones ya establecidos. Usa los nombres exactos de los personajes.
-3. prompt_imagen en INGLÉS, máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras: SOLO acción,
-   composición y entorno, sin describir personajes ni estilo.
+3. prompt_imagen en INGLÉS, máximo {_palabras(TOKENS_MAX_PROMPT_IMAGEN)} palabras: UN sujeto
+   principal haciendo la acción, la composición (por ejemplo "wide shot") y el entorno. Si el
+   protagonista está en la escena, el sujeto es él. Nombra a cada personaje con su nombre
+   exacto (máximo 2 personajes); un animal se nombra con su nombre, no con su especie. No
+   describas rasgos ni estilo y no uses grupos ("group of friends").
 4. prompt_sonido en INGLÉS, máximo {PALABRAS_MAX_PROMPT_SONIDO} palabras: un ambiente y 1-2
    efectos. Sin voces ni música.
 5. etiquetas_sonido: 1 a 3 valores de esta lista: {", ".join(e.value for e in EtiquetaSonido)}.

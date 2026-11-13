@@ -7,6 +7,7 @@ consistency:
   seed_policy: compartida
 
 image:
+  personajes_prompt: presentes  # como en la batería 6.2 (reproducibilidad de results.csv)
   ip_adapter:
     enabled: true
     scale: 0.4                  # valor ajustado en la tarea 2.3 (docs/evidencias/f2_variantes.md)

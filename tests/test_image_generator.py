@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -245,3 +246,34 @@ def test_backend_real_no_importa_torch_al_crear() -> None:
     assert backend.info() == {}
     if "torch" not in sys.modules:
         assert backend.es_oom(RuntimeError("x")) is False
+
+
+def test_ip_adapter_se_ajusta_por_escena_segun_el_foco(bible_dict: dict, tmp_path: Path) -> None:
+    """La referencia es del protagonista: en la escena de otro personaje va con escala 0."""
+    datos = json.loads(json.dumps(bible_dict))
+    secundario = datos["personajes"][1]["nombre"]
+    datos["escenas"][1]["prompt_imagen"] = f"{secundario} walks alone on the beach at dusk"
+    datos["escenas"][1]["personajes_presentes"] = [
+        datos["personajes"][0]["id"],
+        datos["personajes"][1]["id"],
+    ]
+    bible = StoryBible.model_validate(datos)
+    backend = FakeBackend()
+    escalas: list[float] = []
+    original = FakePipe.__init__
+
+    def con_escala(self: FakePipe, b: FakeBackend) -> None:
+        original(self, b)
+        self.set_ip_adapter_scale = escalas.append  # type: ignore[attr-defined]
+
+    FakePipe.__init__ = con_escala  # type: ignore[method-assign]
+    try:
+        etapa = _generador(backend).generar(bible, tmp_path)
+    finally:
+        FakePipe.__init__ = original  # type: ignore[method-assign]
+    assert len(escalas) == 5
+    escena_2 = etapa.imagenes[1]
+    assert escena_2.ip_escala == 0.0 and not escena_2.ip_adapter
+    assert escena_2.prompt.foco == datos["personajes"][1]["id"]
+    assert escalas[1] == 0.0 and max(escalas) == pytest.approx(0.4)
+    assert escena_2.a_dict()["ip_escala"] == 0.0

@@ -7,5 +7,6 @@ consistency:
   seed_policy: por_escena
 
 image:
+  personajes_prompt: presentes  # como en la batería 6.2 (reproducibilidad de results.csv)
   ip_adapter:
     enabled: false

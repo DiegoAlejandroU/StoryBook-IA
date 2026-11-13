@@ -1,0 +1,24 @@
+# Imágenes con un modelo más grande (pedido del docente, 12 nov): DreamShaper XL Lightning,
+# un SDXL (2.6B de parámetros en el UNet, 3 veces SD 1.5) del mismo autor que DreamShaper 8,
+# destilado para 4-6 pasos. En la RTX 3050 de 4 GB solo cabe con el UNet en fp8 y cada
+# componente en la GPU únicamente mientras se usa (model CPU offload). IP-Adapter SDXL usa el
+# mismo encoder de imagen ViT-H que el de SD 1.5. Validación: scripts/f7_sdxl_prueba.py.
+extends: rapido
+
+image:
+  model_id: Lykon/dreamshaper-xl-lightning   # CreativeML OpenRAIL++-M
+  arquitectura: sdxl
+  vae_id: madebyollin/sdxl-vae-fp16-fix      # el VAE de SDXL da NaN en fp16 sin esta corrección (MIT)
+  unet_fp8: true
+  cpu_offload: true
+  scheduler: dpmpp
+  steps: 6                                   # la ficha recomienda 4-6 pasos con CFG 2
+  guidance_scale: 2.0
+  width: 1152                                # 3:2 cerca de 1 megapíxel (resolución nativa de SDXL)
+  height: 768
+  sheet_size: 832
+  ip_adapter:
+    subfolder: sdxl_models
+    weight_name: ip-adapter_sdxl_vit-h.safetensors
+    image_encoder_subfolder: models/image_encoder
+    scale: 0.4

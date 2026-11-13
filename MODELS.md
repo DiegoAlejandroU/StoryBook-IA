@@ -14,6 +14,9 @@ descargado se registran automáticamente en `docs/models_registry.json`.
 | Imagen | DreamShaper 8 (fine-tune de SD 1.5) | HF `Lykon/dreamshaper-8` | CreativeML OpenRAIL-M | GPU fp16 | `a7e52b9`. **En uso**. |
 | Imagen (aceleración) | LCM-LoRA SD 1.5 | HF `latent-consistency/lcm-lora-sdv1-5` | OpenRAIL++ | GPU fp16 | `cf2fced`. **En uso** (perfil rápido, 6 pasos). |
 | Imagen (consistencia) | IP-Adapter SD 1.5 + encoder CLIP ViT-H | HF `h94/IP-Adapter` | Apache 2.0 | Adaptador en GPU; encoder en CPU | `018e402`. **En uso**, escala 0,4 y orden `accion_primero` (tarea 2.3). |
+| Imagen (prueba, 12 nov) | DreamShaper XL Lightning (SDXL, 4-6 pasos) | HF `Lykon/dreamshaper-xl-lightning` (variante fp16) | CreativeML OpenRAIL++-M | UNet en fp8 (layerwise casting) + model CPU offload | **En prueba** (tarea 9.3, `configs/sdxl.yaml`): pedido del docente de un modelo de imágenes más grande. Se integra solo si los tiempos y la VRAM medidos lo permiten. |
+| Imagen (prueba, VAE) | SDXL VAE fp16 fix | HF `madebyollin/sdxl-vae-fp16-fix` | MIT | GPU fp16 | Evita los NaN del VAE original de SDXL en fp16. |
+| Imagen (prueba, consistencia) | IP-Adapter SDXL ViT-H | HF `h94/IP-Adapter` (`sdxl_models/ip-adapter_sdxl_vit-h.safetensors`) | Apache 2.0 | Adaptador en GPU; usa el mismo encoder ViT-H de SD 1.5 | Con el personaje foco por escena, igual que en SD 1.5. |
 | Voz | Piper `es_MX-claude-high` | HF `rhasspy/piper-voices` | Código piper-tts: GPL-3.0-or-later; voz: según su MODEL_CARD | CPU (ONNX) | **En uso**. Diego la eligió al escuchar 3 voces en la tarea 3.3: `es_MX-claude-high`, `es_ES-davefx-medium` y `es_MX-ald-medium`. |
 | Sonido (A, principal) | Stable Audio 3 Small-SFX (0,6 B) | HF `stabilityai/stable-audio-3-small-sfx` | Stability AI Community License; encoder T5Gemma bajo Gemma Terms of Use | GPU fp16 con offload | **No disponible** en el equipo de referencia: el repositorio exige aceptar la licencia con una cuenta. La cadena pasa sola a AudioLDM (`sonido:sa3:no_disponible`). |
 | Sonido (A, alternativa) | Stable Audio Open 1.0 | HF `stabilityai/stable-audio-open-1.0` | Stability AI Community License (gated) | GPU fp16 con offload | No descargado (mismo motivo). Solo en el perfil calidad. |
@@ -41,7 +44,8 @@ RTX 3050 Laptop de 4 GB y 24 GB de RAM. Fuentes: tareas 1.4, 2.3, 3.3, 4.4 y 6.2
 
 | Alternativa | Motivo |
 |---|---|
-| SDXL, FLUX | Exceden 4 GB de VRAM; requieren offload secuencial y tardan minutos por imagen. |
+| FLUX | Excede 4 GB de VRAM aun con offload; minutos por imagen. |
+| SDXL base (30-50 pasos) | Con offload tarda minutos por imagen. Se prueba la variante Lightning (4-6 pasos) con el UNet en fp8 (fila "en prueba" arriba). |
 | LLM de más de 8B parámetros | No caben en 4 GB ni con offload parcial a tiempos aceptables. |
 | Qwen3.5-4B | Modelo multimodal (proyector de visión adicional); ~5,5 GB de memoria total en 4 bits, y sus GGUF no eran compatibles con Ollama según la documentación de Unsloth. |
 | Stable Audio Open Small (vía `stable-audio-tools`) | `stable-audio-tools` 0.0.20 exige Python < 3.11 y fija `torch==2.7.1`, incompatible con el entorno del proyecto (Python 3.12, PyTorch 2.15). |

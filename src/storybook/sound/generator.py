@@ -269,6 +269,17 @@ class GeneradorSonido:
         self.seed_base = seed_base
         self.fabrica = fabrica or (lambda nombre: crear_backend(nombre, cfg))
 
+    def cadena(self) -> list[str]:
+        """Backends en orden de fallback; procedural siempre al final (nunca falla)."""
+        backends = list(dict.fromkeys(self.cfg.backends))
+        if "procedural" not in backends:
+            backends.append("procedural")  # la última red: la historia siempre tiene sonido
+        return backends
+
+    def sesion(self, carpeta: Path) -> SesionSonido:
+        """Cadena abierta para generar escena por escena (``with``); ver ``SesionSonido``."""
+        return SesionSonido(self, carpeta)
+
     def generar(
         self, bible: StoryBible, carpeta: Path, numeros: Sequence[int] | None = None
     ) -> EtapaSonido:
@@ -276,11 +287,8 @@ class GeneradorSonido:
         elegidas = set(numeros) if numeros is not None else None
         pendientes = [e for e in bible.escenas if elegidas is None or e.numero in elegidas]
         etapa = EtapaSonido(sonidos=[])
-        backends = list(dict.fromkeys(self.cfg.backends))
-        if "procedural" not in backends:
-            backends.append("procedural")  # la última red: la historia siempre tiene sonido
 
-        for nombre in backends:
+        for nombre in self.cadena():
             if not pendientes:
                 break
             pendientes = self._con_backend(nombre, pendientes, carpeta, etapa)
@@ -300,6 +308,28 @@ class GeneradorSonido:
         self, nombre: str, pendientes: list[Escena], carpeta: Path, etapa: EtapaSonido
     ) -> list[Escena]:
         """Genera con ``nombre`` las escenas pendientes; devuelve las que siguen sin sonido."""
+        backend = self._cargar(nombre, etapa)
+        if backend is None:
+            return pendientes
+
+        restantes: list[Escena] = []
+        try:
+            for i, escena in enumerate(pendientes):
+                try:
+                    etapa.sonidos.append(self._escena(backend, escena, carpeta, etapa))
+                except Exception as exc:
+                    self._registrar_fallo(nombre, escena, exc, etapa)
+                    restantes.append(escena)
+                    if backend.es_oom(exc):
+                        free_cuda_memory()
+                        restantes.extend(pendientes[i + 1 :])  # sin memoria: siguiente backend
+                        break
+        finally:
+            backend.liberar()
+        return restantes
+
+    def _cargar(self, nombre: str, etapa: EtapaSonido) -> BackendSonido | None:
+        """El backend cargado, o ``None`` (y el fallback registrado) si no está disponible."""
         try:
             if nombre in GENERATIVOS and audio_generativo_desactivado():
                 raise SoundError(
@@ -310,35 +340,25 @@ class GeneradorSonido:
                 backend.cargar()
             etapa.metricas.append(m_carga)
             etapa.backends[nombre] = {"estado": "cargado", **backend.info()}
+            return backend
         except Exception as exc:
             mensaje = f"{type(exc).__name__}: {exc}"[:400]
             etapa.backends[nombre] = {"estado": "no_disponible", "detalle": mensaje}
             etapa.fallbacks.append(f"sonido:{nombre}:no_disponible")
             etapa.errores.append(f"{nombre}: {mensaje}")
             logger.warning("sonido_backend_no_disponible", extra=kv(backend=nombre, error=mensaje))
-            return pendientes
+            return None
 
-        restantes: list[Escena] = []
-        try:
-            for i, escena in enumerate(pendientes):
-                try:
-                    etapa.sonidos.append(self._escena(backend, escena, carpeta, etapa))
-                except Exception as exc:
-                    mensaje = f"{type(exc).__name__}: {exc}"[:400]
-                    etapa.fallbacks.append(f"sonido:escena_{escena.numero}:{nombre}_fallo")
-                    etapa.errores.append(f"Escena {escena.numero} con {nombre}: {mensaje}")
-                    logger.error(
-                        "sonido_escena_fallo",
-                        extra=kv(escena=escena.numero, backend=nombre, error=mensaje),
-                    )
-                    restantes.append(escena)
-                    if backend.es_oom(exc):
-                        free_cuda_memory()
-                        restantes.extend(pendientes[i + 1 :])  # sin memoria: siguiente backend
-                        break
-        finally:
-            backend.liberar()
-        return restantes
+    @staticmethod
+    def _registrar_fallo(
+        nombre: str, escena: Escena, exc: BaseException, etapa: EtapaSonido
+    ) -> None:
+        mensaje = f"{type(exc).__name__}: {exc}"[:400]
+        etapa.fallbacks.append(f"sonido:escena_{escena.numero}:{nombre}_fallo")
+        etapa.errores.append(f"Escena {escena.numero} con {nombre}: {mensaje}")
+        logger.error(
+            "sonido_escena_fallo", extra=kv(escena=escena.numero, backend=nombre, error=mensaje)
+        )
 
     def _escena(
         self, backend: BackendSonido, escena: Escena, carpeta: Path, etapa: EtapaSonido
@@ -385,6 +405,76 @@ class GeneradorSonido:
             etiquetas=[str(e) for e in escena.etiquetas_sonido],
             detalle={**(getattr(backend, "ultimo_detalle", {}) or {}), **detalle, "seed": seed},
         )
+
+
+class SesionSonido:
+    """Cadena de sonido abierta para la generación por escenas.
+
+    Cada backend se carga la primera vez que hace falta y queda cargado para las escenas
+    siguientes (AudioLDM no se vuelve a leer del disco en cada escena). Si un backend no
+    carga, o se queda sin memoria, se descarta para el resto de la historia. ``estacionar``
+    deja la VRAM libre entre escenas para que el LLM pueda cargarse.
+    """
+
+    def __init__(self, generador: GeneradorSonido, carpeta: Path) -> None:
+        self.generador = generador
+        self.carpeta = carpeta
+        self.etapa = EtapaSonido(sonidos=[])
+        self._cargados: dict[str, BackendSonido] = {}
+        self._descartados: set[str] = set()
+
+    def __enter__(self) -> SesionSonido:
+        self.carpeta.mkdir(parents=True, exist_ok=True)
+        return self
+
+    def __exit__(self, *_: object) -> None:
+        for backend in self._cargados.values():
+            backend.liberar()
+        self._cargados.clear()
+
+    def _backend(self, nombre: str) -> BackendSonido | None:
+        if nombre in self._descartados:
+            return None
+        if nombre not in self._cargados:
+            backend = self.generador._cargar(nombre, self.etapa)
+            if backend is None:
+                self._descartados.add(nombre)
+                return None
+            self._cargados[nombre] = backend
+        return self._cargados[nombre]
+
+    def escena(self, escena: Escena) -> ResultadoSonido:
+        """Ambiente de ``escena`` con el primer backend de la cadena que lo logre."""
+        for nombre in self.generador.cadena():
+            backend = self._backend(nombre)
+            if backend is None:
+                continue
+            activar = getattr(backend, "activar", None)
+            try:
+                if callable(activar):
+                    activar()
+                resultado = self.generador._escena(backend, escena, self.carpeta, self.etapa)
+            except Exception as exc:
+                self.generador._registrar_fallo(nombre, escena, exc, self.etapa)
+                if backend.es_oom(exc):  # sin memoria: no se reintenta en otras escenas
+                    backend.liberar()
+                    del self._cargados[nombre]
+                    self._descartados.add(nombre)
+                    free_cuda_memory()
+                continue
+            self.etapa.sonidos = [s for s in self.etapa.sonidos if s.escena != escena.numero]
+            self.etapa.sonidos.append(resultado)
+            self.etapa.sonidos.sort(key=lambda s: s.escena)
+            return resultado
+        raise SoundError(f"Escena {escena.numero} sin sonido")
+
+    def estacionar(self) -> None:
+        """Saca de la GPU los backends cargados (siguen en RAM) y libera la caché de torch."""
+        for backend in self._cargados.values():
+            estacionar = getattr(backend, "estacionar", None)
+            if callable(estacionar):
+                estacionar()
+        free_cuda_memory()
 
 
 # ---------------------------------------------------------------------------------------
@@ -462,6 +552,8 @@ class DiffusersSonidoBackend:
         self.pipe: Any = None
         self.snapshot: Path | None = None
         self.ultimo_detalle: dict[str, Any] = {}
+        self._con_offload = False
+        self._en_cpu = False
 
     def cargar(self) -> None:
         snapshot = local_snapshot(self.repo)  # ModelNotDownloadedError si falta
@@ -481,12 +573,26 @@ class DiffusersSonidoBackend:
             str(snapshot), torch_dtype=torch.float16, variant=diffusers_variant(snapshot)
         )
         # AudioLDM (421M) cabe entero en 4 GB; Stable Audio necesita offload (F0).
-        if self.cfg.cpu_offload and self.nombre != "audioldm":
+        self._con_offload = self.cfg.cpu_offload and self.nombre != "audioldm"
+        if self._con_offload:
             pipe.enable_model_cpu_offload()
         else:
             pipe.to("cuda")
         pipe.set_progress_bar_config(disable=True)
-        self.pipe, self.snapshot = pipe, snapshot
+        self.pipe, self.snapshot, self._en_cpu = pipe, snapshot, False
+
+    def estacionar(self) -> None:
+        """Pasa a RAM el modelo que está entero en la GPU (AudioLDM) para dejar la VRAM libre
+        al LLM entre escenas; con offload los pesos ya vuelven solos a la CPU."""
+        if self.pipe is not None and not self._con_offload and not self._en_cpu:
+            self.pipe.to("cpu")
+            self._en_cpu = True
+        free_cuda_memory()
+
+    def activar(self) -> None:
+        if self.pipe is not None and self._en_cpu:
+            self.pipe.to("cuda")
+            self._en_cpu = False
 
     def generar(self, escena: Escena, duracion_s: float, seed: int) -> tuple[np.ndarray, int]:
         import torch

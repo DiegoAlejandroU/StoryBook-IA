@@ -7,16 +7,18 @@ from __future__ import annotations
 
 import re
 from collections.abc import Sequence
+from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Final
 
-from storybook.schemas import GENERO_ETIQUETA, Fase, Genero
-from storybook.storage import NUM_ESCENAS, EntradaHistoria
+from storybook.schemas import FASE_POR_NUMERO, GENERO_ETIQUETA, Fase, Genero
+from storybook.storage import NUM_ESCENAS, ArchivosEscena, EntradaHistoria, HistoriaGuardada
 
 PERFILES: Final[dict[str, str]] = {
-    # Tiempos medidos en el equipo de referencia (batería 6.2: 124-129 s por historia en rápido;
-    # calidad suma unos 30 s de imágenes con 25 pasos).
-    "rapido": "Rápido · unos 2 minutos",
-    "calidad": "Calidad · imágenes con 25 pasos, unos 3 minutos",
+    # Con la generación por escenas la primera aparece mucho antes que la historia completa;
+    # los tiempos se miden en el equipo de referencia (docs/evidencias) y van en el panel.
+    "rapido": "Rápido (6 pasos por imagen)",
+    "calidad": "Calidad (25 pasos por imagen)",
 }
 FASES: Final[dict[str, str]] = {
     Fase.INICIO.value: "Inicio",
@@ -185,3 +187,230 @@ def es_mock(argv: Sequence[str]) -> bool:
 
 def nombre_perfil(perfil: str) -> str:
     return NOMBRE_PERFIL.get(perfil, perfil)
+
+
+# ---------------------------------------------------------------------------------------
+# Libro: lo que se dibuja de una historia, terminada o en curso (generación por escenas)
+# ---------------------------------------------------------------------------------------
+@dataclass(frozen=True)
+class Pagina:
+    """Una escena lista para mostrarse (texto, archivos y detalles técnicos)."""
+
+    numero: int
+    fase: str
+    texto: str
+    archivos: ArchivosEscena
+    detalles: dict[str, Any]
+    lista_en_s: float | None = None
+
+
+@dataclass(frozen=True)
+class VistaLibro:
+    titulo: str
+    genero: str
+    tono: str
+    perfil: str
+    paginas: dict[int, Pagina]
+    resumenes: list[str] = field(default_factory=list)
+    personajes: dict[str, str] = field(default_factory=dict)  # id -> nombre
+    configuracion: dict[str, Any] = field(default_factory=dict)
+    manifest: dict[str, Any] = field(default_factory=dict)
+    carpeta: Path | None = None
+    en_curso: int | None = None
+    terminada: bool = True
+
+    def estado(self, numero: int) -> str:
+        """ "lista", "en_curso" o "pendiente" (para el selector de escenas)."""
+        if numero in self.paginas:
+            return "lista"
+        return "en_curso" if numero == self.en_curso else "pendiente"
+
+    def navegable(self, numero: int) -> bool:
+        """Se puede abrir una escena lista y también la que se está generando."""
+        return self.estado(numero) != "pendiente"
+
+
+def detalles_desde_manifest(manifest: dict[str, Any], numero: int) -> dict[str, Any]:
+    """Imagen, voz, ambiente y mezcla de la escena ``numero`` según el manifest (con las
+    regeneraciones aplicadas: la última manda)."""
+    etapas = manifest.get("etapas", {})
+
+    def de(etapa: str, lista: str) -> dict[str, Any] | None:
+        for item in etapas.get(etapa, {}).get(lista, []) or []:
+            if int(item.get("escena", 0)) == numero:
+                return dict(item)
+        return None
+
+    detalles: dict[str, Any] = {
+        "imagen": de("imagen", "imagenes"),
+        "voz": de("voz", "narraciones"),
+        "sonido": de("sonido", "sonidos"),
+        "mezcla": de("mezcla", "mezclas"),
+    }
+    for regeneracion in manifest.get("regeneraciones", []):
+        if regeneracion.get("escena") == numero:
+            imagenes = regeneracion.get("imagen", {}).get("imagenes", [])
+            nueva = next((i for i in imagenes if int(i.get("escena", 0)) == numero), None)
+            if nueva:
+                detalles["imagen"] = dict(nueva)
+            backend = regeneracion.get("sonido_backend")
+            if backend and detalles["sonido"]:
+                detalles["sonido"] = {**detalles["sonido"], "backend": backend}
+    listas = {int(x["escena"]): x.get("lista_en_s") for x in manifest.get("escenas_listas", [])}
+    if numero in listas:
+        detalles["lista_en_s"] = listas[numero]
+    return {k: v for k, v in detalles.items() if v is not None}
+
+
+def vista_de_historia(historia: HistoriaGuardada) -> VistaLibro:
+    bible, manifest = historia.bible, historia.manifest
+    paginas = {
+        e.numero: Pagina(
+            numero=e.numero,
+            fase=str(e.fase),
+            texto=e.texto_narrativo,
+            archivos=historia.escena(e.numero),
+            detalles=(detalles := detalles_desde_manifest(manifest, e.numero)),
+            lista_en_s=detalles.get("lista_en_s"),
+        )
+        for e in bible.escenas
+    }
+    return VistaLibro(
+        titulo=bible.titulo,
+        genero=str(bible.genero or manifest.get("genero", "")),
+        tono=bible.tono,
+        perfil=str(manifest.get("perfil") or "-"),
+        paginas=paginas,
+        resumenes=[e.resumen for e in bible.escenas],
+        personajes={p.id: p.nombre for p in bible.personajes},
+        configuracion=dict(manifest.get("configuracion") or {}),
+        manifest=manifest,
+        carpeta=historia.carpeta,
+    )
+
+
+def vista_en_vivo(instantanea: Any, configuracion: dict[str, Any]) -> VistaLibro:
+    """Vista de una historia que se está generando (``Instantanea`` de la generación)."""
+    plan = instantanea.plan
+    paginas = {
+        n: Pagina(
+            numero=n,
+            fase=str(lista.escena.fase),
+            texto=lista.escena.texto_narrativo,
+            archivos=lista.archivos,
+            detalles={**lista.detalles, "lista_en_s": lista.lista_en_s},
+            lista_en_s=lista.lista_en_s,
+        )
+        for n, lista in sorted(instantanea.listas.items())
+    }
+    return VistaLibro(
+        titulo=plan.titulo if plan else "",
+        genero=plan.genero if plan else "",
+        tono=plan.tono if plan else "",
+        perfil=instantanea.perfil,
+        paginas=paginas,
+        resumenes=list(plan.resumenes) if plan else [],
+        personajes=dict(plan.personajes) if plan else {},
+        configuracion=configuracion,
+        carpeta=instantanea.carpeta,
+        en_curso=instantanea.en_curso,
+        terminada=bool(instantanea.terminada),
+    )
+
+
+def _num(valor: Any, decimales: int = 1) -> str:
+    try:
+        texto = f"{float(valor):.{decimales}f}"
+    except (TypeError, ValueError):
+        return "-"
+    return texto.replace(".", ",")
+
+
+def filas_escena(detalles: dict[str, Any], personajes: dict[str, str]) -> list[tuple[str, str]]:
+    """Datos técnicos de una escena para el panel derecho: (etiqueta, valor)."""
+    filas: list[tuple[str, str]] = []
+    imagen = detalles.get("imagen") or {}
+    if imagen:
+        if imagen.get("respaldo"):
+            filas.append(("Ilustración", "de respaldo (el modelo falló)"))
+        prompt = imagen.get("prompt") or {}
+        foco = prompt.get("foco")
+        if foco:
+            nombre = personajes.get(str(foco), str(foco).replace("_", " ").title())
+            filas.append(("Personaje en foco", nombre))
+        escala = imagen.get("ip_escala")
+        filas.append(
+            (
+                "Referencia del protagonista",
+                f"IP-Adapter {_num(escala, 2)}" if escala else "no se aplica en esta escena",
+            )
+        )
+        filas.append(("Seed de la imagen", str(imagen.get("seed", "-"))))
+        filas.append(("Tiempo de la imagen", f"{_num(imagen.get('segundos'))} s"))
+    voz = detalles.get("voz") or {}
+    if voz:
+        filas.append(("Narración", f"{_num(voz.get('duracion_s'))} s de audio"))
+    sonido = detalles.get("sonido") or {}
+    if sonido:
+        filas.append(("Ambiente", nombre_backend(str(sonido.get("backend", "-")))))
+    mezcla = detalles.get("mezcla") or {}
+    if "lufs_voz" in mezcla:
+        bajo = _num(mezcla.get("ambiente_bajo_voz_db"), 0)
+        filas.append(
+            ("Mezcla", f"voz a {_num(mezcla['lufs_voz'])} LUFS, ambiente {bajo} dB por debajo")
+        )
+    if detalles.get("lista_en_s") is not None:
+        filas.append(("Lista a los", segundos_legibles(detalles["lista_en_s"])))
+    return filas
+
+
+def prompts_escena(detalles: dict[str, Any]) -> dict[str, str]:
+    """Prompts usados en la escena (imagen y ambiente), para mostrarlos plegados."""
+    prompts: dict[str, str] = {}
+    imagen = (detalles.get("imagen") or {}).get("prompt") or {}
+    if imagen.get("prompt"):
+        prompts["Ilustración"] = str(imagen["prompt"])
+    sonido = detalles.get("sonido") or {}
+    efectivo = (sonido.get("detalle") or {}).get("prompt_efectivo") or sonido.get("prompt")
+    if efectivo:
+        prompts["Ambiente"] = str(efectivo)
+    return prompts
+
+
+MODELOS_IMAGEN: Final[dict[str, str]] = {
+    "Lykon/dreamshaper-8": "DreamShaper 8 (SD 1.5)",
+    "Lykon/dreamshaper-xl-lightning": "DreamShaper XL Lightning (SDXL)",
+}
+
+
+def filas_historia(vista: VistaLibro) -> list[tuple[str, str]]:
+    """Modelos y tiempos de la historia (panel derecho)."""
+    cfg = vista.configuracion
+    llm, imagen, voz, sonido = (cfg.get(k) or {} for k in ("llm", "image", "voice", "sound"))
+    filas: list[tuple[str, str]] = [("Perfil", nombre_perfil(vista.perfil))]
+    if llm.get("model"):
+        filas.append(("Texto", str(llm["model"]).replace("-instruct-2507-q4_K_M", " (Q4)")))
+    if imagen.get("model_id"):
+        modelo = MODELOS_IMAGEN.get(str(imagen["model_id"]), str(imagen["model_id"]))
+        pasos = imagen.get("steps")
+        filas.append(("Imágenes", f"{modelo}, {pasos} pasos" if pasos else modelo))
+    if voz.get("piper_voice"):
+        filas.append(("Voz", f"Piper {voz['piper_voice']}"))
+    if sonido.get("backends"):
+        cadena = [nombre_backend(b) for b in sonido["backends"]]
+        filas.append(("Ambiente", " → ".join(cadena)))
+    segundos = vista.manifest.get("segundos", {}) if vista.manifest else {}
+    if segundos.get("primera_escena") is not None:
+        filas.append(("Primera escena", segundos_legibles(segundos["primera_escena"])))
+    if segundos.get("total") is not None:
+        filas.append(("Historia completa", segundos_legibles(segundos["total"])))
+    return filas
+
+
+FASE_POR_ESCENA: Final[dict[int, Fase]] = dict(FASE_POR_NUMERO)
+
+
+def subtitulo(vista: VistaLibro) -> str:
+    """Género y tono bajo el título ("Misterio, inquietante y tierno")."""
+    partes = [p for p in (str(vista.genero).capitalize(), vista.tono) if p]
+    return ", ".join(partes)

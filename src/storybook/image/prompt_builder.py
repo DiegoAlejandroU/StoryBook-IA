@@ -94,6 +94,9 @@ class PromptImagen:
     personajes: list[str] = field(default_factory=list)
     truncamientos: list[Truncamiento] = field(default_factory=list)
     sustituciones: list[Sustitucion] = field(default_factory=list)
+    foco: str | None = None  # personaje con descriptor completo (modo "foco")
+    mencionados: list[str] = field(default_factory=list)  # personajes que nombra la acción
+    ip_factor: float = 1.0  # multiplica la escala de IP-Adapter en esta escena (0 = sin él)
 
     @property
     def truncado(self) -> bool:
@@ -107,6 +110,9 @@ class PromptImagen:
             "tokens": self.tokens,
             "tokens_negativo": self.tokens_negativo,
             "personajes": self.personajes,
+            "foco": self.foco,
+            "mencionados": self.mencionados,
+            "ip_factor": self.ip_factor,
             "truncamientos": [t.a_dict() for t in self.truncamientos],
             "sustituciones": [s.a_dict() for s in self.sustituciones],
         }
@@ -143,7 +149,10 @@ def _recortar_palabras(
 
 
 def ajustar_a_presupuesto(
-    bloques: list[_Bloque], contar: ContadorTokens, maximo: int
+    bloques: list[_Bloque],
+    contar: ContadorTokens,
+    maximo: int,
+    orden: dict[Segmento, int] | None = None,
 ) -> tuple[str, list[Truncamiento]]:
     """Quita frases finales de los bloques de menor prioridad hasta que el prompt cabe.
 
@@ -152,7 +161,7 @@ def ajustar_a_presupuesto(
     Cada bloque conserva al menos ``minimo`` frases; si aun así no cabe, se recortan
     palabras al final del prompt completo.
     """
-    orden: dict[Segmento, int] = {"estilo": 0, "accion": 1, "personajes": 2, "negativo": 0}
+    orden = orden or {"estilo": 0, "accion": 1, "personajes": 2, "negativo": 0}
     prioridad = sorted(
         range(len(bloques)), key=lambda i: (orden[bloques[i].segmento], -i)
     )  # a igual segmento, primero el que aparece más tarde (personaje secundario)
@@ -257,6 +266,93 @@ def sustituir_nombres(
     return resultado, sustituciones
 
 
+# ---------------------------------------------------------------------------------------
+# Personaje foco (corrección del 12 nov). Con los descriptores de todos los personajes
+# presentes, SD mezclaba sujetos (un jaguar con la camisa del niño) y la acción se recortaba;
+# y con IP-Adapter en todas las escenas, cualquier sujeto tomaba la cara del protagonista o
+# salían clones. Ahora cada escena tiene UN personaje foco con su descriptor completo.
+# ---------------------------------------------------------------------------------------
+PersonajesPrompt = Literal["presentes", "foco"]
+_GRUPO: Final = re.compile(
+    r"\b(?:group|friends|crowd|together|family|team|everyone|people|children|kids|villagers)\b",
+    re.IGNORECASE,
+)
+IP_FACTOR_IMPLICITO: Final = 0.5  # el protagonista está en la escena, pero la acción no lo nombra
+IP_FACTOR_CON_OTROS: Final = 0.6  # la acción también nombra a otro personaje
+IP_FACTOR_GRUPO: Final = 0.5  # "group of friends": con escala alta salen clones
+
+
+def tipo_personaje(personaje: Personaje) -> str:
+    """'boy age 10' -> 'boy'; 'young jaguar age 4' -> 'young jaguar'; 'old man' -> 'old man'."""
+    sujeto = sujeto_personaje(personaje)
+    return re.split(r"\s+age\b", sujeto, maxsplit=1)[0].strip() or sujeto
+
+
+# Palabras del inicio del descriptor que no nombran el tipo de personaje ("25 years old").
+_NO_SUSTANTIVOS: Final = frozenset(
+    {"old", "young", "years", "year", "aged", "age", "little", "small", "big", "tall", "teen"}
+)
+
+
+def _sustantivo(personaje: Personaje) -> str:
+    """Tipo de personaje con el que la acción lo puede nombrar: "jaguar", "man", "boy"."""
+    palabras = re.findall(r"[a-z]+", _sin_tildes(tipo_personaje(personaje)).lower())
+    palabras = [w for w in palabras if w not in _NO_SUSTANTIVOS]
+    return palabras[-1] if palabras else ""
+
+
+@dataclass(frozen=True)
+class FocoEscena:
+    foco: str | None
+    mencionados: list[str]
+    grupo: bool
+    ip_factor: float
+
+
+def analizar_foco(
+    bible: StoryBible, numero: int, accion: str, sustituciones: Sequence[Sustitucion] = ()
+) -> FocoEscena:
+    """Personaje foco de la escena y cuánto IP-Adapter usar.
+
+    - Mencionados: los personajes presentes que la acción nombra (por nombre o por su tipo:
+      "jaguar", "parrot", "man").
+    - Foco: el protagonista si está mencionado; si no, el primer mencionado; si la acción no
+      nombra a nadie, el protagonista (si está presente).
+    - IP-Adapter (la referencia es del protagonista): completo si el foco es el protagonista
+      y la acción lo nombra; reducido si es implícito, si hay otro personaje o un grupo;
+      nulo si el foco es otro personaje.
+    """
+    escena = bible.escena(numero)
+    presentes = list(escena.personajes_presentes)
+    prota = bible.protagonista().id
+    texto = _sin_tildes(accion).lower()
+    nombrados = {s.personaje for s in sustituciones}
+    mencionados: list[str] = []
+    for pid in presentes:
+        try:
+            personaje = bible.personaje(pid)
+        except KeyError:
+            continue
+        nombre = _sustantivo(personaje)
+        if pid in nombrados or (nombre and re.search(rf"\b{re.escape(nombre)}e?s?\b", texto)):
+            mencionados.append(pid)
+    grupo = bool(_GRUPO.search(accion))
+    if mencionados:
+        foco: str | None = prota if prota in mencionados else mencionados[0]
+    else:
+        foco = prota if prota in presentes else (presentes[0] if presentes else None)
+
+    if foco != prota:
+        factor = 0.0
+    else:
+        factor = 1.0 if prota in mencionados else IP_FACTOR_IMPLICITO
+        if len(mencionados) > 1:
+            factor = min(factor, IP_FACTOR_CON_OTROS)
+        if grupo:
+            factor = min(factor, IP_FACTOR_GRUPO)
+    return FocoEscena(foco=foco, mencionados=mencionados, grupo=grupo, ip_factor=factor)
+
+
 def _ids_ordenados(bible: StoryBible, presentes: Sequence[str]) -> list[str]:
     """Protagonista primero (mayor peso en CLIP por ir antes), luego el orden de la escena."""
     prota = bible.protagonista().id
@@ -285,6 +381,7 @@ def construir_prompt(
     usar_bible: bool = True,
     max_tokens: int = TOKENS_CLIP_UTILES,
     orden: OrdenPrompt = "estilo_primero",
+    personajes: PersonajesPrompt = "presentes",
 ) -> PromptImagen:
     """Prompt y negative prompt de la escena ``numero``.
 
@@ -296,6 +393,11 @@ def construir_prompt(
     prueba real de 2.3, con el estilo primero y IP-Adapter, todas las escenas salieron como
     retratos de frente del protagonista y la acción casi no se notaba. El orden de recorte
     (estilo, acción, personajes) no cambia.
+
+    ``personajes="foco"`` (producción desde el 12 nov) pone el descriptor completo solo del
+    personaje foco (``analizar_foco``) y recorta antes el descriptor que la acción; además
+    devuelve ``ip_factor`` para ajustar IP-Adapter en esta escena. ``"presentes"`` es el
+    comportamiento de la batería 6.2 (descriptores de todos los presentes).
     """
     try:
         escena = bible.escena(numero)
@@ -306,9 +408,13 @@ def construir_prompt(
 
     bloques: list[_Bloque] = []
     ids: list[str] = []
+    accion, sustituciones = sustituir_nombres(escena.prompt_imagen, bible, usar_bible=usar_bible)
+    foco = analizar_foco(bible, numero, accion, sustituciones) if usar_bible else None
     if usar_bible:
         bloques.append(_Bloque("estilo", frases(bible.estilo_visual.prompt())))
         ids = _ids_ordenados(bible, escena.personajes_presentes)
+        if personajes == "foco" and foco is not None:
+            ids = [foco.foco] if foco.foco else []
         for pid in ids:
             try:
                 personaje = bible.personaje(pid)
@@ -318,7 +424,6 @@ def construir_prompt(
                 ) from exc
             minimo = 2 if personaje.rol is RolPersonaje.PROTAGONISTA else 1
             bloques.append(_Bloque("personajes", frases(personaje.descripcion_visual_fija), minimo))
-    accion, sustituciones = sustituir_nombres(escena.prompt_imagen, bible, usar_bible=usar_bible)
     bloque_accion = _Bloque("accion", frases(accion))
     if orden == "accion_primero":
         bloques = [bloque_accion, *(b for b in bloques if b.segmento == "personajes")] + [
@@ -327,7 +432,11 @@ def construir_prompt(
     else:
         bloques.append(bloque_accion)
 
-    prompt, truncamientos = ajustar_a_presupuesto(bloques, contar, max_tokens)
+    # En modo foco la acción es lo último que se recorta (es lo que cuenta la escena).
+    prioridad = (
+        {"estilo": 0, "personajes": 1, "accion": 2, "negativo": 0} if personajes == "foco" else None
+    )
+    prompt, truncamientos = ajustar_a_presupuesto(bloques, contar, max_tokens, prioridad)
     negativo, trunc_neg = construir_negativo(
         bible if usar_bible else None, negative_base, contar, max_tokens
     )
@@ -341,6 +450,9 @@ def construir_prompt(
         personajes=ids,
         truncamientos=truncamientos,
         sustituciones=sustituciones,
+        foco=foco.foco if foco else None,
+        mencionados=foco.mencionados if foco else [],
+        ip_factor=foco.ip_factor if (foco and personajes == "foco") else 1.0,
     )
     if sustituciones:
         logger.info(

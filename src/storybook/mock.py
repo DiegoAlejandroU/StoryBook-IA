@@ -9,6 +9,8 @@ la síntesis procedural real (CPU). La UI muestra un aviso de "modo simulado".
 
 from __future__ import annotations
 
+import os
+import time
 from pathlib import Path
 from typing import Any, Final
 
@@ -17,8 +19,9 @@ from PIL import Image, ImageDraw
 
 from storybook.config import ImageConfig, LLMConfig
 from storybook.pipeline import Dependencias
-from storybook.schemas import StoryBible, StoryRequest
+from storybook.schemas import PlanEscena, PlanHistoria, StoryBible, StoryRequest
 from storybook.sound.generator import ProceduralBackend
+from storybook.story.llm_client import ChatResult, GeneracionValidada
 
 HISTORIA_EJEMPLO: Final = Path(__file__).parent / "datos" / "historia_ejemplo.json"
 FRECUENCIA_VOZ: Final = 22_050
@@ -100,10 +103,77 @@ class VozSimulada:
         return {"backend": self.nombre, "voz": "simulada"}
 
 
-def dependencias_simuladas() -> Dependencias:
+class LLMSimulado:
+    """LLM para la generación por escenas: el plan y las escenas de la historia de ejemplo.
+
+    ``demora_s`` simula el tiempo de cada llamada (variable ``STORYBOOK_MOCK_DEMORA``) para
+    ver en la interfaz cómo aparecen las escenas de a una.
+    """
+
+    def __init__(self, demora_s: float = 0.0) -> None:
+        self.demora_s = demora_s
+        self.bible = StoryBible.model_validate_json(HISTORIA_EJEMPLO.read_text(encoding="utf-8"))
+        self.escritas = 0
+        self.descargas = 0
+
+    def _plan(self) -> PlanHistoria:
+        b = self.bible
+        hechos_escenas = {h for e in b.escenas for h in e.hechos_nuevos}
+        return PlanHistoria(
+            titulo=b.titulo,
+            genero=b.genero,
+            tono=b.tono,
+            estilo_visual=b.estilo_visual,
+            escenario=b.escenario,
+            personajes=b.personajes,
+            plan_escenas=[
+                PlanEscena(
+                    numero=e.numero,
+                    fase=e.fase,
+                    resumen=e.resumen,
+                    personajes_presentes=list(e.personajes_presentes),
+                )
+                for e in b.escenas
+            ],
+            canon_inicial=[h for h in b.canon if h not in hechos_escenas],
+        )
+
+    def generar_validado(self, *, modelo_salida: type[Any], **_: Any) -> GeneracionValidada[Any]:
+        if self.demora_s:
+            time.sleep(self.demora_s)
+        if modelo_salida is PlanHistoria:
+            objeto: Any = self._plan()
+        else:
+            self.escritas = self.escritas % len(self.bible.escenas) + 1
+            objeto = self.bible.escena(self.escritas).model_copy(deep=True)
+        resultado = ChatResult(
+            content=objeto.model_dump_json(),
+            model="simulado",
+            prompt_tokens=0,
+            output_tokens=0,
+            total_s=self.demora_s,
+            load_s=0.0,
+            eval_s=self.demora_s,
+            done_reason="stop",
+        )
+        return GeneracionValidada(objeto=objeto, intentos=1, resultado=resultado)
+
+    def unload(self, modelo: str) -> None:
+        self.descargas += 1
+
+
+def demora_simulada() -> float:
+    try:
+        return max(0.0, float(os.environ.get("STORYBOOK_MOCK_DEMORA", "0") or 0))
+    except ValueError:
+        return 0.0
+
+
+def dependencias_simuladas(demora_s: float | None = None) -> Dependencias:
     return Dependencias(
         escribir=escribir_simulado,
         backend_imagen=ImagenSimulada(),
         backend_voz=VozSimulada(),
         fabrica_sonido=lambda _nombre: ProceduralBackend(),
+        llm=LLMSimulado(demora_simulada() if demora_s is None else demora_s),
     )

@@ -182,7 +182,13 @@ OrdenPromptImagen = Literal["estilo_primero", "accion_primero"]
 
 class ImageConfig(_Strict):
     model_id: str
-    scheduler: Literal["lcm", "dpmpp_2m_karras"] = "lcm"
+    # sd15: Stable Diffusion 1.5 (DreamShaper 8). sdxl: SDXL (DreamShaper XL Lightning), más
+    # grande; en 4 GB va con el UNet en fp8 y los componentes en la GPU solo mientras se usan.
+    arquitectura: Literal["sd15", "sdxl"] = "sd15"
+    vae_id: str | None = None  # SDXL: VAE fp16 corregido (madebyollin/sdxl-vae-fp16-fix)
+    unet_fp8: bool = False  # pesos del UNet guardados en fp8 y calculados en fp16
+    sheet_size: int = 512  # lado de la character sheet (512 en SD 1.5; 832 en SDXL)
+    scheduler: Literal["lcm", "dpmpp_2m_karras", "dpmpp"] = "lcm"
     lcm_lora_id: str = "latent-consistency/lcm-lora-sdv1-5"
     steps: int = Field(default=6, ge=1, le=100)
     guidance_scale: float = Field(default=1.5, ge=0.0, le=20.0)
@@ -194,12 +200,15 @@ class ImageConfig(_Strict):
     cpu_offload: bool = False
     ip_adapter: IPAdapterConfig = IPAdapterConfig()
     prompt_orden: OrdenPromptImagen = "accion_primero"  # ajustado en la tarea 2.3
+    # "foco" (12 nov): descriptor completo solo del personaje foco de cada escena e
+    # IP-Adapter ajustado por escena. "presentes": como en la batería 6.2.
+    personajes_prompt: Literal["presentes", "foco"] = "foco"
 
     @field_validator("width", "height")
     @classmethod
     def _multiplo_de_8(cls, valor: int) -> int:
-        if valor % 8 != 0 or not 256 <= valor <= 1024:
-            raise ValueError("width/height deben ser múltiplos de 8 entre 256 y 1024")
+        if valor % 8 != 0 or not 256 <= valor <= 1536:
+            raise ValueError("width/height deben ser múltiplos de 8 entre 256 y 1536")
         return valor
 
 

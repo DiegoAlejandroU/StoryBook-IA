@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import unicodedata
 from dataclasses import dataclass
 from datetime import datetime
@@ -63,18 +64,38 @@ def crear_carpeta_run(idea: str, raiz: Path | None = None, ahora: datetime | Non
     return carpeta
 
 
+REINTENTOS_REEMPLAZO: Final = 20
+
+
+def _reemplazar(temporal: Path, ruta: Path) -> None:
+    """``temporal.replace(ruta)`` con reintentos.
+
+    En Windows el reemplazo falla (PermissionError) si en ese instante otro hilo tiene el
+    archivo abierto: con la generación por escenas, la interfaz lista las historias (y lee
+    su manifest) mientras el pipeline lo actualiza en segundo plano.
+    """
+    for intento in range(REINTENTOS_REEMPLAZO):
+        try:
+            temporal.replace(ruta)
+            return
+        except PermissionError:
+            if intento == REINTENTOS_REEMPLAZO - 1:
+                raise
+            time.sleep(0.05)
+
+
 def guardar_json(ruta: Path, datos: Any) -> None:
     """Escritura atómica: primero a un temporal y luego se reemplaza."""
     temporal = ruta.with_suffix(ruta.suffix + ".tmp")
     temporal.write_text(json.dumps(datos, ensure_ascii=False, indent=2, default=str), "utf-8")
-    temporal.replace(ruta)
+    _reemplazar(temporal, ruta)
 
 
 def guardar_bible(carpeta: Path, bible: StoryBible) -> Path:
     ruta = carpeta / ARCHIVO_BIBLE
     temporal = ruta.with_suffix(".json.tmp")
     temporal.write_text(bible.model_dump_json(indent=2), encoding="utf-8")
-    temporal.replace(ruta)
+    _reemplazar(temporal, ruta)
     return ruta
 
 

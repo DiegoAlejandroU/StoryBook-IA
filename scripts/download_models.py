@@ -16,6 +16,7 @@ Uso (PowerShell):
     uv run python scripts/download_models.py --only image voice   # por modalidad
     uv run python scripts/download_models.py --skip-gated         # sin Stable Audio
     uv run python scripts/download_models.py --only voice --voces-extra es_MX-ald-medium  # 3.3
+    uv run python scripts/download_models.py --profiles sdxl --only image   # modelo grande (12 nov)
 """
 
 from __future__ import annotations
@@ -277,7 +278,17 @@ def main() -> int:
         entradas.append(
             descargar_patrones(base.image.lcm_lora_id, "image", ["*.safetensors", "*.json"])
         )
-        entradas.append(descargar_ip_adapter(base))
+        # Un IP-Adapter por arquitectura (SD 1.5: models/; SDXL: sdxl_models/).
+        pesos_ip: dict[tuple[str, str, str], config.AppConfig] = {}
+        for perfil in perfiles:
+            ip = perfil.image.ip_adapter
+            pesos_ip.setdefault((ip.repo_id, ip.subfolder, ip.weight_name), perfil)
+        for perfil in pesos_ip.values():
+            entradas.append(descargar_ip_adapter(perfil))
+        for vae in sorted({p.image.vae_id for p in perfiles if p.image.vae_id}):
+            # VAE de SDXL corregido para fp16 (perfil sdxl, 12 nov).
+            patrones = ["config.json", "diffusion_pytorch_model.safetensors"]
+            entradas.append(descargar_patrones(vae, "image", patrones))
 
     if "voice" in args.only:
         for voz in sorted({p.voice.piper_voice for p in perfiles} | set(args.voces_extra)):

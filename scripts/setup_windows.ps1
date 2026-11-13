@@ -26,6 +26,8 @@
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso experimentos -Ideas 1
   Complemento de 6.2 (AudioLDM: variantes de prompt y guidance sobre la ultima bateria):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso audioldm
+  Modelo de imagen mas grande (SDXL Lightning frente a SD 1.5 en la ultima historia; descarga ~8 GB):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso sdxl
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -34,7 +36,7 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos", "audioldm")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos", "audioldm", "sdxl")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [ValidateRange(1, 4)]
@@ -159,6 +161,7 @@ function Paso-Git {
         if ($Paso -eq "muestras") { $titulo = "chore: codigo para rehacer ambientes y exportar ejemplos" }
         if ($Paso -eq "experimentos") { $titulo = "chore: codigo usado en la bateria de experimentos (tarea 6.2)" }
         if ($Paso -eq "audioldm") { $titulo = "chore: codigo de la prueba de prompts de AudioLDM (tarea 6.2)" }
+        if ($Paso -eq "sdxl") { $titulo = "feat: generacion por escenas, interfaz tipo libro, personaje foco y soporte de SDXL" }
         # Sin "Co-Authored-By" ni menciones a asistentes: el unico autor es Diego (pedido explicito).
         if ((Ejecutar "git" @("commit", "-m", $titulo)) -ne 0) { return 1 }
     } else {
@@ -338,7 +341,7 @@ Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
 # f1 y f2 tambien hacen commit del codigo antes de generar: la evidencia debe corresponder a un commit.
-if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4", "muestras", "experimentos", "audioldm")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4", "muestras", "experimentos", "audioldm", "sdxl")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -440,6 +443,25 @@ if ($Paso -eq "audioldm") {
     if (Test-Path $salidaAl) { Remove-Item $salidaAl }
     $codigo = Ejecutar "uv" @("run", "python", "scripts/f6_audioldm_prompts.py") $salidaAl
     Guardar-Evidencias "chore: evidencias de la prueba de prompts de AudioLDM (tarea 6.2)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "sdxl") {
+    Titulo "Modelo de imagen mas grande - Descarga de DreamShaper XL Lightning y comparacion con SD 1.5"
+    # 1) Descarga (con Internet, ~8 GB la primera vez; luego solo verifica la cache).
+    $salidaDx = Join-Path $Evid "download_models_sdxl.txt"
+    if (Test-Path $salidaDx) { Remove-Item $salidaDx }
+    $codigo = Ejecutar "uv" @("run", "python", "scripts/download_models.py", "--profiles", "sdxl", "--only", "image") $salidaDx
+    if ($codigo -ne 0) {
+        Escribir "La descarga fallo (ver docs\evidencias\download_models_sdxl.txt)." "Red"
+        Guardar-Evidencias "chore: evidencias de la descarga de SDXL" | Out-Null
+        Fin $codigo
+    }
+    # 2) La ultima historia real con SD 1.5 (ya con el personaje foco) y con SDXL: tiempos,
+    #    VRAM, CLIP y hojas de contactos en docs/evidencias/f7_sdxl.md y f7_hojas/.
+    $salidaF7 = Join-Path $Evid "f7_sdxl.txt"
+    if (Test-Path $salidaF7) { Remove-Item $salidaF7 }
+    $codigo = Ejecutar "uv" @("run", "python", "scripts/f7_sdxl_prueba.py") $salidaF7
+    Guardar-Evidencias "chore: evidencias de la prueba de SDXL Lightning frente a SD 1.5" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
 if ($Paso -eq "f4") {

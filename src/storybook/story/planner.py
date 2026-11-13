@@ -196,8 +196,9 @@ class Planificador:
         bible.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
         return ResultadoPlan(bible=bible, estrategia="una_llamada", llamadas=[registro])
 
-    def _por_etapas(self, solicitud: StoryRequest) -> ResultadoPlan:
-        plan, registro_plan = self._llamar(
+    def planificar(self, solicitud: StoryRequest) -> tuple[PlanHistoria, RegistroLlamada]:
+        """Estrategia (b), paso 1: título, estilo, personajes y resumen de las 5 escenas."""
+        plan, registro = self._llamar(
             "plan",
             PlanHistoria,
             mensajes_plan(solicitud),
@@ -206,23 +207,38 @@ class Planificador:
             reparar=_reparar_plan,
         )
         plan.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
-        llamadas = [registro_plan]
-        regla = REGLAS_GENERO[solicitud.genero]
+        return plan, registro
+
+    def escribir_escena(
+        self, plan: PlanHistoria, numero: int, previas: list[Escena], genero: str
+    ) -> tuple[Escena, RegistroLlamada]:
+        """Estrategia (b), paso 2: la escena ``numero`` con el canon y los resúmenes previos.
+
+        La usa también la generación por escenas (``Pipeline.generar_por_escenas``), que
+        ilustra y narra cada escena antes de escribir la siguiente.
+        """
         canon = list(plan.canon_inicial)
+        for previa in previas:
+            canon.extend(h for h in previa.hechos_nuevos if h not in canon)
+        resumenes = [f"Escena {e.numero}: {e.resumen}" for e in previas]
+        regla = REGLAS_GENERO.get(genero, REGLAS_GENERO["otro"])
+        escena, registro = self._llamar(
+            f"escena_{numero}",
+            Escena,
+            mensajes_escena(plan, numero, resumenes, canon, regla),
+            temperature=self.cfg.temperature_narrativa,
+            seed=derivar_seed(self.cfg.seed, "escena", numero),
+            reparar=_reparar_escena,
+        )
+        return alinear_escena_con_plan(escena, plan, numero), registro
+
+    def _por_etapas(self, solicitud: StoryRequest) -> ResultadoPlan:
+        plan, registro_plan = self.planificar(solicitud)
+        llamadas = [registro_plan]
         escenas: list[Escena] = []
         for numero in range(1, NUM_ESCENAS + 1):
-            resumenes = [f"Escena {e.numero}: {e.resumen}" for e in escenas]
-            escena, registro = self._llamar(
-                f"escena_{numero}",
-                Escena,
-                mensajes_escena(plan, numero, resumenes, canon, regla),
-                temperature=self.cfg.temperature_narrativa,
-                seed=derivar_seed(self.cfg.seed, "escena", numero),
-                reparar=_reparar_escena,
-            )
-            escena = alinear_escena_con_plan(escena, plan, numero)
+            escena, registro = self.escribir_escena(plan, numero, escenas, solicitud.genero)
             escenas.append(escena)
-            canon.extend(h for h in escena.hechos_nuevos if h not in canon)
             llamadas.append(registro)
         try:
             bible = StoryBible.desde_plan(plan, escenas)

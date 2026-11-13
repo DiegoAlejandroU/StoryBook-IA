@@ -110,6 +110,7 @@ class ResultadoImagen:
     respaldo: bool = False
     intentos: int = 1
     error: str | None = None
+    ip_escala: float = 0.0
 
     def a_dict(self) -> dict[str, Any]:
         return {
@@ -117,6 +118,7 @@ class ResultadoImagen:
             "archivo": self.ruta.name,
             "seed": self.seed,
             "ip_adapter": self.ip_adapter,
+            "ip_escala": self.ip_escala,
             "segundos": self.segundos,
             "respaldo": self.respaldo,
             "intentos": self.intentos,
@@ -171,6 +173,24 @@ def imagen_respaldo(ancho: int, alto: int, numero: int) -> Image.Image:
     return imagen
 
 
+def restaurar_almacenamiento_fp8(unet: Any) -> int:
+    """Devuelve a fp8 las capas con *layerwise casting* tras cargar IP-Adapter.
+
+    ``load_ip_adapter`` termina con ``unet.to(dtype=unet.dtype)``, y con layerwise casting
+    ``unet.dtype`` es el de cálculo (fp16): el UNet de SDXL volvería a ocupar 5,1 GB y no
+    cabría en la GPU de 4 GB. Las capas nuevas de IP-Adapter no tienen el hook y siguen en
+    fp16. Devuelve cuántas capas se restauraron.
+    """
+    restauradas = 0
+    for modulo in unet.modules():
+        registro = getattr(modulo, "_diffusers_hook", None)
+        gancho = registro.get_hook("layerwise_casting") if registro is not None else None
+        if gancho is not None:
+            modulo.to(dtype=gancho.storage_dtype)
+            restauradas += 1
+    return restauradas
+
+
 # ---------------------------------------------------------------------------------------
 # Generador
 # ---------------------------------------------------------------------------------------
@@ -218,6 +238,8 @@ class GeneradorImagenes:
             "ip_adapter": self.usar_ip_adapter,
             "ip_adapter_scale": c.ip_adapter.scale if self.usar_ip_adapter else None,
             "prompt_orden": c.prompt_orden,
+            "personajes_prompt": c.personajes_prompt,
+            "arquitectura": c.arquitectura,
             "seed_policy": self.consistencia.seed_policy,
             "seed_fija": self.consistencia.fixed_seed,
         }
@@ -261,36 +283,12 @@ class GeneradorImagenes:
         Para regenerar una sola escena se pasa ``numeros=[n]``: la Bible y sus seeds no
         cambian y, si existe, se reutiliza la character sheet de la ejecución original.
         """
-        carpeta.mkdir(parents=True, exist_ok=True)
         bible = self.asegurar_seeds(bible)
         numeros = list(numeros) if numeros is not None else [e.numero for e in bible.escenas]
-        etapa = EtapaImagen(bible=bible, imagenes=[], parametros=self.parametros())
-
-        pipe: PipelineImagen | None = None
-        try:
-            with track_stage("imagen_carga") as m_carga:
-                try:
-                    pipe = self.backend.cargar(self.cfg)
-                except Exception as exc:
-                    raise ImageModelError(
-                        f"No se pudo cargar el modelo de imagen '{self.cfg.model_id}': {exc}"
-                    ) from exc
-            etapa.metricas.append(m_carga)
-            etapa.backend = self.backend.info()
-            contar = self._contador(pipe)
-
-            ip_embeds = None
-            if self.usar_ip_adapter:
-                ip_embeds = self._preparar_ip_adapter(
-                    pipe, bible, carpeta, contar, etapa, reutilizar_sheet
-                )
+        with self.sesion(bible, carpeta, reutilizar_sheet=reutilizar_sheet) as sesion:
             for numero in numeros:
-                etapa.imagenes.append(
-                    self._generar_escena(pipe, bible, numero, carpeta, contar, ip_embeds, etapa)
-                )
-        finally:
-            del pipe
-            self.backend.liberar()
+                sesion.escena(bible, numero)
+        etapa = sesion.etapa
         logger.info(
             "etapa_imagen_terminada",
             extra=kv(
@@ -300,6 +298,18 @@ class GeneradorImagenes:
             ),
         )
         return etapa
+
+    def sesion(
+        self, bible: StoryBible, carpeta: Path, *, reutilizar_sheet: bool = True
+    ) -> SesionImagen:
+        """Modelo cargado una vez para ilustrar escena por escena (``with``).
+
+        ``generar`` la usa para las 5 escenas seguidas; la generación por escenas la mantiene
+        abierta mientras el LLM escribe la siguiente (con ``cpu_offload`` la VRAM queda libre
+        entre llamadas). ``bible`` debe traer al menos el protagonista y el estilo: con ellos
+        se hace la character sheet.
+        """
+        return SesionImagen(self, self.asegurar_seeds(bible), carpeta, reutilizar_sheet)
 
     def _contador(self, pipe: PipelineImagen) -> ContadorTokens:
         tokenizer = getattr(pipe, "tokenizer", None)
@@ -337,8 +347,8 @@ class GeneradorImagenes:
                         prompt=prompt_sheet.prompt,
                         negativo=prompt_sheet.negative_prompt,
                         seed=prompt_sheet.seed,
-                        ancho=prompt_sheet.ancho,
-                        alto=prompt_sheet.alto,
+                        ancho=self.cfg.sheet_size,
+                        alto=self.cfg.sheet_size,
                     )
                     m_sheet.extra.update(seed=prompt_sheet.seed, tokens=prompt_sheet.tokens)
                 referencia.save(ruta)
@@ -357,6 +367,20 @@ class GeneradorImagenes:
             etapa.fallbacks.append(FALLBACK_SIN_IP_ADAPTER)
             etapa.errores.append(mensaje)
             return None
+
+    def _ajustar_ip(self, pipe: PipelineImagen, ip_embeds: Any, factor: float) -> float:
+        """Escala de IP-Adapter para esta escena (0 si no hay IP-Adapter o el foco es otro).
+
+        La referencia es del protagonista: en una escena del loro o del jaguar, aplicarla
+        convierte al animal en el niño. Con escala 0 se siguen pasando los embeddings.
+        """
+        if ip_embeds is None:
+            return 0.0
+        escala = round(self.cfg.ip_adapter.scale * factor, 3)
+        ajustar = getattr(pipe, "set_ip_adapter_scale", None)
+        if callable(ajustar):
+            ajustar(escala)
+        return escala
 
     def _generar_escena(
         self,
@@ -377,7 +401,9 @@ class GeneradorImagenes:
             negative_base=self.cfg.negative_prompt_base,
             usar_bible=self.usar_bible,
             orden=self.cfg.prompt_orden,
+            personajes=self.cfg.personajes_prompt,
         )
+        escala_ip = self._ajustar_ip(pipe, ip_embeds, prompt.ip_factor)
         ruta = carpeta / nombre_archivo_escena(numero)
         ultimo_error: str | None = None
         intentos = 0
@@ -395,7 +421,12 @@ class GeneradorImagenes:
                         ip_embeds=ip_embeds,
                     )
                     metrica.extra.update(
-                        seed=seed, tokens=prompt.tokens, intento=intento, ip=ip_embeds is not None
+                        seed=seed,
+                        tokens=prompt.tokens,
+                        intento=intento,
+                        ip=ip_embeds is not None,
+                        ip_escala=escala_ip,
+                        foco=prompt.foco,
                     )
                 imagen.save(ruta)
                 etapa.metricas.append(metrica)
@@ -404,9 +435,10 @@ class GeneradorImagenes:
                     ruta=ruta,
                     seed=seed,
                     prompt=prompt,
-                    ip_adapter=ip_embeds is not None,
+                    ip_adapter=ip_embeds is not None and escala_ip > 0,
                     segundos=metrica.segundos,
                     intentos=intento,
+                    ip_escala=escala_ip,
                 )
             except Exception as exc:
                 ultimo_error = f"{type(exc).__name__}: {exc}"
@@ -435,6 +467,84 @@ class GeneradorImagenes:
         )
 
 
+class SesionImagen:
+    """Pipeline de imagen abierto: carga, character sheet e IP-Adapter una sola vez.
+
+    Al entrar carga el modelo (``ImageModelError`` si no se puede) y prepara la referencia
+    del protagonista; ``escena`` ilustra una escena y la agrega a ``etapa``; al salir libera
+    la VRAM. ``estacionar`` devuelve a la GPU la memoria en caché de torch para que otro
+    modelo (el LLM de Ollama) pueda cargarse mientras la sesión sigue abierta.
+    """
+
+    def __init__(
+        self,
+        generador: GeneradorImagenes,
+        bible: StoryBible,
+        carpeta: Path,
+        reutilizar_sheet: bool = True,
+    ) -> None:
+        self.generador = generador
+        self.carpeta = carpeta
+        self.reutilizar_sheet = reutilizar_sheet
+        self.etapa = EtapaImagen(bible=bible, imagenes=[], parametros=generador.parametros())
+        self._pipe: PipelineImagen | None = None
+        self._contar: ContadorTokens = estimar_tokens_clip
+        self._ip_embeds: Any = None
+
+    def __enter__(self) -> SesionImagen:
+        gen = self.generador
+        self.carpeta.mkdir(parents=True, exist_ok=True)
+        try:
+            with track_stage("imagen_carga") as m_carga:
+                try:
+                    self._pipe = gen.backend.cargar(gen.cfg)
+                except Exception as exc:
+                    raise ImageModelError(
+                        f"No se pudo cargar el modelo de imagen '{gen.cfg.model_id}': {exc}"
+                    ) from exc
+            self.etapa.metricas.append(m_carga)
+            self.etapa.backend = gen.backend.info()
+            self._contar = gen._contador(self._pipe)
+            if gen.usar_ip_adapter:
+                self._ip_embeds = gen._preparar_ip_adapter(
+                    self._pipe,
+                    self.etapa.bible,
+                    self.carpeta,
+                    self._contar,
+                    self.etapa,
+                    self.reutilizar_sheet,
+                )
+        except BaseException:
+            self._cerrar()
+            raise
+        return self
+
+    def escena(self, bible: StoryBible, numero: int) -> ResultadoImagen:
+        """Ilustra la escena ``numero`` de ``bible`` (puede traer solo las escenas escritas)."""
+        if self._pipe is None:
+            raise ImageError("La sesión de imagen no está abierta")
+        bible = self.generador.asegurar_seeds(bible)
+        self.etapa.bible = bible
+        resultado = self.generador._generar_escena(
+            self._pipe, bible, numero, self.carpeta, self._contar, self._ip_embeds, self.etapa
+        )
+        self.etapa.imagenes = [r for r in self.etapa.imagenes if r.escena != numero]
+        self.etapa.imagenes.append(resultado)
+        self.etapa.imagenes.sort(key=lambda r: r.escena)
+        return resultado
+
+    def estacionar(self) -> None:
+        free_cuda_memory()
+
+    def _cerrar(self) -> None:
+        self._pipe = None
+        self._ip_embeds = None
+        self.generador.backend.liberar()
+
+    def __exit__(self, *_: object) -> None:
+        self._cerrar()
+
+
 # ---------------------------------------------------------------------------------------
 # Backend real (diffusers). Imports perezosos: solo se ejecuta en Windows con GPU.
 # ---------------------------------------------------------------------------------------
@@ -455,7 +565,13 @@ class DiffusersBackend:
     def cargar(self, cfg: ImageConfig) -> PipelineImagen:
         import diffusers
         import torch
-        from diffusers import DPMSolverMultistepScheduler, LCMScheduler, StableDiffusionPipeline
+        from diffusers import (
+            AutoencoderKL,
+            DPMSolverMultistepScheduler,
+            LCMScheduler,
+            StableDiffusionPipeline,
+            StableDiffusionXLPipeline,
+        )
 
         cuda = torch.cuda.is_available()
         self._dispositivo = "cuda" if cuda else "cpu"
@@ -464,13 +580,24 @@ class DiffusersBackend:
         dtype = torch.float16 if cuda else torch.float32
         snapshot = local_snapshot(cfg.model_id)
         variante = diffusers_variant(snapshot) if cuda else None
-        pipe = StableDiffusionPipeline.from_pretrained(
-            str(snapshot),
-            torch_dtype=dtype,
-            variant=variante,
-            safety_checker=None,
-            requires_safety_checker=False,
-        )
+        vae_revision = None
+        if cfg.arquitectura == "sdxl":
+            extra: dict[str, Any] = {}
+            if cfg.vae_id:
+                snapshot_vae = local_snapshot(cfg.vae_id)
+                extra["vae"] = AutoencoderKL.from_pretrained(str(snapshot_vae), torch_dtype=dtype)
+                vae_revision = snapshot_vae.name
+            pipe: Any = StableDiffusionXLPipeline.from_pretrained(
+                str(snapshot), torch_dtype=dtype, variant=variante, **extra
+            )
+        else:
+            pipe = StableDiffusionPipeline.from_pretrained(
+                str(snapshot),
+                torch_dtype=dtype,
+                variant=variante,
+                safety_checker=None,
+                requires_safety_checker=False,
+            )
         lora_revision = None
         if cfg.scheduler == "lcm":
             snapshot_lora = local_snapshot(cfg.lcm_lora_id)
@@ -481,6 +608,9 @@ class DiffusersBackend:
             )
             pipe.scheduler = LCMScheduler.from_config(pipe.scheduler.config)
             lora_revision = snapshot_lora.name
+        elif cfg.scheduler == "dpmpp":
+            # Recomendado para DreamShaper XL Lightning (4-6 pasos, CFG 2).
+            pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
         else:
             pipe.scheduler = DPMSolverMultistepScheduler.from_config(
                 pipe.scheduler.config, use_karras_sigmas=True, algorithm_type="dpmsolver++"
@@ -489,6 +619,13 @@ class DiffusersBackend:
             pipe.enable_attention_slicing()
         if cfg.vae_slicing and hasattr(pipe.vae, "enable_slicing"):
             pipe.vae.enable_slicing()
+        if cfg.arquitectura == "sdxl" and hasattr(pipe.vae, "enable_tiling"):
+            pipe.vae.enable_tiling()  # decodificar 1152x768 sin pico de memoria
+        if cfg.unet_fp8 and cuda:
+            # Pesos en fp8 (la mitad de memoria) y cálculo en fp16, capa por capa.
+            pipe.unet.enable_layerwise_casting(
+                storage_dtype=torch.float8_e4m3fn, compute_dtype=torch.float16
+            )
         if cfg.cpu_offload and cuda:
             pipe.enable_model_cpu_offload()
         else:
@@ -503,6 +640,10 @@ class DiffusersBackend:
             "diffusers": diffusers.__version__,
             "modelo_revision": snapshot.name,
             "lcm_lora_revision": lora_revision,
+            "arquitectura": cfg.arquitectura,
+            "vae_revision": vae_revision,
+            "unet_fp8": cfg.unet_fp8,
+            "cpu_offload": bool(cfg.cpu_offload and cuda),
         }
         return pipe
 
@@ -530,6 +671,9 @@ class DiffusersBackend:
             weight_name=ipc.weight_name,
             image_encoder_folder=None,
         )
+        if cfg.unet_fp8 and self._dispositivo == "cuda":
+            capas = restaurar_almacenamiento_fp8(sd_pipe.unet)
+            logger.info("unet_fp8_restaurado", extra=kv(capas=capas))
         sd_pipe.set_ip_adapter_scale(ipc.scale)
         dtype = torch.float16 if self._dispositivo == "cuda" else torch.float32
         positivo = embedding.unsqueeze(1).to(self._dispositivo, dtype)  # (batch, n_img, dim)

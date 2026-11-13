@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 
 import pytest
 
@@ -170,3 +171,104 @@ def test_orden_accion_primero(bible: StoryBible) -> None:
     assert invertido.prompt.startswith(accion.split(",")[0])
     assert invertido.prompt.rstrip().endswith(estilo.split(",")[-1].strip())
     assert sorted(normal.prompt.split(", ")) == sorted(invertido.prompt.split(", "))
+
+
+# ---------------------------------------------------------------------------------------
+# Personaje foco (12 nov): un descriptor por escena e IP-Adapter ajustado
+# ---------------------------------------------------------------------------------------
+def _selva(bible_dict: dict) -> StoryBible:
+    datos = json.loads(json.dumps(bible_dict))
+    datos["personajes"] = [
+        {
+            **datos["personajes"][0],
+            "id": "kai",
+            "nombre": "Kai",
+            "rol": "protagonista",
+            "descripcion_visual_fija": "boy age 10, short curly hair, leafy shirt, thin build",
+        },
+        {
+            **datos["personajes"][0],
+            "id": "oren",
+            "nombre": "Oren",
+            "rol": "secundario",
+            "descripcion_visual_fija": "old man age 70, white beard, woven sash, walking stick",
+        },
+        {
+            **datos["personajes"][0],
+            "id": "mira",
+            "nombre": "Mira",
+            "rol": "secundario",
+            "descripcion_visual_fija": "young jaguar age 4, golden fur, black spots, green eyes",
+        },
+    ]
+    prompts = [
+        "Kai finds an ancient map on a mossy rock in a tropical jungle, wide shot",
+        "Mira drinks from a river at dawn, tropical forest background",
+        "Old man standing between tall trees, holding a weathered map",
+        "A jaguar and Kai run along a river under the rain",
+        "A group of friends standing in a newly formed oasis",
+    ]
+    for escena, prompt in zip(datos["escenas"], prompts, strict=True):
+        escena["prompt_imagen"] = prompt
+        escena["personajes_presentes"] = ["kai", "oren", "mira"]
+    return StoryBible.model_validate(datos)
+
+
+def test_foco_y_escala_de_ip_adapter_por_escena(bible_dict: dict) -> None:
+    from storybook.image.prompt_builder import analizar_foco, sustituir_nombres
+
+    bible = _selva(bible_dict)
+    esperado = {
+        1: ("kai", ["kai"], 1.0),  # nombra al protagonista: IP-Adapter completo
+        2: ("mira", ["mira"], 0.0),  # escena del jaguar: sin la cara del niño
+        3: ("oren", ["oren"], 0.0),  # "old man" se reconoce por su tipo
+        4: ("kai", ["kai", "mira"], 0.6),  # protagonista con otro personaje
+        5: ("kai", [], 0.5),  # grupo y nadie nombrado: protagonista implícito, IP reducido
+    }
+    for numero, (foco, mencionados, factor) in esperado.items():
+        accion, sust = sustituir_nombres(bible.escena(numero).prompt_imagen, bible)
+        resultado = analizar_foco(bible, numero, accion, sust)
+        assert (resultado.foco, resultado.mencionados, resultado.ip_factor) == (
+            foco,
+            mencionados,
+            factor,
+        ), numero
+    assert analizar_foco(bible, 5, bible.escena(5).prompt_imagen).grupo
+
+
+def test_modo_foco_solo_pone_el_descriptor_del_foco(bible_dict: dict) -> None:
+    bible = _selva(bible_dict)
+    jaguar = construir_prompt(bible, 2, personajes="foco", orden="accion_primero")
+    assert "golden fur" in jaguar.prompt and "curly hair" not in jaguar.prompt
+    assert "white beard" not in jaguar.prompt
+    assert jaguar.personajes == ["mira"] and jaguar.ip_factor == 0.0
+    todos = construir_prompt(bible, 2, personajes="presentes", orden="accion_primero")
+    assert todos.personajes == ["kai", "oren", "mira"] and todos.ip_factor == 1.0
+    assert todos.a_dict()["foco"] == "mira"
+
+
+def test_modo_foco_recorta_el_descriptor_antes_que_la_accion(bible_dict: dict) -> None:
+    bible = _selva(bible_dict)
+
+    def contar(texto: str) -> int:
+        return len(texto.replace(",", " ").split())
+
+    foco = construir_prompt(
+        bible, 1, personajes="foco", orden="accion_primero", contar=contar, max_tokens=26
+    )
+    assert foco.prompt.startswith("boy age 10 finds an ancient map on a mossy rock")
+    assert "wide shot" in foco.prompt  # la acción completa sobrevive
+    assert {t.segmento for t in foco.truncamientos} <= {"estilo", "personajes"}
+    presentes = construir_prompt(
+        bible, 1, personajes="presentes", orden="accion_primero", contar=contar, max_tokens=26
+    )
+    assert "wide shot" not in presentes.prompt  # antes se recortaba la acción
+
+
+def test_descriptor_sin_tipo_no_genera_falsos_mencionados(bible_dict: dict) -> None:
+    from storybook.image.prompt_builder import analizar_foco
+
+    bible = StoryBible.model_validate(bible_dict)  # descriptores "25 years old, ..."
+    for escena in bible.escenas:
+        resultado = analizar_foco(bible, escena.numero, "an old compass on a table")
+        assert "old" not in resultado.mencionados

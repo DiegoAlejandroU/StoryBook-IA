@@ -9,9 +9,58 @@ port = 8501
 # headless = true evita que Streamlit pregunte un correo en la consola la primera vez;
 # StoryBook.cmd abre el navegador cuando la app responde.
 headless = true
+# Sirve app/static/ (las fuentes del libro): todo local, sin pedir nada a Internet.
+enableStaticServing = true
 
 [client]
 toolbarMode = "minimal"
 
+# Interfaz tipo libro (12 nov): tela de encuadernación verde azulado con títulos en dorado,
+# páginas de papel. Fuentes OFL incluidas en app/static/fonts (Literata y Atkinson Hyperlegible).
 [theme]
 base = "dark"
+primaryColor = "#D2AE5B"
+backgroundColor = "#1F3D3E"
+secondaryBackgroundColor = "#284B4C"
+textColor = "#ECE7DA"
+borderColor = "#3B6061"
+font = "Atkinson Hyperlegible, Segoe UI, sans-serif"
+headingFont = "Literata, Georgia, serif"
+baseRadius = "6px"
+paddingTop = "0.75rem"
+paddingBottom = "0.5rem"
+showSidebarBorder = false
+
+[theme.sidebar]
+backgroundColor = "#17302F"
+secondaryBackgroundColor = "#21403F"
+
+[[theme.fontFaces]]
+family = "Literata"
+url = "app/static/fonts/literata-latin-400-normal.woff2"
+weight = 400
+style = "normal"
+
+[[theme.fontFaces]]
+family = "Literata"
+url = "app/static/fonts/literata-latin-400-italic.woff2"
+weight = 400
+style = "italic"
+
+[[theme.fontFaces]]
+family = "Literata"
+url = "app/static/fonts/literata-latin-600-normal.woff2"
+weight = 600
+style = "normal"
+
+[[theme.fontFaces]]
+family = "Atkinson Hyperlegible"
+url = "app/static/fonts/atkinson-hyperlegible-latin-400-normal.woff2"
+weight = 400
+style = "normal"
+
+[[theme.fontFaces]]
+family = "Atkinson Hyperlegible"
+url = "app/static/fonts/atkinson-hyperlegible-latin-700-normal.woff2"
+weight = 700
+style = "normal"

@@ -140,9 +140,22 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 
 ---
 
+## F9 · Pedidos del docente (12 nov)
+Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté lista y generar la 2 mientras se lee, "y no tengo que esperar los dos o tres minutos") y usar un modelo de imágenes más grande. Diego agregó: interfaz sin scroll con un panel derecho de detalles técnicos, al estilo de un flipbook, y corregir las imágenes que mezclan personajes ("en una sale un niño y en la siguiente un animal").
+- [x] 9.1 [AUTO] Personaje foco por escena: un solo personaje con su descriptor completo y el IP-Adapter escalado por escena (`prompt_builder.analizar_foco`). Verificado en las 4 historias del 12 nov.
+- [x] 9.2 [AUTO] Soporte de SDXL (DreamShaper XL Lightning con UNet fp8 y model CPU offload, `configs/sdxl.yaml`) y `scripts/f7_sdxl_prueba.py` (misma historia con SD 1.5 y con SDXL: tiempos, VRAM, CLIP y hojas de contactos). `-Paso sdxl` en `setup_windows.ps1`.
+- [ ] 9.3 [WINDOWS] `-Paso sdxl`: descargar SDXL (~8 GB) y comparar en la RTX 3050. (dep: 9.2)
+- [x] 9.4 [AUTO] Generación por escenas: `Pipeline.generar_por_escenas` (`progresivo.py`, `story/por_escenas.py`), con sesiones de imagen y sonido que cargan una vez y liberan la VRAM entre escenas para el LLM.
+- [x] 9.5 [AUTO] Interfaz tipo libro sin scroll: libro al centro con giro de página, índice, teclas ← y →, panel derecho de detalles técnicos y generación en segundo plano (`generacion_en_curso.py`).
+- [ ] 9.6 [WINDOWS] Probar la app con la generación por escenas (`StoryBook.cmd`) y medir el tiempo hasta la primera escena. (dep: 9.4, 9.5)
+- [~] 9.7 [AUTO] (reservada para la sesión interactiva) Si 9.3 lo justifica, agregar SDXL a la app (perfil y respaldo a SD 1.5) y actualizar informe, arquitectura y sustentación con los datos de 9.3 y 9.6. (dep: 9.3, 9.6)
+
+---
+
 ## Pendientes para Diego
-- **Estado:** la app funciona de punta a punta desde la interfaz (prueba de Diego, 11 nov 12:37). Lista para mostrársela al docente.
+- **Estado:** la app funciona de punta a punta desde la interfaz (prueba de Diego, 11 nov 12:37). El 12 nov se agregaron los pedidos del docente (F9): generación por escenas, interfaz tipo libro y personaje foco por escena.
 - **Pendiente:**
+  - 9.3 (`-Paso sdxl`: probar el modelo de imágenes grande) y 9.6 (probar la app nueva con `StoryBook.cmd`);
   - 8.2 (ensayo cronometrado con idea y género al azar);
   - 7.3 (video, pospuesto);
   - 3 datos del informe: docente, lista 1–5 y video.
@@ -788,3 +801,45 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
 - **Solución elegida por Diego:** borrar el repositorio en GitHub y crearlo de nuevo, vacío y público, con el mismo nombre (`DiegoAlejandroU/StoryBook-IA`). Claude lo hizo en Chrome, con confirmación explícita de Diego.
 - **El historial no se perdió:** la carpeta local tiene `main` en bb66fbe, el mismo commit que había en GitHub.
 - **Siguiente (Diego):** `setup_windows.ps1 -Paso git`, para subir el historial completo al repositorio nuevo.
+- **Resultado (13:20):** `-Paso git` subió el historial al repositorio nuevo (commit 77cda64, 44 commits).
+  - Al clonarlo de nuevo: autor y committer siempre Diego, 0 menciones a Claude.
+  - En la página de GitHub, *Contributors* muestra **1**: DiegoAlejandroU.
+
+### 2026-11-12 17:45 · sesión interactiva (Claude) · 9.1, 9.2, 9.4 y 9.5 hechas
+- **Pedido del docente** (nota de voz que pasó Diego, transcrita con faster-whisper): generar por escenas y usar un modelo de imágenes más grande. Diego sumó la interfaz sin scroll con panel derecho (estilo flipbook) y las imágenes que mezclaban personajes.
+- **Diagnóstico de las imágenes** con las hojas de contactos de las 4 historias del 12 nov:
+  - "El Eco del Oasis": en la escena 2 el jaguar sale con la camisa del niño y en la 5 hay 4 copias del niño.
+  - "El Canto del Mar Profundo": solo aparece el niño; el anciano y el robot nunca salen.
+  - Causa: el IP-Adapter con la referencia del protagonista se aplicaba en todas las escenas, y los descriptores de todos los personajes presentes recortaban la acción.
+- **9.1 · Personaje foco por escena** (`image.personajes_prompt: foco`, por defecto):
+  - Un solo personaje por escena, con su descriptor completo; el recorte quita primero el estilo, luego el descriptor y al final la acción.
+  - IP-Adapter por escena: 1,0 si el protagonista está nombrado; 0,5 si está implícito o es una escena de grupo; 0,6 si hay otros personajes nombrados; 0 si el foco es otro personaje.
+  - Los prompts del LLM piden un sujeto principal, como mucho 2 personajes por nombre y nada de grupos.
+  - En las 4 historias reales: las escenas del loro, del anciano y del robot quedan con IP 0; las de grupo, con 0,5.
+  - Los experimentos C1-C3 mantienen `personajes_prompt: presentes`, para que `results.csv` siga siendo reproducible.
+- **9.2 · SDXL:** DreamShaper XL Lightning (Lykon, openrail++), con VAE fp16-fix (MIT) e IP-Adapter SDXL ViT-H.
+  - Para caber en 4 GB: UNet en fp8 (`enable_layerwise_casting`) y model CPU offload, 6 pasos, CFG 2 y 1152 × 768.
+  - Detalle encontrado en el código de diffusers 0.42.1: `load_ip_adapter` termina con `unet.to(dtype=unet.dtype)` y, con layerwise casting, eso devuelve el UNet a fp16 (5,1 GB). `restaurar_almacenamiento_fp8` lo vuelve a fp8.
+  - `scripts/f7_sdxl_prueba.py` toma la última historia real y la ilustra con `rapido` (SD 1.5 con foco) y con `sdxl`. Mide tiempo, VRAM, CLIP img-img y CLIP img-texto, y arma hojas de contactos en `docs/evidencias/f7_hojas/`. Si un perfil falla, sigue con el siguiente.
+  - `download_models.py` descarga el VAE de cada perfil y un IP-Adapter por arquitectura.
+- **9.4 · Generación por escenas** (`Pipeline.generar_por_escenas`):
+  - Plan → [texto, imagen, voz, ambiente y mezcla de la escena 1] → aviso a la interfaz → escena 2 → …
+  - El modelo de imagen (con offload) y AudioLDM se cargan una sola vez y quedan en RAM entre escenas; el LLM se descarga después de cada escena.
+  - Sin auditor: revisaría las 5 escenas juntas y podría cambiar la que el usuario ya está leyendo.
+  - Si Ollama no puede poner las 99 capas en la GPU (desde la escena 2 el proceso ya tiene un contexto de CUDA abierto), se reintenta una vez en modo automático y queda registrado (`texto:num_gpu_automatico`).
+  - El manifest guarda `modo: por_escenas`, `escenas_listas` y `segundos.primera_escena`. Mismas seeds que la generación completa.
+  - Si el LLM falla a mitad, las escenas listas se conservan (`estado: incompleta`, `story_parcial.json`).
+- **9.5 · Interfaz tipo libro, sin scroll** (verificado con Playwright a 1280 × 640, 1366 × 680 y 1920 × 960: la página no se desplaza):
+  - Barra lateral para crear o abrir historias.
+  - Al centro, un libro abierto: ilustración a la izquierda y texto con capitular a la derecha. La página 0 es la portada con el índice de las 5 escenas.
+  - La página gira al hojear, con los botones o con las teclas ← y →.
+  - La narración con su ambiente suena al pasar la página; se puede apagar.
+  - A la derecha, los detalles técnicos: personaje en foco, IP-Adapter, seed, tiempos, backend del ambiente, mezcla, prompts usados, pistas por separado, modelos y alternativas usadas.
+  - La historia se genera en un hilo (`generacion_en_curso.py`, una sola generación de GPU a la vez) y la interfaz consulta el avance cada segundo. La escena en curso se puede abrir y muestra qué se está haciendo.
+  - Probado en modo simulado: la narración de la escena 1 sigue sonando sin cortes mientras se generan las demás y cuando la historia termina.
+  - Fuentes OFL locales (Literata y Atkinson Hyperlegible) en `app/static/fonts`, sin pedir nada a Internet.
+  - Capturas nuevas en `docs/informe/capturas/` (el PDF del informe se regenera en 7.3).
+- `storage.guardar_json` reintenta el reemplazo atómico si Windows tiene el archivo abierto en ese instante (la interfaz lee manifests mientras el pipeline escribe).
+- Verificación: **351 tests en verde**, ruff limpio.
+- **Siguiente (Diego):** `-Paso sdxl` (9.3) y probar la app con `StoryBook.cmd` (9.6).
+

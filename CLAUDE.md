@@ -95,7 +95,7 @@ cd "$P" && "$PY" -m pytest -q -p no:cacheprovider \
 
 Esto corresponde a un **perfil bajo de VRAM (4 GB)**. Reglas obligatorias:
 1. **Un solo modelo pesado en la GPU a la vez.** Orden: LLM → liberar → imágenes → liberar → audio generativo → liberar.
-2. **Procesar por etapas** (las 5 escenas de una modalidad seguidas), no escena por escena, para no recargar el mismo modelo 5 veces.
+2. **Procesar por etapas** (las 5 escenas de una modalidad seguidas), no escena por escena, para no recargar el mismo modelo 5 veces. **Excepción, la app (pedido del docente, 12 nov):** genera por escenas (`Pipeline.generar_por_escenas`, `progresivo.py`) para mostrar la escena 1 sin esperar las 5. El modelo de imagen y AudioLDM se cargan una sola vez y quedan en RAM entre escenas (model CPU offload / `estacionar`), y el LLM se descarga (`keep_alive=0`) después de cada escena. Los experimentos siguen usando la generación completa por etapas.
 3. **TTS, ASR, CLIP de evaluación y mezcla corren en CPU,** aprovechando los 24 GB de RAM.
 4. **Gestión de la GPU:**
    - fp16 siempre en la GPU.
@@ -104,7 +104,7 @@ Esto corresponde a un **perfil bajo de VRAM (4 GB)**. Reglas obligatorias:
    - Medir la VRAM pico (`torch.cuda.max_memory_allocated()`, `nvidia-smi`) y guardarla en el manifest.
 5. **Energía y rendimiento:** en pruebas y en la sustentación, el portátil va conectado a la corriente y en modo Turbo o Rendimiento de Armoury Crate. En batería la GPU se limita y los tiempos dejan de ser comparables.
 6. **Alternativas descartadas por VRAM** (van en el informe):
-   - SDXL y FLUX: requieren offload extremo y tardan minutos por imagen.
+   - SDXL y FLUX: requieren offload extremo y tardan minutos por imagen. **SDXL se reevalúa (12 nov):** DreamShaper XL Lightning (4-6 pasos) con el UNet en fp8 (`enable_layerwise_casting`) y model CPU offload (`configs/sdxl.yaml`, prueba `scripts/f7_sdxl_prueba.py`, `-Paso sdxl`). Se integra en la app solo si la prueba en la RTX 3050 da tiempos y VRAM razonables.
    - LLM de más de 8B.
    - XTTS-v2 en GPU.
 
@@ -219,6 +219,8 @@ Flujo:
 7. **Persistencia** con manifest
 8. **UI**
 
+**Generación por escenas (la que usa la app desde el 12 nov):** plan → [texto 1 → imagen 1 → voz 1 → ambiente 1 → mezcla 1] → aviso a la UI → [texto 2 → …]. El resultado en disco es el mismo (`story.json`, `manifest.json` con `modo: por_escenas`, `escenas_listas` y `segundos.primera_escena`). No pasa por el auditor: revisaría las 5 escenas juntas y podría cambiar una que el usuario ya está leyendo.
+
 ### Story Bible (esquema mínimo)
 - Datos generales: `titulo`, `genero`, `tono`, `idioma="es"`
 - **`estilo_visual`:** técnica, paleta e iluminación fijas para toda la historia; incluye un `negative_prompt` común. Máximo ~20 tokens CLIP.
@@ -298,6 +300,11 @@ Flujo:
     - `samples/` guarda los audios en OGG Vorbis (`storage.exportar_muestra`), escritos por bloques: en Windows, escribir un OGG largo de una vez desborda la pila (0xC00000FD).
     - *Detalles técnicos* muestra solo las alternativas vigentes (`ui_logica.fallbacks_vigentes`): una regeneración anula los avisos anteriores de esa escena, y "<backend> no disponible" solo aparece si alguna escena usa un backend posterior en la cadena.
     - `StoryBook.cmd respaldo` (variable `STORYBOOK_SIN_AUDIO_GENERATIVO=1`) desactiva los modelos de sonido generativos, para mostrar en vivo que la cadena pasa a la síntesis procedural. Guion de la sustentación en `docs/sustentacion.md`.
+  - Pedidos del docente (12 nov, tarea 9):
+    - **Personaje foco por escena** (`prompt_builder.analizar_foco`, `image.personajes_prompt: foco`): un solo personaje con su descriptor completo por escena, y el IP-Adapter escalado por escena (1,0 protagonista nombrado; 0,5 implícito o grupo; 0,6 con otros nombrados; 0 si el foco es otro personaje). Corrige el jaguar con la camisa del niño y los clones del protagonista. Los experimentos C1-C3 conservan `personajes_prompt: presentes` para que `results.csv` siga siendo reproducible.
+    - **SDXL** (`image.arquitectura: sdxl`, `vae_id`, `unet_fp8`, `sheet_size`; `configs/sdxl.yaml`). `restaurar_almacenamiento_fp8`: `load_ip_adapter` vuelve a poner el UNet en fp16 (`unet.to(dtype=unet.dtype)`), y hay que devolverlo a fp8 o no cabe.
+    - **Generación por escenas** (`progresivo.py`, `story/por_escenas.py`): sesiones de imagen (`GeneradorImagenes.sesion`) y de sonido (`GeneradorSonido.sesion`) que cargan una vez; `EscritorPorEscenas` reintenta con `num_gpu` automático si Ollama no puede poner las 99 capas en la GPU (desde la escena 2 el proceso ya tiene un contexto de CUDA abierto).
+    - **Interfaz tipo libro, sin scroll:** barra lateral (crear y abrir), libro al centro (ilustración a la izquierda, texto con capitular a la derecha, índice como página 0, giro de página animado, teclas ← y →) y panel derecho con los detalles técnicos. La historia se genera en un hilo (`generacion_en_curso.py`, un solo trabajo de GPU a la vez) y la UI consulta cada segundo con `st.fragment(run_every=1)`. Fuentes OFL locales en `app/static/fonts` (Literata y Atkinson Hyperlegible), servidas con `server.enableStaticServing`.
     - Documentación de la entrega: `README.md` (con capturas en `docs/informe/capturas/`), `MODELS.md` (revisiones y mediciones) y `docs/arquitectura.md` (diagramas Mermaid verificados con `mmdc`).
   - Voz elegida por Diego al escucharlas (3.3): `es_MX-claude-high`. WER mediano del 8,3 % con Whisper small; los errores son sobre todo de nombres propios.
 - **Voz (CPU):**
@@ -347,7 +354,7 @@ Resumen (Fase 0):
 **Descartados (con motivo en `MODELS.md`):**
 - Qwen3.5-4B: es multimodal, ocupa ~5,5 GB en 4 bits y sus GGUF no eran compatibles con Ollama. Solo se puede reevaluar si existe un tag **oficial** de Ollama y `ollama ps` muestra que cabe en 4 GB.
 - Stable Audio Open Small: depende de `stable-audio-tools`, incompatible con el entorno.
-- SDXL y FLUX: no caben en 4 GB.
+- FLUX: no cabe en 4 GB. SDXL (DreamShaper XL Lightning con UNet fp8 + offload) está en prueba desde el 12 nov (tarea 9.3).
 - XTTS-v2: compite por VRAM y su licencia CPML restringe el uso.
 
 **Fuentes de los pesos:**
