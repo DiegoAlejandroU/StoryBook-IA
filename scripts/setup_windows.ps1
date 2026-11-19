@@ -500,6 +500,8 @@ if ($Paso -eq "avanzada") {
     }
     if (-not $torchOk) { Escribir "No se pudo instalar torch 2.11 en .venv-xtts." "Red"; Fin 1 }
     if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, "coqui-tts==0.28.0", "soundfile")) -ne 0) { Fin 1 }
+    # coqui-tts exige torchcodec con torch >= 2.9 aunque aqui no se lee audio (voces incluidas).
+    if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, "--no-deps", "torchcodec")) -ne 0) { Fin 1 }
     # 4) Voz y ambiente de una historia guardada con XTTS y Stable Audio (tiempos y audios).
     $salidaVs = Join-Path $Evid "f10_voz_sonido.txt"
     if (Test-Path $salidaVs) { Remove-Item $salidaVs }

@@ -221,6 +221,9 @@ class ImageConfig(_Strict):
     # la copia del bloque siguiente (más rápido, pero usa más RAM).
     offload_grupos: bool = False
     offload_stream: bool = False
+    # FLUX: T5 (~5 GB en fp8) se carga para leer cada prompt y se libera (19 nov: con T5 en
+    # la RAM, la libre llegó a 0,01 GB y Windows paginó).
+    t5_por_demanda: bool = True
 
     @field_validator("width", "height")
     @classmethod

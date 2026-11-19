@@ -17,7 +17,8 @@ image:
   arquitectura: flux
   fp8_dir: flux-schnell-fp8                    # models/flux-schnell-fp8 (convertido en local)
   offload_grupos: true
-  offload_stream: false
+  offload_stream: true                         # 19 nov: sin stream, cada paso copiaba los 12 GB de vuelta a la RAM
+  t5_por_demanda: true                         # 19 nov: T5 solo mientras lee el prompt (~5 GB menos de RAM)
   scheduler: dpmpp                             # no se usa: FLUX trae su propio scheduler
   steps: 4                                     # schnell: 1-4 pasos
   guidance_scale: 0.0                          # schnell está destilado sin CFG

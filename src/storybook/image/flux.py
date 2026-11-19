@@ -24,6 +24,8 @@ que SD porque entiende el prompt con T5 (hasta 256 tokens en vez de 77).
 
 from __future__ import annotations
 
+import contextlib
+import gc
 import json
 import shutil
 from collections.abc import Callable
@@ -231,6 +233,14 @@ def cargar_componente_fp8(destino: Path, componente: str) -> Any:
 # ---------------------------------------------------------------------------------------
 # Pipeline
 # ---------------------------------------------------------------------------------------
+def _sin_gradientes() -> Any:
+    try:
+        import torch
+    except ImportError:  # pruebas sin torch
+        return contextlib.nullcontext()
+    return torch.inference_mode()
+
+
 class PipelineFlux:
     """``FluxPipeline`` con lo que espera el generador de imágenes.
 
@@ -238,21 +248,53 @@ class PipelineFlux:
     * Recibe los mismos argumentos que SD y quita los que FLUX no usa (negative prompt,
       embeddings de IP-Adapter).
     * CLIP-L y el VAE suben a la GPU solo durante cada imagen (``estacionar`` los baja).
+    * Con ``cargar_t5`` (19 nov), T5 no vive en la RAM: se carga para leer el prompt y se
+      libera antes de dibujar. En la prueba del 19 nov FLUX con T5 residente dejó la RAM
+      libre en 0,01 GB (Windows paginando: 107 a 318 s por imagen); así se ahorran ~5 GB.
     """
 
-    def __init__(self, pipe: Any, max_sequence_length: int, dispositivo: str) -> None:
+    def __init__(
+        self,
+        pipe: Any,
+        max_sequence_length: int,
+        dispositivo: str,
+        cargar_t5: Callable[[], Any] | None = None,
+    ) -> None:
         self.pipe = pipe
         self.tokenizer = pipe.tokenizer_2
         self.max_sequence_length = max_sequence_length
         self.dispositivo = dispositivo
+        self.cargar_t5 = cargar_t5
 
     def __call__(self, **kwargs: Any) -> Any:
         kwargs.pop("negative_prompt", None)
         kwargs.pop("ip_adapter_image_embeds", None)
-        kwargs.setdefault("max_sequence_length", self.max_sequence_length)
+        kwargs.pop("max_sequence_length", None)
+        prompt = kwargs.pop("prompt")
         self.pipe.text_encoder.to(self.dispositivo)
+        temporal = self.cargar_t5 is not None and self.pipe.text_encoder_2 is None
+        if temporal:
+            assert self.cargar_t5 is not None
+            self.pipe.text_encoder_2 = self.cargar_t5()
+        try:
+            with _sin_gradientes():
+                embeds, pooled, _ = self.pipe.encode_prompt(
+                    prompt=prompt,
+                    device=self.dispositivo,
+                    max_sequence_length=self.max_sequence_length,
+                )
+        finally:
+            if temporal:
+                self.pipe.text_encoder_2 = None
+                gc.collect()
+                free_cuda_memory()
         self.pipe.vae.to(self.dispositivo)
-        return self.pipe(**kwargs)
+        return self.pipe(
+            prompt_embeds=embeds,
+            pooled_prompt_embeds=pooled,
+            max_sequence_length=self.max_sequence_length,
+            **kwargs,
+        )
 
     def estacionar(self) -> None:
         self.pipe.text_encoder.to("cpu")
@@ -284,10 +326,6 @@ class FluxBackend:
         snapshot = local_snapshot(cfg.model_id)
         destino = carpeta_fp8(cfg)
         transformer = cargar_componente_fp8(destino, "transformer")
-        t5 = cargar_componente_fp8(destino, "text_encoder_2")
-        pipe = FluxPipeline.from_pretrained(
-            str(snapshot), transformer=transformer, text_encoder_2=t5, torch_dtype=torch.bfloat16
-        )
         opciones: dict[str, Any] = {
             "onload_device": torch.device("cuda"),
             "offload_device": torch.device("cpu"),
@@ -298,7 +336,19 @@ class FluxBackend:
             "low_cpu_mem_usage": True,
         }
         apply_group_offloading(transformer, **opciones)
-        apply_group_offloading(t5.encoder, **opciones)
+
+        def cargar_t5() -> Any:
+            t5 = cargar_componente_fp8(destino, "text_encoder_2")
+            apply_group_offloading(t5.encoder, **opciones)
+            return t5
+
+        residente = None if cfg.t5_por_demanda else cargar_t5()
+        pipe = FluxPipeline.from_pretrained(
+            str(snapshot),
+            transformer=transformer,
+            text_encoder_2=residente,
+            torch_dtype=torch.bfloat16,
+        )
         if cfg.vae_slicing:
             pipe.vae.enable_slicing()
         pipe.vae.enable_tiling()  # decodificar ~1 MP sin pico de memoria
@@ -314,8 +364,14 @@ class FluxBackend:
             "fp8_dir": str(destino.name),
             "offload": "grupos" + (" + stream" if cfg.offload_stream else ""),
             "max_sequence_length": cfg.max_sequence_length,
+            "t5": "por imagen" if cfg.t5_por_demanda else "en la RAM",
         }
-        return PipelineFlux(pipe, cfg.max_sequence_length, self._dispositivo)
+        return PipelineFlux(
+            pipe,
+            cfg.max_sequence_length,
+            self._dispositivo,
+            cargar_t5=cargar_t5 if cfg.t5_por_demanda else None,
+        )
 
     def preparar_ip_adapter(self, pipe: Any, cfg: ImageConfig, referencia: Image.Image) -> Any:
         raise NotImplementedError("FLUX no usa IP-Adapter en este proyecto")

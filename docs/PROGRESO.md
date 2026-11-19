@@ -927,3 +927,16 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
 - La conversión fp8 y la carga se probaron con un FLUX y un T5 diminutos en CPU (`tests/test_flux.py`): error relativo de ~3 % (FLUX) y ~5 % (T5) frente a bf16, y el mismo resultado con group offloading. Lo que falta medir en Windows: tiempo por imagen, RAM libre (FLUX ocupa ~17 GB de los 24) y la VRAM con XTTS y Stable Audio en la misma historia.
 - Verificación: **419 tests en verde** y 1 que necesita torch (se salta aquí; pasó en un entorno con torch 2.15 y diffusers 0.42.1), ruff limpio. Interfaz revisada en modo simulado.
 - **Siguiente (Diego):** 9.14 (paso `avanzada`), luego 9.11 con una idea nueva en cada perfil.
+
+### 2026-11-19 17:40 · sesión interactiva (Claude) · 9.14 primera medición en Windows
+- Diego puso el `HF_TOKEN` y corrió `-Paso avanzada` (12:20–12:55): descarga en ~9 min (FLUX 32,2 GB, Stable Audio Open 5,1 GB, XTTS-v2 1,8 GB; Stable Audio 3 quedó `formato_no_soportado`), copia fp8 creada y `.venv-xtts` instalado.
+- **Imágenes, historia del elefante (`f10_avanzada.md`):**
+  - FLUX dibujó mejor lo que pide cada escena: la cebra aparece en la escena 2 (SDXL no la dibujó), el búfalo y la cebra junto al elefante en la 4 (SDXL puso otro elefante en lugar del búfalo) y la luz de "twilight/moonlit" del lugar. CLIP imagen-texto 0,315 frente a 0,298 de SDXL; consistencia entre escenas 0,763 frente a 0,845 (FLUX no tiene IP-Adapter).
+  - Pero **148 s por imagen (mediana; de 107 a 318 s)** frente a 11 s de SDXL: el proceso llegó a 17,1 GB y la RAM libre a **0,01 GB**, así que Windows paginó. Con eso la primera escena en la app tardaría varios minutos.
+- **Voz:** XTTS no arrancó: coqui-tts exige `torchcodec` con torch ≥ 2.9 (aunque no lea audio). Narró Piper (respaldo).
+- **Ambiente:** Stable Audio Open no arrancó: su scheduler necesita `torchsde`. Siguió AudioLDM (dos escenas pasaron a procedural por clips casi en silencio).
+- **Correcciones:**
+  - T5 de FLUX por imagen: se carga para leer el prompt y se libera antes de dibujar (`image.t5_por_demanda`), ~5 GB menos de RAM; group offloading con stream (sin copiar los 12 GB de vuelta a la RAM en cada paso).
+  - `torchcodec` (sin dependencias) en `.venv-xtts` dentro de `-Paso avanzada`.
+  - `torchsde` en `pyproject.toml` (el primer `uv run` actualiza `uv.lock` y lo instala).
+- **Siguiente (Diego):** cerrar VS Code y el navegador, abrir Ollama y repetir `-Paso avanzada` (ya no descarga ni convierte) para medir de nuevo.

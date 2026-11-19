@@ -28,10 +28,16 @@ class _Componente:
 class _PipeFalso:
     def __init__(self) -> None:
         self.text_encoder = _Componente()
+        self.text_encoder_2: Any = None
         self.vae = _Componente()
         self.tokenizer = "clip"
         self.tokenizer_2 = "t5"
         self.llamadas: list[dict[str, Any]] = []
+        self.codificados: list[tuple[str, Any]] = []
+
+    def encode_prompt(self, *, prompt: str, device: str, max_sequence_length: int) -> Any:
+        self.codificados.append((prompt, self.text_encoder_2))
+        return f"emb:{prompt}", "pooled", "ids"
 
     def __call__(self, **kwargs: Any) -> str:
         self.llamadas.append(kwargs)
@@ -41,13 +47,41 @@ class _PipeFalso:
 def test_el_pipeline_flux_quita_lo_que_flux_no_usa(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(flux, "free_cuda_memory", lambda: None)
     pipe = _PipeFalso()
-    envoltura = flux.PipelineFlux(pipe, 256, "cuda")
+    cargas: list[str] = []
+
+    def cargar_t5() -> str:
+        cargas.append("t5")
+        return "T5"
+
+    envoltura = flux.PipelineFlux(pipe, 256, "cuda", cargar_t5=cargar_t5)
     assert envoltura.tokenizer == "t5"  # el prompt se mide con el tokenizer de T5
-    assert envoltura(prompt="a dog", negative_prompt="x", ip_adapter_image_embeds=[1]) == "imagen"
-    assert pipe.llamadas == [{"prompt": "a dog", "max_sequence_length": 256}]
+    resultado = envoltura(
+        prompt="a dog", negative_prompt="x", ip_adapter_image_embeds=[1], num_inference_steps=4
+    )
+    assert resultado == "imagen"
+    # 19 nov: T5 se carga solo para leer el prompt y se suelta antes de dibujar.
+    assert cargas == ["t5"] and pipe.codificados == [("a dog", "T5")]
+    assert pipe.text_encoder_2 is None
+    assert pipe.llamadas == [
+        {
+            "prompt_embeds": "emb:a dog",
+            "pooled_prompt_embeds": "pooled",
+            "max_sequence_length": 256,
+            "num_inference_steps": 4,
+        }
+    ]
     assert pipe.text_encoder.dispositivos == ["cuda"] and pipe.vae.dispositivos == ["cuda"]
     envoltura.estacionar()
     assert pipe.text_encoder.dispositivos[-1] == "cpu" and pipe.vae.dispositivos[-1] == "cpu"
+
+
+def test_con_t5_residente_no_se_recarga(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(flux, "free_cuda_memory", lambda: None)
+    pipe = _PipeFalso()
+    pipe.text_encoder_2 = "T5 residente"
+    flux.PipelineFlux(pipe, 256, "cuda")(prompt="a cat")
+    assert pipe.codificados == [("a cat", "T5 residente")]
+    assert pipe.text_encoder_2 == "T5 residente"
 
 
 def test_el_perfil_avanzada_usa_flux_sin_ip_adapter() -> None:
@@ -58,6 +92,7 @@ def test_el_perfil_avanzada_usa_flux_sin_ip_adapter() -> None:
     generador = GeneradorImagenes(cfg.image, cfg.consistency)
     assert generador.max_tokens_prompt == 254 and not generador.usar_ip_adapter
     assert flux.carpeta_fp8(cfg.image) == config.MODELS_DIR / "flux-schnell-fp8"
+    assert cfg.image.t5_por_demanda and cfg.image.offload_stream
     with pytest.raises(ValueError, match="múltiplos de 16"):
         cfg.image.model_validate({**cfg.image.model_dump(), "width": 1048})
 

@@ -19,6 +19,7 @@ dependencies = [
     "safetensors>=0.6",
     "huggingface-hub>=1.32",
     "sentencepiece>=0.2",         # tokenizadores T5 de Stable Audio
+    "torchsde>=0.2.6",            # scheduler de Stable Audio Open (CosineDPMSolverMultistep)
     # --- Configuración, validación y utilidades -----------------------------------
     "pydantic>=2.11",
     "pyyaml>=6.0",
