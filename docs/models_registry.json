@@ -51,7 +51,7 @@
     "archivos": 1,
     "nota": "",
     "extra": {},
-    "actualizado": "2026-11-13T12:21:47"
+    "actualizado": "2026-11-19T12:29:04"
   },
   "h94/IP-Adapter": {
     "repo_id": "h94/IP-Adapter",
@@ -64,9 +64,9 @@
     "archivos": 4,
     "nota": "",
     "extra": {
-      "peso": "sdxl_models/ip-adapter_sdxl_vit-h.safetensors"
+      "peso": "models/ip-adapter_sd15.safetensors"
     },
-    "actualizado": "2026-11-13T12:21:47"
+    "actualizado": "2026-11-19T12:29:04"
   },
   "rhasspy/piper-voices:es_MX-claude-high": {
     "repo_id": "rhasspy/piper-voices:es_MX-claude-high",
@@ -81,7 +81,7 @@
     "extra": {
       "model_card": "# Model card for claude (high)\n\n* Language: es_MX (Spanish, Mexico)\n* Speakers: 1\n* Quality: high\n* Samplerate: 22,050Hz\n\n## Dataset\n\n* URL: https://huggingface.co/spaces/HirCoir/Piper-TTS-Spanish\n* License: apache-2.0\n\n## Training\n\nSee URL above\n"
     },
-    "actualizado": "2026-11-10T12:19:24"
+    "actualizado": "2026-11-19T12:29:04"
   },
   "cvssp/audioldm": {
     "repo_id": "cvssp/audioldm",
@@ -96,7 +96,7 @@
     "extra": {
       "variante": "fp32"
     },
-    "actualizado": "2026-11-10T06:39:32"
+    "actualizado": "2026-11-19T12:29:04"
   },
   "Systran/faster-whisper-small": {
     "repo_id": "Systran/faster-whisper-small",
@@ -181,5 +181,61 @@
     "nota": "",
     "extra": {},
     "actualizado": "2026-11-13T12:21:47"
+  },
+  "black-forest-labs/FLUX.1-schnell": {
+    "repo_id": "black-forest-labs/FLUX.1-schnell",
+    "modalidad": "image",
+    "estado": "ok",
+    "revision": "169573f54945f633efbe126a40a5676b4228363c",
+    "licencia": "apache-2.0",
+    "gated": "auto",
+    "tamano_mb": 32163.5,
+    "archivos": 23,
+    "nota": "",
+    "extra": {
+      "variante": "fp32"
+    },
+    "actualizado": "2026-11-19T12:29:04"
+  },
+  "coqui/XTTS-v2": {
+    "repo_id": "coqui/XTTS-v2",
+    "modalidad": "voice",
+    "estado": "ok",
+    "revision": "6c2b0d75eae4b7047358e3b6bd9325f857d43f77",
+    "licencia": "other (coqui-public-model-license)",
+    "gated": false,
+    "tamano_mb": 1789.1,
+    "archivos": 5,
+    "nota": "CPML (Coqui Public Model License): uso no comercial",
+    "extra": {},
+    "actualizado": "2026-11-19T12:29:04"
+  },
+  "stabilityai/stable-audio-3-small-sfx": {
+    "repo_id": "stabilityai/stable-audio-3-small-sfx",
+    "modalidad": "sound",
+    "estado": "formato_no_soportado",
+    "revision": null,
+    "licencia": null,
+    "gated": null,
+    "tamano_mb": null,
+    "archivos": 0,
+    "nota": "El repo no está en formato diffusers (sin model_index.json).",
+    "extra": {},
+    "actualizado": "2026-11-19T12:29:04"
+  },
+  "stabilityai/stable-audio-open-1.0": {
+    "repo_id": "stabilityai/stable-audio-open-1.0",
+    "modalidad": "sound",
+    "estado": "ok",
+    "revision": "f21265c1e2710b3bd2386596943f0007f55f802e",
+    "licencia": "other (stable-audio-community)",
+    "gated": "auto",
+    "tamano_mb": 5050.3,
+    "archivos": 14,
+    "nota": "",
+    "extra": {
+      "variante": "fp32"
+    },
+    "actualizado": "2026-11-19T12:29:04"
   }
 }

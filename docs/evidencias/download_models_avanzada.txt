@@ -1,0 +1,157 @@
+﻿12:20:11 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/black-forest-labs/FLUX.1-schnell/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+12:20:11 INFO    download_models | descargando  repo=black-forest-labs/FLUX.1-schnell archivos=23
+12:20:11 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/black-forest-labs/FLUX.1-schnell/revision/main "HTTP/1.1 200 OK"
+12:20:12 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/black-forest-labs/FLUX.1-schnell/tree/169573f54945f633efbe126a40a5676b4228363c?recursive=true&expand=false "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:   0%|          | 0/23 [00:00<?, ?it/s]12:20:12 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/model_index.json "HTTP/1.1 200 OK"
+12:20:12 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/model_index.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:   4%|▍         | 1/23 [00:00<00:13,  1.68it/s]12:20:12 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/text_encoder_2/config.json "HTTP/1.1 200 OK"
+12:20:12 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/text_encoder_2/model.safetensors.index.json "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/merges.txt "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/text_encoder_2/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:   9%|▊         | 2/23 [00:00<00:08,  2.38it/s]12:20:13 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/text_encoder/config.json "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/text_encoder_2/model.safetensors.index.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  13%|█▎        | 3/23 [00:01<00:05,  3.34it/s]12:20:13 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/scheduler/scheduler_config.json "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/special_tokens_map.json "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/merges.txt "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/text_encoder/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  17%|█▋        | 4/23 [00:01<00:04,  4.06it/s]12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/black-forest-labs/FLUX.1-schnell/xet-read-token/169573f54945f633efbe126a40a5676b4228363c "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/tokenizer_config.json "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/scheduler/scheduler_config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  22%|██▏       | 5/23 [00:01<00:03,  4.68it/s]12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/special_tokens_map.json "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/vocab.json "HTTP/1.1 200 OK"
+12:20:13 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/tokenizer_config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  30%|███       | 7/23 [00:01<00:02,  5.88it/s]12:20:13 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer_2/special_tokens_map.json "HTTP/1.1 200 OK"
+12:20:14 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer/vocab.json "HTTP/1.1 200 OK"
+12:20:14 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer_2/tokenizer.json "HTTP/1.1 200 OK"
+12:20:14 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer_2/special_tokens_map.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  39%|███▉      | 9/23 [00:01<00:02,  6.04it/s]12:20:14 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer_2/tokenizer_config.json "HTTP/1.1 200 OK"
+12:20:14 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer_2/tokenizer.json "HTTP/1.1 200 OK"
+12:20:14 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/transformer/config.json "HTTP/1.1 200 OK"
+12:20:14 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/tokenizer_2/tokenizer_config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  43%|████▎     | 10/23 [00:02<00:02,  5.08it/s]
+Fetching 23 files:  48%|████▊     | 11/23 [00:02<00:02,  5.42it/s]12:20:14 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/transformer/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  52%|█████▏    | 12/23 [00:02<00:01,  5.99it/s]
+Fetching 23 files:  57%|█████▋    | 13/23 [00:03<00:02,  3.86it/s]12:20:15 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/transformer/diffusion_pytorch_model.safetensors.index.json "HTTP/1.1 200 OK"
+12:20:15 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/transformer/diffusion_pytorch_model.safetensors.index.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  61%|██████    | 14/23 [00:03<00:03,  2.88it/s]12:20:16 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/vae/config.json "HTTP/1.1 200 OK"
+12:20:16 INFO    httpx2 | HTTP Request: GET https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/169573f54945f633efbe126a40a5676b4228363c/vae/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 23 files:  65%|██████▌   | 15/23 [00:04<00:03,  2.43it/s]
+Fetching 23 files:  70%|██████▉   | 16/23 [00:17<00:30,  4.29s/it]
+Fetching 23 files:  74%|███████▍  | 17/23 [00:25<00:30,  5.15s/it]
+Fetching 23 files:  78%|███████▊  | 18/23 [01:25<01:47, 21.44s/it]
+Fetching 23 files:  83%|████████▎ | 19/23 [04:14<04:20, 65.04s/it]
+Fetching 23 files:  87%|████████▋ | 20/23 [04:18<02:21, 47.05s/it]
+Fetching 23 files:  91%|█████████▏| 21/23 [04:24<01:09, 34.87s/it]
+Fetching 23 files:  96%|█████████▌| 22/23 [05:41<00:47, 47.22s/it]
+Fetching 23 files: 100%|██████████| 23/23 [06:48<00:00, 53.15s/it]
+Fetching 23 files: 100%|██████████| 23/23 [06:48<00:00, 17.74s/it]
+12:27:01 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/black-forest-labs/FLUX.1-schnell "HTTP/1.1 200 OK"
+12:27:01 INFO    download_models | descargando  repo=latent-consistency/lcm-lora-sdv1-5 patrones="['*.safetensors', '*.json']"
+12:27:01 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5/revision/main "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s]
+Fetching 1 files: 100%|██████████| 1/1 [00:00<?, ?it/s]
+12:27:01 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/latent-consistency/lcm-lora-sdv1-5 "HTTP/1.1 200 OK"
+12:27:01 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+12:27:01 INFO    download_models | descargando  repo=h94/IP-Adapter patrones="['models/ip-adapter_sd15.safetensors', 'models/image_encoder/config.json', 'models/image_encoder/model.safetensors']"
+12:27:02 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter/revision/main "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]
+Fetching 3 files: 100%|██████████| 3/3 [00:00<00:00, 1504.23it/s]
+12:27:02 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/h94/IP-Adapter "HTTP/1.1 200 OK"
+12:27:02 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx "HTTP/1.1 302 Found"
+12:27:03 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx.json "HTTP/1.1 307 Temporary Redirect"
+12:27:03 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/04ca88f5685ca5253c701af3687e155b113bd512/es%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2Fes_MX-claude-high.onnx.json=&etag=%224a98b7593bd91a1522f893b66d5bab1f517d5068%22 "HTTP/1.1 200 OK"
+12:27:03 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/MODEL_CARD "HTTP/1.1 307 Temporary Redirect"
+12:27:04 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/rhasspy/piper-voices/04ca88f5685ca5253c701af3687e155b113bd512/es%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD?%2Frhasspy%2Fpiper-voices%2Fresolve%2Fmain%2Fes%2Fes_MX%2Fclaude%2Fhigh%2FMODEL_CARD=&etag=%226f5160c4d63ec36f9f50012f789274505b556807%22 "HTTP/1.1 200 OK"
+12:27:04 INFO    download_models | piper_model_card  voz=es_MX-claude-high extracto="# Model card for claude (high)  * Language: es_MX (Spanish, Mexico) * Speakers: 1 * Quality: high * Samplerate: 22,050Hz  ## Dataset  * URL: https://huggingface.co/spaces/HirCoir/Piper-TTS-Spanish * License: apache-2.0  ## Training  See URL above "
+12:27:04 INFO    download_models | descargando  repo=coqui/XTTS-v2 patrones="['config.json', 'model.pth', 'vocab.json', 'speakers_xtts.pth', 'LICENSE.txt']"
+12:27:04 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/coqui/XTTS-v2/revision/main "HTTP/1.1 200 OK"
+12:27:04 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/coqui/XTTS-v2/tree/6c2b0d75eae4b7047358e3b6bd9325f857d43f77?recursive=true&expand=false "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]12:27:04 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/coqui/XTTS-v2/resolve/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/LICENSE.txt "HTTP/1.1 307 Temporary Redirect"
+12:27:05 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/coqui/XTTS-v2/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/LICENSE.txt?%2Fcoqui%2FXTTS-v2%2Fresolve%2F6c2b0d75eae4b7047358e3b6bd9325f857d43f77%2FLICENSE.txt=&etag=%22e41830fcc6069d335d201e63eb30f487aada1093%22 "HTTP/1.1 200 OK"
+12:27:05 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/coqui/XTTS-v2/xet-read-token/6c2b0d75eae4b7047358e3b6bd9325f857d43f77 "HTTP/1.1 200 OK"
+12:27:05 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/coqui/XTTS-v2/resolve/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/vocab.json "HTTP/1.1 307 Temporary Redirect"
+12:27:05 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/coqui/XTTS-v2/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/LICENSE.txt?%2Fcoqui%2FXTTS-v2%2Fresolve%2F6c2b0d75eae4b7047358e3b6bd9325f857d43f77%2FLICENSE.txt=&etag=%22e41830fcc6069d335d201e63eb30f487aada1093%22 "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 5 files:  20%|██        | 1/5 [00:00<00:03,  1.13it/s]12:27:05 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/coqui/XTTS-v2/resolve/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/config.json "HTTP/1.1 307 Temporary Redirect"
+12:27:05 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/coqui/XTTS-v2/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/vocab.json?%2Fcoqui%2FXTTS-v2%2Fresolve%2F6c2b0d75eae4b7047358e3b6bd9325f857d43f77%2Fvocab.json=&etag=%2277b4748525aad284e548729ef7af162b929b0fff%22 "HTTP/1.1 200 OK"
+12:27:05 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/coqui/XTTS-v2/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/config.json?%2Fcoqui%2FXTTS-v2%2Fresolve%2F6c2b0d75eae4b7047358e3b6bd9325f857d43f77%2Fconfig.json=&etag=%223224e97bddc5facc012f8c7668b47c8f2dc30065%22 "HTTP/1.1 200 OK"
+12:27:05 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/coqui/XTTS-v2/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/vocab.json?%2Fcoqui%2FXTTS-v2%2Fresolve%2F6c2b0d75eae4b7047358e3b6bd9325f857d43f77%2Fvocab.json=&etag=%2277b4748525aad284e548729ef7af162b929b0fff%22 "HTTP/1.1 200 OK"
+12:27:06 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/resolve-cache/models/coqui/XTTS-v2/6c2b0d75eae4b7047358e3b6bd9325f857d43f77/config.json?%2Fcoqui%2FXTTS-v2%2Fresolve%2F6c2b0d75eae4b7047358e3b6bd9325f857d43f77%2Fconfig.json=&etag=%223224e97bddc5facc012f8c7668b47c8f2dc30065%22 "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 5 files:  40%|████      | 2/5 [00:01<00:02,  1.41it/s]
+Fetching 5 files:  80%|████████  | 4/5 [00:05<00:01,  1.46s/it]
+Fetching 5 files: 100%|██████████| 5/5 [00:28<00:00,  8.05s/it]
+Fetching 5 files: 100%|██████████| 5/5 [00:28<00:00,  5.61s/it]
+12:27:33 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/coqui/XTTS-v2 "HTTP/1.1 200 OK"
+12:27:33 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/stabilityai/stable-audio-3-small-sfx/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+12:27:33 WARNING download_models | repo_no_diffusers  repo=stabilityai/stable-audio-3-small-sfx
+12:27:33 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/stabilityai/stable-audio-open-1.0/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+12:27:33 INFO    download_models | descargando  repo=stabilityai/stable-audio-open-1.0 archivos=14
+12:27:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/stabilityai/stable-audio-open-1.0/revision/main "HTTP/1.1 200 OK"
+12:27:34 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/stabilityai/stable-audio-open-1.0/tree/f21265c1e2710b3bd2386596943f0007f55f802e?recursive=true&expand=false "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]12:27:34 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/model_index.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/scheduler/scheduler_config.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/model_index.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:   7%|▋         | 1/14 [00:00<00:07,  1.70it/s]12:27:35 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/projection_model/config.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/tokenizer/tokenizer.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/scheduler/scheduler_config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:  14%|█▍        | 2/14 [00:00<00:04,  2.46it/s]12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/stabilityai/stable-audio-open-1.0/xet-read-token/f21265c1e2710b3bd2386596943f0007f55f802e "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/projection_model/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:  21%|██▏       | 3/14 [00:01<00:03,  3.51it/s]12:27:35 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/tokenizer/special_tokens_map.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/tokenizer/tokenizer.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/tokenizer/tokenizer_config.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/text_encoder/config.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/transformer/config.json "HTTP/1.1 200 OK"
+12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/tokenizer/special_tokens_map.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:  29%|██▊       | 4/14 [00:01<00:02,  3.39it/s]12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/tokenizer/tokenizer_config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:  36%|███▌      | 5/14 [00:01<00:02,  4.28it/s]12:27:35 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/text_encoder/config.json "HTTP/1.1 200 OK"
+12:27:36 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/transformer/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:  50%|█████     | 7/14 [00:01<00:01,  6.65it/s]12:27:36 INFO    httpx2 | HTTP Request: HEAD https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/vae/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:  57%|█████▋    | 8/14 [00:01<00:01,  4.86it/s]12:27:36 INFO    httpx2 | HTTP Request: GET https://huggingface.co/stabilityai/stable-audio-open-1.0/resolve/f21265c1e2710b3bd2386596943f0007f55f802e/vae/config.json "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 14 files:  71%|███████▏  | 10/14 [00:02<00:00,  5.56it/s]
+Fetching 14 files:  79%|███████▊  | 11/14 [00:02<00:00,  3.84it/s]
+Fetching 14 files:  86%|████████▌ | 12/14 [00:25<00:11,  5.86s/it]
+Fetching 14 files:  93%|█████████▎| 13/14 [00:47<00:10, 10.27s/it]
+Fetching 14 files: 100%|██████████| 14/14 [01:28<00:00, 18.51s/it]
+Fetching 14 files: 100%|██████████| 14/14 [01:28<00:00,  6.29s/it]
+12:29:03 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/stabilityai/stable-audio-open-1.0 "HTTP/1.1 200 OK"
+12:29:03 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+12:29:03 INFO    download_models | descargando  repo=cvssp/audioldm archivos=15
+12:29:03 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm/revision/main "HTTP/1.1 200 OK"
+System.Management.Automation.RemoteException
+Fetching 15 files:   0%|          | 0/15 [00:00<?, ?it/s]
+Fetching 15 files: 100%|██████████| 15/15 [00:00<00:00, 2143.89it/s]
+12:29:04 INFO    httpx2 | HTTP Request: GET https://huggingface.co/api/models/cvssp/audioldm "HTTP/1.1 200 OK"
+12:29:04 INFO    download_models | resumen  repo=black-forest-labs/FLUX.1-schnell estado=ok mb=32163.5 licencia=apache-2.0
+12:29:04 INFO    download_models | resumen  repo=latent-consistency/lcm-lora-sdv1-5 estado=ok mb=128.4 licencia=openrail++
+12:29:04 INFO    download_models | resumen  repo=h94/IP-Adapter estado=ok mb=3119.9 licencia=apache-2.0
+12:29:04 INFO    download_models | resumen  repo=rhasspy/piper-voices:es_MX-claude-high estado=ok mb=60.2 licencia="voz: ver MODEL_CARD; código piper-tts: GPL-3.0-or-later"
+12:29:04 INFO    download_models | resumen  repo=coqui/XTTS-v2 estado=ok mb=1789.1 licencia="other (coqui-public-model-license)"
+12:29:04 INFO    download_models | resumen  repo=stabilityai/stable-audio-3-small-sfx estado=formato_no_soportado mb=None licencia=None
+12:29:04 INFO    download_models | resumen  repo=stabilityai/stable-audio-open-1.0 estado=ok mb=5050.3 licencia="other (stable-audio-community)"
+12:29:04 INFO    download_models | resumen  repo=cvssp/audioldm estado=ok mb=1609.6 licencia=cc-by-nc-sa-4.0
+12:29:04 INFO    download_models | descarga_fin  total=8 criticos=0 registro=C:\Users\diego\Documents\StoryBook-IA\docs\models_registry.json
