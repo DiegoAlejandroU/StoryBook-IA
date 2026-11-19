@@ -1,153 +1,183 @@
-﻿12:35:47 INFO    storybook.story.planner | llm_llamada  etapa=plano_1 intentos=1 s=11.316
-12:35:48 INFO    storybook.story.planner | llm_llamada  etapa=plano_2 intentos=1 s=1.902
-12:35:50 INFO    storybook.story.planner | llm_llamada  etapa=plano_3 intentos=1 s=1.383
-12:35:52 INFO    storybook.story.planner | llm_llamada  etapa=plano_4 intentos=1 s=2.112
-12:35:54 INFO    storybook.story.planner | llm_llamada  etapa=plano_5 intentos=1 s=1.939
-12:35:54 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
-12:35:54 INFO    f7_sdxl | ilustrador_listo  avisos=[]
-12:36:04 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
-12:36:04 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
-12:36:04 INFO    open_clip.factory | Instantiating model architecture: CLIP
-12:36:05 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
-12:36:06 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
-12:36:06 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
-12:36:06 INFO    open_clip.factory | Parsing tokenizer identifier. Schema: None, Identifier: ViT-B-32
-12:36:06 INFO    open_clip.factory | Attempting to load config from built-in: ViT-B-32
-12:36:06 INFO    open_clip.factory | Using default SimpleTokenizer.
+﻿17:41:01 INFO    storybook.story.planner | llm_llamada  etapa=plano_1 intentos=1 s=17.927
+17:41:05 INFO    storybook.story.planner | llm_llamada  etapa=plano_2 intentos=1 s=3.848
+17:41:11 INFO    storybook.story.planner | llm_llamada  etapa=plano_3 intentos=1 s=6.447
+17:41:21 INFO    storybook.story.planner | llm_llamada  etapa=plano_4 intentos=1 s=9.937
+17:41:29 INFO    storybook.story.planner | llm_llamada  etapa=plano_5 intentos=1 s=8.112
+17:41:29 INFO    storybook.story.llm_client | modelo_descargado_de_vram  modelo=qwen3:4b-instruct-2507-q4_K_M
+17:41:29 INFO    f7_sdxl | ilustrador_listo  avisos=[]
+17:41:57 INFO    open_clip.factory | Parsing model identifier. Schema: None, Identifier: ViT-B-32
+17:41:57 INFO    open_clip.factory | Loaded built-in ViT-B-32 model config.
+17:41:57 INFO    open_clip.factory | Instantiating model architecture: CLIP
+17:42:01 INFO    open_clip.factory | Loading full pretrained weights from: C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--laion--CLIP-ViT-B-32-laion2B-s34B-b79K\snapshots\1a25a446712ba5ee05982a381eed697ef9b435cf\open_clip_model.safetensors
+17:42:03 INFO    open_clip.factory | Final image preprocessing configuration set: {'size': (224, 224), 'mode': 'RGB', 'mean': (0.48145466, 0.4578275, 0.40821073), 'std': (0.26862954, 0.26130258, 0.27577711), 'interpolation': 'bicubic', 'resize_mode': 'shortest', 'fill_color': 0}
+17:42:03 INFO    open_clip.factory | Model ViT-B-32 creation process complete.
+17:42:03 INFO    open_clip.factory | Parsing tokenizer identifier. Schema: None, Identifier: ViT-B-32
+17:42:03 INFO    open_clip.factory | Attempting to load config from built-in: ViT-B-32
+17:42:03 INFO    open_clip.factory | Using default SimpleTokenizer.
 C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
   deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
 System.Management.Automation.RemoteException
 Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]
-Loading pipeline components...:  14%|█▍        | 1/7 [00:00<00:01,  5.57it/s]
-Loading pipeline components...:  29%|██▊       | 2/7 [00:01<00:03,  1.58it/s]
+Loading pipeline components...:  14%|█▍        | 1/7 [00:00<00:01,  3.86it/s]
+Loading pipeline components...:  29%|██▊       | 2/7 [00:02<00:06,  1.29s/it]
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  19%|█▉        | 37/196 [00:00<00:00, 364.28it/s][A
-Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1019.31it/s]
+Loading weights:   8%|▊         | 16/196 [00:00<00:01, 148.85it/s][A
 System.Management.Automation.RemoteException
-Loading pipeline components...:  57%|█████▋    | 4/7 [00:01<00:01,  2.62it/s]
+Loading weights:  16%|█▌        | 31/196 [00:00<00:01, 126.12it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  22%|██▏       | 44/196 [00:00<00:01, 103.57it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 419.72it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...:  43%|████▎     | 3/7 [00:03<00:04,  1.25s/it]
+Loading pipeline components...:  57%|█████▋    | 4/7 [00:03<00:02,  1.19it/s]
+Loading pipeline components...:  71%|███████▏  | 5/7 [00:03<00:01,  1.56it/s]
+Loading pipeline components...:  86%|████████▌ | 6/7 [00:04<00:00,  1.95it/s]
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/517 [00:00<?, ?it/s][A
 System.Management.Automation.RemoteException
-Loading weights:   2%|▏         | 12/517 [00:00<00:04, 117.43it/s][A
+Loading weights:   0%|          | 2/517 [00:00<00:38, 13.51it/s][A
 System.Management.Automation.RemoteException
-Loading weights:   5%|▍         | 24/517 [00:00<00:04, 115.31it/s][A
+Loading weights:   1%|          | 6/517 [00:00<00:20, 24.51it/s][A
 System.Management.Automation.RemoteException
-Loading weights:   9%|▉         | 48/517 [00:00<00:02, 166.88it/s][A
+Loading weights:   2%|▏         | 9/517 [00:00<00:29, 17.33it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  13%|█▎        | 65/517 [00:00<00:03, 140.29it/s][A
+Loading weights:   3%|▎         | 17/517 [00:00<00:15, 31.74it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  15%|█▌        | 80/517 [00:00<00:04, 95.45it/s] [A
+Loading weights:   6%|▋         | 33/517 [00:00<00:08, 60.08it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  18%|█▊        | 92/517 [00:00<00:04, 91.61it/s][A
+Loading weights:   8%|▊         | 40/517 [00:00<00:08, 56.09it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  20%|█▉        | 103/517 [00:01<00:05, 82.78it/s][A
+Loading weights:   9%|▉         | 47/517 [00:01<00:11, 39.57it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  22%|██▏       | 114/517 [00:01<00:04, 88.68it/s][A
+Loading weights:  10%|█         | 52/517 [00:01<00:11, 40.60it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  25%|██▍       | 127/517 [00:01<00:03, 98.14it/s][A
+Loading weights:  11%|█         | 57/517 [00:01<00:13, 33.73it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  27%|██▋       | 138/517 [00:01<00:04, 91.80it/s][A
+Loading weights:  12%|█▏        | 62/517 [00:01<00:12, 36.26it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  29%|██▉       | 151/517 [00:01<00:03, 100.68it/s][A
+Loading weights:  13%|█▎        | 67/517 [00:01<00:13, 34.14it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  31%|███▏      | 162/517 [00:01<00:03, 96.83it/s] [A
-Loading weights: 100%|██████████| 517/517 [00:01<00:00, 316.77it/s]
+Loading weights:  14%|█▎        | 71/517 [00:02<00:14, 31.43it/s][A
 System.Management.Automation.RemoteException
-Loading pipeline components...:  71%|███████▏  | 5/7 [00:03<00:01,  1.13it/s]
-Loading pipeline components...: 100%|██████████| 7/7 [00:03<00:00,  1.91it/s]
-12:36:23 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=14.936 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096
-12:36:36 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=12.457 dispositivo=cuda vram_torch_pico_mb=2733.6 vram_torch_reservada_pico_mb=3040 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=3264.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=59
+Loading weights:  15%|█▍        | 75/517 [00:02<00:14, 29.88it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  15%|█▌        | 79/517 [00:02<00:16, 27.19it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  21%|██        | 107/517 [00:02<00:06, 65.86it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  22%|██▏       | 114/517 [00:02<00:07, 51.39it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  24%|██▍       | 124/517 [00:02<00:06, 58.09it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  25%|██▌       | 131/517 [00:03<00:08, 44.89it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  26%|██▋       | 137/517 [00:03<00:08, 46.29it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  28%|██▊       | 143/517 [00:03<00:08, 42.18it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  30%|███       | 156/517 [00:03<00:06, 52.13it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  34%|███▍      | 176/517 [00:03<00:04, 75.53it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  36%|███▌      | 185/517 [00:04<00:05, 59.16it/s][A
+System.Management.Automation.RemoteException
+Loading weights:  37%|███▋      | 192/517 [00:04<00:05, 54.92it/s][A
+Loading weights: 100%|██████████| 517/517 [00:04<00:00, 121.87it/s]
+System.Management.Automation.RemoteException
+Loading pipeline components...: 100%|██████████| 7/7 [00:10<00:00,  2.42s/it]
+Loading pipeline components...: 100%|██████████| 7/7 [00:10<00:00,  1.51s/it]
+17:42:44 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=35.021 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=259 vram_gpu_total_mb=4096
+17:44:21 INFO    storybook.gpu | etapa_medida  etapa=imagen_character_sheet segundos=118.661 dispositivo=cuda vram_torch_pico_mb=2733.6 vram_torch_reservada_pico_mb=3040 vram_gpu_base_mb=134 vram_gpu_pico_mb=3264.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=59
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/520 [00:00<?, ?it/s]
-Loading weights:   2%|▏         | 12/520 [00:00<00:04, 102.19it/s]
-Loading weights:   4%|▍         | 23/520 [00:00<00:08, 56.40it/s] 
-Loading weights:   6%|▌         | 30/520 [00:00<00:08, 54.75it/s]
-Loading weights:   8%|▊         | 43/520 [00:00<00:06, 74.83it/s]
-Loading weights:  10%|█         | 54/520 [00:00<00:05, 84.28it/s]
-Loading weights:  12%|█▏        | 64/520 [00:00<00:05, 86.14it/s]
-Loading weights:  14%|█▍        | 74/520 [00:01<00:06, 73.66it/s]
-Loading weights:  17%|█▋        | 90/520 [00:01<00:04, 93.98it/s]
-Loading weights:  19%|█▉        | 101/520 [00:01<00:05, 69.90it/s]
-Loading weights:  21%|██        | 110/520 [00:01<00:05, 71.29it/s]
-Loading weights:  23%|██▎       | 119/520 [00:01<00:06, 64.51it/s]
-Loading weights:  25%|██▍       | 129/520 [00:01<00:05, 71.79it/s]
-Loading weights:  27%|██▋       | 138/520 [00:01<00:05, 68.40it/s]
-Loading weights:  28%|██▊       | 146/520 [00:02<00:05, 66.05it/s]
-Loading weights:  30%|██▉       | 155/520 [00:02<00:05, 70.87it/s]
-Loading weights:  32%|███▏      | 166/520 [00:02<00:04, 78.67it/s]
-Loading weights:  34%|███▍      | 178/520 [00:02<00:04, 74.91it/s]
-Loading weights:  36%|███▌      | 186/520 [00:02<00:04, 73.19it/s]
-Loading weights:  38%|███▊      | 195/520 [00:02<00:04, 72.05it/s]
-Loading weights:  39%|███▉      | 204/520 [00:02<00:04, 71.37it/s]
-Loading weights:  41%|████      | 212/520 [00:02<00:04, 69.86it/s]
-Loading weights:  69%|██████▉   | 358/520 [00:03<00:00, 418.25it/s]
-Loading weights: 100%|██████████| 520/520 [00:03<00:00, 171.13it/s]
+Loading weights:   1%|▏         | 7/520 [00:00<00:09, 54.57it/s]
+Loading weights:   2%|▎         | 13/520 [00:00<00:10, 46.60it/s]
+Loading weights:   3%|▎         | 18/520 [00:00<00:11, 42.03it/s]
+Loading weights:   4%|▍         | 23/520 [00:00<00:12, 39.90it/s]
+Loading weights:   7%|▋         | 35/520 [00:00<00:08, 55.18it/s]
+Loading weights:   8%|▊         | 41/520 [00:00<00:08, 55.41it/s]
+Loading weights:  11%|█         | 55/520 [00:00<00:05, 78.41it/s]
+Loading weights:  12%|█▏        | 64/520 [00:01<00:08, 56.10it/s]
+Loading weights:  14%|█▎        | 71/520 [00:01<00:07, 57.88it/s]
+Loading weights:  16%|█▌        | 84/520 [00:01<00:06, 69.95it/s]
+Loading weights:  19%|█▉        | 101/520 [00:01<00:04, 88.27it/s]
+Loading weights:  21%|██▏       | 111/520 [00:01<00:04, 86.38it/s]
+Loading weights:  23%|██▎       | 121/520 [00:01<00:05, 70.83it/s]
+Loading weights:  25%|██▌       | 132/520 [00:01<00:05, 74.25it/s]
+Loading weights:  28%|██▊       | 143/520 [00:02<00:04, 82.18it/s]
+Loading weights:  29%|██▉       | 152/520 [00:02<00:05, 66.03it/s]
+Loading weights:  31%|███       | 160/520 [00:02<00:06, 54.54it/s]
+Loading weights:  32%|███▏      | 167/520 [00:02<00:06, 55.07it/s]
+Loading weights:  34%|███▍      | 176/520 [00:02<00:05, 58.34it/s]
+Loading weights:  35%|███▌      | 183/520 [00:02<00:05, 57.10it/s]
+Loading weights:  37%|███▋      | 191/520 [00:03<00:05, 61.10it/s]
+Loading weights: 100%|██████████| 520/520 [00:03<00:00, 171.02it/s]
 image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
 There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
-12:36:48 INFO    storybook.image.generator | unet_fp8_restaurado  capas=794
-12:36:48 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=12.096 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=8 vram_gpu_base_mb=232.5 vram_gpu_pico_mb=232.5 vram_gpu_total_mb=4096 extra.scale=0.4
+17:44:33 INFO    storybook.image.generator | unet_fp8_restaurado  capas=794
+17:44:33 INFO    storybook.gpu | etapa_medida  etapa=imagen_ip_adapter segundos=12.235 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=8 vram_gpu_base_mb=232.5 vram_gpu_pico_mb=232.5 vram_gpu_total_mb=4096 extra.scale=0.4
 [transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (80 > 77). Running this sequence through the model will result in indexing errors
-12:36:48 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=1 tokens=75 eliminados="['estilo:muted', 'estilo:cool grays']"
-12:37:01 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=12.89 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=75 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0.4 extra.foco=elephant_60
-12:37:12 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1_v2 segundos=10.976 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=75 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0.4 extra.foco=elephant_60
-12:37:12 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_1 segundos=0.15 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=6 vram_gpu_base_mb=230.5 vram_gpu_pico_mb=230.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.325, 0.3277]"
-12:37:12 INFO    storybook.image.generator | imagen_version_elegida  escena=1 elegida=2 detalle="[{'puntaje': 0.325, 'presencia': {'an African elephant': 0.325}, 'sobra': {'two elephants': 0.3115}}, {'puntaje': 0.3277, 'presencia': {'an African elephant': 0.3277}, 'sobra': {'two elephants': 0.3266}}]"
-12:37:12 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=71
-12:37:23 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=11.092 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=230.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=71 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
-12:37:34 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2_v2 segundos=11.337 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=71 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
-12:37:35 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_2 segundos=0.204 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.2375, 0.2395]"
-12:37:35 INFO    storybook.image.generator | imagen_version_elegida  escena=2 elegida=2 detalle="[{'puntaje': 0.2375, 'presencia': {'an African elephant': 0.3139, 'an African zebra': 0.2213}, 'sobra': {'two elephants': 0.3186}}, {'puntaje': 0.2395, 'presencia': {'an African elephant': 0.3341, 'an African zebra': 0.2158}, 'sobra': {'two elephants': 0.2784}}]"
-12:37:35 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=73
-12:37:46 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=11.117 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=73 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
-12:37:57 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3_v2 segundos=11.229 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=232.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=73 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
-12:37:57 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_3 segundos=0.125 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.3458, 0.3538]"
-12:37:57 INFO    storybook.image.generator | imagen_version_elegida  escena=3 elegida=2 detalle="[{'puntaje': 0.3458, 'presencia': {'an African buffalo': 0.3458}, 'sobra': {'two buffalos': 0.2936}}, {'puntaje': 0.3538, 'presencia': {'an African buffalo': 0.3538}, 'sobra': {'two buffalos': 0.2801}}]"
-12:37:57 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=71
-12:38:09 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=11.854 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=71 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
-12:38:21 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4_v2 segundos=11.521 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=71 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
-12:38:21 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_4 segundos=0.216 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=1 extra.puntajes="[0.2404, 0.2303]"
-12:38:21 INFO    storybook.image.generator | imagen_version_elegida  escena=4 elegida=1 detalle="[{'puntaje': 0.2404, 'presencia': {'an African elephant': 0.2984, 'an African buffalo': 0.2369, 'an African zebra': 0.2486}, 'sobra': {'two elephants': 0.311}}, {'puntaje': 0.2303, 'presencia': {'an African elephant': 0.2936, 'an African buffalo': 0.2303, 'an African zebra': 0.2488}, 'sobra': {'two elephants': 0.3154}}]"
-12:38:21 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=73
-12:38:33 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=11.837 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=73 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
-12:38:46 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5_v2 segundos=12.597 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=236.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=73 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
-12:38:46 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_5 segundos=0.145 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.2665, 0.2721]"
-12:38:46 INFO    storybook.image.generator | imagen_version_elegida  escena=5 elegida=2 detalle="[{'puntaje': 0.2665, 'presencia': {'an African buffalo': 0.2559, 'an African elephant': 0.309}, 'sobra': {'two buffalos': 0.2216}}, {'puntaje': 0.2721, 'presencia': {'an African buffalo': 0.2674, 'an African elephant': 0.291}, 'sobra': {'two buffalos': 0.2656}}]"
-12:38:46 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
-12:38:47 INFO    f7_sdxl | perfil_terminado  perfil=sdxl ok=True
+17:44:33 WARNING storybook.image.prompt_builder | prompt_imagen_truncado  escena=1 tokens=75 eliminados="['estilo:muted', 'estilo:cool grays']"
+17:44:45 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=12.618 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=228.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=75 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0.4 extra.foco=elephant_60
+17:44:56 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1_v2 segundos=10.959 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=75 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0.4 extra.foco=elephant_60
+17:44:57 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_1 segundos=0.16 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=6 vram_gpu_base_mb=230.5 vram_gpu_pico_mb=230.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.325, 0.3277]"
+17:44:57 INFO    storybook.image.generator | imagen_version_elegida  escena=1 elegida=2 detalle="[{'puntaje': 0.325, 'presencia': {'an African elephant': 0.325}, 'sobra': {'two elephants': 0.3115}}, {'puntaje': 0.3277, 'presencia': {'an African elephant': 0.3277}, 'sobra': {'two elephants': 0.3266}}]"
+17:44:57 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=71
+17:45:08 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=11.018 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=230.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=71 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
+17:45:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2_v2 segundos=11.13 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=71 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
+17:45:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_2 segundos=0.173 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.2375, 0.2395]"
+17:45:19 INFO    storybook.image.generator | imagen_version_elegida  escena=2 elegida=2 detalle="[{'puntaje': 0.2375, 'presencia': {'an African elephant': 0.3139, 'an African zebra': 0.2213}, 'sobra': {'two elephants': 0.3186}}, {'puntaje': 0.2395, 'presencia': {'an African elephant': 0.3341, 'an African zebra': 0.2158}, 'sobra': {'two elephants': 0.2784}}]"
+17:45:19 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=73
+17:45:30 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=10.786 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=73 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
+17:45:41 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3_v2 segundos=10.867 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=232.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=73 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
+17:45:41 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_3 segundos=0.139 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.3458, 0.3538]"
+17:45:41 INFO    storybook.image.generator | imagen_version_elegida  escena=3 elegida=2 detalle="[{'puntaje': 0.3458, 'presencia': {'an African buffalo': 0.3458}, 'sobra': {'two buffalos': 0.2936}}, {'puntaje': 0.3538, 'presencia': {'an African buffalo': 0.3538}, 'sobra': {'two buffalos': 0.2801}}]"
+17:45:41 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=71
+17:45:52 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=11.142 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=71 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
+17:46:05 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4_v2 segundos=13.139 dispositivo=cuda vram_torch_pico_mb=3477.2 vram_torch_reservada_pico_mb=3748 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=3972.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=71 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0.24 extra.foco=elephant_60
+17:46:06 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_4 segundos=0.373 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=1 extra.puntajes="[0.2404, 0.2303]"
+17:46:06 INFO    storybook.image.generator | imagen_version_elegida  escena=4 elegida=1 detalle="[{'puntaje': 0.2404, 'presencia': {'an African elephant': 0.2984, 'an African buffalo': 0.2369, 'an African zebra': 0.2486}, 'sobra': {'two elephants': 0.311}}, {'puntaje': 0.2303, 'presencia': {'an African elephant': 0.2936, 'an African buffalo': 0.2303, 'an African zebra': 0.2488}, 'sobra': {'two elephants': 0.3154}}]"
+17:46:06 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=73
+17:46:18 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=11.841 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=73 extra.intento=1 extra.version=1 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
+17:46:29 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5_v2 segundos=11.018 dispositivo=cuda vram_torch_pico_mb=3475.8 vram_torch_reservada_pico_mb=3780 vram_gpu_base_mb=236.5 vram_gpu_pico_mb=4004.5 vram_gpu_total_mb=4096 extra.seed=155829005 extra.tokens=73 extra.intento=1 extra.version=2 extra.ip=True extra.ip_escala=0 extra.foco=buffalo_25
+17:46:29 INFO    storybook.gpu | etapa_medida  etapa=imagen_eleccion_5 segundos=0.136 dispositivo=cuda vram_torch_pico_mb=0.2 vram_torch_reservada_pico_mb=10 vram_gpu_base_mb=234.5 vram_gpu_pico_mb=234.5 vram_gpu_total_mb=4096 extra.versiones=2 extra.elegida=2 extra.puntajes="[0.2665, 0.2721]"
+17:46:29 INFO    storybook.image.generator | imagen_version_elegida  escena=5 elegida=2 detalle="[{'puntaje': 0.2665, 'presencia': {'an African buffalo': 0.2559, 'an African elephant': 0.309}, 'sobra': {'two buffalos': 0.2216}}, {'puntaje': 0.2721, 'presencia': {'an African buffalo': 0.2674, 'an African elephant': 0.291}, 'sobra': {'two buffalos': 0.2656}}]"
+17:46:30 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+17:46:31 INFO    f7_sdxl | perfil_terminado  perfil=sdxl ok=True
 There are modules in FluxTransformer2DModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
 System.Management.Automation.RemoteException
-Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  19%|█▉        | 37/196 [00:00<00:00, 367.49it/s][A
-Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1023.60it/s]
+Loading weights:  21%|██▏       | 42/196 [00:00<00:00, 390.40it/s][A
+Loading weights: 100%|██████████| 196/196 [00:00<00:00, 1094.22it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  57%|█████▋    | 4/7 [00:00<00:00,  9.23it/s]
-Loading pipeline components...:  86%|████████▌ | 6/7 [00:00<00:00, 10.55it/s]
-Loading pipeline components...: 100%|██████████| 7/7 [00:00<00:00, 10.59it/s]
-12:38:50 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=2.138 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=224.5 vram_gpu_total_mb=4096
-12:38:50 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=105
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  4.87it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00, 10.18it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  9.61it/s]
+17:46:32 INFO    storybook.gpu | etapa_medida  etapa=imagen_carga segundos=1.247 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=236.5 vram_gpu_total_mb=4096
+17:46:32 INFO    storybook.image.prompt_builder | prompt_imagen  escena=1 tokens=105
 [transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (80 > 77). Running this sequence through the model will result in indexing errors
 [transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer CLIPTokenizer. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
 The following part of your input was truncated because CLIP can only handle sequences up to 77 tokens: [', cool grays , muted']
-12:40:37 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=107.202 dispositivo=cuda vram_torch_pico_mb=2085 vram_torch_reservada_pico_mb=3782 vram_gpu_base_mb=224.5 vram_gpu_pico_mb=4016.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=105 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=elephant_60
-12:40:37 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=109
+17:47:34 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_1 segundos=61.665 dispositivo=cuda vram_torch_pico_mb=2083.2 vram_torch_reservada_pico_mb=4904 vram_gpu_base_mb=236.5 vram_gpu_pico_mb=4062.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=105 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=elephant_60
+17:47:34 INFO    storybook.image.prompt_builder | prompt_imagen  escena=2 tokens=109
 The following part of your input was truncated because CLIP can only handle sequences up to 77 tokens: [', desaturated greens , dark browns , cool grays , muted']
-12:45:55 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=317.626 dispositivo=cuda vram_torch_pico_mb=2085 vram_torch_reservada_pico_mb=3782 vram_gpu_base_mb=4016.5 vram_gpu_pico_mb=4022.1 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=109 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=elephant_60
-12:45:55 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=91
-12:50:07 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=252.266 dispositivo=cuda vram_torch_pico_mb=2085 vram_torch_reservada_pico_mb=3782 vram_gpu_base_mb=4016.5 vram_gpu_pico_mb=4016.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=91 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=buffalo_25
-12:50:07 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=118
+17:48:27 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_2 segundos=53.344 dispositivo=cuda vram_torch_pico_mb=2083.2 vram_torch_reservada_pico_mb=5090 vram_gpu_base_mb=4062.5 vram_gpu_pico_mb=4080.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=109 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=elephant_60
+17:48:27 INFO    storybook.image.prompt_builder | prompt_imagen  escena=3 tokens=91
+17:49:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_3 segundos=51.821 dispositivo=cuda vram_torch_pico_mb=2083.2 vram_torch_reservada_pico_mb=5090 vram_gpu_base_mb=4062.5 vram_gpu_pico_mb=4064.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=91 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=buffalo_25
+17:49:19 INFO    storybook.image.prompt_builder | prompt_imagen  escena=4 tokens=118
 The following part of your input was truncated because CLIP can only handle sequences up to 77 tokens: ['- shading with soft edges and organic textures , desaturated greens , dark browns , cool grays , muted']
-12:52:19 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=131.433 dispositivo=cuda vram_torch_pico_mb=2085 vram_torch_reservada_pico_mb=3782 vram_gpu_base_mb=4016.5 vram_gpu_pico_mb=4016.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=118 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=elephant_60
-12:52:19 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=101
+17:50:07 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_4 segundos=48.056 dispositivo=cuda vram_torch_pico_mb=2083.2 vram_torch_reservada_pico_mb=5090 vram_gpu_base_mb=4062.5 vram_gpu_pico_mb=4068.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=118 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=elephant_60
+17:50:08 INFO    storybook.image.prompt_builder | prompt_imagen  escena=5 tokens=101
 The following part of your input was truncated because CLIP can only handle sequences up to 77 tokens: ['textures , desaturated greens , dark browns , cool grays , muted']
-12:54:48 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=148.411 dispositivo=cuda vram_torch_pico_mb=2085 vram_torch_reservada_pico_mb=3782 vram_gpu_base_mb=4016.5 vram_gpu_pico_mb=4016.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=101 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=buffalo_25
-12:54:49 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
-12:54:51 INFO    f7_sdxl | perfil_terminado  perfil=avanzada ok=True
-# f10_avanzada: la historia ilustrada otra vez con el código actual (2026-11-19 12:54)
+17:51:02 INFO    storybook.gpu | etapa_medida  etapa=imagen_escena_5 segundos=54.088 dispositivo=cuda vram_torch_pico_mb=2083.2 vram_torch_reservada_pico_mb=5090 vram_gpu_base_mb=3970.5 vram_gpu_pico_mb=4062.5 vram_gpu_total_mb=4096 extra.seed=1855213211 extra.tokens=101 extra.intento=1 extra.version=1 extra.ip=False extra.ip_escala=0 extra.foco=buffalo_25
+17:51:04 INFO    storybook.image.generator | etapa_imagen_terminada  escenas="[1, 2, 3, 4, 5]" respaldos=0 fallbacks=[]
+17:51:07 INFO    f7_sdxl | perfil_terminado  perfil=avanzada ok=True
+# f10_avanzada: la historia ilustrada otra vez con el código actual (2026-11-19 17:51)
 
 Historia: "El Respiro de la Sabana" (`20261118_151141_un_elefante_en_la_sabana_afric`). Mismo texto, mismas seeds; solo cambia el modelo de imagen. `original` son las imágenes de la historia tal como se generaron (antes de la corrección del personaje foco).
 
@@ -166,27 +196,27 @@ Grupos de la idea: ninguno. Avisos: ninguno.
 | Perfil | Total | Carga | Por imagen | VRAM torch (pico / reservada) | VRAM GPU | RAM (proceso / libre mín.) | CLIP img-img (media / mín.) | CLIP img-texto | Respaldos |
 |---|---|---|---|---|---|---|---|---|---|
 | `original` | — | — | — | — / — | — | — / — | 0.8053 / 0.7233 | 0.2976 | — |
-| `sdxl` | 159.65 s | 14.936 s | 11.43 s | 3477.2 MB / 3780.0 MB | 4004.5 MB | 10.82 GB / 1.53 GB | 0.8451 / 0.7233 | 0.2979 | 0 |
-| `avanzada` | 961.78 s | 2.138 s | 148.41 s | 2085.0 MB / 3782.0 MB | 4022.1 MB | 17.13 GB / 0.01 GB | 0.7628 / 0.6331 | 0.3147 | 0 |
+| `sdxl` | 284.73 s | 35.021 s | 11.07 s | 3477.2 MB / 3780.0 MB | 4004.5 MB | 12.31 GB / 1.46 GB | 0.8451 / 0.7233 | 0.2979 | 0 |
+| `avanzada` | 273.5 s | 1.247 s | 53.34 s | 2083.2 MB / 5090.0 MB | 4080.5 MB | 17.95 GB / 0.01 GB | 0.7628 / 0.6331 | 0.3147 | 0 |
 
 ## `sdxl`: personaje foco e IP-Adapter por escena
 
 | Escena | Foco | IP-Adapter | s | Debe verse | Versiones (CLIP) | Prompt |
 |---|---|---|---|---|---|---|
-| 1 | elephant_60 | 0.4 | 24.016 | an African elephant | 0.325 / **0.3277** | medium shot, an African elephant, lowers her snout, ears twitching as if listening to a silent wind, a moonlit |
-| 2 | elephant_60 | 0.24 | 22.633 | an African elephant, an African zebra | 0.2375 / **0.2395** | medium shot, an African elephant, with an African zebra, moves silently across the savanna, feet barely touchi |
-| 3 | buffalo_25 | 0.0 | 22.471 | an African buffalo | 0.3458 / **0.3538** | medium shot, an African buffalo, stares into the darkness, eyes glowing with quiet intensity, a vast savanna a |
-| 4 | elephant_60 | 0.24 | 23.591 | an African elephant, an African buffalo, an African zebra | **0.2404** / 0.2303 | medium shot, an African elephant, with an African buffalo and an African zebra, opens mouth slowly, releasing  |
-| 5 | buffalo_25 | 0.0 | 24.579 | an African buffalo, an African elephant | 0.2665 / **0.2721** | medium shot, an African buffalo, with an African elephant, elephant and buffalo gaze at each other, wind gentl |
+| 1 | elephant_60 | 0.4 | 23.737 | an African elephant | 0.325 / **0.3277** | medium shot, an African elephant, lowers her snout, ears twitching as if listening to a silent wind, a moonlit |
+| 2 | elephant_60 | 0.24 | 22.321 | an African elephant, an African zebra | 0.2375 / **0.2395** | medium shot, an African elephant, with an African zebra, moves silently across the savanna, feet barely touchi |
+| 3 | buffalo_25 | 0.0 | 21.792 | an African buffalo | 0.3458 / **0.3538** | medium shot, an African buffalo, stares into the darkness, eyes glowing with quiet intensity, a vast savanna a |
+| 4 | elephant_60 | 0.24 | 24.654 | an African elephant, an African buffalo, an African zebra | **0.2404** / 0.2303 | medium shot, an African elephant, with an African buffalo and an African zebra, opens mouth slowly, releasing  |
+| 5 | buffalo_25 | 0.0 | 22.995 | an African buffalo, an African elephant | 0.2665 / **0.2721** | medium shot, an African buffalo, with an African elephant, elephant and buffalo gaze at each other, wind gentl |
 
 ## `avanzada`: personaje foco e IP-Adapter por escena
 
 | Escena | Foco | IP-Adapter | s | Debe verse | Versiones (CLIP) | Prompt |
 |---|---|---|---|---|---|---|
-| 1 | elephant_60 | 0.0 | 107.202 | an African elephant | — | medium shot, an African elephant, lowers her snout, ears twitching as if listening to a silent wind, a moonlit |
-| 2 | elephant_60 | 0.0 | 317.626 | an African elephant, an African zebra | — | medium shot, an African elephant, with an African zebra (white stripes, short tail), moves silently across the |
-| 3 | buffalo_25 | 0.0 | 252.266 | an African buffalo | — | medium shot, an African buffalo, stares into the darkness, eyes glowing with quiet intensity, a vast savanna a |
-| 4 | elephant_60 | 0.0 | 131.433 | an African elephant, an African buffalo, an African zebra | — | medium shot, an African elephant, with an African buffalo (dark brown hide, short horns) and an African zebra  |
-| 5 | buffalo_25 | 0.0 | 148.411 | an African buffalo, an African elephant | — | medium shot, an African buffalo, with an African elephant (gray skin, thick trunk), elephant and buffalo gaze  |
+| 1 | elephant_60 | 0.0 | 61.665 | an African elephant | — | medium shot, an African elephant, lowers her snout, ears twitching as if listening to a silent wind, a moonlit |
+| 2 | elephant_60 | 0.0 | 53.344 | an African elephant, an African zebra | — | medium shot, an African elephant, with an African zebra (white stripes, short tail), moves silently across the |
+| 3 | buffalo_25 | 0.0 | 51.821 | an African buffalo | — | medium shot, an African buffalo, stares into the darkness, eyes glowing with quiet intensity, a vast savanna a |
+| 4 | elephant_60 | 0.0 | 48.056 | an African elephant, an African buffalo, an African zebra | — | medium shot, an African elephant, with an African buffalo (dark brown hide, short horns) and an African zebra  |
+| 5 | buffalo_25 | 0.0 | 54.088 | an African buffalo, an African elephant | — | medium shot, an African buffalo, with an African elephant (gray skin, thick trunk), elephant and buffalo gaze  |
 
 Hojas de contactos: `docs/evidencias/f10_avanzada_hojas/`.

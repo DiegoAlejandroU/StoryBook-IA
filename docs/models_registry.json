@@ -51,7 +51,7 @@
     "archivos": 1,
     "nota": "",
     "extra": {},
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   },
   "h94/IP-Adapter": {
     "repo_id": "h94/IP-Adapter",
@@ -66,7 +66,7 @@
     "extra": {
       "peso": "models/ip-adapter_sd15.safetensors"
     },
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   },
   "rhasspy/piper-voices:es_MX-claude-high": {
     "repo_id": "rhasspy/piper-voices:es_MX-claude-high",
@@ -81,7 +81,7 @@
     "extra": {
       "model_card": "# Model card for claude (high)\n\n* Language: es_MX (Spanish, Mexico)\n* Speakers: 1\n* Quality: high\n* Samplerate: 22,050Hz\n\n## Dataset\n\n* URL: https://huggingface.co/spaces/HirCoir/Piper-TTS-Spanish\n* License: apache-2.0\n\n## Training\n\nSee URL above\n"
     },
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   },
   "cvssp/audioldm": {
     "repo_id": "cvssp/audioldm",
@@ -96,7 +96,7 @@
     "extra": {
       "variante": "fp32"
     },
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   },
   "Systran/faster-whisper-small": {
     "repo_id": "Systran/faster-whisper-small",
@@ -195,7 +195,7 @@
     "extra": {
       "variante": "fp32"
     },
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   },
   "coqui/XTTS-v2": {
     "repo_id": "coqui/XTTS-v2",
@@ -208,7 +208,7 @@
     "archivos": 5,
     "nota": "CPML (Coqui Public Model License): uso no comercial",
     "extra": {},
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   },
   "stabilityai/stable-audio-3-small-sfx": {
     "repo_id": "stabilityai/stable-audio-3-small-sfx",
@@ -221,7 +221,7 @@
     "archivos": 0,
     "nota": "El repo no está en formato diffusers (sin model_index.json).",
     "extra": {},
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   },
   "stabilityai/stable-audio-open-1.0": {
     "repo_id": "stabilityai/stable-audio-open-1.0",
@@ -236,6 +236,6 @@
     "extra": {
       "variante": "fp32"
     },
-    "actualizado": "2026-11-19T12:29:04"
+    "actualizado": "2026-11-19T17:28:05"
   }
 }

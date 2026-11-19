@@ -11,54 +11,54 @@
       "piper_tts": "1.8.0",
       "dispositivo": "cpu",
       "respaldo_de": "xtts",
-      "error_xtts": "XttsError: XTTS no cargó: ImportError: \nFrom Pytorch 2.9, the torchcodec library is required for audio IO, but it was not\nfound in your environment. You can install it with Coqui's `codec` extra:\n```\npip install coqui-tts[codec]\n```\n (registro: C:\\Users\\diego\\AppData\\Local\\Temp\\storybook_xtts__1fqy5k9.log)"
+      "error_xtts": "XttsError: XTTS no cargó: ModuleNotFoundError: No module named 'six' (registro: C:\\Users\\diego\\AppData\\Local\\Temp\\storybook_xtts_0v6e1hm9.log)"
     },
-    "segundos_total": 21.66,
-    "carga_s": 8.557,
+    "segundos_total": 186.81,
+    "carga_s": 145.065,
     "escenas": [
       {
         "escena": 1,
         "archivo": "voice_1.wav",
-        "duracion_s": 40.997,
+        "duracion_s": 41.403,
         "sample_rate": 22050,
-        "segundos_sintesis": 2.864,
-        "rtf": 0.0699,
+        "segundos_sintesis": 9.069,
+        "rtf": 0.219,
         "caracteres": 624
       },
       {
         "escena": 2,
         "archivo": "voice_2.wav",
-        "duracion_s": 42.947,
+        "duracion_s": 43.469,
         "sample_rate": 22050,
-        "segundos_sintesis": 1.48,
-        "rtf": 0.0345,
+        "segundos_sintesis": 5.197,
+        "rtf": 0.1196,
         "caracteres": 618
       },
       {
         "escena": 3,
         "archivo": "voice_3.wav",
-        "duracion_s": 33.543,
+        "duracion_s": 33.705,
         "sample_rate": 22050,
-        "segundos_sintesis": 1.005,
-        "rtf": 0.03,
+        "segundos_sintesis": 4.13,
+        "rtf": 0.1225,
         "caracteres": 503
       },
       {
         "escena": 4,
         "archivo": "voice_4.wav",
-        "duracion_s": 46.918,
+        "duracion_s": 46.894,
         "sample_rate": 22050,
-        "segundos_sintesis": 1.385,
-        "rtf": 0.0295,
+        "segundos_sintesis": 5.436,
+        "rtf": 0.1159,
         "caracteres": 690
       },
       {
         "escena": 5,
         "archivo": "voice_5.wav",
-        "duracion_s": 48.996,
+        "duracion_s": 48.589,
         "sample_rate": 22050,
-        "segundos_sintesis": 1.354,
-        "rtf": 0.0276,
+        "segundos_sintesis": 5.463,
+        "rtf": 0.1124,
         "caracteres": 675
       }
     ]
@@ -71,66 +71,59 @@
       "library",
       "procedural"
     ],
-    "segundos_total": 24.87,
-    "fallbacks": [
-      "sonido:sao:no_disponible",
-      "sonido:sa3:no_disponible",
-      "sonido:escena_1:audioldm_fallo",
-      "sonido:escena_3:audioldm_fallo",
-      "sonido:library:no_disponible"
-    ],
-    "errores": [
-      "sao: ImportError: \nCosineDPMSolverMultistepScheduler requires the torchsde library but it was not found in your environment. You can install it with pip: `pip install torchsde`\n",
-      "sa3: ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\\Users\\diego\\Documents\\StoryBook-IA\\models\\hf. Ejecuta: uv run python scripts/download_models.py",
-      "Escena 1 con audioldm: SoundError: clip casi en silencio el 57% del tiempo (2 intentos)",
-      "Escena 3 con audioldm: SoundError: clip casi en silencio el 49% del tiempo (2 intentos)",
-      "library: SoundError: biblioteca vacía o sin clips CC0 en C:\\Users\\diego\\Documents\\StoryBook-IA\\assets\\sfx"
-    ],
+    "segundos_total": 550.58,
+    "fallbacks": [],
+    "errores": [],
     "escenas": [
       {
         "escena": 1,
         "archivo": "sfx_1.wav",
-        "backend": "procedural",
+        "backend": "sao",
         "duracion_s": 8.0,
         "sample_rate": 44100,
-        "segundos": 0.115,
+        "segundos": 120.304,
         "prompt": "Forest silence, then a single gust of wind fades abruptly.",
         "etiquetas": [
           "wind",
           "forest"
         ],
         "detalle": {
-          "seed": 1235
+          "prompt_efectivo": "Forest, then a single gust of wind fades abruptly.",
+          "negativo_efectivo": "low quality, speech, voice, music",
+          "intentos": 2,
+          "fraccion_silencio": 0.344,
+          "nivel_dbfs": -19.9,
+          "seed": 2235
         }
       },
       {
         "escena": 2,
         "archivo": "sfx_2.wav",
-        "backend": "audioldm",
+        "backend": "sao",
         "duracion_s": 8.0,
-        "sample_rate": 16000,
-        "segundos": 1.314,
+        "sample_rate": 44100,
+        "segundos": 72.042,
         "prompt": "Silent air, distant heartbeat pulse.",
         "etiquetas": [
           "wind",
           "heartbeat"
         ],
         "detalle": {
-          "prompt_efectivo": "Silent air, distant heartbeat pulse, high quality, clear",
-          "negativo_efectivo": "speech, voice, singing, music",
+          "prompt_efectivo": "Silent air, distant heartbeat pulse.",
+          "negativo_efectivo": "low quality, speech, voice, singing, music",
           "intentos": 1,
-          "fraccion_silencio": 0.312,
-          "nivel_dbfs": -29.3,
+          "fraccion_silencio": 0.231,
+          "nivel_dbfs": -24.3,
           "seed": 1236
         }
       },
       {
         "escena": 3,
         "archivo": "sfx_3.wav",
-        "backend": "procedural",
+        "backend": "sao",
         "duracion_s": 8.0,
         "sample_rate": 44100,
-        "segundos": 0.103,
+        "segundos": 129.585,
         "prompt": "Silent forest; low buffalo growl fades into silence.",
         "etiquetas": [
           "wind",
@@ -138,16 +131,21 @@
           "heartbeat"
         ],
         "detalle": {
-          "seed": 1237
+          "prompt_efectivo": "Silent forest; low buffalo growl fades.",
+          "negativo_efectivo": "speech, voice, singing, music",
+          "intentos": 2,
+          "fraccion_silencio": 0.013,
+          "nivel_dbfs": -37.1,
+          "seed": 2237
         }
       },
       {
         "escena": 4,
         "archivo": "sfx_4.wav",
-        "backend": "audioldm",
+        "backend": "sao",
         "duracion_s": 8.0,
-        "sample_rate": 16000,
-        "segundos": 1.232,
+        "sample_rate": 44100,
+        "segundos": 64.324,
         "prompt": "Distant wind hums beneath deep breathing sound. Forest silence grows heavy and still.",
         "etiquetas": [
           "wind",
@@ -155,132 +153,121 @@
           "forest"
         ],
         "detalle": {
-          "prompt_efectivo": "Distant wind hums beneath deep breathing sound. Forest grows heavy and still, high quality, clear",
-          "negativo_efectivo": "speech, voice, singing, music",
+          "prompt_efectivo": "Distant wind hums beneath deep breathing sound. Forest grows heavy and still.",
+          "negativo_efectivo": "low quality, speech, voice, singing, music",
           "intentos": 1,
-          "fraccion_silencio": 0.0,
-          "nivel_dbfs": -22.8,
+          "fraccion_silencio": 0.025,
+          "nivel_dbfs": -38.3,
           "seed": 1238
         }
       },
       {
         "escena": 5,
         "archivo": "sfx_5.wav",
-        "backend": "audioldm",
+        "backend": "sao",
         "duracion_s": 8.0,
-        "sample_rate": 16000,
-        "segundos": 1.27,
+        "sample_rate": 44100,
+        "segundos": 61.83,
         "prompt": "Soft wind rustling grass, distant forest breaths.",
         "etiquetas": [
           "wind",
           "forest"
         ],
         "detalle": {
-          "prompt_efectivo": "Wind rustling grass, distant forest breaths, high quality, clear",
-          "negativo_efectivo": "speech, voice, singing, music",
+          "prompt_efectivo": "Wind rustling grass, distant forest breaths.",
+          "negativo_efectivo": "low quality, speech, voice, singing, music",
           "intentos": 1,
-          "fraccion_silencio": 0.0,
-          "nivel_dbfs": -6.4,
+          "fraccion_silencio": 0.05,
+          "nivel_dbfs": -44.4,
           "seed": 1239
         }
       }
     ],
     "metricas": [
       {
-        "etapa": "sonido_audioldm_carga",
-        "segundos": 4.188,
+        "etapa": "sonido_sao_carga",
+        "segundos": 99.777,
         "dispositivo": "cuda",
-        "vram_torch_pico_mb": 821.0,
-        "vram_torch_reservada_pico_mb": 840.0,
-        "vram_gpu_base_mb": 196.5,
-        "vram_gpu_pico_mb": 738.5,
+        "vram_torch_pico_mb": 0.0,
+        "vram_torch_reservada_pico_mb": 0.0,
+        "vram_gpu_base_mb": 134.0,
+        "vram_gpu_pico_mb": 134.0,
         "vram_gpu_total_mb": 4096.0,
         "extra": {}
       },
       {
-        "etapa": "sonido_escena_2",
-        "segundos": 1.332,
+        "etapa": "sonido_escena_1",
+        "segundos": 120.324,
         "dispositivo": "cuda",
-        "vram_torch_pico_mb": 943.2,
-        "vram_torch_reservada_pico_mb": 1048.0,
-        "vram_gpu_base_mb": 1274.5,
-        "vram_gpu_pico_mb": 1274.5,
+        "vram_torch_pico_mb": 3272.0,
+        "vram_torch_reservada_pico_mb": 5240.0,
+        "vram_gpu_base_mb": 134.0,
+        "vram_gpu_pico_mb": 4084.5,
         "vram_gpu_total_mb": 4096.0,
         "extra": {
-          "backend": "audioldm",
+          "backend": "sao",
+          "duracion_audio_s": 8.0,
+          "seed": 2235
+        }
+      },
+      {
+        "etapa": "sonido_escena_2",
+        "segundos": 72.06,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 3277.9,
+        "vram_torch_reservada_pico_mb": 5246.0,
+        "vram_gpu_base_mb": 700.5,
+        "vram_gpu_pico_mb": 3998.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {
+          "backend": "sao",
           "duracion_audio_s": 8.0,
           "seed": 1236
         }
       },
       {
-        "etapa": "sonido_escena_4",
-        "segundos": 1.251,
+        "etapa": "sonido_escena_3",
+        "segundos": 129.599,
         "dispositivo": "cuda",
-        "vram_torch_pico_mb": 943.2,
-        "vram_torch_reservada_pico_mb": 1048.0,
-        "vram_gpu_base_mb": 1274.5,
-        "vram_gpu_pico_mb": 1274.5,
+        "vram_torch_pico_mb": 3290.4,
+        "vram_torch_reservada_pico_mb": 5264.0,
+        "vram_gpu_base_mb": 640.5,
+        "vram_gpu_pico_mb": 3952.5,
         "vram_gpu_total_mb": 4096.0,
         "extra": {
-          "backend": "audioldm",
+          "backend": "sao",
+          "duracion_audio_s": 8.0,
+          "seed": 2237
+        }
+      },
+      {
+        "etapa": "sonido_escena_4",
+        "segundos": 64.34,
+        "dispositivo": "cuda",
+        "vram_torch_pico_mb": 3294.8,
+        "vram_torch_reservada_pico_mb": 5128.0,
+        "vram_gpu_base_mb": 650.5,
+        "vram_gpu_pico_mb": 3880.5,
+        "vram_gpu_total_mb": 4096.0,
+        "extra": {
+          "backend": "sao",
           "duracion_audio_s": 8.0,
           "seed": 1238
         }
       },
       {
         "etapa": "sonido_escena_5",
-        "segundos": 1.288,
+        "segundos": 61.848,
         "dispositivo": "cuda",
-        "vram_torch_pico_mb": 943.2,
-        "vram_torch_reservada_pico_mb": 1048.0,
-        "vram_gpu_base_mb": 1274.5,
-        "vram_gpu_pico_mb": 1274.5,
+        "vram_torch_pico_mb": 3278.7,
+        "vram_torch_reservada_pico_mb": 5288.0,
+        "vram_gpu_base_mb": 768.5,
+        "vram_gpu_pico_mb": 3912.5,
         "vram_gpu_total_mb": 4096.0,
         "extra": {
-          "backend": "audioldm",
+          "backend": "sao",
           "duracion_audio_s": 8.0,
           "seed": 1239
-        }
-      },
-      {
-        "etapa": "sonido_procedural_carga",
-        "segundos": 0.0,
-        "dispositivo": "cuda",
-        "vram_torch_pico_mb": 0.0,
-        "vram_torch_reservada_pico_mb": 0.0,
-        "vram_gpu_base_mb": 226.5,
-        "vram_gpu_pico_mb": 226.5,
-        "vram_gpu_total_mb": 4096.0,
-        "extra": {}
-      },
-      {
-        "etapa": "sonido_escena_1",
-        "segundos": 0.122,
-        "dispositivo": "cuda",
-        "vram_torch_pico_mb": 0.0,
-        "vram_torch_reservada_pico_mb": 0.0,
-        "vram_gpu_base_mb": 226.5,
-        "vram_gpu_pico_mb": 226.5,
-        "vram_gpu_total_mb": 4096.0,
-        "extra": {
-          "backend": "procedural",
-          "duracion_audio_s": 8.0,
-          "seed": 1235
-        }
-      },
-      {
-        "etapa": "sonido_escena_3",
-        "segundos": 0.123,
-        "dispositivo": "cuda",
-        "vram_torch_pico_mb": 0.0,
-        "vram_torch_reservada_pico_mb": 0.0,
-        "vram_gpu_base_mb": 226.5,
-        "vram_gpu_pico_mb": 226.5,
-        "vram_gpu_total_mb": 4096.0,
-        "extra": {
-          "backend": "procedural",
-          "duracion_audio_s": 8.0,
-          "seed": 1237
         }
       }
     ]

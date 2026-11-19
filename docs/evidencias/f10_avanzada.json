@@ -6,7 +6,7 @@
       {
         "etapa": "plano_1",
         "intentos": 1,
-        "segundos": 11.316,
+        "segundos": 17.927,
         "prompt_tokens": 551,
         "output_tokens": 72,
         "errores_por_intento": []
@@ -14,7 +14,7 @@
       {
         "etapa": "plano_2",
         "intentos": 1,
-        "segundos": 1.902,
+        "segundos": 3.848,
         "prompt_tokens": 568,
         "output_tokens": 91,
         "errores_por_intento": []
@@ -22,7 +22,7 @@
       {
         "etapa": "plano_3",
         "intentos": 1,
-        "segundos": 1.383,
+        "segundos": 6.447,
         "prompt_tokens": 551,
         "output_tokens": 65,
         "errores_por_intento": []
@@ -30,7 +30,7 @@
       {
         "etapa": "plano_4",
         "intentos": 1,
-        "segundos": 2.112,
+        "segundos": 9.937,
         "prompt_tokens": 594,
         "output_tokens": 102,
         "errores_por_intento": []
@@ -38,7 +38,7 @@
       {
         "etapa": "plano_5",
         "intentos": 1,
-        "segundos": 1.939,
+        "segundos": 8.112,
         "prompt_tokens": 592,
         "output_tokens": 90,
         "errores_por_intento": []
@@ -111,10 +111,10 @@
     },
     {
       "perfil": "sdxl",
-      "total_s": 159.65,
-      "carga_s": 14.936,
-      "sheet_s": 12.457,
-      "por_imagen_mediana_s": 11.43,
+      "total_s": 284.73,
+      "carga_s": 35.021,
+      "sheet_s": 118.661,
+      "por_imagen_mediana_s": 11.07,
       "vram_torch_pico_mb": 3477.2,
       "vram_torch_reservada_mb": 3780.0,
       "vram_gpu_pico_mb": 4004.5,
@@ -126,7 +126,7 @@
           "escena": 1,
           "foco": "elephant_60",
           "ip_escala": 0.4,
-          "segundos": 24.016,
+          "segundos": 23.737,
           "prompt": "medium shot, an African elephant, lowers her snout, ears twitching as if listening to a silent wind, a moonlit savanna at twilight, trees still and shadows deep, African elephant age 60, gray skin, thick trunk, worn leather satchel, heavy eyes, broad body, cel-shading with soft edges and organic textures, desaturated greens, dark browns",
           "verificar": [
             "an African elephant"
@@ -148,7 +148,7 @@
           "escena": 2,
           "foco": "elephant_60",
           "ip_escala": 0.24,
-          "segundos": 22.633,
+          "segundos": 22.321,
           "prompt": "medium shot, an African elephant, with an African zebra, moves silently across the savanna, feet barely touching ground, a quiet savanna at dusk, golden light fading into deep blue, African elephant age 60, gray skin, thick trunk, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African elephant",
@@ -171,7 +171,7 @@
           "escena": 3,
           "foco": "buffalo_25",
           "ip_escala": 0.0,
-          "segundos": 22.471,
+          "segundos": 21.792,
           "prompt": "medium shot, an African buffalo, stares into the darkness, eyes glowing with quiet intensity, a vast savanna at twilight under a clear dark sky, African buffalo age 25, dark brown hide, short horns, muddy coat, thick tail, alert posture, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African buffalo"
@@ -193,7 +193,7 @@
           "escena": 4,
           "foco": "elephant_60",
           "ip_escala": 0.24,
-          "segundos": 23.591,
+          "segundos": 24.654,
           "prompt": "medium shot, an African elephant, with an African buffalo and an African zebra, opens mouth slowly, releasing a deep, earthy sound, a valley at twilight with distant hills and soft shadows, African elephant age 60, gray skin, thick trunk, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African elephant",
@@ -217,7 +217,7 @@
           "escena": 5,
           "foco": "buffalo_25",
           "ip_escala": 0.0,
-          "segundos": 24.579,
+          "segundos": 22.995,
           "prompt": "medium shot, an African buffalo, with an African elephant, elephant and buffalo gaze at each other, wind gently stirring their fur, a vast savanna under deep blue sky with soft golden light, African buffalo age 25, dark brown hide, short horns, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African buffalo",
@@ -251,21 +251,21 @@
         "unet_fp8": true,
         "cpu_offload": true
       },
-      "ram_libre_min_gb": 1.53,
-      "ram_proceso_pico_gb": 10.82,
+      "ram_libre_min_gb": 1.46,
+      "ram_proceso_pico_gb": 12.31,
       "clip_img_img_media": 0.8451,
       "clip_img_img_min": 0.7233,
       "clip_img_txt_media": 0.2979
     },
     {
       "perfil": "avanzada",
-      "total_s": 961.78,
-      "carga_s": 2.138,
+      "total_s": 273.5,
+      "carga_s": 1.247,
       "sheet_s": null,
-      "por_imagen_mediana_s": 148.41,
-      "vram_torch_pico_mb": 2085.0,
-      "vram_torch_reservada_mb": 3782.0,
-      "vram_gpu_pico_mb": 4022.1,
+      "por_imagen_mediana_s": 53.34,
+      "vram_torch_pico_mb": 2083.2,
+      "vram_torch_reservada_mb": 5090.0,
+      "vram_gpu_pico_mb": 4080.5,
       "respaldos": 0,
       "fallbacks": [],
       "errores": [],
@@ -274,7 +274,7 @@
           "escena": 1,
           "foco": "elephant_60",
           "ip_escala": 0.0,
-          "segundos": 107.202,
+          "segundos": 61.665,
           "prompt": "medium shot, an African elephant, lowers her snout, ears twitching as if listening to a silent wind, a moonlit savanna at twilight, trees still and shadows deep, African elephant age 60, gray skin, thick trunk, worn leather satchel, heavy eyes, broad body, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African elephant"
@@ -285,7 +285,7 @@
           "escena": 2,
           "foco": "elephant_60",
           "ip_escala": 0.0,
-          "segundos": 317.626,
+          "segundos": 53.344,
           "prompt": "medium shot, an African elephant, with an African zebra (white stripes, short tail), moves silently across the savanna, feet barely touching ground, a quiet savanna at dusk, golden light fading into deep blue, African elephant age 60, gray skin, thick trunk, worn leather satchel, heavy eyes, broad body, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African elephant",
@@ -297,7 +297,7 @@
           "escena": 3,
           "foco": "buffalo_25",
           "ip_escala": 0.0,
-          "segundos": 252.266,
+          "segundos": 51.821,
           "prompt": "medium shot, an African buffalo, stares into the darkness, eyes glowing with quiet intensity, a vast savanna at twilight under a clear dark sky, African buffalo age 25, dark brown hide, short horns, muddy coat, thick tail, alert posture, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African buffalo"
@@ -308,7 +308,7 @@
           "escena": 4,
           "foco": "elephant_60",
           "ip_escala": 0.0,
-          "segundos": 131.433,
+          "segundos": 48.056,
           "prompt": "medium shot, an African elephant, with an African buffalo (dark brown hide, short horns) and an African zebra (white stripes, short tail), opens mouth slowly, releasing a deep, earthy sound, a valley at twilight with distant hills and soft shadows, African elephant age 60, gray skin, thick trunk, worn leather satchel, heavy eyes, broad body, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African elephant",
@@ -321,7 +321,7 @@
           "escena": 5,
           "foco": "buffalo_25",
           "ip_escala": 0.0,
-          "segundos": 148.411,
+          "segundos": 54.088,
           "prompt": "medium shot, an African buffalo, with an African elephant (gray skin, thick trunk), elephant and buffalo gaze at each other, wind gently stirring their fur, a vast savanna under deep blue sky with soft golden light, African buffalo age 25, dark brown hide, short horns, muddy coat, thick tail, alert posture, cel-shading with soft edges and organic textures, desaturated greens, dark browns, cool grays, muted",
           "verificar": [
             "an African buffalo",
@@ -339,11 +339,12 @@
         "modelo_revision": "169573f54945f633efbe126a40a5676b4228363c",
         "arquitectura": "flux",
         "fp8_dir": "flux-schnell-fp8",
-        "offload": "grupos",
-        "max_sequence_length": 256
+        "offload": "grupos + stream",
+        "max_sequence_length": 256,
+        "t5": "por imagen"
       },
       "ram_libre_min_gb": 0.01,
-      "ram_proceso_pico_gb": 17.13,
+      "ram_proceso_pico_gb": 17.95,
       "clip_img_img_media": 0.7628,
       "clip_img_img_min": 0.6331,
       "clip_img_txt_media": 0.3147

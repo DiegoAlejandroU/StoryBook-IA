@@ -1,90 +1,64 @@
-﻿12:34:56 WARNING storybook.voice.xtts | xtts_no_disponible  error="XttsError: XTTS no cargó: ImportError: 
-From Pytorch 2.9, the torchcodec library is required for audio IO, but it was not
-found in your environment. You can install it with Coqui's `codec` extra:
-```
-pip install coqui-tts[codec]
-```
- (registro: C:\Users\diego\AppData\Local\Temp\storybook_xtts__1fqy5k9.log)" respaldo=piper
-12:34:58 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=8.557 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096
-12:35:01 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_1 segundos=2.883 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=40.997 extra.sample_rate=22050
-12:35:03 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_2 segundos=1.506 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=42.947 extra.sample_rate=22050
-12:35:04 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_3 segundos=1.025 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=33.543 extra.sample_rate=22050
-12:35:05 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_4 segundos=1.408 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=46.918 extra.sample_rate=22050
-12:35:07 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_5 segundos=1.378 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096 extra.duracion_audio_s=48.996 extra.sample_rate=22050
-12:35:07 INFO    storybook.voice.tts | etapa_voz_terminada  escenas="[1, 2, 3, 4, 5]" total_s=213.401
-12:35:07 INFO    f10_voz_sonido | voz_lista  backend="{'backend': 'piper', 'voz': 'es_MX-claude-high', 'length_scale': 1.0, 'noise_scale': 0.667, 'noise_w_scale': 0.8, 'piper_tts': '1.8.0', 'dispositivo': 'cpu', 'respaldo_de': 'xtts', 'error_xtts': "XttsError: XTTS no cargó: ImportError: \nFrom Pytorch 2.9, the torchcodec library is required for audio IO, but it was not\nfound in your environment. You can install it with Coqui's `codec` extra:\n```\npip install coqui-tts[codec]\n```\n (registro: C:\\Users\\diego\\AppData\\Local\\Temp\\storybook_xtts__1fqy5k9.log)"}" error=None
+﻿17:30:41 WARNING storybook.voice.xtts | xtts_no_disponible  error="XttsError: XTTS no cargó: ModuleNotFoundError: No module named 'six' (registro: C:\Users\diego\AppData\Local\Temp\storybook_xtts_0v6e1hm9.log)" respaldo=piper
+17:30:49 INFO    storybook.gpu | etapa_medida  etapa=voz_carga segundos=145.065 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096
+17:30:59 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_1 segundos=9.113 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=134 vram_gpu_pico_mb=134 vram_gpu_total_mb=4096 extra.duracion_audio_s=41.403 extra.sample_rate=22050
+17:31:05 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_2 segundos=5.241 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=134 vram_gpu_pico_mb=134 vram_gpu_total_mb=4096 extra.duracion_audio_s=43.469 extra.sample_rate=22050
+17:31:09 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_3 segundos=4.165 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=134 vram_gpu_pico_mb=134 vram_gpu_total_mb=4096 extra.duracion_audio_s=33.705 extra.sample_rate=22050
+17:31:14 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_4 segundos=5.483 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=134 vram_gpu_pico_mb=134 vram_gpu_total_mb=4096 extra.duracion_audio_s=46.894 extra.sample_rate=22050
+17:31:21 INFO    storybook.gpu | etapa_medida  etapa=voz_escena_5 segundos=5.509 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=134 vram_gpu_pico_mb=134 vram_gpu_total_mb=4096 extra.duracion_audio_s=48.589 extra.sample_rate=22050
+17:31:21 INFO    storybook.voice.tts | etapa_voz_terminada  escenas="[1, 2, 3, 4, 5]" total_s=214.06
+17:31:21 INFO    f10_voz_sonido | voz_lista  backend="{'backend': 'piper', 'voz': 'es_MX-claude-high', 'length_scale': 1.0, 'noise_scale': 0.667, 'noise_w_scale': 0.8, 'piper_tts': '1.8.0', 'dispositivo': 'cpu', 'respaldo_de': 'xtts', 'error_xtts': "XttsError: XTTS no cargó: ModuleNotFoundError: No module named 'six' (registro: C:\\Users\\diego\\AppData\\Local\\Temp\\storybook_xtts_0v6e1hm9.log)"}" error=None
 C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\diffusers\utils\deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
   deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
 System.Management.Automation.RemoteException
-Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\torch\nn\utils\weight_norm.py:145: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  2.02it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:11<00:26,  6.52s/it]
+Loading pipeline components...:  50%|█████     | 3/6 [00:11<00:10,  3.60s/it]C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\torch\nn\utils\weight_norm.py:145: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
 System.Management.Automation.RemoteException
-Loading pipeline components...:  17%|█▋        | 1/6 [00:01<00:05,  1.06s/it]
-Loading pipeline components...:  33%|███▎      | 2/6 [00:01<00:02,  1.86it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:13<00:06,  3.09s/it]
 System.Management.Automation.RemoteException
 Loading weights:   0%|          | 0/99 [00:00<?, ?it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  20%|██        | 20/99 [00:00<00:00, 187.05it/s][A
+Loading weights:  12%|█▏        | 12/99 [00:00<00:00, 105.16it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  41%|████▏     | 41/99 [00:00<00:00, 193.10it/s][A
+Loading weights:  23%|██▎       | 23/99 [00:00<00:00, 99.58it/s] [A
 System.Management.Automation.RemoteException
-Loading weights:  62%|██████▏   | 61/99 [00:00<00:00, 192.90it/s][A
+Loading weights:  33%|███▎      | 33/99 [00:00<00:00, 82.36it/s][A
 System.Management.Automation.RemoteException
-Loading weights:  82%|████████▏ | 81/99 [00:00<00:00, 185.29it/s][A
-Loading weights: 100%|██████████| 99/99 [00:00<00:00, 151.99it/s]
+Loading weights:  42%|████▏     | 42/99 [00:00<00:00, 75.86it/s][A
 System.Management.Automation.RemoteException
-Loading pipeline components...:  67%|██████▋   | 4/6 [00:02<00:00,  2.14it/s]
-Loading pipeline components...:  67%|██████▋   | 4/6 [00:02<00:01,  1.92it/s]
-12:35:18 INFO    storybook.gpu | etapa_medida  etapa=sonido_sao_carga segundos=9.648 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096
-12:35:18 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sao error="ImportError: 
-CosineDPMSolverMultistepScheduler requires the torchsde library but it was not found in your environment. You can install it with pip: `pip install torchsde`
-"
-12:35:18 INFO    storybook.gpu | etapa_medida  etapa=sonido_sa3_carga segundos=0.001 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=196.5 vram_gpu_total_mb=4096
-12:35:18 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=sa3 error="ModelNotDownloadedError: 'stabilityai/stable-audio-3-small-sfx' no está descargado en C:\Users\diego\Documents\StoryBook-IA\models\hf. Ejecuta: uv run python scripts/download_models.py"
+Loading weights:  53%|█████▎    | 52/99 [00:00<00:00, 77.66it/s][A
 System.Management.Automation.RemoteException
-Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\vae.
-Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+Loading weights:  61%|██████    | 60/99 [00:00<00:00, 77.35it/s][A
 System.Management.Automation.RemoteException
-Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  2.27it/s]
-Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  3.51it/s]
+Loading weights:  70%|██████▉   | 69/99 [00:00<00:00, 76.43it/s][A
 System.Management.Automation.RemoteException
-Loading weights:   0%|          | 0/205 [00:00<?, ?it/s][A
+Loading weights:  80%|███████▉  | 79/99 [00:00<00:00, 82.08it/s][A
 System.Management.Automation.RemoteException
-Loading weights:   3%|▎         | 7/205 [00:00<00:14, 14.07it/s][A
-Loading weights: 100%|██████████| 205/205 [00:00<00:00, 385.25it/s]
+Loading weights:  89%|████████▉ | 88/99 [00:01<00:00, 81.11it/s][A
 System.Management.Automation.RemoteException
-Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.18it/s]An error occurred while trying to fetch C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet: Error no file named diffusion_pytorch_model.safetensors found in directory C:\Users\diego\Documents\StoryBook-IA\models\hf\hub\models--cvssp--audioldm\snapshots\8ed5f6437581a2fee9c662842d7cb13459914b0f\unet.
-Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+Loading weights:  98%|█████████▊| 97/99 [00:01<00:00, 37.59it/s][A
+Loading weights: 100%|██████████| 99/99 [00:01<00:00, 59.37it/s]
 System.Management.Automation.RemoteException
-Loading pipeline components...:  83%|████████▎ | 5/6 [00:02<00:00,  1.56it/s][transformers] You are using a model of type `hifigan` to instantiate a model of type `speecht5_hifigan`. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
-System.Management.Automation.RemoteException
-System.Management.Automation.RemoteException
-Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
-System.Management.Automation.RemoteException
-Loading weights:  16%|█▌        | 31/196 [00:00<00:00, 283.93it/s][A
-System.Management.Automation.RemoteException
-Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 879.90it/s][A
-Loading weights: 100%|██████████| 196/196 [00:00<00:00, 831.05it/s]
-System.Management.Automation.RemoteException
-Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.76it/s]
-Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.85it/s]
-The AudioLDMPipeline has been deprecated and will not receive bug fixes or feature updates after Diffusers version 0.33.1. 
-12:35:22 INFO    storybook.gpu | etapa_medida  etapa=sonido_audioldm_carga segundos=4.188 dispositivo=cuda vram_torch_pico_mb=821 vram_torch_reservada_pico_mb=840 vram_gpu_base_mb=196.5 vram_gpu_pico_mb=738.5 vram_gpu_total_mb=4096
-12:35:25 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=1 backend=audioldm problema="clip casi en silencio el 53% del tiempo"
-12:35:26 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=1 backend=audioldm problema="clip casi en silencio el 57% del tiempo"
-12:35:26 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=3.875 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1036.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
-12:35:26 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=1 backend=audioldm error="SoundError: clip casi en silencio el 57% del tiempo (2 intentos)"
-12:35:28 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=1.332 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1236
-12:35:29 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=3 backend=audioldm problema="clip casi en silencio el 63% del tiempo"
-12:35:30 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=3 backend=audioldm problema="clip casi en silencio el 49% del tiempo"
-12:35:30 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=2.524 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096
-12:35:30 ERROR   storybook.sound.generator | sonido_escena_fallo  escena=3 backend=audioldm error="SoundError: clip casi en silencio el 49% del tiempo (2 intentos)"
-12:35:31 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=1.251 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1238
-12:35:33 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=1.288 dispositivo=cuda vram_torch_pico_mb=943.2 vram_torch_reservada_pico_mb=1048 vram_gpu_base_mb=1274.5 vram_gpu_pico_mb=1274.5 vram_gpu_total_mb=4096 extra.backend=audioldm extra.duracion_audio_s=8 extra.seed=1239
-12:35:33 INFO    storybook.gpu | etapa_medida  etapa=sonido_library_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
-12:35:33 WARNING storybook.sound.generator | sonido_backend_no_disponible  backend=library error="SoundError: biblioteca vacía o sin clips CC0 en C:\Users\diego\Documents\StoryBook-IA\assets\sfx"
-12:35:33 INFO    storybook.gpu | etapa_medida  etapa=sonido_procedural_carga segundos=0 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096
-12:35:33 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=0.122 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1235
-12:35:33 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=0.123 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=226.5 vram_gpu_pico_mb=226.5 vram_gpu_total_mb=4096 extra.backend=procedural extra.duracion_audio_s=8 extra.seed=1237
-12:35:33 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{1: 'procedural', 2: 'audioldm', 3: 'procedural', 4: 'audioldm', 5: 'audioldm'}" fallbacks="['sonido:sao:no_disponible', 'sonido:sa3:no_disponible', 'sonido:escena_1:audioldm_fallo', 'sonido:escena_3:audioldm_fallo', 'sonido:library:no_disponible']"
-12:35:33 INFO    f10_voz_sonido | sonido_listo  fallbacks="['sonido:sao:no_disponible', 'sonido:sa3:no_disponible', 'sonido:escena_1:audioldm_fallo', 'sonido:escena_3:audioldm_fallo', 'sonido:library:no_disponible']" error=None
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:15<00:02,  2.81s/it]
+Loading pipeline components...: 100%|██████████| 6/6 [00:16<00:00,  2.04s/it]
+Loading pipeline components...: 100%|██████████| 6/6 [00:16<00:00,  2.76s/it]
+17:33:07 INFO    storybook.gpu | etapa_medida  etapa=sonido_sao_carga segundos=99.777 dispositivo=cuda vram_torch_pico_mb=0 vram_torch_reservada_pico_mb=0 vram_gpu_base_mb=134 vram_gpu_pico_mb=134 vram_gpu_total_mb=4096
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\torchsde\_brownian\brownian_interval.py:608: UserWarning: Should have tb<=t1 but got tb=500.00006103515625 and t1=500.0.
+  warnings.warn(f"Should have {tb_name}<=t1 but got {tb_name}={tb} and t1={self._end}.")
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\torchsde\_brownian\brownian_interval.py:599: UserWarning: Should have ta>=t0 but got ta=0.29999998211860657 and t0=0.3.
+  warnings.warn(f"Should have ta>=t0 but got ta={ta} and t0={self._start}.")
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\torchsde\_brownian\brownian_interval.py:599: UserWarning: Should have ta>=t0 but got ta=0.0 and t0=0.3.
+  warnings.warn(f"Should have ta>=t0 but got ta={ta} and t0={self._start}.")
+C:\Users\diego\Documents\StoryBook-IA\.venv\Lib\site-packages\torchsde\_brownian\brownian_interval.py:602: UserWarning: Should have tb>=t0 but got tb=0.29999998211860657 and t0=0.3.
+  warnings.warn(f"Should have {tb_name}>=t0 but got {tb_name}={tb} and t0={self._start}.")
+17:34:05 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=1 backend=sao problema="clip demasiado bajo (-58 dBFS)"
+17:35:07 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_1 segundos=120.324 dispositivo=cuda vram_torch_pico_mb=3272 vram_torch_reservada_pico_mb=5240 vram_gpu_base_mb=134 vram_gpu_pico_mb=4084.5 vram_gpu_total_mb=4096 extra.backend=sao extra.duracion_audio_s=8 extra.seed=2235
+17:36:19 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_2 segundos=72.06 dispositivo=cuda vram_torch_pico_mb=3277.9 vram_torch_reservada_pico_mb=5246 vram_gpu_base_mb=700.5 vram_gpu_pico_mb=3998.5 vram_gpu_total_mb=4096 extra.backend=sao extra.duracion_audio_s=8 extra.seed=1236
+17:37:24 WARNING storybook.sound.generator | sonido_clip_no_apto  escena=3 backend=sao problema="clip demasiado bajo (-57 dBFS)"
+17:38:29 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_3 segundos=129.599 dispositivo=cuda vram_torch_pico_mb=3290.4 vram_torch_reservada_pico_mb=5264 vram_gpu_base_mb=640.5 vram_gpu_pico_mb=3952.5 vram_gpu_total_mb=4096 extra.backend=sao extra.duracion_audio_s=8 extra.seed=2237
+17:39:33 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_4 segundos=64.34 dispositivo=cuda vram_torch_pico_mb=3294.8 vram_torch_reservada_pico_mb=5128 vram_gpu_base_mb=650.5 vram_gpu_pico_mb=3880.5 vram_gpu_total_mb=4096 extra.backend=sao extra.duracion_audio_s=8 extra.seed=1238
+17:40:35 INFO    storybook.gpu | etapa_medida  etapa=sonido_escena_5 segundos=61.848 dispositivo=cuda vram_torch_pico_mb=3278.7 vram_torch_reservada_pico_mb=5288 vram_gpu_base_mb=768.5 vram_gpu_pico_mb=3912.5 vram_gpu_total_mb=4096 extra.backend=sao extra.duracion_audio_s=8 extra.seed=1239
+17:40:36 INFO    storybook.sound.generator | etapa_sonido_terminada  backends="{1: 'sao', 2: 'sao', 3: 'sao', 4: 'sao', 5: 'sao'}" fallbacks=[]
+17:40:36 INFO    f10_voz_sonido | sonido_listo  fallbacks=[] error=None
