@@ -271,6 +271,10 @@ _PATRON_ETIQUETA = re.compile(r"^([^\W\d][\w ]{0,30}?)\s*:\s*(\S.*)$", re.UNICOD
 
 
 def quitar_etiquetas_descriptor(valor: str) -> str:
+    # 13 nov: con el formato "<tipo> age <edad>" del prompt, el 4B escribió "<dog> age 3".
+    valor = valor.replace("<", "").replace(">", "")
+    # 18 nov: "a biomechanical dragon age 120" dejaba "an a biomechanical dragon" en el prompt.
+    valor = re.sub(r"^\s*(?:a|an|the)\s+", "", valor, flags=re.IGNORECASE)
     frases: list[str] = []
     for frase in _frases(valor):
         limpia = frase
@@ -488,9 +492,10 @@ class Personaje(_Base):
         max_length=200,
         description=(
             "En inglés, frases breves separadas por comas, de la más a la menos importante: "
-            "edad, cabello, ropa, rasgo distintivo y complexión. Ej.: 'girl age 10, curly red "
-            "hair, yellow raincoat, round glasses, slim'. Se repite idéntica en todas las "
-            "imágenes."
+            "tipo y edad, pelaje o cabello, ropa, rasgo distintivo y complexión. Ej.: 'red fox "
+            "age 3, bright orange fur, blue scarf, white-tipped tail, slender' o 'girl age 10, "
+            "curly red hair, yellow raincoat, round glasses, slim'. Se repite idéntica en todas "
+            "las imágenes."
         ),
     )
     rasgos_personalidad: list[TextoCorto] = Field(min_length=1, max_length=5)
@@ -502,6 +507,65 @@ class Personaje(_Base):
         valor = quitar_etiquetas_descriptor(valor)
         valor = _exigir_ingles(valor, "descripcion_visual_fija")
         return _ajustar_tokens(valor, "descripcion_visual_fija", TOKENS_MAX_DESCRIPTOR)
+
+
+CantidadFigura = Literal["one", "two", "many"]
+TipoPlano = Literal["close-up", "medium shot", "wide shot"]
+MAX_PALABRAS_ACCION: Final = 14
+MAX_PALABRAS_LUGAR: Final = 12
+
+
+class FiguraPlano(_Base):
+    """Alguien que acompaña al personaje principal en la ilustración."""
+
+    quien: str = Field(
+        min_length=2,
+        max_length=40,
+        description="El id de un personaje presente, o una especie o tipo en inglés para "
+        "figuras sin nombre (por ejemplo 'cat').",
+    )
+    cantidad: CantidadFigura = Field(default="one", description="one, two o many.")
+
+    @field_validator("quien")
+    @classmethod
+    def _quien_limpio(cls, valor: str) -> str:
+        return valor.replace("<", "").replace(">", "").strip().lower()
+
+
+class PlanoVisual(_Base):
+    """Qué se ve en la ilustración de una escena (17 nov: "faltan o sobran personajes").
+
+    Lo escribe el LLM en una llamada aparte, a partir del texto ya escrito de la escena, y el
+    código arma el prompt de imagen con él: quién es el sujeto, quién lo acompaña (y cuántos),
+    qué hace y dónde. Así el prompt nombra exactamente a los personajes de la escena.
+    """
+
+    principal: IdPersonaje = Field(description="id del personaje principal de la imagen.")
+    acompanantes: list[FiguraPlano] = Field(default_factory=list, max_length=2)
+    accion: str = Field(
+        min_length=3,
+        max_length=120,
+        description=f"En inglés, máx. {MAX_PALABRAS_ACCION} palabras: qué hace el personaje "
+        "principal, sin nombrarlo (p. ej. 'looks up at the glowing rooftops').",
+    )
+    lugar: str = Field(
+        min_length=3,
+        max_length=100,
+        description=f"En inglés, máx. {MAX_PALABRAS_LUGAR} palabras: dónde ocurre.",
+    )
+    plano: TipoPlano = "medium shot"
+
+    @field_validator("accion", "lugar", mode="before")
+    @classmethod
+    def _breve_en_ingles(cls, valor: Any, info: Any) -> Any:
+        # Antes de validar el largo: una frase de más se corta en vez de rechazar el plano.
+        if not isinstance(valor, str):
+            return valor
+        valor = valor.replace("<", "").replace(">", "").strip().rstrip(".")
+        valor = _exigir_ingles(valor, info.field_name)
+        maximo = MAX_PALABRAS_ACCION if info.field_name == "accion" else MAX_PALABRAS_LUGAR
+        palabras = valor.split()
+        return " ".join(palabras[: maximo + 4])  # tolera un poco más; corta lo excesivo
 
 
 class Escena(_Base):
@@ -532,6 +596,8 @@ class Escena(_Base):
     )
     etiquetas_sonido: list[EtiquetaSonido] = Field(min_length=1, max_length=MAX_ETIQUETAS_SONIDO)
     seed_imagen: SkipJsonSchema[int | None] = Field(default=None, ge=0, le=SEED_MAX)
+    # Fuera del esquema de la escena: lo agrega la llamada del ilustrador (planner.plano_visual).
+    plano_visual: SkipJsonSchema[PlanoVisual | None] = None
 
     @field_validator("texto_narrativo")
     @classmethod
@@ -558,7 +624,7 @@ class Escena(_Base):
     @field_validator("prompt_imagen")
     @classmethod
     def _prompt_imagen_valido(cls, valor: str) -> str:
-        valor = _exigir_ingles(valor, "prompt_imagen")
+        valor = _exigir_ingles(valor.replace("<", "").replace(">", ""), "prompt_imagen")
         return _ajustar_tokens(valor, "prompt_imagen", TOKENS_MAX_PROMPT_IMAGEN)
 
     @field_validator("prompt_sonido")
@@ -681,6 +747,18 @@ def _validar_numeracion(numeros: list[int]) -> None:
 GeneroBible = SkipJsonSchema[str]
 
 
+class GrupoVisual(_Base):
+    """Un grupo que pide la idea ("un perro rodeado de gatos"): lo pone el código, no el LLM.
+
+    ``frase`` se agrega a la acción de las escenas donde aparece alguien del grupo (o, sin
+    ``especie``, donde hay al menos dos personajes), si el LLM no lo nombró en plural.
+    """
+
+    frase: str = Field(min_length=3, max_length=80)  # en inglés: "surrounded by many cats"
+    especie: str | None = None  # "cat"; None = grupo de personajes en general
+    plural: str | None = None  # "cats"
+
+
 class StoryBible(_Base):
     titulo: str = Field(min_length=3, max_length=80)
     genero: GeneroBible = Field(default="", max_length=GENERO_OTRO_MAX_CHARS)
@@ -697,6 +775,8 @@ class StoryBible(_Base):
         max_length=40,
         description="Hechos establecidos que ninguna escena posterior puede contradecir.",
     )
+    # Fuera del esquema del LLM: lo deduce el planificador de la idea (story/reparto.py).
+    grupos: SkipJsonSchema[list[GrupoVisual]] = Field(default_factory=list, max_length=3)
 
     @field_validator("titulo")
     @classmethod
@@ -782,6 +862,7 @@ class StoryBible(_Base):
             personajes=plan.personajes,
             escenas=escenas,
             canon=list(plan.canon_inicial),
+            grupos=list(plan.grupos),
         )
 
 
@@ -818,11 +899,37 @@ class PlanHistoria(_Base):
     personajes: list[Personaje] = Field(min_length=1, max_length=MAX_PERSONAJES)
     plan_escenas: list[PlanEscena] = Field(min_length=NUM_ESCENAS, max_length=NUM_ESCENAS)
     canon_inicial: list[Hecho] = Field(default_factory=list, max_length=10)
+    grupos: SkipJsonSchema[list[GrupoVisual]] = Field(default_factory=list, max_length=3)
 
     @field_validator("titulo")
     @classmethod
     def _titulo_en_espanol(cls, valor: str) -> str:
         return _exigir_espanol(valor, "titulo")
+
+    @classmethod
+    def desde_bible(cls, bible: StoryBible) -> PlanHistoria:
+        """El plan de una historia ya escrita (p. ej. para pedir el plano visual de sus
+        escenas sin reescribirlas, o para la generación simulada)."""
+        hechos_escenas = {h for e in bible.escenas for h in e.hechos_nuevos}
+        return cls(
+            titulo=bible.titulo,
+            genero=bible.genero,
+            tono=bible.tono,
+            estilo_visual=bible.estilo_visual,
+            escenario=bible.escenario,
+            personajes=list(bible.personajes),
+            plan_escenas=[
+                PlanEscena(
+                    numero=e.numero,
+                    fase=e.fase,
+                    resumen=e.resumen,
+                    personajes_presentes=list(e.personajes_presentes),
+                )
+                for e in bible.escenas
+            ],
+            canon_inicial=[h for h in bible.canon if h not in hechos_escenas][:10],
+            grupos=list(bible.grupos),
+        )
 
     @model_validator(mode="after")
     def _coherencia(self) -> PlanHistoria:

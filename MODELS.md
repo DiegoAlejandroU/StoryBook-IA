@@ -17,6 +17,8 @@ descargado se registran automáticamente en `docs/models_registry.json`.
 | Imagen (prueba, 12 nov) | DreamShaper XL Lightning (SDXL, 4-6 pasos) | HF `Lykon/dreamshaper-xl-lightning` (variante fp16) | CreativeML OpenRAIL++-M | UNet en fp8 (layerwise casting) + model CPU offload | **En prueba** (tarea 9.3, `configs/sdxl.yaml`): pedido del docente de un modelo de imágenes más grande. Se integra solo si los tiempos y la VRAM medidos lo permiten. |
 | Imagen (prueba, VAE) | SDXL VAE fp16 fix | HF `madebyollin/sdxl-vae-fp16-fix` | MIT | GPU fp16 | Evita los NaN del VAE original de SDXL en fp16. |
 | Imagen (prueba, consistencia) | IP-Adapter SDXL ViT-H | HF `h94/IP-Adapter` (`sdxl_models/ip-adapter_sdxl_vit-h.safetensors`) | Apache 2.0 | Adaptador en GPU; usa el mismo encoder ViT-H de SD 1.5 | Con el personaje foco por escena, igual que en SD 1.5. |
+| Imagen (perfil Avanzada, 18 nov) | FLUX.1-schnell (transformer 12B + T5-XXL) | HF `black-forest-labs/FLUX.1-schnell` (gated: aceptar condiciones) | Apache 2.0 | Copia local en fp8 (`scripts/convertir_flux_fp8.py`), cálculo en bf16 capa por capa y bloques a la GPU solo mientras calculan (group offloading) | **En prueba** (tarea 9.14, `configs/avanzada.yaml`). Sin IP-Adapter ni negative prompt; prompt de hasta 256 tokens (T5). Tiempos por medir en la RTX 3050. |
+| Voz (perfil Avanzada, 18 nov) | XTTS-v2, voz incluida "Ana Florence" | HF `coqui/XTTS-v2` (repo oficial) | Coqui Public Model License (uso no comercial; aceptada por Diego el 18 nov) | Proceso aparte (`.venv-xtts`, torch 2.11 + torchaudio); en la GPU solo mientras narra | **En prueba** (tarea 9.14). Si no arranca, la escena se narra con Piper. |
 | Voz | Piper `es_MX-claude-high` | HF `rhasspy/piper-voices` | Código piper-tts: GPL-3.0-or-later; voz: según su MODEL_CARD | CPU (ONNX) | **En uso**. Diego la eligió al escuchar 3 voces en la tarea 3.3: `es_MX-claude-high`, `es_ES-davefx-medium` y `es_MX-ald-medium`. |
 | Sonido (A, principal) | Stable Audio 3 Small-SFX (0,6 B) | HF `stabilityai/stable-audio-3-small-sfx` | Stability AI Community License; encoder T5Gemma bajo Gemma Terms of Use | GPU fp16 con offload | **No disponible** en el equipo de referencia: el repositorio exige aceptar la licencia con una cuenta. La cadena pasa sola a AudioLDM (`sonido:sa3:no_disponible`). |
 | Sonido (A, alternativa) | Stable Audio Open 1.0 | HF `stabilityai/stable-audio-open-1.0` | Stability AI Community License (gated) | GPU fp16 con offload | No descargado (mismo motivo). Solo en el perfil calidad. |
@@ -44,12 +46,12 @@ RTX 3050 Laptop de 4 GB y 24 GB de RAM. Fuentes: tareas 1.4, 2.3, 3.3, 4.4 y 6.2
 
 | Alternativa | Motivo |
 |---|---|
-| FLUX | Excede 4 GB de VRAM aun con offload; minutos por imagen. |
+| FLUX (hasta el 17 nov) | Excede 4 GB de VRAM. **Reevaluado el 18 nov** (perfil Avanzada): con la copia en fp8 en la RAM (24 GB) y bloques a la GPU, cabe; queda por medir el tiempo por imagen. |
 | SDXL base (30-50 pasos) | Con offload tarda minutos por imagen. Se prueba la variante Lightning (4-6 pasos) con el UNet en fp8 (fila "en prueba" arriba). |
 | LLM de más de 8B parámetros | No caben en 4 GB ni con offload parcial a tiempos aceptables. |
 | Qwen3.5-4B | Modelo multimodal (proyector de visión adicional); ~5,5 GB de memoria total en 4 bits, y sus GGUF no eran compatibles con Ollama según la documentación de Unsloth. |
 | Stable Audio Open Small (vía `stable-audio-tools`) | `stable-audio-tools` 0.0.20 exige Python < 3.11 y fija `torch==2.7.1`, incompatible con el entorno del proyecto (Python 3.12, PyTorch 2.15). |
-| XTTS-v2 en GPU | Compite por la VRAM con imagen y sonido; además su licencia (CPML) restringe el uso. |
+| XTTS-v2 en GPU (hasta el 17 nov) | Compite por la VRAM con imagen y sonido; su licencia (CPML) restringe el uso comercial. **18 nov:** Diego aceptó la CPML para el proyecto académico y se usa en el perfil Avanzada, en la GPU solo mientras narra. |
 | PyTorch con CUDA 12.x | PyTorch 2.15 ya no publica ruedas cu12x; se usa cu132 (o torch 2.14 + cu126 si el driver no admite CUDA 13). |
 | `torchaudio` | Congelado en 2.11.x; el audio se maneja con `soundfile`, `scipy` y `pyloudnorm`. |
 | Safety checker de SD 1.5 | Consume ~600 MB de VRAM; se sustituye por prompts negativos, reglas de contenido por género y revisión humana (ver informe, sección de ética). |
@@ -66,12 +68,12 @@ El curso entregó un resumen orientativo de modelos y combinaciones ("Accesible"
 | Qwen3-0.6B | No evaluado | La comparación de tamaño se hizo entre 4B y 8B (tarea 1.4). Con 0.6B se espera menos coherencia narrativa; queda como trabajo futuro. |
 | Stable Diffusion v1.4 | Misma arquitectura que la base elegida (SD 1.x) | Se usa DreamShaper 8 (fine-tune de SD 1.5) por su estilo ilustrativo; LCM-LoRA e IP-Adapter SD1.5 son compatibles con la familia. SD v1.4 puede usarse como línea base en los experimentos. |
 | Stable Diffusion XL Base 1.0 | Descartado | Con 4 GB requiere offload secuencial: minutos por imagen, inviable para 5 escenas en la demo. |
-| FLUX.1-schnell | Descartado | Excede ampliamente 4 GB de VRAM (perfil "Avanzada"). |
+| FLUX.1-schnell | **Perfil Avanzada** (18 nov, en prueba) | Pedido de Diego: usar la combinación "Avanzada". No cabe en 4 GB ni en fp16: pesos en fp8 en la RAM y bloques a la GPU (ver `src/storybook/image/flux.py`). |
 | Piper TTS (voces en español) | **Principal** (voz `es_MX-claude-high`, CPU) | Rápido en CPU, no compite por la VRAM y es fácil de reproducir. |
-| XTTS-v2 | Descartado | Compite por la VRAM, su licencia (CPML) restringe el uso y su función de clonación de voz no se necesita (ver ética). |
+| XTTS-v2 | **Perfil Avanzada** (18 nov, en prueba) | Voz más natural que Piper. Se usa una voz incluida en el modelo (sin clonar a nadie). Corre en su propio entorno porque necesita `torchaudio`. |
 | AudioLDM | **Backend de sonido en uso** | 421M parámetros, cabe en 4 GB y no exige aceptar licencias; garantiza sonido generado aunque falte el acceso a Stable Audio. |
 | MusicGen Small | No incluido | El enunciado pide ambientes y efectos por escena, no música; su licencia es CC BY-NC 4.0. Queda como trabajo futuro. |
-| Stable Audio Open 1.0 | Incluido en la cadena del perfil calidad (no descargado) | Mejor calidad que AudioLDM, pero más lento con offload en 4 GB, y exige aceptar su licencia. |
+| Stable Audio Open 1.0 | Primero en la cadena del perfil Avanzada (18 nov) y en la del perfil calidad | Mejor calidad que AudioLDM, pero más lento con offload en 4 GB, y exige aceptar su licencia (HF_TOKEN). |
 | — (posterior al resumen) Stable Audio 3 Small-SFX | Primera opción de la cadena de sonido | Publicado en mayo de 2026 y pensado para efectos de sonido en portátiles de consumo. Exige aceptar su licencia: en el equipo de referencia no está, así que se usa AudioLDM. |
 
 Herramientas del resumen usadas: Transformers, Diffusers, Ollama, Piper y Streamlit. No se usan

@@ -10,6 +10,8 @@ Backends intercambiables con la configuración (``voice.backend``) detrás del P
 * ``piper`` (principal): Piper ``es_MX-claude-high`` (ONNX), cargado desde ``models/piper``
   con ``hub.require_piper_voice``. Medido en F0: RTF ~0,03-0,07 (40 s de audio en ~2 s).
 * ``kokoro`` (opcional, experimento Piper vs Kokoro): ``KPipeline`` con la voz ``ef_dora``.
+* ``xtts`` (perfil Avanzada, 18 nov): XTTS-v2 en su propio proceso y en la GPU solo mientras
+  narra (``voice/xtts.py``); si no arranca, Piper.
 
 Las librerías (``piper``, ``kokoro``) se importan dentro de los backends (CLAUDE.md §6); los
 tests usan un backend falso.
@@ -366,4 +368,8 @@ def crear_backend(cfg: VoiceConfig) -> TTSBackend:
     """Backend según ``voice.backend`` (sin importar todavía la librería de TTS)."""
     if cfg.backend == "kokoro":
         return KokoroBackend(cfg)
+    if cfg.backend == "xtts":
+        from storybook.voice.xtts import XttsConRespaldo
+
+        return XttsConRespaldo(cfg, PiperBackend(cfg))
     return PiperBackend(cfg)

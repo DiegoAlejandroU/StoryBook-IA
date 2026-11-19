@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import os
 import time
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, Final
 
@@ -19,7 +20,13 @@ from PIL import Image, ImageDraw
 
 from storybook.config import ImageConfig, LLMConfig
 from storybook.pipeline import Dependencias
-from storybook.schemas import PlanEscena, PlanHistoria, StoryBible, StoryRequest
+from storybook.schemas import (
+    FiguraPlano,
+    PlanHistoria,
+    PlanoVisual,
+    StoryBible,
+    StoryRequest,
+)
 from storybook.sound.generator import ProceduralBackend
 from storybook.story.llm_client import ChatResult, GeneracionValidada
 
@@ -83,6 +90,19 @@ class ImagenSimulada:
         return {"backend": self.nombre}
 
 
+class EvaluadorSimulado:
+    """Elige entre versiones sin OpenCLIP: la similitud sube con el brillo de la imagen."""
+
+    def similitudes(
+        self, imagenes: Sequence[Image.Image], textos: Sequence[str]
+    ) -> list[list[float]]:
+        filas = []
+        for imagen in imagenes:
+            brillo = float(np.asarray(imagen.convert("L"), dtype=np.float32).mean()) / 255
+            filas.append([round(0.2 + 0.1 * brillo, 4) for _ in textos])
+        return filas
+
+
 class VozSimulada:
     nombre = "simulado"
 
@@ -117,25 +137,18 @@ class LLMSimulado:
         self.descargas = 0
 
     def _plan(self) -> PlanHistoria:
-        b = self.bible
-        hechos_escenas = {h for e in b.escenas for h in e.hechos_nuevos}
-        return PlanHistoria(
-            titulo=b.titulo,
-            genero=b.genero,
-            tono=b.tono,
-            estilo_visual=b.estilo_visual,
-            escenario=b.escenario,
-            personajes=b.personajes,
-            plan_escenas=[
-                PlanEscena(
-                    numero=e.numero,
-                    fase=e.fase,
-                    resumen=e.resumen,
-                    personajes_presentes=list(e.personajes_presentes),
-                )
-                for e in b.escenas
-            ],
-            canon_inicial=[h for h in b.canon if h not in hechos_escenas],
+        return PlanHistoria.desde_bible(self.bible)
+
+    def _plano(self) -> PlanoVisual:
+        """El ilustrador de la escena recién escrita: el primero presente y los demás."""
+        escena = self.bible.escena(max(self.escritas, 1))
+        presentes = list(escena.personajes_presentes)
+        return PlanoVisual(
+            principal=presentes[0],
+            acompanantes=[FiguraPlano(quien=pid) for pid in presentes[1:3]],
+            accion=" ".join(escena.prompt_imagen.split(",")[0].split()[:12]),
+            lugar="an old lighthouse on a rocky coast at night",
+            plano="wide shot" if len(presentes) > 1 else "medium shot",
         )
 
     def generar_validado(self, *, modelo_salida: type[Any], **_: Any) -> GeneracionValidada[Any]:
@@ -143,6 +156,8 @@ class LLMSimulado:
             time.sleep(self.demora_s)
         if modelo_salida is PlanHistoria:
             objeto: Any = self._plan()
+        elif modelo_salida is PlanoVisual:
+            objeto = self._plano()
         else:
             self.escritas = self.escritas % len(self.bible.escenas) + 1
             objeto = self.bible.escena(self.escritas).model_copy(deep=True)
@@ -176,4 +191,5 @@ def dependencias_simuladas(demora_s: float | None = None) -> Dependencias:
         backend_voz=VozSimulada(),
         fabrica_sonido=lambda _nombre: ProceduralBackend(),
         llm=LLMSimulado(demora_simulada() if demora_s is None else demora_s),
+        evaluador_imagen=EvaluadorSimulado(),
     )

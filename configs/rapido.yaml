@@ -5,6 +5,10 @@ image:
   scheduler: lcm
   steps: 6
   guidance_scale: 1.5
+  candidatos: 2              # 17 nov: 2 versiones por escena, se elige con CLIP
+
+llm:
+  plano_visual: true         # 17 nov: el ilustrador describe qué se ve en cada imagen
 
 sound:
   backends: [sa3, audioldm, library, procedural]   # SAO 1.0 es lento con offload: solo en "calidad"

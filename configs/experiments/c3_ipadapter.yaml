@@ -7,7 +7,11 @@ consistency:
   seed_policy: compartida
 
 image:
+  candidatos: 1              # como en la batería 6.2 (reproducibilidad)
   personajes_prompt: presentes  # como en la batería 6.2 (reproducibilidad de results.csv)
   ip_adapter:
     enabled: true
     scale: 0.4                  # valor ajustado en la tarea 2.3 (docs/evidencias/f2_variantes.md)
+
+llm:
+  plano_visual: false        # como en la batería 6.2 (reproducibilidad)

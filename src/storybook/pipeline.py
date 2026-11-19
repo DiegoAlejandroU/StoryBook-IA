@@ -74,6 +74,9 @@ class Dependencias:
     # Generación por escenas: cliente del LLM (``OllamaClient`` o uno falso con
     # ``generar_validado`` y ``unload``); ``None`` abre Ollama con la configuración.
     llm: Any = None
+    # Elección entre versiones de cada ilustración (``image.seleccion``); ``None`` carga
+    # OpenCLIP en CPU cuando ``image.candidatos`` > 1.
+    evaluador_imagen: Any = None
 
 
 def escribir_con_ollama(
@@ -92,8 +95,9 @@ def escribir_con_ollama(
                     f"Ejecuta: ollama pull {cfg_llm.model}"
                 )
             version = cliente.version()
+            planificador = Planificador(cliente, cfg_llm)
             try:
-                plan = Planificador(cliente, cfg_llm).generar(solicitud)
+                plan = planificador.generar(solicitud)
                 bible, llamadas, auditoria = plan.bible, list(plan.llamadas), None
                 if cfg_llm.auditar:
                     auditoria = Auditor(cliente, cfg_llm).auditar_y_corregir(bible)
@@ -114,6 +118,7 @@ def escribir_con_ollama(
         "fraccion_gpu": fraccion_gpu,
         "llamadas": [r.a_dict() for r in llamadas],
         "auditoria": auditoria.a_dict() if auditoria else None,
+        "fallbacks": list(planificador.avisos),
     }
 
 
@@ -187,7 +192,10 @@ class Pipeline:
         )
 
         generador = GeneradorImagenes(
-            self.cfg.image, self.cfg.consistency, self.deps.backend_imagen
+            self.cfg.image,
+            self.cfg.consistency,
+            self.deps.backend_imagen,
+            evaluador=self.deps.evaluador_imagen,
         )
         try:
             etapa = generador.generar(bible, carpeta)
@@ -280,6 +288,7 @@ class Pipeline:
             bible, info_texto = correr("texto", lambda: escribir(solicitud, self.cfg.llm))
             bible = bible.model_copy(update={"genero": solicitud.genero_efectivo})
             manifest["etapas"]["texto"] = info_texto
+            manifest["fallbacks"] += list(info_texto.get("fallbacks", []))
             manifest["titulo"] = bible.titulo
             guardar_bible(carpeta, bible)
 
@@ -437,7 +446,10 @@ class Pipeline:
         from storybook.image.generator import GeneradorImagenes
 
         etapa_img = GeneradorImagenes(
-            self.cfg.image, self.cfg.consistency, self.deps.backend_imagen
+            self.cfg.image,
+            self.cfg.consistency,
+            self.deps.backend_imagen,
+            evaluador=self.deps.evaluador_imagen,
         ).generar(bible, carpeta, numeros=[numero])
         guardar_bible(carpeta, bible)
 

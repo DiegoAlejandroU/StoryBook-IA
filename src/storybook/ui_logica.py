@@ -13,13 +13,19 @@ from typing import Any, Final
 
 from storybook.schemas import FASE_POR_NUMERO, GENERO_ETIQUETA, Fase, Genero
 from storybook.storage import NUM_ESCENAS, ArchivosEscena, EntradaHistoria, HistoriaGuardada
+from storybook.story.reparto import tipo as tipo_reparto
 
 PERFILES: Final[dict[str, str]] = {
-    # Con la generación por escenas la primera aparece mucho antes que la historia completa;
-    # los tiempos se miden en el equipo de referencia (docs/evidencias) y van en el panel.
-    "rapido": "Rápido (6 pasos por imagen)",
-    "calidad": "Calidad (25 pasos por imagen)",
+    # Opciones de la app (13 nov): el modelo grande que pidió el docente va primero. En la
+    # prueba 9.3 (RTX 3050), SDXL tardó ~11 s por imagen frente a ~3,5 s de SD 1.5, y sigue
+    # el estilo pedido mucho mejor. "calidad" (SD 1.5 con 25 pasos) queda para experimentos.
+    "sdxl": "Modelo grande (SDXL, más detalle)",
+    # 18 nov: la configuración "Avanzada" del resumen de modelos de clase. Más lenta; se
+    # deja de primera cuando la prueba en la RTX 3050 confirme los tiempos.
+    "avanzada": "Avanzada (FLUX, XTTS y Stable Audio; más lenta)",
+    "rapido": "Rápido (SD 1.5)",
 }
+PERFILES_VALIDOS: Final = ("sdxl", "avanzada", "rapido", "calidad")
 FASES: Final[dict[str, str]] = {
     Fase.INICIO.value: "Inicio",
     Fase.DESARROLLO.value: "Desarrollo",
@@ -34,7 +40,11 @@ NOMBRES_BACKEND: Final[dict[str, str]] = {
     "procedural": "síntesis procedural",
     "simulado": "simulado",
 }
-NOMBRE_PERFIL: Final[dict[str, str]] = {"rapido": "rápido", "calidad": "calidad"}
+NOMBRE_PERFIL: Final[dict[str, str]] = {
+    "rapido": "rápido",
+    "calidad": "calidad",
+    "sdxl": "modelo grande (SDXL)",
+}
 ETIQUETA_IA: Final = "Contenido generado por IA (texto, imágenes, voz y sonido), en este equipo."
 
 
@@ -189,6 +199,11 @@ def nombre_perfil(perfil: str) -> str:
     return NOMBRE_PERFIL.get(perfil, perfil)
 
 
+def perfil_valido(perfil: str | None) -> str:
+    """El perfil de una historia, o "rapido" si no es uno conocido (p. ej. una muestra vieja)."""
+    return perfil if perfil in PERFILES_VALIDOS else "rapido"
+
+
 # ---------------------------------------------------------------------------------------
 # Libro: lo que se dibuja de una historia, terminada o en curso (generación por escenas)
 # ---------------------------------------------------------------------------------------
@@ -213,6 +228,7 @@ class VistaLibro:
     paginas: dict[int, Pagina]
     resumenes: list[str] = field(default_factory=list)
     personajes: dict[str, str] = field(default_factory=dict)  # id -> nombre
+    reparto: list[str] = field(default_factory=list)  # "Kai (boy)": lo que ve el ilustrador
     configuracion: dict[str, Any] = field(default_factory=dict)
     manifest: dict[str, Any] = field(default_factory=dict)
     carpeta: Path | None = None
@@ -283,6 +299,7 @@ def vista_de_historia(historia: HistoriaGuardada) -> VistaLibro:
         paginas=paginas,
         resumenes=[e.resumen for e in bible.escenas],
         personajes={p.id: p.nombre for p in bible.personajes},
+        reparto=[f"{p.nombre} ({tipo_reparto(p)})" for p in bible.personajes],
         configuracion=dict(manifest.get("configuracion") or {}),
         manifest=manifest,
         carpeta=historia.carpeta,
@@ -311,6 +328,7 @@ def vista_en_vivo(instantanea: Any, configuracion: dict[str, Any]) -> VistaLibro
         paginas=paginas,
         resumenes=list(plan.resumenes) if plan else [],
         personajes=dict(plan.personajes) if plan else {},
+        reparto=list(plan.reparto) if plan else [],
         configuracion=configuracion,
         carpeta=instantanea.carpeta,
         en_curso=instantanea.en_curso,
@@ -324,6 +342,19 @@ def _num(valor: Any, decimales: int = 1) -> str:
     except (TypeError, ValueError):
         return "-"
     return texto.replace(".", ",")
+
+
+def texto_versiones(versiones: list[dict[str, Any]]) -> str:
+    """Cuántas versiones hubo y cuál quedó: "2, se eligió la 2.ª (CLIP 0,270 frente a 0,250)"."""
+    elegida = next((i for i, v in enumerate(versiones) if v.get("elegida")), 0)
+    puntajes = [v.get("puntaje") for v in versiones]
+    if not all(isinstance(x, int | float) for x in puntajes):
+        return f"{len(versiones)}, quedó la {elegida + 1}.ª (CLIP no disponible)"
+    otras = " y ".join(_num(x, 3) for i, x in enumerate(puntajes) if i != elegida)
+    return (
+        f"{len(versiones)}, se eligió la {elegida + 1}.ª "
+        f"(CLIP {_num(puntajes[elegida], 3)} frente a {otras})"
+    )
 
 
 def filas_escena(detalles: dict[str, Any], personajes: dict[str, str]) -> list[tuple[str, str]]:
@@ -345,6 +376,12 @@ def filas_escena(detalles: dict[str, Any], personajes: dict[str, str]) -> list[t
                 f"IP-Adapter {_num(escala, 2)}" if escala else "no se aplica en esta escena",
             )
         )
+        verificar = prompt.get("verificar") or []
+        if verificar:
+            filas.append(("Lo que debe verse", ", ".join(map(str, verificar))))
+        versiones = imagen.get("versiones") or []
+        if len(versiones) > 1:
+            filas.append(("Versiones de la imagen", texto_versiones(versiones)))
         filas.append(("Seed de la imagen", str(imagen.get("seed", "-"))))
         filas.append(("Tiempo de la imagen", f"{_num(imagen.get('segundos'))} s"))
     voz = detalles.get("voz") or {}
@@ -380,6 +417,7 @@ def prompts_escena(detalles: dict[str, Any]) -> dict[str, str]:
 MODELOS_IMAGEN: Final[dict[str, str]] = {
     "Lykon/dreamshaper-8": "DreamShaper 8 (SD 1.5)",
     "Lykon/dreamshaper-xl-lightning": "DreamShaper XL Lightning (SDXL)",
+    "black-forest-labs/FLUX.1-schnell": "FLUX.1-schnell (12B, pesos en fp8)",
 }
 
 
@@ -394,11 +432,21 @@ def filas_historia(vista: VistaLibro) -> list[tuple[str, str]]:
         modelo = MODELOS_IMAGEN.get(str(imagen["model_id"]), str(imagen["model_id"]))
         pasos = imagen.get("steps")
         filas.append(("Imágenes", f"{modelo}, {pasos} pasos" if pasos else modelo))
-    if voz.get("piper_voice"):
+        if (imagen.get("candidatos") or 1) > 1:
+            filas.append(
+                ("Versiones por imagen", f"{imagen['candidatos']}, elige OpenCLIP (la más fiel)")
+            )
+    if llm.get("plano_visual"):
+        filas.append(("Ilustrador", "el modelo de texto describe qué se ve en cada imagen"))
+    if voz.get("backend") == "xtts":
+        filas.append(("Voz", f"XTTS-v2 ({voz.get('xtts_speaker')}); si no arranca, Piper"))
+    elif voz.get("piper_voice"):
         filas.append(("Voz", f"Piper {voz['piper_voice']}"))
     if sonido.get("backends"):
         cadena = [nombre_backend(b) for b in sonido["backends"]]
         filas.append(("Ambiente", " → ".join(cadena)))
+    if vista.reparto:
+        filas.append(("Personajes (tipo para la imagen)", ", ".join(vista.reparto)))
     segundos = vista.manifest.get("segundos", {}) if vista.manifest else {}
     if segundos.get("primera_escena") is not None:
         filas.append(("Primera escena", segundos_legibles(segundos["primera_escena"])))

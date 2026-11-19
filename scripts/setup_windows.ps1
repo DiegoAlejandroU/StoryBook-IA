@@ -28,6 +28,8 @@
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso audioldm
   Modelo de imagen mas grande (SDXL Lightning frente a SD 1.5 en la ultima historia; descarga ~8 GB):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso sdxl
+  Perfil Avanzada (18 nov; FLUX.1-schnell, XTTS-v2 y Stable Audio; ~65 GB; HF_TOKEN en .env):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso avanzada
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -36,7 +38,7 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos", "audioldm", "sdxl")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos", "audioldm", "sdxl", "avanzada")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [ValidateRange(1, 4)]
@@ -138,7 +140,7 @@ function Paso-Git {
     if ((Ejecutar "git" @("add", "-A")) -ne 0) { return 1 }
 
     # Seguridad: nada de pesos, entornos, secretos ni el enunciado en el repositorio.
-    $prohibidos = @("^\.cache/", "^models/", "^\.venv/", "^\.env$", "^docs/enunciado/", "^outputs/", "\.safetensors$", "\.gguf$", "\.onnx$")
+    $prohibidos = @("^\.cache/", "^models/", "^\.venv/", "^\.venv-xtts/", "^\.env$", "^docs/enunciado/", "^outputs/", "\.safetensors$", "\.gguf$", "\.onnx$")
     $preparados = (& git diff --cached --name-only 2>$null)
     $malos = @()
     foreach ($f in $preparados) { foreach ($p in $prohibidos) { if ($f -match $p) { $malos += $f } } }
@@ -162,6 +164,7 @@ function Paso-Git {
         if ($Paso -eq "experimentos") { $titulo = "chore: codigo usado en la bateria de experimentos (tarea 6.2)" }
         if ($Paso -eq "audioldm") { $titulo = "chore: codigo de la prueba de prompts de AudioLDM (tarea 6.2)" }
         if ($Paso -eq "sdxl") { $titulo = "feat: generacion por escenas, interfaz tipo libro, personaje foco y soporte de SDXL" }
+        if ($Paso -eq "avanzada") { $titulo = "feat: perfil Avanzada (FLUX.1-schnell, XTTS-v2, Stable Audio Open) y reparto fiel a la idea" }
         # Sin "Co-Authored-By" ni menciones a asistentes: el unico autor es Diego (pedido explicito).
         if ((Ejecutar "git" @("commit", "-m", $titulo)) -ne 0) { return 1 }
     } else {
@@ -341,7 +344,7 @@ Titulo ("StoryBook IA - setup_windows.ps1 (paso: {0}) en {1}" -f $Paso, $Raiz)
 
 $codigo = 0
 # f1 y f2 tambien hacen commit del codigo antes de generar: la evidencia debe corresponder a un commit.
-if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4", "muestras", "experimentos", "audioldm", "sdxl")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
+if ($Paso -in @("todo", "git", "f1", "f2", "f2v", "f4", "muestras", "experimentos", "audioldm", "sdxl", "avanzada")) { $codigo = Paso-Git; if ($codigo -ne 0) { Fin $codigo } }
 if ($Paso -in @("todo", "entorno")) {
     $codigo = Paso-Entorno
     Guardar-Evidencias "chore: evidencias de instalacion del entorno (tarea 0.5)" | Out-Null
@@ -463,6 +466,57 @@ if ($Paso -eq "sdxl") {
     $codigo = Ejecutar "uv" @("run", "python", "scripts/f7_sdxl_prueba.py") $salidaF7
     Guardar-Evidencias "chore: evidencias de la prueba de SDXL Lightning frente a SD 1.5" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
+}
+if ($Paso -eq "avanzada") {
+    Titulo "Perfil Avanzada (18 nov) - FLUX.1-schnell, XTTS-v2 y Stable Audio Open"
+    # 0) FLUX y Stable Audio son gated: hace falta HF_TOKEN en .env (no se muestra).
+    $tieneToken = (Test-Path ".env") -and (Select-String -Path ".env" -Pattern "^HF_TOKEN=.+" -Quiet)
+    if (-not $tieneToken) {
+        Escribir "Falta HF_TOKEN en .env. Acepta las licencias de black-forest-labs/FLUX.1-schnell y stabilityai/stable-audio-open-1.0 en huggingface.co, crea un token de lectura y agregalo al .env (HF_TOKEN=...)." "Red"
+        Fin 1
+    }
+    $libre = [math]::Round((Get-PSDrive -Name ((Get-Location).Drive.Name)).Free / 1GB, 1)
+    Escribir ("Espacio libre en disco: {0} GB (se necesitan ~65 GB: descarga, copia fp8 y entorno de XTTS)" -f $libre)
+    # 1) Descarga (~38 GB la primera vez; despues solo verifica la cache).
+    $salidaAv = Join-Path $Evid "download_models_avanzada.txt"
+    if (Test-Path $salidaAv) { Remove-Item $salidaAv }
+    $codigo = Ejecutar "uv" @("run", "python", "scripts/download_models.py", "--profiles", "avanzada", "--only", "image", "voice", "sound") $salidaAv
+    if ($codigo -ne 0) {
+        Escribir "La descarga fallo (ver docs\evidencias\download_models_avanzada.txt). Si dice gated_sin_acceso, falta aceptar esa licencia en huggingface.co." "Red"
+        Fin $codigo
+    }
+    # 2) Copia en fp8 de FLUX (una vez; ~17 GB en models\flux-schnell-fp8).
+    $codigo = Ejecutar "uv" @("run", "python", "scripts/convertir_flux_fp8.py")
+    if ($codigo -ne 0) { Fin $codigo }
+    # 3) Entorno de XTTS: torch 2.11 + torchaudio (no existe torchaudio para el torch de la app).
+    $pyX = Join-Path $Raiz ".venv-xtts\Scripts\python.exe"
+    if (-not (Test-Path $pyX)) {
+        if ((Ejecutar "uv" @("venv", ".venv-xtts", "--python-preference", "only-system", "--python", "3.12")) -ne 0) { Fin 1 }
+    }
+    $torchOk = $false
+    foreach ($cu in @("cu130", "cu128", "cu126")) {
+        $codigo = Ejecutar "uv" @("pip", "install", "--python", $pyX, "torch==2.11.*", "torchaudio==2.11.*", "--index-url", "https://download.pytorch.org/whl/$cu")
+        if ($codigo -eq 0) { $torchOk = $true; Escribir "torch 2.11 ($cu) instalado en .venv-xtts" "Green"; break }
+    }
+    if (-not $torchOk) { Escribir "No se pudo instalar torch 2.11 en .venv-xtts." "Red"; Fin 1 }
+    if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, "coqui-tts==0.28.0", "soundfile")) -ne 0) { Fin 1 }
+    # 4) Voz y ambiente de una historia guardada con XTTS y Stable Audio (tiempos y audios).
+    $salidaVs = Join-Path $Evid "f10_voz_sonido.txt"
+    if (Test-Path $salidaVs) { Remove-Item $salidaVs }
+    # Una historia de animales con el reparto correcto (si existe) para comparar con SDXL.
+    $hist = Join-Path $Raiz "outputs\20261118_151141_un_elefante_en_la_sabana_afric"
+    $argsVs = @("run", "python", "scripts/f10_voz_sonido.py")
+    if (Test-Path $hist) { $argsVs += @("--historia", $hist) }
+    $codigo = Ejecutar "uv" $argsVs $salidaVs
+    # 5) FLUX frente a SDXL con la misma historia (con el ilustrador; Ollama abierto).
+    $salidaF10 = Join-Path $Evid "f10_avanzada.txt"
+    if (Test-Path $salidaF10) { Remove-Item $salidaF10 }
+    $argsF10 = @("run", "python", "scripts/f7_sdxl_prueba.py", "--perfiles", "sdxl", "avanzada", "--ilustrador", "--nombre", "f10_avanzada")
+    if (Test-Path $hist) { $argsF10 += @("--historia", $hist) }
+    $codigoImg = Ejecutar "uv" $argsF10 $salidaF10
+    Guardar-Evidencias "chore: evidencias del perfil Avanzada (FLUX, XTTS y Stable Audio)" | Out-Null
+    if ($codigo -ne 0) { Fin $codigo }
+    if ($codigoImg -ne 0) { Fin $codigoImg }
 }
 if ($Paso -eq "f4") {
     Titulo ("Tarea 4.4 - Sonido y mezcla reales de una historia de F1 (perfil {0})" -f $Perfil)

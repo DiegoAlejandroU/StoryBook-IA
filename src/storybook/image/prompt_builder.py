@@ -21,12 +21,19 @@ from __future__ import annotations
 import re
 import unicodedata
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Final, Literal
 
 from storybook.config import OrdenPromptImagen as OrdenPrompt
 from storybook.logging_utils import get_logger, kv
-from storybook.schemas import Personaje, RolPersonaje, StoryBible, estimar_tokens_clip
+from storybook.schemas import (
+    GrupoVisual,
+    Personaje,
+    RolPersonaje,
+    StoryBible,
+    estimar_tokens_clip,
+)
+from storybook.story.reparto import singular_ingles
 
 logger = get_logger(__name__)
 
@@ -97,6 +104,10 @@ class PromptImagen:
     foco: str | None = None  # personaje con descriptor completo (modo "foco")
     mencionados: list[str] = field(default_factory=list)  # personajes que nombra la acción
     ip_factor: float = 1.0  # multiplica la escala de IP-Adapter en esta escena (0 = sin él)
+    # Quiénes deben verse ("a dog", "many cats"): con varias versiones, CLIP elige la imagen
+    # donde mejor se ven todos (generator.py).
+    verificar: list[str] = field(default_factory=list)
+    evitar: list[str] = field(default_factory=list)  # figuras de más ("two dogs")
 
     @property
     def truncado(self) -> bool:
@@ -113,6 +124,8 @@ class PromptImagen:
             "foco": self.foco,
             "mencionados": self.mencionados,
             "ip_factor": self.ip_factor,
+            "verificar": self.verificar,
+            "evitar": self.evitar,
             "truncamientos": [t.a_dict() for t in self.truncamientos],
             "sustituciones": [s.a_dict() for s in self.sustituciones],
         }
@@ -227,12 +240,17 @@ def _patron_personaje(personaje: Personaje, palabras_compartidas: set[str]) -> s
 
 
 def sustituir_nombres(
-    texto: str, bible: StoryBible, *, usar_bible: bool = True
+    texto: str,
+    bible: StoryBible,
+    *,
+    usar_bible: bool = True,
+    sujeto: Callable[[Personaje], str] | None = None,
 ) -> tuple[str, list[Sustitucion]]:
     """Cambia los nombres de personajes de ``texto`` por su sujeto visual.
 
     Con ``usar_bible=False`` (línea base C1) se usa un sujeto genérico, para no filtrar los
-    descriptores de la Bible en la configuración que debe prescindir de ella.
+    descriptores de la Bible en la configuración que debe prescindir de ella. ``sujeto``
+    cambia cómo se nombra a cada personaje (el modo foco usa "the boy", "a monkey").
     """
     conteo: dict[str, int] = {}
     for p in bible.personajes:
@@ -257,9 +275,14 @@ def sustituir_nombres(
 
     def reemplazar(coincidencia: re.Match[str]) -> str:
         personaje = por_grupo[str(coincidencia.lastgroup)]
-        sujeto = sujeto_personaje(personaje) if usar_bible else SUJETO_GENERICO
-        sustituciones.append(Sustitucion(personaje.id, coincidencia.group(0), sujeto))
-        return sujeto
+        if not usar_bible:
+            nuevo = SUJETO_GENERICO
+        elif sujeto is not None:
+            nuevo = sujeto(personaje)
+        else:
+            nuevo = sujeto_personaje(personaje)
+        sustituciones.append(Sustitucion(personaje.id, coincidencia.group(0), nuevo))
+        return nuevo
 
     resultado = regex.sub(reemplazar, texto)
     resultado = re.sub(r"\s{2,}", " ", resultado).strip()
@@ -274,7 +297,8 @@ def sustituir_nombres(
 # ---------------------------------------------------------------------------------------
 PersonajesPrompt = Literal["presentes", "foco"]
 _GRUPO: Final = re.compile(
-    r"\b(?:group|friends|crowd|together|family|team|everyone|people|children|kids|villagers)\b",
+    r"\b(?:group|friends|crowd|together|family|team|everyone|people|children|kids|villagers|"
+    r"surrounded|several|many|herd|pack|flock)\b",
     re.IGNORECASE,
 )
 IP_FACTOR_IMPLICITO: Final = 0.5  # el protagonista está en la escena, pero la acción no lo nombra
@@ -285,6 +309,8 @@ IP_FACTOR_GRUPO: Final = 0.5  # "group of friends": con escala alta salen clones
 def tipo_personaje(personaje: Personaje) -> str:
     """'boy age 10' -> 'boy'; 'young jaguar age 4' -> 'young jaguar'; 'old man' -> 'old man'."""
     sujeto = sujeto_personaje(personaje)
+    # Historias guardadas antes del 18 nov pueden traer "a biomechanical dragon age 120".
+    sujeto = re.sub(r"^(?:a|an|the)\s+", "", sujeto, flags=re.IGNORECASE)
     return re.split(r"\s+age\b", sujeto, maxsplit=1)[0].strip() or sujeto
 
 
@@ -299,6 +325,270 @@ def _sustantivo(personaje: Personaje) -> str:
     palabras = re.findall(r"[a-z]+", _sin_tildes(tipo_personaje(personaje)).lower())
     palabras = [w for w in palabras if w not in _NO_SUSTANTIVOS]
     return palabras[-1] if palabras else ""
+
+
+NEGATIVO_CLONES: Final = "duplicate character, clone, twins"
+# En una escena de grupo de otra especie, el descriptor del foco se acorta (tipo, edad y
+# color) para que no tape al grupo.
+DESCRIPTOR_EN_GRUPO: Final = 3
+
+
+def _personaje_o_none(bible: StoryBible, pid: str | None) -> Personaje | None:
+    if pid is None:
+        return None
+    try:
+        return bible.personaje(pid)
+    except KeyError:
+        return None
+
+
+def sujeto_corto(personaje: Personaje, *, foco: bool = False) -> str:
+    """Cómo nombra la acción a un personaje en modo foco: "the boy", "an old man"."""
+    # "25 years old, short black hair" no dice qué es: "a person" (no "a 25 years old").
+    nombre = tipo_personaje(personaje) if _sustantivo(personaje) else "person"
+    if foco:
+        return f"the {nombre}"
+    articulo = "an" if nombre[:1].lower() in "aeiou" else "a"
+    return f"{articulo} {nombre}"
+
+
+def grupo_de_escena(bible: StoryBible, numero: int, accion: str) -> tuple[GrupoVisual, bool] | None:
+    """El grupo que pide la idea (``bible.grupos``) si corresponde a la escena, y si el LLM
+    ya lo nombró en plural.
+
+    Corresponde si en la escena hay alguien de esa especie o la acción la nombra (o, para un
+    grupo sin especie, si hay al menos dos personajes).
+    """
+    escena = bible.escena(numero)
+    texto = accion.lower()
+    for grupo in bible.grupos:
+        nombrado = grupo.frase.lower() in texto or bool(
+            grupo.plural and re.search(rf"\b{re.escape(grupo.plural)}\b", texto)
+        )
+        if grupo.especie is None:
+            if nombrado or len(escena.personajes_presentes) >= 2:
+                return grupo, nombrado
+            continue
+        especie = re.compile(rf"\b{re.escape(grupo.especie)}\b", re.IGNORECASE)
+        presentes = []
+        for pid in escena.personajes_presentes:
+            try:
+                presentes.append(bible.personaje(pid))
+            except KeyError:
+                continue
+        if (
+            nombrado
+            or especie.search(texto)
+            or any(especie.search(tipo_personaje(p)) for p in presentes)
+        ):
+            return grupo, nombrado
+    return None
+
+
+@dataclass(frozen=True)
+class Composicion:
+    """Cómo queda la parte de la acción del prompt a partir del plano visual."""
+
+    accion: str
+    foco: FocoEscena
+    limite_descriptor: int | None
+    extra_negativo: str
+    verificar: list[str]
+    evitar: list[str]
+
+
+def _figura(bible: StoryBible, quien: str, cantidad: str) -> tuple[str, str]:
+    """(texto, sustantivo): ('a cat', 'cat'), ('many cats', 'cat'), ('two foxes', 'fox')."""
+    personaje = _personaje_o_none(bible, quien)
+    if personaje is not None:
+        sustantivo = _sustantivo(personaje) or "person"
+        uno = sujeto_corto(personaje)
+    else:
+        palabras = re.findall(r"[a-z]+", _sin_tildes(quien).lower().replace("_", " "))
+        palabras = [w for w in palabras if w not in {"a", "an", "the", "some", "many", "two"}]
+        if palabras:
+            palabras[-1] = singular_ingles(palabras[-1])  # el LLM a veces escribe "cats"
+        sustantivo = " ".join(palabras[-2:]) or SUJETO_GENERICO
+        articulo = "an" if sustantivo[:1] in "aeiou" else "a"
+        uno = f"{articulo} {sustantivo}"
+    nucleo = sustantivo.split()[-1]
+    if cantidad == "one":
+        return uno, nucleo
+    numero = "two" if cantidad == "two" else "many"
+    plural = " ".join([*sustantivo.split()[:-1], plural_ingles(nucleo)])
+    return f"{numero} {plural}", nucleo
+
+
+def _con_rasgos(bible: StoryBible, quien: str, texto: str, cantidad: str) -> str:
+    """'a cat' -> 'a cat (short fur, grey coat)' (acompañante con nombre, FLUX)."""
+    personaje = _personaje_o_none(bible, quien)
+    if personaje is None or cantidad != "one":
+        return texto
+    rasgos = frases(personaje.descripcion_visual_fija)[1:3]
+    return f"{texto} ({', '.join(rasgos)})" if rasgos else texto
+
+
+def _agrupar_iguales(textos: list[str]) -> list[str]:
+    """["a cat", "a cat", "a bird"] -> ["two cats", "a bird"] (dos gatos sin nombre en el
+    prompt no se distinguen: "with a cat and a cat" se lee peor que "with two cats")."""
+    salida = []
+    for texto in dict.fromkeys(textos):
+        veces = textos.count(texto)
+        palabras = texto.split()
+        if veces == 1 or palabras[0] not in {"a", "an"}:  # "many cats" dos veces: una basta
+            salida.append(texto)
+        else:
+            plural = " ".join([*palabras[1:-1], plural_ingles(palabras[-1])])
+            salida.append(f"{'two' if veces == 2 else 'many'} {plural}")
+    return salida
+
+
+def componer_plano(bible: StoryBible, numero: int, encoder_largo: bool = False) -> Composicion:
+    """El inicio del prompt según el plano del ilustrador (17 nov: "faltan o sobran personajes").
+
+    "wide shot, a dog surrounded by many cats, with a cat, looks up at the rooftops, a narrow
+    street at dusk": primero quiénes se ven (y cuántos), luego qué hace el principal y dónde.
+    El descriptor completo va solo para el principal y se acorta si hay más figuras. Las
+    reglas de IP-Adapter y del negative son las del 13 nov: sin referencia si hay un grupo de
+    otra especie (la referencia es el protagonista solo) y nada de "clones" si hay figuras de
+    su misma especie.
+
+    ``encoder_largo`` (FLUX, 18 nov): el prompt puede tener hasta 256 tokens y el modelo
+    asocia bien rasgos a cada figura, así que el descriptor del principal va completo y cada
+    acompañante con nombre lleva dos rasgos ("a cat (short fur, grey coat)").
+    """
+    escena = bible.escena(numero)
+    plano = escena.plano_visual
+    if plano is None:
+        raise PromptBuilderError(f"La escena {numero} no tiene plano visual")
+    principal = bible.personaje(plano.principal)
+    nucleo_principal = _sustantivo(principal) or "person"
+    figuras = [_figura(bible, f.quien, f.cantidad) for f in plano.acompanantes]
+    cantidades = [f.cantidad for f in plano.acompanantes]
+    quienes = [f.quien for f in plano.acompanantes]
+
+    # El grupo que pide la idea ("rodeado de gatos"), si su especie está en la escena.
+    frase_grupo = ""
+    for grupo in bible.grupos:
+        especies = {n for _, n in figuras} | {
+            _sustantivo(p) or "person"
+            for p in (_personaje_o_none(bible, pid) for pid in escena.personajes_presentes)
+            if p is not None
+        }
+        if grupo.especie is None and (figuras or len(escena.personajes_presentes) >= 2):
+            frase_grupo = grupo.frase
+        elif grupo.especie and grupo.especie in especies:
+            frase_grupo = grupo.frase
+            # La figura "many cats" ya la cubre la frase del grupo.
+            quedan = [
+                i for i, (f, c) in enumerate(zip(figuras, cantidades, strict=True))
+                if not (f[1] == grupo.especie and c != "one")
+            ]  # fmt: skip
+            figuras = [figuras[i] for i in quedan]
+            cantidades = [cantidades[i] for i in quedan]
+            quienes = [quienes[i] for i in quedan]
+        if frase_grupo:
+            break
+
+    sujeto = sujeto_corto(principal)
+    inicio = f"{sujeto} {frase_grupo}" if frase_grupo else sujeto
+    textos_con = [texto for texto, _ in figuras]
+    if encoder_largo:
+        textos_con = [
+            _con_rasgos(bible, quien, texto, cantidad)
+            for (texto, _), quien, cantidad in zip(figuras, quienes, cantidades, strict=True)
+        ]
+    con = " and ".join(_agrupar_iguales(textos_con))
+    accion_texto, _ = sustituir_nombres(plano.accion, bible, sujeto=lambda p: sujeto_corto(p))
+    # "the dog looks up" / "he looks up" -> "looks up": el sujeto ya va al inicio.
+    accion_texto = re.sub(
+        rf"^(?:(?:the|a|an)\s+(?:[a-z]+\s+){{0,2}}?{re.escape(nucleo_principal)}|he|she|it|they)\s+",
+        "",
+        accion_texto,
+        flags=re.I,
+    )
+    lugar_texto, _ = sustituir_nombres(plano.lugar, bible, sujeto=lambda p: sujeto_corto(p))
+    partes = [plano.plano, inicio]
+    if con:
+        partes.append(f"with {con}")
+    partes += [accion_texto, lugar_texto]
+    accion = ", ".join(p.strip() for p in partes if p.strip())
+
+    grupo_usado = next((g for g in bible.grupos if g.frase == frase_grupo), None)
+    especie_grupo = grupo_usado.especie if grupo_usado else None
+    # Varios de la especie del principal (dos perros, una manada, un grupo sin especie) no
+    # son clones: ahí no van "two dogs" ni "clone" en el negative.
+    misma_especie = any(n == nucleo_principal for _, n in figuras) or bool(
+        grupo_usado and especie_grupo in (None, nucleo_principal)
+    )
+    grupo_otra_especie = bool(especie_grupo and especie_grupo != nucleo_principal)
+    varios_de_otra = any(
+        c != "one" and n != nucleo_principal for (_, n), c in zip(figuras, cantidades, strict=True)
+    )
+    hay_mas = bool(figuras or frase_grupo)
+    es_protagonista = principal.rol is RolPersonaje.PROTAGONISTA
+    if not es_protagonista or grupo_otra_especie or varios_de_otra:
+        ip_factor = 0.0
+    elif hay_mas:
+        ip_factor = IP_FACTOR_CON_OTROS
+    else:
+        ip_factor = 1.0
+
+    plural = plural_ingles(nucleo_principal)
+    negativos = [] if misma_especie else [f"two {plural}", f"multiple {plural}"]
+    if not hay_mas:
+        negativos.append(NEGATIVO_CLONES)
+    # Dos figuras iguales ("a girl" y "a girl") se verifican como "two girls".
+    verificar = _agrupar_iguales([sujeto, *(texto for texto, _ in figuras)])
+    if grupo_usado is not None and grupo_usado.plural:
+        verificar.append(f"many {grupo_usado.plural}")
+    mencionados = [principal.id] + [
+        f.quien for f in plano.acompanantes if _personaje_o_none(bible, f.quien) is not None
+    ]
+    foco = FocoEscena(
+        foco=principal.id, mencionados=mencionados, grupo=hay_mas, ip_factor=ip_factor
+    )
+    return Composicion(
+        accion=accion,
+        foco=foco,
+        limite_descriptor=DESCRIPTOR_EN_GRUPO if hay_mas and not encoder_largo else None,
+        extra_negativo=", ".join(negativos),
+        verificar=verificar,
+        evitar=[] if misma_especie else [f"two {plural}"],
+    )
+
+
+def plural_ingles(sustantivo: str) -> str:
+    """'dog' -> 'dogs', 'fox' -> 'foxes', 'wolf' -> 'wolves' (para el negative prompt)."""
+    irregulares = {
+        "wolf": "wolves", "mouse": "mice", "fish": "fish", "deer": "deer", "sheep": "sheep",
+        "person": "people", "man": "men", "woman": "women", "child": "children",
+    }  # fmt: skip
+    if sustantivo in irregulares:
+        return irregulares[sustantivo]
+    if sustantivo.endswith(("s", "x", "ch", "sh")):
+        return sustantivo + "es"
+    return sustantivo + "s"
+
+
+def quitar_aposiciones(accion: str, sustituciones: Sequence[Sustitucion]) -> str:
+    """El LLM suele repetir el tipo tras el nombre; se deja una sola mención:
+    "the boy, a boy with curly hair" -> "the boy with curly hair";
+    "a robot, a robot, walks" -> "a robot walks";
+    "a cat, a orange cat with red spots" -> "a orange cat with red spots"."""
+    for sustitucion in {s.por for s in sustituciones}:
+        articulo, _, sustantivo = sustitucion.partition(" ")
+        nucleo = sustantivo.split()[-1] if sustantivo else articulo
+        patron = (
+            rf"\b{re.escape(sustitucion)},\s+an?\s+((?:[\w-]+\s+){{0,3}}?)"
+            rf"{re.escape(nucleo)}\b(,(?=\s+[a-z]+s\b))?"
+        )
+
+        def unir(m: re.Match[str], articulo: str = articulo, nucleo: str = nucleo) -> str:
+            return f"{articulo} {m.group(1)}{nucleo}"
+
+        accion = re.sub(patron, unir, accion, flags=re.IGNORECASE)
+    return re.sub(r"\s{2,}", " ", accion).strip()
 
 
 @dataclass(frozen=True)
@@ -360,11 +650,16 @@ def _ids_ordenados(bible: StoryBible, presentes: Sequence[str]) -> list[str]:
 
 
 def construir_negativo(
-    bible: StoryBible | None, base: str, contar: ContadorTokens, maximo: int
+    bible: StoryBible | None,
+    base: str,
+    contar: ContadorTokens,
+    maximo: int,
+    extra: str = "",
 ) -> tuple[str, list[Truncamiento]]:
-    """Negative prompt común: el de la Bible más el base de la configuración, sin repetir."""
+    """Negative prompt común: el de la Bible, ``extra`` y el base de la configuración, sin
+    repetir (lo último es lo primero que se recorta)."""
     unicas: list[str] = []
-    fuentes = [bible.estilo_visual.negative_prompt if bible else "", base]
+    fuentes = [bible.estilo_visual.negative_prompt if bible else "", extra, base]
     for frase in (f for fuente in fuentes for f in frases(fuente)):
         if frase.lower() not in {u.lower() for u in unicas}:
             unicas.append(frase)
@@ -382,6 +677,7 @@ def construir_prompt(
     max_tokens: int = TOKENS_CLIP_UTILES,
     orden: OrdenPrompt = "estilo_primero",
     personajes: PersonajesPrompt = "presentes",
+    encoder_largo: bool = False,
 ) -> PromptImagen:
     """Prompt y negative prompt de la escena ``numero``.
 
@@ -410,6 +706,70 @@ def construir_prompt(
     ids: list[str] = []
     accion, sustituciones = sustituir_nombres(escena.prompt_imagen, bible, usar_bible=usar_bible)
     foco = analizar_foco(bible, numero, accion, sustituciones) if usar_bible else None
+    extra_negativo = ""
+    limite_descriptor: int | None = None
+    verificar: list[str] = []
+    evitar: list[str] = []
+    if personajes == "foco" and foco is not None and escena.plano_visual is not None:
+        # 17 nov: el ilustrador (LLM) ya dijo quién se ve, cuántos, qué hace y dónde.
+        composicion = componer_plano(bible, numero, encoder_largo)
+        accion, sustituciones, foco = composicion.accion, [], composicion.foco
+        limite_descriptor = composicion.limite_descriptor
+        extra_negativo = composicion.extra_negativo
+        verificar = composicion.verificar
+        evitar = composicion.evitar
+    elif personajes == "foco" and foco is not None:
+        # 13 nov: "boy age 10, a boy with curly hair, boy age 10, curly brown hair..." hacía
+        # clones del protagonista (dos niños) y "robot age 200" no aportaba nada. En la acción
+        # cada personaje queda como un sustantivo corto ("the boy", "a monkey"); la edad y
+        # los rasgos van solo en el descriptor del foco.
+        id_foco = foco.foco
+        accion, sustituciones = sustituir_nombres(
+            escena.prompt_imagen,
+            bible,
+            sujeto=lambda p: sujeto_corto(p, foco=p.id == id_foco),
+        )
+        accion = quitar_aposiciones(accion, sustituciones)
+        en_grupo = grupo_de_escena(bible, numero, accion)
+        foco_personaje = _personaje_o_none(bible, foco.foco)
+        if en_grupo is None:
+            extra_negativo = NEGATIVO_CLONES
+        else:
+            grupo, nombrado = en_grupo
+            otra_especie = bool(
+                grupo.especie
+                and foco_personaje is not None
+                and not re.search(
+                    rf"\b{re.escape(grupo.especie)}\b", tipo_personaje(foco_personaje), re.I
+                )
+            )
+            if otra_especie and foco_personaje is not None:
+                # 13 nov (2): con "surrounded by many cats" a mitad del prompt, SDXL dibujó
+                # solo perros (hasta dos). El descriptor largo del perro y la referencia del
+                # IP-Adapter (un perro solo) arrastran a todos los animales hacia el perro.
+                # La composición va primero, el descriptor del foco se acorta, no se usa la
+                # referencia y el negative evita un segundo perro (no a los gatos).
+                accion = f"{sujeto_corto(foco_personaje)} {grupo.frase}, {accion}"
+                foco = replace(foco, grupo=True, ip_factor=0.0)
+                limite_descriptor = DESCRIPTOR_EN_GRUPO
+                sustantivo = _sustantivo(foco_personaje) or tipo_personaje(foco_personaje)
+                plural = plural_ingles(sustantivo)
+                extra_negativo = f"multiple {plural}, two {plural}"
+            else:
+                # Mismo tipo que el foco ("una manada de lobos") o grupo sin especie: varios
+                # parecidos no son clones, así que no va el negative de clones.
+                if not nombrado:
+                    primera, _, resto = accion.partition(",")
+                    accion = f"{primera}, {grupo.frase}" + (f",{resto}" if resto else "")
+                foco = replace(foco, grupo=True, ip_factor=min(foco.ip_factor, IP_FACTOR_GRUPO))
+                extra_negativo = ""
+        if foco_personaje is not None:
+            verificar = [sujeto_corto(foco_personaje)]
+            if "two " in extra_negativo or extra_negativo == NEGATIVO_CLONES:
+                nucleo = _sustantivo(foco_personaje) or "person"
+                evitar = [f"two {plural_ingles(nucleo)}"]
+        if en_grupo is not None and en_grupo[0].plural:
+            verificar.append(f"many {en_grupo[0].plural}")
     if usar_bible:
         bloques.append(_Bloque("estilo", frases(bible.estilo_visual.prompt())))
         ids = _ids_ordenados(bible, escena.personajes_presentes)
@@ -423,7 +783,10 @@ def construir_prompt(
                     f"Personaje inexistente en la escena {numero}: {pid}"
                 ) from exc
             minimo = 2 if personaje.rol is RolPersonaje.PROTAGONISTA else 1
-            bloques.append(_Bloque("personajes", frases(personaje.descripcion_visual_fija), minimo))
+            descriptor = frases(personaje.descripcion_visual_fija)
+            if limite_descriptor:
+                descriptor = descriptor[:limite_descriptor]
+            bloques.append(_Bloque("personajes", descriptor, min(minimo, len(descriptor))))
     bloque_accion = _Bloque("accion", frases(accion))
     if orden == "accion_primero":
         bloques = [bloque_accion, *(b for b in bloques if b.segmento == "personajes")] + [
@@ -438,7 +801,7 @@ def construir_prompt(
     )
     prompt, truncamientos = ajustar_a_presupuesto(bloques, contar, max_tokens, prioridad)
     negativo, trunc_neg = construir_negativo(
-        bible if usar_bible else None, negative_base, contar, max_tokens
+        bible if usar_bible else None, negative_base, contar, max_tokens, extra_negativo
     )
     truncamientos += trunc_neg
     resultado = PromptImagen(
@@ -453,6 +816,8 @@ def construir_prompt(
         foco=foco.foco if foco else None,
         mencionados=foco.mencionados if foco else [],
         ip_factor=foco.ip_factor if (foco and personajes == "foco") else 1.0,
+        verificar=verificar,
+        evitar=evitar,
     )
     if sustituciones:
         logger.info(

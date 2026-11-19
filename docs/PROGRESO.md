@@ -144,18 +144,27 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
 Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté lista y generar la 2 mientras se lee, "y no tengo que esperar los dos o tres minutos") y usar un modelo de imágenes más grande. Diego agregó: interfaz sin scroll con un panel derecho de detalles técnicos, al estilo de un flipbook, y corregir las imágenes que mezclan personajes ("en una sale un niño y en la siguiente un animal").
 - [x] 9.1 [AUTO] Personaje foco por escena: un solo personaje con su descriptor completo y el IP-Adapter escalado por escena (`prompt_builder.analizar_foco`). Verificado en las 4 historias del 12 nov.
 - [x] 9.2 [AUTO] Soporte de SDXL (DreamShaper XL Lightning con UNet fp8 y model CPU offload, `configs/sdxl.yaml`) y `scripts/f7_sdxl_prueba.py` (misma historia con SD 1.5 y con SDXL: tiempos, VRAM, CLIP y hojas de contactos). `-Paso sdxl` en `setup_windows.ps1`.
-- [ ] 9.3 [WINDOWS] `-Paso sdxl`: descargar SDXL (~8 GB) y comparar en la RTX 3050. (dep: 9.2)
+- [x] 9.3 [WINDOWS] `-Paso sdxl`: descargar SDXL (~8 GB) y comparar en la RTX 3050. (dep: 9.2) — 13 nov: cabe en 4 GB; ~11 s por imagen frente a ~3,5 s de SD 1.5 (ver bitácora).
 - [x] 9.4 [AUTO] Generación por escenas: `Pipeline.generar_por_escenas` (`progresivo.py`, `story/por_escenas.py`), con sesiones de imagen y sonido que cargan una vez y liberan la VRAM entre escenas para el LLM.
 - [x] 9.5 [AUTO] Interfaz tipo libro sin scroll: libro al centro con giro de página, índice, teclas ← y →, panel derecho de detalles técnicos y generación en segundo plano (`generacion_en_curso.py`).
-- [ ] 9.6 [WINDOWS] Probar la app con la generación por escenas (`StoryBook.cmd`) y medir el tiempo hasta la primera escena. (dep: 9.4, 9.5)
-- [~] 9.7 [AUTO] (reservada para la sesión interactiva) Si 9.3 lo justifica, agregar SDXL a la app (perfil y respaldo a SD 1.5) y actualizar informe, arquitectura y sustentación con los datos de 9.3 y 9.6. (dep: 9.3, 9.6)
+- [x] 9.6 [WINDOWS] Probar la app con la generación por escenas (`StoryBook.cmd`) y medir el tiempo hasta la primera escena. (dep: 9.4, 9.5) — 13 nov: primera escena a los 84 s, historia completa en 196 s.
+- [~] 9.7 [AUTO] (reservada para la sesión interactiva) SDXL ya es la opción por defecto de la app (13 nov). Falta actualizar informe, arquitectura y sustentación con los datos de 9.3, 9.6, 9.9 y 9.11. (dep: 9.11)
+- [x] 9.8 [AUTO] El reparto respeta la idea: con "un grupo de amigos animales" el plan traía un niño, un anciano y un robot (`story/reparto.py`, corrección automática del plan). En la acción del prompt cada personaje va como sustantivo corto y sin edad, y el negative prompt evita clones.
+- [x] 9.9 [WINDOWS] Volver a probar la app con SDXL y una idea de animales: que el reparto sean animales y medir la primera escena. (dep: 9.7, 9.8) — 13 nov: "Un perro rodeado de gatos": reparto correcto (un perro y tres gatos), pero un solo gato por imagen y primera escena a los 122 s.
+- [x] 9.10 [AUTO] Grupos que pide la idea ("rodeado de gatos") en las ilustraciones, descriptores sin "<>", y primera escena más rápida (modelo de imagen precargado y referencia del protagonista después de la primera ilustración).
+- [ ] 9.11 [WINDOWS] Probar otra vez "Un perro rodeado de gatos en una ciudad" con SDXL: varios gatos en las imágenes y el tiempo de la primera escena. (dep: 9.10, 9.12) — 17 nov: primero `f7_sdxl_prueba.py --ilustrador` sobre la historia del 13 nov (ver bitácora) y después una historia nueva desde la app.
+- [x] 9.13 [AUTO] Reparto e ilustrador fieles a la idea (18 nov, "imágenes que nada que ver"): personas que nombra la idea en el reparto, sin animales que la idea no pide; el ilustrador ya no inventa figuras; sin "an a" en los prompts; el motivo de un fallo del LLM queda en el manifest.
+- [ ] 9.14 [WINDOWS] Perfil Avanzada (FLUX.1-schnell, XTTS-v2, Stable Audio Open): `setup_windows.ps1 -Paso avanzada` (descarga ~38 GB, copia fp8, entorno de XTTS y pruebas `f10_*`). Después, decidir si queda por defecto en la app según los tiempos. (dep: HF_TOKEN y licencias aceptadas)
+- [x] 9.12 [AUTO] Imágenes con los personajes que corresponden (17 nov, "faltan o sobran personajes"): el LLM describe aparte qué se ve en cada escena (`PlanoVisual`: principal, acompañantes y cuántos, acción, lugar, plano) y el prompt se arma con eso; cada escena se genera 2 veces y OpenCLIP elige la versión donde mejor se ve a todos (`image/seleccion.py`).
 
 ---
 
 ## Pendientes para Diego
 - **Estado:** la app funciona de punta a punta desde la interfaz (prueba de Diego, 11 nov 12:37). El 12 nov se agregaron los pedidos del docente (F9): generación por escenas, interfaz tipo libro y personaje foco por escena.
 - **Pendiente:**
-  - 9.3 (`-Paso sdxl`: probar el modelo de imágenes grande) y 9.6 (probar la app nueva con `StoryBook.cmd`);
+  - 9.14: aceptar en huggingface.co las condiciones de FLUX.1-schnell y Stable Audio Open 1.0, poner `HF_TOKEN` en `.env` y correr `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso avanzada`.
+  - 9.11: con Ollama abierto, volver a ilustrar la historia de los gatos con el ilustrador y la mejor de 2 versiones, y después probar la app con una historia nueva:
+    `uv run python scripts/f7_sdxl_prueba.py --historia outputs\20261113_150217_un_perro_rodeado_de_gatos_en_u --perfiles sdxl --ilustrador --nombre f9_ilustrador`;
   - 8.2 (ensayo cronometrado con idea y género al azar);
   - 7.3 (video, pospuesto);
   - 3 datos del informe: docente, lista 1–5 y video.
@@ -843,3 +852,78 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
 - Verificación: **351 tests en verde**, ruff limpio.
 - **Siguiente (Diego):** `-Paso sdxl` (9.3) y probar la app con `StoryBook.cmd` (9.6).
 
+### 2026-11-13 13:30 · sesión interactiva (Claude) · 9.3 y 9.6 revisadas, 9.8 hecha
+- Sincronización: los 41 archivos del 12 nov llegaron completos (md5) y las pruebas de las partes nuevas pasan también en el equipo. Diego ejecutó `-Paso sdxl` (commit e89b3b2 en GitHub).
+- **9.6 · App con la generación por escenas** (idea "Un grupo de amigos animales en la selva", perfil rápido):
+  - Escenas listas a los 84, 112, 138, 164 y 194 s; historia completa en 196 s. Después de la primera, una escena cada ~27 s, menos que lo que dura su narración (~40-50 s).
+  - El LLM quedó 100 % en GPU en las 6 llamadas aunque el proceso ya tuviera un contexto de CUDA abierto (no hizo falta el modo automático de `num_gpu`).
+- **9.3 · SDXL frente a SD 1.5** (misma historia, `docs/evidencias/f7_sdxl.md` y `f7_hojas/`):
+  - SDXL (DreamShaper XL Lightning, UNet fp8 + offload): carga 10,6 s, character sheet 10,2 s, ~10,9 s por imagen; pico de 4006 MB en la GPU, sin respaldos. SD 1.5: carga 12,2 s, ~3,5 s por imagen.
+  - CLIP imagen-texto: 0,348 con SDXL frente a 0,282 con SD 1.5 (sigue mejor el prompt). CLIP imagen-imagen: 0,658 frente a 0,734; con SD 1.5 las escenas eran casi el mismo retrato, lo que sube esa métrica.
+  - A la vista, SDXL respeta el estilo pedido (acuarela) y SD 1.5 no. Los dos dibujaban clones del niño en las escenas de grupo.
+- **Diagnóstico del "niño en vez de animales"** (pregunta de Diego):
+  - La imagen no inventó al niño: el plan del LLM traía como reparto a Kai (*boy age 10*), Toro (*old man*), Mira (*robot*) y Julio (*monkey*). El modelo de imagen dibujó fielmente al protagonista.
+  - El ejemplo de tipos del prompt ("woman, boy, old man, robot") coincidía casi exacto con ese reparto.
+  - Los clones salían del prompt: "boy age 10, a boy with curly hair, boy age 10, curly brown hair…" nombraba dos veces al niño, y las escenas listaban 4 personajes.
+- **9.8 · Correcciones:**
+  - `story/reparto.py`: si la idea habla de animales y no menciona personas, ningún personaje puede ser persona ni robot; cada especie que nombra la idea ("un zorro") debe estar en el reparto. Si no se cumple, el planificador le devuelve al LLM la lista de problemas y pide el plan corregido una vez (`plan_reparto`); si sigue mal, queda el aviso `texto:reparto_no_coincide`. Vale para la generación completa y la por escenas.
+  - Prompts del plan: regla explícita del reparto, y el ejemplo del descriptor ya no sugiere personajes.
+  - Prompt de imagen en modo foco: en la acción cada personaje va como sustantivo corto sin edad ("the boy", "a monkey"), sin la aposición repetida ("Mira, a robot," → "a robot"), y el negative prompt agrega "duplicate character, clone, twins". Los experimentos (modo `presentes`) no cambian.
+  - App: SDXL es la primera opción del perfil ("Modelo grande"); "Rápido (SD 1.5)" queda como alternativa. El panel muestra el reparto con el tipo que recibe el ilustrador ("Kai (boy)"), para ver de dónde sale cada imagen.
+- Verificación: **365 tests en verde**, ruff limpio.
+- **Siguiente (Diego):** 9.9, otra historia con la misma idea, ahora con SDXL.
+
+### 2026-11-13 15:30 · sesión interactiva (Claude) · 9.9 revisada, 9.10 hecha
+- **9.9** · "Un perro rodeado de gatos en una ciudad", Aventura, SDXL (`20261113_142035_…`):
+  - El reparto ya respeta la idea (un perro protagonista y tres gatos), sin corrección.
+  - Diego: "al decir rodeado de gatos deberían salir 2 o más". Las imágenes muestran un solo gato, por tres motivos:
+    - las reglas de `prompt_imagen` pedían "como mucho 2 personajes" y "nada de grupos";
+    - el negative prompt nuevo ("duplicate character, clone, twins") frena a varios gatos parecidos;
+    - nada llevaba "muchos gatos" hasta la imagen.
+  - El 4B copió el formato "<tipo> age <edad>" del prompt tal cual: "<dog> age 3".
+  - Tiempos: primera escena a los 122 s y la historia completa en 263 s (escenas cada ~34 s). El plan tardó 48,7 s porque necesitó un reintento de validación. SDXL tardó 13,0 s en cargar, 10,7 s en la character sheet y ~11,4 s por imagen.
+- **9.10 · Correcciones:**
+  - `reparto.grupos_pedidos(idea)`: si la idea pide un grupo ("rodeado de gatos", "una manada de lobos", "un grupo de amigos animales"), el código lo guarda en la Bible (`grupos`, fuera del esquema del LLM). Un número exacto ("dos zorros") no cuenta como grupo.
+  - Con eso:
+    - la escena le pide al LLM nombrar el grupo en plural;
+    - el prompt de imagen agrega la frase ("surrounded by many cats") en las escenas donde hay alguien de esa especie y el LLM no lo nombró;
+    - en esas escenas no va el negative de clones y el IP-Adapter baja a 0,5.
+  - Los descriptores y los `prompt_imagen` pierden los "<>" al validarse; también los de las historias ya guardadas, al abrirlas. El prompt ya no muestra el formato con "<>".
+  - Las aposiciones con adjetivos también se unen: "Razor, a orange cat with red spots" → "the orange cat with red spots".
+  - **Primera escena más rápida:** el modelo de imagen se carga en otro hilo mientras el LLM escribe el plan (con offload, la carga es de disco a RAM). La character sheet y el IP-Adapter se preparan después de la primera ilustración, mientras el usuario ya la ve. Si la historia falla antes de ilustrar, el modelo precargado se suelta. Ahorro estimado con SDXL: ~24 s (13 de carga y 11 de la sheet).
+- Verificación: **377 tests en verde**, ruff limpio.
+- **Siguiente (Diego):** 9.11.
+
+### 2026-11-17 19:40 · sesión interactiva (Claude) · 9.12 hecha
+- **Pedido de Diego:** "Quiero mejorar el modelo que genera las imágenes para que tengan más sentido". Lo que más falla: **faltan o sobran personajes**. Aceptó que cada escena tarde unos 15 s más.
+- **Antecedente (13 nov, tarde):** con "surrounded by many cats" a mitad del prompt, SDXL dibujó solo perros ("Ahora no sale ni un gato"). Se corrigió poniendo el grupo al inicio del prompt, sin la referencia del protagonista (IP-Adapter 0) y con el descriptor del perro acortado; esa versión no se alcanzó a probar en Windows.
+- **Por qué no un modelo más grande:** FLUX y SD 3.5 no caben en 4 GB a una velocidad usable (y SD 3.5 tiene acceso restringido). El problema no es la calidad del dibujo sino que el prompt nombre exactamente a quién se ve, y que una mala tirada de la seed no quede.
+- **9.12 · Cambios:**
+  - **Ilustrador** (`PlanoVisual`, `planner.plano_visual`, una llamada más al LLM por escena, temperatura 0,3): con el texto ya escrito, el LLM elige el personaje principal (un id presente), hasta 2 acompañantes (un personaje presente o una especie, con cantidad "one", "two" o "many"), la acción (≤ 14 palabras), el lugar (≤ 12) y el plano (primer plano, plano medio o general). El código corrige lo que no cuadra (`ajustar_plano`: principal que no está en la escena, nombre en vez de id, acompañantes repetidos). Si la llamada falla, la escena sigue con su `prompt_imagen` (aviso `texto:plano_visual_fallido:<n>`).
+  - **Prompt desde el plano** (`prompt_builder.componer_plano`): "wide shot, a dog surrounded by many cats, looks up at the rooftops, a narrow street at dusk". Primero quiénes se ven y cuántos, luego la acción y el lugar; el descriptor completo solo para el principal (acortado si hay más figuras). Reglas de IP-Adapter y negative según quién se ve: sin referencia si el principal no es el protagonista o hay varios de otra especie; "two dogs, multiple dogs" en el negative si nadie más es de su especie; "clone" solo si está solo.
+  - **La mejor de 2 versiones** (`image/seleccion.py`, `image.candidatos: 2` en los perfiles rápido y SDXL): la primera versión usa la seed de la escena y la segunda una derivada. OpenCLIP (ViT-B-32, CPU, se carga junto con el modelo de imagen) compara cada versión con "a picture of <figura>" para cada figura que debe verse ("a dog", "many cats"); pesa más la figura peor representada y castiga si "two dogs" se parece más que "a dog". La descartada queda en `versiones/` de la historia. Si OpenCLIP no carga, queda la primera versión (aviso `imagen:sin_eleccion_clip:<n>`).
+  - La Bible guarda la seed de la escena (no la de la versión elegida): regenerar repite las mismas versiones y la misma elección.
+  - **Panel técnico:** "Lo que debe verse" y "Versiones de la imagen" (cuál se eligió y su puntaje CLIP) por escena; "Versiones por imagen" e "Ilustrador" en los datos de la historia.
+  - Los experimentos de la batería 6.2 (`c1`–`c3`) quedan con 1 versión y sin ilustrador, para que sus resultados se puedan reproducir.
+  - `scripts/f7_sdxl_prueba.py --ilustrador`: toma una historia guardada, le pide al LLM el plano de cada escena (el texto no cambia) y la ilustra otra vez con 2 versiones por escena; el informe muestra los planos, lo que debía verse y los puntajes.
+- Tiempo esperado con SDXL: ~3 s más de LLM y ~11 s más de imagen por escena (la primera, ~75 s en vez de ~60 s).
+- Verificación: **404 tests en verde** (25 nuevos en `test_plano_visual.py` y uno en `test_f7_sdxl.py`), ruff limpio. Interfaz revisada con Playwright en modo simulado (1366 × 680, sin scroll).
+- **Siguiente (Diego):** 9.11 con el ilustrador (comando en "Pendientes").
+
+### 2026-11-18 20:30 · sesión interactiva (Claude) · 9.13 hecha, 9.14 lista para Windows
+- **Pedido de Diego:** "Vamos a usar todo esto, quiero mejorar todo porque me genera imágenes que nada que ver", con la fila "Avanzada" del resumen de modelos de clase (Qwen3-4B, FLUX.1-schnell, XTTS-v2, Stable Audio Open). Aceptó la licencia CPML de XTTS-v2.
+- **Diagnóstico de sus 7 historias del 18 nov (antes de cambiar modelos):**
+  - El reparto no respetaba la idea: "Un niño en un parque infantil" salió con un zorrito y una ardilla robot; "Una chica en un edificio", con un zorro y una rata; "Un avión cayendo", con un zorro y una ardilla; "Una biblioteca super grande", con zorro, búho y conejo. La regla del 13 nov ("si la idea habla de animales, todos son animales") el 4B la generalizó a "usa animales".
+  - El ilustrador agregaba gatos que no estaban en la escena (historia del dragón): el ejemplo de sus instrucciones decía "cat".
+  - Descriptores con artículo ("a biomechanical dragon age 120") dejaban "an a biomechanical dragon" en el prompt.
+  - "Una chica en un edificio" falló 2 veces al escribir la escena 1 sin que quedara el motivo.
+- **9.13 · Cambios:** `REGLA_REPARTO` cubre personas, animales e ideas sin animales; `reparto.py` exige las personas que nombra la idea (niño, chica, piloto, anciana...) y marca animales que la idea no pide, con el mismo reintento de corrección del 13 nov; `ajustar_plano` quita figuras sin nombre que la escena no menciona (salvo el grupo de la idea); el descriptor se guarda sin artículo inicial; `LLMValidationError` incluye los últimos errores de validación.
+- **9.14 · Perfil Avanzada (`configs/avanzada.yaml`):**
+  - FLUX.1-schnell (`image/flux.py`): copia local en fp8 de los pesos oficiales (`scripts/convertir_flux_fp8.py`, transformer ~12 GB y T5 ~4,9 GB), cálculo en bf16 capa por capa y bloques a la GPU solo mientras calculan (group offloading con stream). CLIP-L y el VAE suben a la GPU solo durante cada imagen. Sin IP-Adapter ni negative prompt; 4 pasos, 1056 × 704, prompt de hasta 254 tokens (T5): el principal con su descriptor completo y los acompañantes con dos rasgos. Una versión por escena (FLUX sigue el prompt; 2 versiones duplicarían el tiempo).
+  - XTTS-v2 (`voice/xtts.py`, `scripts/xtts_worker.py`): en `.venv-xtts` (torch 2.11 + torchaudio, que no existe para torch 2.15), proceso que vive entre escenas, modelo en su RAM y en la GPU solo mientras narra; voz incluida "Ana Florence". Si no arranca, Piper (queda anotado).
+  - Stable Audio Open 1.0 primero en la cadena de sonido (30 pasos); si no está, Stable Audio 3, AudioLDM, biblioteca y procedural.
+  - Opción "Avanzada (FLUX, XTTS y Stable Audio; más lenta)" en la app, segunda: queda por defecto solo si los tiempos medidos lo permiten.
+  - `setup_windows.ps1 -Paso avanzada`: verifica `HF_TOKEN`, descarga (~38 GB), convierte FLUX, crea `.venv-xtts` y corre `f10_voz_sonido.py` y `f7_sdxl_prueba.py --perfiles sdxl avanzada --ilustrador --nombre f10_avanzada` (ahora también mide la RAM).
+- La conversión fp8 y la carga se probaron con un FLUX y un T5 diminutos en CPU (`tests/test_flux.py`): error relativo de ~3 % (FLUX) y ~5 % (T5) frente a bf16, y el mismo resultado con group offloading. Lo que falta medir en Windows: tiempo por imagen, RAM libre (FLUX ocupa ~17 GB de los 24) y la VRAM con XTTS y Stable Audio en la misma historia.
+- Verificación: **419 tests en verde** y 1 que necesita torch (se salta aquí; pasó en un entorno con torch 2.15 y diffusers 0.42.1), ruff limpio. Interfaz revisada en modo simulado.
+- **Siguiente (Diego):** 9.14 (paso `avanzada`), luego 9.11 con una idea nueva en cada perfil.

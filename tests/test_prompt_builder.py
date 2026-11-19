@@ -256,7 +256,7 @@ def test_modo_foco_recorta_el_descriptor_antes_que_la_accion(bible_dict: dict) -
     foco = construir_prompt(
         bible, 1, personajes="foco", orden="accion_primero", contar=contar, max_tokens=26
     )
-    assert foco.prompt.startswith("boy age 10 finds an ancient map on a mossy rock")
+    assert foco.prompt.startswith("the boy finds an ancient map on a mossy rock")
     assert "wide shot" in foco.prompt  # la acción completa sobrevive
     assert {t.segmento for t in foco.truncamientos} <= {"estilo", "personajes"}
     presentes = construir_prompt(
@@ -272,3 +272,82 @@ def test_descriptor_sin_tipo_no_genera_falsos_mencionados(bible_dict: dict) -> N
     for escena in bible.escenas:
         resultado = analizar_foco(bible, escena.numero, "an old compass on a table")
         assert "old" not in resultado.mencionados
+
+
+def test_modo_foco_sin_clones_ni_edades_en_la_accion(bible_dict: dict) -> None:
+    """13 nov, "El Río Olvidado": "boy age 10, a boy with curly hair, boy age 10, curly..."
+    daba dos niños, y "robot age 200, a robot" no aportaba nada."""
+    datos = json.loads(json.dumps(bible_dict))
+    datos["personajes"] = [
+        {**datos["personajes"][0], "id": "kai", "nombre": "Kai",
+         "descripcion_visual_fija": "boy age 10, curly brown hair, leaf-patterned shirt"},
+        {**datos["personajes"][1], "id": "mira", "nombre": "Mira",
+         "descripcion_visual_fija": "robot age 200, metallic gray body, red eye light"},
+    ]  # fmt: skip
+    for escena in datos["escenas"]:
+        escena["personajes_presentes"] = ["kai", "mira"]
+    datos["escenas"][0]["prompt_imagen"] = "Kai, a boy with curly hair, looks at the river"
+    datos["escenas"][1]["prompt_imagen"] = "Mira, a robot, walks through dense jungle with Kai"
+    bible = StoryBible.model_validate(datos)
+    uno = construir_prompt(bible, 1, personajes="foco", orden="accion_primero")
+    assert uno.prompt.startswith("the boy with curly hair, looks at the river")
+    assert uno.prompt.count("boy age 10") == 1
+    dos = construir_prompt(bible, 2, personajes="foco", orden="accion_primero")
+    assert dos.prompt.startswith("a robot walks through dense jungle with the boy")
+    assert "age 200" not in dos.prompt
+    assert "clone" in dos.negative_prompt and "twins" in dos.negative_prompt
+    # El modo de los experimentos (presentes) no cambia.
+    presentes = construir_prompt(bible, 2, personajes="presentes", orden="accion_primero")
+    assert presentes.prompt.startswith("robot age 200")
+    assert "clone" not in presentes.negative_prompt
+
+
+def _perro_y_gatos(bible_dict: dict, grupo: dict) -> dict:
+    datos = json.loads(json.dumps(bible_dict))
+    datos["personajes"] = [
+        {**datos["personajes"][0], "id": "martillo", "nombre": "Martillo",
+         "descripcion_visual_fija": "dog age 3, silver fur, red scarf, torn ear, sturdy build"},
+        {**datos["personajes"][1], "id": "razor", "nombre": "Razor",
+         "descripcion_visual_fija": "cat age 4, orange with red spots"},
+    ]  # fmt: skip
+    for escena in datos["escenas"]:
+        escena["personajes_presentes"] = ["martillo", "razor"]
+    datos["escenas"][0]["prompt_imagen"] = "Martillo wakes up on stone pillars, wide shot"
+    datos["escenas"][1]["prompt_imagen"] = "Razor, a orange cat with red spots, stands on a bridge"
+    datos["escenas"][2]["prompt_imagen"] = "Martillo walks among many cats in the plaza"
+    datos["escenas"][3]["personajes_presentes"] = ["martillo"]
+    datos["escenas"][3]["prompt_imagen"] = "Martillo sleeps alone under a bridge"
+    datos["grupos"] = [grupo]
+    return datos
+
+
+def test_un_grupo_de_otra_especie_va_primero_y_sin_referencia(bible_dict: dict) -> None:
+    """13 nov, "Un perro rodeado de gatos": con "surrounded by many cats" a mitad del prompt,
+    SDXL dibujó solo perros (hasta dos): el descriptor largo del perro y la referencia del
+    IP-Adapter arrastraban a todos los animales hacia el perro."""
+    grupo = {"frase": "surrounded by many cats", "especie": "cat", "plural": "cats"}
+    bible = StoryBible.model_validate(_perro_y_gatos(bible_dict, grupo))
+    uno = construir_prompt(bible, 1, personajes="foco", orden="accion_primero")
+    assert uno.prompt.startswith("a dog surrounded by many cats, the dog wakes up on stone")
+    assert uno.ip_factor == 0.0  # la referencia es un perro solo
+    assert "torn ear" not in uno.prompt  # descriptor del foco acortado
+    assert "multiple dogs" in uno.negative_prompt and "clone" not in uno.negative_prompt
+    tres = construir_prompt(bible, 3, personajes="foco", orden="accion_primero")
+    assert tres.prompt.startswith("a dog surrounded by many cats, the dog walks among many cats")
+    # Si el foco es un gato, el grupo es de su misma especie: va en medio, como antes.
+    dos = construir_prompt(bible, 2, personajes="foco", orden="accion_primero")
+    assert dos.prompt.startswith("the orange cat with red spots, surrounded by many cats")
+    assert dos.ip_factor == 0.0 and "multiple" not in dos.negative_prompt
+    cuatro = construir_prompt(bible, 4, personajes="foco", orden="accion_primero")
+    assert "surrounded" not in cuatro.prompt  # sin gatos en la escena, no hay grupo
+    assert "clone" in cuatro.negative_prompt and "torn ear" in cuatro.prompt
+
+
+def test_un_grupo_de_la_misma_especie_o_sin_especie_va_en_medio(bible_dict: dict) -> None:
+    grupo = {"frase": "with a group of animal friends", "especie": None, "plural": None}
+    bible = StoryBible.model_validate(_perro_y_gatos(bible_dict, grupo))
+    uno = construir_prompt(bible, 1, personajes="foco", orden="accion_primero")
+    assert uno.prompt.startswith("the dog wakes up on stone pillars, with a group of animal")
+    assert uno.ip_factor == 0.5 and "clone" not in uno.negative_prompt
+    cuatro = construir_prompt(bible, 4, personajes="foco", orden="accion_primero")
+    assert "group" not in cuatro.prompt  # un solo personaje presente

@@ -354,8 +354,8 @@ Resumen (Fase 0):
 **Descartados (con motivo en `MODELS.md`):**
 - Qwen3.5-4B: es multimodal, ocupa ~5,5 GB en 4 bits y sus GGUF no eran compatibles con Ollama. Solo se puede reevaluar si existe un tag **oficial** de Ollama y `ollama ps` muestra que cabe en 4 GB.
 - Stable Audio Open Small: depende de `stable-audio-tools`, incompatible con el entorno.
-- FLUX: no cabe en 4 GB. SDXL (DreamShaper XL Lightning con UNet fp8 + offload) está en prueba desde el 12 nov (tarea 9.3).
-- XTTS-v2: compite por VRAM y su licencia CPML restringe el uso.
+- FLUX: no cabe en 4 GB. SDXL (DreamShaper XL Lightning con UNet fp8 + offload) está en prueba desde el 12 nov (tarea 9.3). **18 nov:** FLUX.1-schnell entra en el perfil `avanzada` con copia local en fp8 en la RAM y group offloading (tarea 9.14).
+- XTTS-v2: compite por VRAM y su licencia CPML restringe el uso. **18 nov:** Diego aceptó la CPML; va en el perfil `avanzada`, en `.venv-xtts` y en la GPU solo mientras narra (respaldo: Piper).
 
 **Fuentes de los pesos:**
 - Usar solo repositorios y tags oficiales: `stabilityai/*`, `Lykon/dreamshaper-8`, `latent-consistency/*`, `h94/IP-Adapter`, `rhasspy/piper-voices`, `Systran/*` y `laion/*` en Hugging Face, y la librería oficial de Ollama (comprobar el tag exacto con `ollama pull` / `ollama show`).

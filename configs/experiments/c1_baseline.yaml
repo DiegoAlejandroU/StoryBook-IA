@@ -7,6 +7,10 @@ consistency:
   seed_policy: por_escena
 
 image:
+  candidatos: 1              # como en la batería 6.2 (reproducibilidad)
   personajes_prompt: presentes  # como en la batería 6.2 (reproducibilidad de results.csv)
   ip_adapter:
     enabled: false
+
+llm:
+  plano_visual: false        # como en la batería 6.2 (reproducibilidad)

@@ -17,6 +17,9 @@ Uso (PowerShell):
     uv run python scripts/download_models.py --skip-gated         # sin Stable Audio
     uv run python scripts/download_models.py --only voice --voces-extra es_MX-ald-medium  # 3.3
     uv run python scripts/download_models.py --profiles sdxl --only image   # modelo grande (12 nov)
+    uv run python scripts/download_models.py --profiles avanzada --only image voice sound
+        # perfil Avanzada (18 nov): FLUX.1-schnell (~34 GB), XTTS-v2 (~2 GB) y Stable Audio.
+        # FLUX y Stable Audio son gated: aceptar en HF y poner HF_TOKEN en .env.
 """
 
 from __future__ import annotations
@@ -42,6 +45,8 @@ MODALIDADES = ("llm", "image", "voice", "sound", "eval")
 REGISTRO = config.DOCS_DIR / "models_registry.json"
 PIPER_REPO = "rhasspy/piper-voices"
 KOKORO_REPO = "hexgrad/Kokoro-82M"
+# XTTS-v2 (repo oficial de Coqui): lo justo para narrar con las voces incluidas.
+XTTS_PATRONES = ["config.json", "model.pth", "vocab.json", "speakers_xtts.pth", "LICENSE.txt"]
 
 
 @dataclass
@@ -293,6 +298,11 @@ def main() -> int:
     if "voice" in args.only:
         for voz in sorted({p.voice.piper_voice for p in perfiles} | set(args.voces_extra)):
             entradas.append(descargar_piper(voz))
+        for repo in sorted({p.voice.xtts_repo_id for p in perfiles if p.voice.backend == "xtts"}):
+            # Licencia CPML (uso no comercial), aceptada por Diego el 18 nov.
+            entrada = descargar_patrones(repo, "voice", XTTS_PATRONES)
+            entrada.nota = entrada.nota or "CPML (Coqui Public Model License): uso no comercial"
+            entradas.append(entrada)
         if args.with_kokoro:
             patrones = ["config.json", "*.pth", f"voices/{base.voice.kokoro_voice}.pt"]
             entradas.append(descargar_patrones(KOKORO_REPO, "voice", patrones))

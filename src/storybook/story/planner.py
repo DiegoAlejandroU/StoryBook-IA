@@ -26,6 +26,7 @@ from storybook.schemas import (
     NUM_ESCENAS,
     Escena,
     PlanHistoria,
+    PlanoVisual,
     StoryBible,
     StoryRequest,
     derivar_seed,
@@ -37,12 +38,61 @@ from storybook.story.prompts import (
     mensajes_bible,
     mensajes_escena,
     mensajes_plan,
+    mensajes_plano_visual,
+)
+from storybook.story.reparto import (
+    grupos_pedidos,
+    mencionado,
+    mensaje_correccion,
+    problemas_reparto,
+    singular_ingles,
 )
 
 logger = get_logger(__name__)
 
 Estrategia = Literal["una_llamada", "por_etapas"]
 M = TypeVar("M", bound=BaseModel)
+
+
+AVISO_REPARTO = "texto:reparto_no_coincide"
+AVISO_PLANO = "texto:plano_visual_fallido"
+TEMPERATURA_PLANO = 0.3  # describe lo que ya está escrito: poca creatividad
+
+
+def ajustar_plano(plano: PlanoVisual, escena: Escena, plan: PlanHistoria) -> PlanoVisual:
+    """Deja en el plano solo a quien está en la escena.
+
+    El principal debe ser un personaje presente (si no, el protagonista si está, o el primero
+    presente). Un acompañante con id que no está en la escena, o que repite al principal, se
+    quita. Una figura sin nombre (una especie, un objeto) se deja solo si la escena la nombra
+    o es el grupo que pide la idea (18 nov: aparecían gatos en la historia de un dragón).
+    """
+    presentes = list(escena.personajes_presentes)
+    ids = {p.id for p in plan.personajes}
+    # El 4B a veces pone el nombre ("pulpo" por "pulpo", "Don Pulpo" por "don_pulpo").
+    por_nombre = {p.nombre.strip().lower(): p.id for p in plan.personajes}
+
+    def _id(quien: str) -> str:
+        return quien if quien in ids else por_nombre.get(quien.replace("_", " "), quien)
+
+    principal = _id(plano.principal)
+    if principal not in presentes:
+        protagonista = next((p.id for p in plan.personajes if p.rol.value == "protagonista"), None)
+        principal = protagonista if protagonista in presentes else (presentes or [principal])[0]
+    acompanantes = []
+    for figura in plano.acompanantes:
+        figura = figura.model_copy(update={"quien": _id(figura.quien)})
+        if figura.quien == principal or (figura.quien in ids and figura.quien not in presentes):
+            continue
+        if any(f.quien == figura.quien for f in acompanantes):
+            continue
+        if figura.quien not in ids and not (
+            mencionado(figura.quien, escena.texto_narrativo, escena.prompt_imagen)
+            or any(g.especie and g.especie == singular_ingles(figura.quien) for g in plan.grupos)
+        ):
+            continue
+        acompanantes.append(figura)
+    return plano.model_copy(update={"principal": principal, "acompanantes": acompanantes})
 
 
 class PlannerError(Exception):
@@ -134,6 +184,8 @@ class Planificador:
         self.cfg = cfg
         # Llamadas completadas de la última generación (sirve para medir aunque luego falle).
         self.registro: list[RegistroLlamada] = []
+        # Códigos de fallback del texto (p. ej. un reparto que no coincide con la idea).
+        self.avisos: list[str] = []
 
     # ---- Infraestructura -----------------------------------------------------------------
     def _llamar(
@@ -178,6 +230,7 @@ class Planificador:
     ) -> ResultadoPlan:
         elegida: Estrategia = estrategia or self.cfg.estrategia
         self.registro = []
+        self.avisos = []
         logger.info("planificador_inicio", extra=kv(estrategia=elegida, modelo=self.cfg.model))
         if elegida == "una_llamada":
             return self._una_llamada(solicitud)
@@ -194,19 +247,52 @@ class Planificador:
             seed=self.cfg.seed,
         )
         bible.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
+        bible.grupos = grupos_pedidos(solicitud.idea)
         return ResultadoPlan(bible=bible, estrategia="una_llamada", llamadas=[registro])
 
     def planificar(self, solicitud: StoryRequest) -> tuple[PlanHistoria, RegistroLlamada]:
-        """Estrategia (b), paso 1: título, estilo, personajes y resumen de las 5 escenas."""
+        """Estrategia (b), paso 1: título, estilo, personajes y resumen de las 5 escenas.
+
+        Si el reparto no coincide con la idea (animales pedidos y personas en el plan, o una
+        especie nombrada que no aparece; ver ``reparto``), se le pide al LLM una corrección
+        una vez. Si sigue sin coincidir, se usa el plan con menos problemas y queda un aviso.
+        """
+        mensajes = mensajes_plan(solicitud)
         plan, registro = self._llamar(
             "plan",
             PlanHistoria,
-            mensajes_plan(solicitud),
+            mensajes,
             temperature=self.cfg.temperature_narrativa,
             seed=self.cfg.seed,
             reparar=_reparar_plan,
         )
+        problemas = problemas_reparto(solicitud.idea, plan.personajes)
+        if problemas:
+            logger.warning("reparto_no_coincide", extra=kv(problemas=problemas))
+            correccion = [
+                *mensajes,
+                {"role": "assistant", "content": plan.model_dump_json()},
+                {"role": "user", "content": mensaje_correccion(problemas)},
+            ]
+            try:
+                corregido, registro_corr = self._llamar(
+                    "plan_reparto",
+                    PlanHistoria,
+                    correccion,
+                    temperature=self.cfg.temperature_narrativa,
+                    seed=derivar_seed(self.cfg.seed, "reparto", 1),
+                    reparar=_reparar_plan,
+                )
+            except Exception as exc:  # la corrección es una mejora: si falla, sigue el plan
+                logger.warning("reparto_correccion_fallida", extra=kv(error=str(exc)))
+            else:
+                restantes = problemas_reparto(solicitud.idea, corregido.personajes)
+                if len(restantes) < len(problemas):
+                    plan, registro, problemas = corregido, registro_corr, restantes
+            if problemas:
+                self.avisos.append(AVISO_REPARTO)
         plan.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
+        plan.grupos = grupos_pedidos(solicitud.idea)  # "rodeado de gatos": lo pone el código
         return plan, registro
 
     def escribir_escena(
@@ -230,16 +316,41 @@ class Planificador:
             seed=derivar_seed(self.cfg.seed, "escena", numero),
             reparar=_reparar_escena,
         )
-        return alinear_escena_con_plan(escena, plan, numero), registro
+        escena = alinear_escena_con_plan(escena, plan, numero)
+        if self.cfg.plano_visual:
+            plano = self.plano_visual(plan, escena)
+            if plano is not None:
+                escena = escena.model_copy(update={"plano_visual": plano})
+        return escena, registro
+
+    def plano_visual(self, plan: PlanHistoria, escena: Escena) -> PlanoVisual | None:
+        """El ilustrador (17 nov): qué se ve en la imagen de ``escena``, en una llamada aparte.
+
+        Con el texto ya escrito, el LLM elige el personaje principal, hasta 2 acompañantes
+        (y cuántos), la acción, el lugar y el plano; el código arma el prompt de imagen con
+        eso (``prompt_builder``). Si falla, la escena sigue con su ``prompt_imagen``.
+        """
+        try:
+            plano, _ = self._llamar(
+                f"plano_{escena.numero}",
+                PlanoVisual,
+                mensajes_plano_visual(plan, escena),
+                temperature=TEMPERATURA_PLANO,
+                seed=derivar_seed(self.cfg.seed, "plano", escena.numero),
+            )
+        except Exception as exc:  # una mejora: sin ella la escena tiene su prompt_imagen
+            logger.warning("plano_visual_fallido", extra=kv(escena=escena.numero, error=str(exc)))
+            self.avisos.append(f"{AVISO_PLANO}:{escena.numero}")
+            return None
+        return ajustar_plano(plano, escena, plan)
 
     def _por_etapas(self, solicitud: StoryRequest) -> ResultadoPlan:
-        plan, registro_plan = self.planificar(solicitud)
-        llamadas = [registro_plan]
+        plan, _ = self.planificar(solicitud)
         escenas: list[Escena] = []
         for numero in range(1, NUM_ESCENAS + 1):
-            escena, registro = self.escribir_escena(plan, numero, escenas, solicitud.genero)
+            escena, _ = self.escribir_escena(plan, numero, escenas, solicitud.genero)
             escenas.append(escena)
-            llamadas.append(registro)
+        llamadas = list(self.registro)  # incluye la corrección del reparto, si la hubo
         try:
             bible = StoryBible.desde_plan(plan, escenas)
         except ValidationError as exc:

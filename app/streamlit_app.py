@@ -268,12 +268,12 @@ def _estado() -> Any:
 
 
 def _configuracion(perfil: str) -> dict[str, Any]:
-    perfil = perfil if perfil in ui_logica.PERFILES else "rapido"
+    perfil = ui_logica.perfil_valido(perfil)
     return config.load_config(perfil).model_dump(mode="json")
 
 
 def _pipeline(perfil: str) -> Pipeline:
-    cfg = config.load_config(perfil if perfil in ui_logica.PERFILES else "rapido")
+    cfg = config.load_config(ui_logica.perfil_valido(perfil))
     if MODO_SIMULADO:
         from storybook.mock import dependencias_simuladas
 
@@ -671,9 +671,9 @@ def vista_inicial() -> None:
         titulo="",
         genero="",
         tono="",
-        perfil="rapido",
+        perfil=next(iter(ui_logica.PERFILES)),
         paginas={},
-        configuracion=_configuracion("rapido"),
+        configuracion=_configuracion(next(iter(ui_logica.PERFILES))),
     )
     libro(vista, None)
 

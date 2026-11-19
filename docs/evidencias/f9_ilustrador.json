@@ -1,0 +1,288 @@
+{
+  "historia": "20261113_150217_un_perro_rodeado_de_gatos_en_u",
+  "ilustrador": {
+    "grupos": [
+      "surrounded by many cats"
+    ],
+    "llamadas": [
+      {
+        "etapa": "plano_1",
+        "intentos": 1,
+        "segundos": 12.024,
+        "prompt_tokens": 586,
+        "output_tokens": 83,
+        "errores_por_intento": []
+      },
+      {
+        "etapa": "plano_2",
+        "intentos": 1,
+        "segundos": 2.164,
+        "prompt_tokens": 616,
+        "output_tokens": 104,
+        "errores_por_intento": []
+      },
+      {
+        "etapa": "plano_3",
+        "intentos": 1,
+        "segundos": 2.278,
+        "prompt_tokens": 606,
+        "output_tokens": 111,
+        "errores_por_intento": []
+      },
+      {
+        "etapa": "plano_4",
+        "intentos": 1,
+        "segundos": 2.163,
+        "prompt_tokens": 612,
+        "output_tokens": 104,
+        "errores_por_intento": []
+      },
+      {
+        "etapa": "plano_5",
+        "intentos": 1,
+        "segundos": 2.196,
+        "prompt_tokens": 606,
+        "output_tokens": 105,
+        "errores_por_intento": []
+      }
+    ],
+    "avisos": [],
+    "planos": {
+      "1": {
+        "principal": "dog_1",
+        "acompanantes": [
+          {
+            "quien": "cat",
+            "cantidad": "many"
+          }
+        ],
+        "accion": "walks slowly on cold stone with trembling paws",
+        "lugar": "narrow dark streets of an old city at dusk",
+        "plano": "medium shot"
+      },
+      "2": {
+        "principal": "dog_1",
+        "acompanantes": [
+          {
+            "quien": "cat_1",
+            "cantidad": "one"
+          },
+          {
+            "quien": "cat",
+            "cantidad": "many"
+          }
+        ],
+        "accion": "pauses, ears gently brushed by cold wind",
+        "lugar": "narrow street beneath old building rooftops at dusk",
+        "plano": "medium shot"
+      },
+      "3": {
+        "principal": "dog_1",
+        "acompanantes": [
+          {
+            "quien": "cat_1",
+            "cantidad": "many"
+          },
+          {
+            "quien": "cat_2",
+            "cantidad": "one"
+          }
+        ],
+        "accion": "stares at the column as a whisper flows through the cats",
+        "lugar": "a rooftop at twilight with stone walls and wind-blown shadows",
+        "plano": "wide shot"
+      },
+      "4": {
+        "principal": "dog_1",
+        "acompanantes": [
+          {
+            "quien": "cat_1",
+            "cantidad": "many"
+          },
+          {
+            "quien": "cat_2",
+            "cantidad": "one"
+          }
+        ],
+        "accion": "stares at glowing cat eyes in the street",
+        "lugar": "cobbled alleyway surrounded by ancient buildings at twilight",
+        "plano": "wide shot"
+      },
+      "5": {
+        "principal": "dog_1",
+        "acompanantes": [
+          {
+            "quien": "cat_1",
+            "cantidad": "one"
+          },
+          {
+            "quien": "cat_2",
+            "cantidad": "one"
+          }
+        ],
+        "accion": "looks at Mira and Zorin with glowing eyes",
+        "lugar": "shadowed rooftop at twilight in a ancient city",
+        "plano": "medium shot"
+      }
+    }
+  },
+  "resultados": [
+    {
+      "perfil": "original",
+      "clip_img_img_media": 0.7438,
+      "clip_img_img_min": 0.6124,
+      "clip_img_txt_media": 0.3485
+    },
+    {
+      "perfil": "sdxl",
+      "total_s": 159.67,
+      "carga_s": 20.771,
+      "sheet_s": 11.94,
+      "por_imagen_mediana_s": 10.99,
+      "vram_torch_pico_mb": 3475.8,
+      "vram_torch_reservada_mb": 3780.0,
+      "vram_gpu_pico_mb": 4004.5,
+      "respaldos": 0,
+      "fallbacks": [],
+      "errores": [],
+      "escenas": [
+        {
+          "escena": 1,
+          "foco": "dog_1",
+          "ip_escala": 0.0,
+          "segundos": 23.668,
+          "prompt": "medium shot, a dog surrounded by many cats, walks slowly on cold stone with trembling paws, narrow dark streets of an old city at dusk, dog age 3 years, brown fur, short coat, digital painting with ink texture, deep blues, greys, metallic silver, dusk, shadows, cold light",
+          "verificar": [
+            "a dog",
+            "many cats"
+          ],
+          "versiones": [
+            {
+              "seed": 1131434652,
+              "puntaje": 0.2068,
+              "elegida": false
+            },
+            {
+              "seed": 660466404,
+              "puntaje": 0.2485,
+              "elegida": true
+            }
+          ]
+        },
+        {
+          "escena": 2,
+          "foco": "dog_1",
+          "ip_escala": 0.0,
+          "segundos": 21.973,
+          "prompt": "medium shot, a dog surrounded by many cats, with a cat, pauses, ears gently brushed by cold wind, narrow street beneath old building rooftops at dusk, dog age 3 years, brown fur, short coat, digital painting with ink texture, deep blues, greys, metallic silver, dusk, shadows, cold light",
+          "verificar": [
+            "a dog",
+            "a cat",
+            "many cats"
+          ],
+          "versiones": [
+            {
+              "seed": 1131434652,
+              "puntaje": 0.2059,
+              "elegida": false
+            },
+            {
+              "seed": 660466404,
+              "puntaje": 0.2261,
+              "elegida": true
+            }
+          ]
+        },
+        {
+          "escena": 3,
+          "foco": "dog_1",
+          "ip_escala": 0.0,
+          "segundos": 22.276,
+          "prompt": "wide shot, a dog surrounded by many cats, with a cat, stares at the column as a whisper flows through the cats, a rooftop at twilight with stone walls and wind-blown shadows, dog age 3 years, brown fur, short coat, digital painting with ink texture, deep blues, greys, metallic silver, dusk, shadows, cold light",
+          "verificar": [
+            "a dog",
+            "a cat",
+            "many cats"
+          ],
+          "versiones": [
+            {
+              "seed": 1131434652,
+              "puntaje": 0.1928,
+              "elegida": true
+            },
+            {
+              "seed": 660466404,
+              "puntaje": 0.192,
+              "elegida": false
+            }
+          ]
+        },
+        {
+          "escena": 4,
+          "foco": "dog_1",
+          "ip_escala": 0.0,
+          "segundos": 22.125,
+          "prompt": "wide shot, a dog surrounded by many cats, with a cat, stares at glowing cat eyes in the street, cobbled alleyway surrounded by ancient buildings at twilight, dog age 3 years, brown fur, short coat, digital painting with ink texture, deep blues, greys, metallic silver, dusk, shadows, cold light",
+          "verificar": [
+            "a dog",
+            "a cat",
+            "many cats"
+          ],
+          "versiones": [
+            {
+              "seed": 1131434652,
+              "puntaje": 0.2137,
+              "elegida": false
+            },
+            {
+              "seed": 660466404,
+              "puntaje": 0.2353,
+              "elegida": true
+            }
+          ]
+        },
+        {
+          "escena": 5,
+          "foco": "dog_1",
+          "ip_escala": 0.0,
+          "segundos": 22.102,
+          "prompt": "medium shot, a dog surrounded by many cats, with two cats, looks at a cat and a cat with glowing eyes, shadowed rooftop at twilight in a ancient city, dog age 3 years, brown fur, short coat, digital painting with ink texture, deep blues, greys, metallic silver, dusk, shadows, cold light",
+          "verificar": [
+            "a dog",
+            "two cats",
+            "many cats"
+          ],
+          "versiones": [
+            {
+              "seed": 1131434652,
+              "puntaje": 0.2118,
+              "elegida": true
+            },
+            {
+              "seed": 660466404,
+              "puntaje": 0.1945,
+              "elegida": false
+            }
+          ]
+        }
+      ],
+      "backend": {
+        "backend": "diffusers",
+        "dispositivo": "cuda",
+        "dtype": "float16",
+        "variante": "fp16",
+        "torch": "2.15.0+cu132",
+        "diffusers": "0.42.1",
+        "modelo_revision": "561086c22aba3925b1e8803a73857f061635c7c3",
+        "lcm_lora_revision": null,
+        "arquitectura": "sdxl",
+        "vae_revision": "207b116dae70ace3637169f1ddd2434b91b3a8cd",
+        "unet_fp8": true,
+        "cpu_offload": true
+      },
+      "clip_img_img_media": 0.7681,
+      "clip_img_img_min": 0.6754,
+      "clip_img_txt_media": 0.378
+    }
+  ]
+}

@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from itertools import combinations
 from pathlib import Path
 from statistics import mean
@@ -43,6 +44,22 @@ class ClipScorer:
         with torch.no_grad():
             emb = self.modelo.encode_text(self.tokenizer(textos))
         return emb / emb.norm(dim=-1, keepdim=True)
+
+    def similitudes(
+        self, imagenes: Sequence[Image.Image | Path], textos: Sequence[str]
+    ) -> list[list[float]]:
+        """Coseno de cada imagen con cada texto (filas: imágenes; columnas: textos).
+
+        Lo usa la elección de la mejor versión de una ilustración (``image.seleccion``).
+        """
+        torch = self._torch
+        pil = [i if isinstance(i, Image.Image) else Image.open(i) for i in imagenes]
+        lote = torch.stack([self.preprocess(i.convert("RGB")) for i in pil])
+        with torch.no_grad():
+            emb = self.modelo.encode_image(lote)
+        emb = emb / emb.norm(dim=-1, keepdim=True)
+        sims = emb @ self._embed_textos(list(textos)).T
+        return [[round(float(x), 4) for x in fila] for fila in sims.tolist()]
 
     def imagen_texto(self, imagen: Path, texto: str) -> float:
         sim = (self._embed_imagenes([imagen]) @ self._embed_textos([texto]).T).item()

@@ -117,8 +117,10 @@ class EscritorPorEscenas:
     def _con_reintento(self, etapa: str, llamar: Any) -> tuple[Any, RegistroLlamada]:
         if self._planificador is None:
             raise EscritorError("El escritor no está abierto (usar con 'with')")
+        planificador = self._planificador
+        antes = len(planificador.registro)
         try:
-            objeto, registro = llamar(self._planificador)
+            objeto, registro = llamar(planificador)
         except LLMModelNotFoundError as exc:
             raise EscritorError(str(exc)) from exc
         except LLMConnectionError as exc:
@@ -132,10 +134,15 @@ class EscritorPorEscenas:
             # Ollama elige cuántas poner en GPU.
             logger.warning("llm_num_gpu_automatico", extra=kv(etapa=etapa, error=str(exc)))
             self.cfg = self.cfg.model_copy(update={"num_gpu": None})
-            self._planificador = Planificador(self._cliente, self.cfg)
+            self._planificador = planificador = Planificador(self._cliente, self.cfg)
             self.fallbacks.append(FALLBACK_NUM_GPU_AUTO)
-            objeto, registro = llamar(self._planificador)
-        self.llamadas.append(registro)
+            antes = 0
+            objeto, registro = llamar(planificador)
+        # Todas las llamadas de este paso (el plan puede llevar una corrección del reparto).
+        self.llamadas.extend(planificador.registro[antes:])
+        for aviso in planificador.avisos:
+            if aviso not in self.fallbacks:
+                self.fallbacks.append(aviso)
         fraccion = getattr(self._cliente, "gpu_fraction", None)
         if callable(fraccion):
             try:

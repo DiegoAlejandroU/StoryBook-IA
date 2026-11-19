@@ -99,7 +99,9 @@ def test_cada_escena_se_avisa_apenas_esta_lista(cfg: config.AppConfig, tmp_path:
     assert manifest["segundos"]["primera_escena"] == manifest["escenas_listas"][0]["lista_en_s"]
     assert manifest["etapas"]["texto"]["estrategia"] == "por_escenas"
     assert manifest["etapas"]["texto"]["auditoria"] is None
-    assert len(manifest["etapas"]["texto"]["llamadas"]) == 6  # plan + 5 escenas
+    etapas_texto = [r["etapa"] for r in manifest["etapas"]["texto"]["llamadas"]]
+    # plan + 5 escenas, cada una con su plano para el ilustrador (17 nov)
+    assert etapas_texto == ["plan"] + [f"{e}_{n}" for n in range(1, 6) for e in ("escena", "plano")]
     assert len(manifest["etapas"]["imagen"]["imagenes"]) == 5
     assert len(manifest["etapas"]["voz"]["narraciones"]) == 5
     assert len(manifest["etapas"]["sonido"]["sonidos"]) == 5
@@ -209,6 +211,14 @@ def test_escritor_reintenta_con_capas_automaticas(bible_dict: dict[str, Any]) ->
     plan_d, escenas = _plan_y_escenas(bible_dict)
     llm = FakeLLM().encolar("PlanHistoria", plan_d)
     llm.encolar("Escena", LLMResponseError("cudaMalloc failed: out of memory"), escenas[0])
+    llm.encolar(
+        "PlanoVisual",
+        {
+            "principal": escenas[0]["personajes_presentes"][0],
+            "accion": "looks around",
+            "lugar": "a hill",
+        },
+    )
     cfg = config.load_config("rapido").llm
     assert cfg.num_gpu == 99
     from storybook.schemas import validar_entrada
@@ -219,10 +229,10 @@ def test_escritor_reintenta_con_capas_automaticas(bible_dict: dict[str, Any]) ->
         escena = escritor.escena(plan, 1, [], solicitud.genero)
     assert escena.numero == 1
     num_gpu = [c["opciones_extra"].get("num_gpu") for c in llm.llamadas]
-    assert num_gpu == [99, 99, None]
+    assert num_gpu == [99, 99, None, None]  # el plano del ilustrador sigue en automático
     info = escritor.info()
     assert info["fallbacks"] == [FALLBACK_NUM_GPU_AUTO] and info["num_gpu"] is None
-    assert [r["etapa"] for r in info["llamadas"]] == ["plan", "escena_1"]
+    assert [r["etapa"] for r in info["llamadas"]] == ["plan", "escena_1", "plano_1"]
     assert llm.descargados  # al cerrar se libera la VRAM
 
 
@@ -343,3 +353,37 @@ def test_voz_simulada_y_mock_por_escenas_con_demora(tmp_path: Path) -> None:
     deps = dependencias_simuladas(0.01)
     assert isinstance(deps.llm, LLMSimulado) and deps.llm.demora_s == 0.01
     assert isinstance(deps.backend_voz, VozSimulada)
+
+
+def test_la_primera_escena_no_espera_la_character_sheet(
+    cfg: config.AppConfig, tmp_path: Path
+) -> None:
+    """13 nov: con SDXL la primera escena tardó 122 s. El modelo se precarga mientras el LLM
+    escribe y la referencia del protagonista se prepara después de la primera ilustración."""
+    imagen = ContarCargas()
+    eventos: list[str] = []
+    original = imagen.preparar_ip_adapter
+
+    def preparar(*args: Any, **kwargs: Any) -> Any:
+        eventos.append("referencia")
+        return original(*args, **kwargs)
+
+    imagen.preparar_ip_adapter = preparar  # type: ignore[method-assign]
+    historia = _pipeline(cfg, tmp_path, backend_imagen=imagen).generar_por_escenas(
+        IDEA, "misterio", al_estar_lista=lambda e: eventos.append(f"escena_{e.numero}")
+    )
+    assert eventos[:3] == ["escena_1", "referencia", "escena_2"]
+    imagenes = historia.manifest["etapas"]["imagen"]["imagenes"]
+    assert imagenes[0]["ip_adapter"] is False and imagenes[1]["ip_adapter"] is True
+    assert len(imagen.cargas) == 1
+
+
+def test_si_falla_antes_de_ilustrar_se_suelta_el_modelo_precargado(
+    cfg: config.AppConfig, tmp_path: Path
+) -> None:
+    imagen = ContarCargas()
+    with pytest.raises(PipelineError):
+        _pipeline(
+            cfg, tmp_path, llm=LLMQueFalla(falla_en=1), backend_imagen=imagen
+        ).generar_por_escenas(IDEA, "misterio")
+    assert len(imagen.cargas) == 1 and imagen.liberado >= 1

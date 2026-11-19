@@ -35,6 +35,10 @@ class FakeScorer:
         assert texto  # siempre hay un prompt contra el cual medir
         return 0.31
 
+    def similitudes(self, imagenes: list[Any], textos: list[str]) -> list[list[float]]:
+        # La segunda versión de cada escena "se parece más" a lo pedido.
+        return [[0.2 + 0.05 * i] * len(textos) for i in range(len(imagenes))]
+
 
 def _historia_real(raiz: Path) -> Path:
     pipeline = Pipeline(config.load_config("rapido"), dependencias_simuladas(), raiz)
@@ -147,3 +151,41 @@ def test_tras_cargar_ip_adapter_el_unet_vuelve_a_fp8() -> None:
     unet = type("Unet", (), {"modules": lambda self: iter(capas)})()
     assert restaurar_almacenamiento_fp8(unet) == 2
     assert [c.dtype for c in capas] == ["float8_e4m3fn", "float8_e4m3fn", "float16"]
+
+
+def test_con_el_ilustrador_cada_escena_tiene_su_plano(tmp_path: Path, f7: ModuleType) -> None:
+    """17 nov: --ilustrador pide el plano visual de cada escena y elige entre 2 versiones."""
+    from storybook.storage import cargar_bible
+    from tests.fake_llm import FakeLLM
+
+    historia = _historia_real(tmp_path / "outputs")
+    bible = cargar_bible(historia)
+    planos = [
+        {
+            "principal": e.personajes_presentes[0],
+            # 18 nov: solo figuras que la escena nombra (el faro aparece en todas).
+            "acompanantes": [{"quien": "lighthouses", "cantidad": "one"}],
+            "accion": "looks at the dark lighthouse",
+            "lugar": "a rocky coast at night",
+            "plano": "wide shot",
+        }
+        for e in bible.escenas
+    ]
+    planos[2] = RuntimeError("JSON inválido")  # una escena sin plano: sigue con su prompt
+    llm = FakeLLM().encolar("PlanoVisual", *planos)
+    codigo = f7.main(
+        ["--historia", str(historia), "--perfiles", "sdxl", "--ilustrador", "--nombre", "f9"],
+        fabrica_backend=FakeBackend,
+        cliente_llm=llm,
+    )
+    assert codigo == 0 and llm.descargados  # el LLM sale de la VRAM antes de SDXL
+    datos = json.loads((tmp_path / "evidencias" / "f9.json").read_text(encoding="utf-8"))
+    assert datos["ilustrador"]["planos"]["3"] is None
+    assert datos["ilustrador"]["avisos"] == ["texto:plano_visual_fallido:3"]
+    sdxl = datos["resultados"][1]
+    uno = sdxl["escenas"][0]
+    assert uno["prompt"].startswith("wide shot, ")
+    assert "with a lighthouse" in uno["prompt"] and "a lighthouse" in uno["verificar"]
+    assert [v["elegida"] for v in uno["versiones"]] == [False, True]
+    md = (tmp_path / "evidencias" / "f9.md").read_text(encoding="utf-8")
+    assert "**ilustrador**" in md and "lighthouses (one)" in md and "**0.25**" in md

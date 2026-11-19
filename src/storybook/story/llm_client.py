@@ -364,8 +364,12 @@ class OllamaClient:
                 resultado=resultado,
                 errores_por_intento=errores_por_intento,
             )
+        # 18 nov: "Escena: salida inválida tras 4 intentos" no decía por qué; el motivo queda
+        # en el manifest.
+        ultimos = "; ".join((errores_por_intento or [[]])[-1][:3])
         raise LLMValidationError(
-            f"{modelo_salida.__name__}: salida inválida tras {max_reintentos + 1} intentos",
+            f"{modelo_salida.__name__}: salida inválida tras {max_reintentos + 1} intentos"
+            + (f" (último: {ultimos[:300]})" if ultimos else ""),
             errores_por_intento,
             ultimo_contenido,
         )

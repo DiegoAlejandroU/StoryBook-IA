@@ -151,6 +151,11 @@ class LLMConfig(_Strict):
     auditar: bool = Field(
         default=True, description="Segunda pasada del LLM que detecta contradicciones."
     )
+    plano_visual: bool = Field(
+        default=False,
+        description="17 nov: llamada del ilustrador por escena (quién se ve, cuántos, qué "
+        "hace y dónde); el prompt de imagen se arma con eso (modo foco).",
+    )
     max_rondas_auditor: int = Field(
         default=1, ge=0, le=5, description="Rondas de auditoría y regeneración (0 = solo auditar)."
     )
@@ -184,7 +189,9 @@ class ImageConfig(_Strict):
     model_id: str
     # sd15: Stable Diffusion 1.5 (DreamShaper 8). sdxl: SDXL (DreamShaper XL Lightning), más
     # grande; en 4 GB va con el UNet en fp8 y los componentes en la GPU solo mientras se usan.
-    arquitectura: Literal["sd15", "sdxl"] = "sd15"
+    # flux (18 nov, perfil Avanzada): FLUX.1-schnell (12B). No cabe en 4 GB ni en fp16: los
+    # pesos quedan en la RAM en fp8 y pasan a la GPU bloque a bloque (``offload_grupos``).
+    arquitectura: Literal["sd15", "sdxl", "flux"] = "sd15"
     vae_id: str | None = None  # SDXL: VAE fp16 corregido (madebyollin/sdxl-vae-fp16-fix)
     unet_fp8: bool = False  # pesos del UNet guardados en fp8 y calculados en fp16
     sheet_size: int = 512  # lado de la character sheet (512 en SD 1.5; 832 en SDXL)
@@ -203,6 +210,17 @@ class ImageConfig(_Strict):
     # "foco" (12 nov): descriptor completo solo del personaje foco de cada escena e
     # IP-Adapter ajustado por escena. "presentes": como en la batería 6.2.
     personajes_prompt: Literal["presentes", "foco"] = "foco"
+    # 17 nov: versiones de cada ilustración (seeds distintas); se queda la que CLIP ve más
+    # cerca de lo que pide la escena (todos los personajes presentes). 1 = sin elegir.
+    candidatos: int = Field(default=1, ge=1, le=4)
+    # FLUX: tokens del encoder T5 (el prompt puede ser más largo que los 77 de CLIP) y
+    # carpeta de models/ con la copia en fp8 que crea scripts/convertir_flux_fp8.py.
+    max_sequence_length: int = Field(default=256, ge=77, le=512)
+    fp8_dir: str | None = None
+    # Pesos en la RAM y bloques a la GPU solo mientras se calculan (FLUX); "stream" adelanta
+    # la copia del bloque siguiente (más rápido, pero usa más RAM).
+    offload_grupos: bool = False
+    offload_stream: bool = False
 
     @field_validator("width", "height")
     @classmethod
@@ -211,15 +229,30 @@ class ImageConfig(_Strict):
             raise ValueError("width/height deben ser múltiplos de 8 entre 256 y 1536")
         return valor
 
+    @model_validator(mode="after")
+    def _flux_multiplo_de_16(self) -> ImageConfig:
+        # FLUX agrupa los latentes de 2 en 2 (el VAE ya reduce 8 veces).
+        if self.arquitectura == "flux" and (self.width % 16 or self.height % 16):
+            raise ValueError("con FLUX, width y height deben ser múltiplos de 16")
+        return self
+
 
 class VoiceConfig(_Strict):
-    backend: Literal["piper", "kokoro"] = "piper"
+    # xtts (18 nov, perfil Avanzada): XTTS-v2 en su propio entorno (.venv-xtts, con
+    # torchaudio, que no existe para la versión de torch de la app). Si no está, Piper.
+    backend: Literal["piper", "kokoro", "xtts"] = "piper"
     piper_voice: str = "es_MX-claude-high"
     length_scale: float = Field(default=1.0, gt=0.3, lt=3.0)
     noise_scale: float = Field(default=0.667, ge=0.0, le=1.5)
     noise_w_scale: float = Field(default=0.8, ge=0.0, le=1.5)
     kokoro_voice: str = "ef_dora"
     kokoro_lang_code: str = "e"
+    xtts_repo_id: str = "coqui/XTTS-v2"  # repo oficial; licencia CPML (uso no comercial)
+    xtts_speaker: str = "Ana Florence"  # voz incluida en el modelo (speakers_xtts.pth)
+    xtts_idioma: str = "es"
+    xtts_venv: str = ".venv-xtts"
+    xtts_gpu: bool = True
+    xtts_timeout_s: float = Field(default=300.0, gt=10.0)
 
 
 SoundBackend = Literal["sa3", "sao", "audioldm", "library", "procedural"]

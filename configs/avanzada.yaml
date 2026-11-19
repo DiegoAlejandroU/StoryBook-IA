@@ -1,0 +1,39 @@
+# Perfil "Avanzada" del resumen de modelos entregado en clase (18 nov): Qwen3-4B,
+# FLUX.1-schnell, XTTS-v2 y Stable Audio Open. Todos con licencia aceptada por Diego en
+# Hugging Face (FLUX y Stable Audio son gated; XTTS-v2 usa la CPML, solo uso no comercial).
+#
+# En la RTX 3050 de 4 GB nada de esto cabe entero en la GPU:
+#   * FLUX.1-schnell (12B): transformer y T5 en fp8 en la RAM (copia local que crea
+#     scripts/convertir_flux_fp8.py desde los pesos oficiales en bf16) y bloque a bloque a la
+#     GPU. Sin IP-Adapter (no hay uno oficial para FLUX) ni negative prompt (schnell no usa
+#     CFG): la consistencia viene del descriptor, que FLUX sigue mucho mejor que SD.
+#   * XTTS-v2: en su propio entorno (.venv-xtts) y en la GPU solo mientras narra.
+#   * Stable Audio Open 1.0: primero en la cadena de sonido; si no está, AudioLDM.
+# Tiempos: medir con scripts/f10_avanzada_prueba.py antes de usarlo en la sustentación.
+extends: rapido
+
+image:
+  model_id: black-forest-labs/FLUX.1-schnell   # Apache-2.0 (gated: aceptar en HF)
+  arquitectura: flux
+  fp8_dir: flux-schnell-fp8                    # models/flux-schnell-fp8 (convertido en local)
+  offload_grupos: true
+  offload_stream: false
+  scheduler: dpmpp                             # no se usa: FLUX trae su propio scheduler
+  steps: 4                                     # schnell: 1-4 pasos
+  guidance_scale: 0.0                          # schnell está destilado sin CFG
+  max_sequence_length: 256
+  width: 1056                                  # 3:2, ~0,74 MP (múltiplos de 16)
+  height: 704
+  candidatos: 1                                # FLUX sigue el prompt; 2 versiones duplican el tiempo
+  negative_prompt_base: ""
+  vae_slicing: true
+  ip_adapter:
+    enabled: false
+
+voice:
+  backend: xtts
+  xtts_speaker: Ana Florence
+
+sound:
+  backends: [sao, sa3, audioldm, library, procedural]
+  sao_steps: 30

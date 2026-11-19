@@ -21,8 +21,10 @@ usan un backend falso.
 from __future__ import annotations
 
 from collections.abc import Sequence
-from dataclasses import dataclass, field
+from concurrent.futures import Future, ThreadPoolExecutor
+from dataclasses import dataclass, field, replace
 from pathlib import Path
+from threading import Lock
 from typing import Any, Final, Protocol
 
 from PIL import Image, ImageDraw
@@ -36,10 +38,17 @@ from storybook.image.consistency import (
     construir_prompt_sheet,
 )
 from storybook.image.prompt_builder import (
+    TOKENS_CLIP_UTILES,
     ContadorTokens,
     PromptImagen,
     construir_prompt,
     contador_desde_tokenizer,
+)
+from storybook.image.seleccion import (
+    Eleccion,
+    EvaluadorCandidatos,
+    elegir,
+    seeds_candidatos,
 )
 from storybook.logging_utils import get_logger, kv
 from storybook.schemas import StoryBible, estimar_tokens_clip
@@ -48,6 +57,8 @@ logger = get_logger(__name__)
 
 FALLBACK_SIN_IP_ADAPTER: Final = "imagen:sin_ip_adapter"
 FALLBACK_RESPALDO: Final = "imagen:respaldo"
+FALLBACK_SIN_ELECCION: Final = "imagen:sin_eleccion_clip"
+CARPETA_VERSIONES: Final = "versiones"  # las versiones descartadas de cada escena
 COLOR_RESPALDO: Final = (38, 44, 58)
 COLOR_TEXTO_RESPALDO: Final = (220, 220, 230)
 
@@ -111,12 +122,18 @@ class ResultadoImagen:
     intentos: int = 1
     error: str | None = None
     ip_escala: float = 0.0
+    # Seed de la escena en la Bible; la elegida (``seed``) puede ser la de otra versión.
+    seed_escena: int | None = None
+    # Con varias versiones: seed, puntaje CLIP y cuál quedó (17 nov).
+    versiones: list[dict[str, Any]] = field(default_factory=list)
 
     def a_dict(self) -> dict[str, Any]:
         return {
             "escena": self.escena,
             "archivo": self.ruta.name,
             "seed": self.seed,
+            "seed_escena": self.seed_escena if self.seed_escena is not None else self.seed,
+            "versiones": self.versiones,
             "ip_adapter": self.ip_adapter,
             "ip_escala": self.ip_escala,
             "segundos": self.segundos,
@@ -200,10 +217,14 @@ class GeneradorImagenes:
         cfg: ImageConfig,
         consistencia: ConsistencyConfig,
         backend: BackendImagen | None = None,
+        evaluador: EvaluadorCandidatos | None = None,
     ) -> None:
         self.cfg = cfg
         self.consistencia = consistencia
-        self.backend: BackendImagen = backend or DiffusersBackend()
+        self.backend: BackendImagen = backend or backend_para(cfg)
+        self._evaluador = evaluador
+        self._evaluador_error: str | None = None
+        self._candado_evaluador = Lock()
 
     # -- utilidades ---------------------------------------------------------------------
     def asegurar_seeds(self, bible: StoryBible) -> StoryBible:
@@ -224,6 +245,13 @@ class GeneradorImagenes:
     def usar_ip_adapter(self) -> bool:
         return self.cfg.ip_adapter.enabled and self.usar_bible
 
+    @property
+    def max_tokens_prompt(self) -> int:
+        """77 de CLIP (menos los especiales) o, con FLUX, los del encoder T5."""
+        if self.cfg.arquitectura == "flux":
+            return self.cfg.max_sequence_length - 2
+        return TOKENS_CLIP_UTILES
+
     def parametros(self) -> dict[str, Any]:
         c = self.cfg
         return {
@@ -242,6 +270,7 @@ class GeneradorImagenes:
             "arquitectura": c.arquitectura,
             "seed_policy": self.consistencia.seed_policy,
             "seed_fija": self.consistencia.fixed_seed,
+            "versiones_por_escena": c.candidatos,
         }
 
     def _llamar(
@@ -300,7 +329,13 @@ class GeneradorImagenes:
         return etapa
 
     def sesion(
-        self, bible: StoryBible, carpeta: Path, *, reutilizar_sheet: bool = True
+        self,
+        bible: StoryBible,
+        carpeta: Path,
+        *,
+        reutilizar_sheet: bool = True,
+        precarga: Future[tuple[PipelineImagen, StageMetrics]] | None = None,
+        diferir_referencia: bool = False,
     ) -> SesionImagen:
         """Modelo cargado una vez para ilustrar escena por escena (``with``).
 
@@ -308,8 +343,39 @@ class GeneradorImagenes:
         abierta mientras el LLM escribe la siguiente (con ``cpu_offload`` la VRAM queda libre
         entre llamadas). ``bible`` debe traer al menos el protagonista y el estilo: con ellos
         se hace la character sheet.
+
+        Para que la primera escena salga antes (generación por escenas): ``precarga`` es el
+        modelo que ya se está cargando en otro hilo (``precargar``), y con
+        ``diferir_referencia`` la character sheet y el IP-Adapter se preparan después de la
+        primera ilustración, mientras el usuario ya la está viendo.
         """
-        return SesionImagen(self, self.asegurar_seeds(bible), carpeta, reutilizar_sheet)
+        return SesionImagen(
+            self,
+            self.asegurar_seeds(bible),
+            carpeta,
+            reutilizar_sheet,
+            precarga=precarga,
+            diferir_referencia=diferir_referencia,
+        )
+
+    def precargar(self) -> Future[tuple[PipelineImagen, StageMetrics]]:
+        """Carga el modelo en un hilo aparte y devuelve el ``Future`` (para ``sesion``).
+
+        Con ``cpu_offload`` la carga es de disco a RAM y no ocupa la GPU, así que puede ir
+        mientras el LLM escribe el plan (13 nov: ~13 s menos hasta la primera escena con SDXL).
+        """
+
+        def cargar() -> tuple[PipelineImagen, StageMetrics]:
+            with track_stage("imagen_carga") as metrica:
+                pipe = self.backend.cargar(self.cfg)
+            self.evaluador()  # OpenCLIP (CPU) también, si se eligen versiones
+            return pipe, metrica
+
+        ejecutor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="storybook-imagen")
+        try:
+            return ejecutor.submit(cargar)
+        finally:
+            ejecutor.shutdown(wait=False)
 
     def _contador(self, pipe: PipelineImagen) -> ContadorTokens:
         tokenizer = getattr(pipe, "tokenizer", None)
@@ -382,6 +448,105 @@ class GeneradorImagenes:
             ajustar(escala)
         return escala
 
+    def _una_imagen(
+        self,
+        pipe: PipelineImagen,
+        prompt: PromptImagen,
+        seed: int,
+        ip_embeds: Any,
+        escala_ip: float,
+        numero: int,
+        version: int,
+    ) -> tuple[Image.Image | None, int, str | None, StageMetrics | None]:
+        """Una versión de la escena: (imagen, intentos, error, métrica). Un OOM se reintenta."""
+        nombre = f"imagen_escena_{numero}" + (f"_v{version}" if version > 1 else "")
+        error: str | None = None
+        for intento in (1, 2):
+            try:
+                with track_stage(nombre) as metrica:
+                    imagen = self._llamar(
+                        pipe,
+                        prompt=prompt.prompt,
+                        negativo=prompt.negative_prompt,
+                        seed=seed,
+                        ancho=self.cfg.width,
+                        alto=self.cfg.height,
+                        ip_embeds=ip_embeds,
+                    )
+                    metrica.extra.update(
+                        seed=seed,
+                        tokens=prompt.tokens,
+                        intento=intento,
+                        version=version,
+                        ip=ip_embeds is not None,
+                        ip_escala=escala_ip,
+                        foco=prompt.foco,
+                    )
+                return imagen, intento, None, metrica
+            except Exception as exc:
+                error = f"{type(exc).__name__}: {exc}"
+                oom = self.backend.es_oom(exc)
+                logger.error(
+                    "imagen_escena_fallo",
+                    extra=kv(escena=numero, version=version, intento=intento, oom=oom, error=error),
+                )
+                if not oom:
+                    return None, intento, error, None
+                free_cuda_memory()
+        return None, 2, error, None
+
+    def evaluador(self) -> EvaluadorCandidatos | None:
+        """OpenCLIP en CPU para elegir entre versiones (se carga una vez, al primer uso).
+
+        ``None`` si hay una sola versión por escena o si no se pudo cargar: entonces se usa
+        la primera versión (la de la seed de la escena), como antes del 17 nov.
+        """
+        if self.cfg.candidatos < 2:
+            return None
+        with self._candado_evaluador:
+            if self._evaluador is None and self._evaluador_error is None:
+                try:
+                    from storybook.evaluation.clip_metrics import ClipScorer
+
+                    with track_stage("imagen_carga_clip") as metrica:
+                        self._evaluador = ClipScorer()
+                    logger.info("clip_seleccion_listo", extra=kv(segundos=metrica.segundos))
+                except Exception as exc:
+                    self._evaluador_error = f"{type(exc).__name__}: {exc}"
+                    logger.warning("clip_seleccion_fallo", extra=kv(error=self._evaluador_error))
+            return self._evaluador
+
+    def _elegir(
+        self, prompt: PromptImagen, imagenes: list[Image.Image], numero: int, etapa: EtapaImagen
+    ) -> Eleccion | None:
+        evaluador = self.evaluador()
+        if evaluador is None:
+            aviso = f"{FALLBACK_SIN_ELECCION}:{numero}"
+            if aviso not in etapa.fallbacks:
+                etapa.fallbacks.append(aviso)
+            return None
+        # Sin figuras que verificar (línea base sin Bible), se compara con el prompt entero.
+        verificar = prompt.verificar or [prompt.prompt]
+        try:
+            with track_stage(f"imagen_eleccion_{numero}") as metrica:
+                eleccion = elegir(evaluador, imagenes, verificar, prompt.evitar)
+                metrica.extra.update(
+                    versiones=len(imagenes),
+                    elegida=eleccion.elegida + 1,
+                    puntajes=[d["puntaje"] for d in eleccion.detalle],
+                )
+        except Exception as exc:  # una mejora: sin ella queda la primera versión
+            logger.warning("clip_eleccion_fallo", extra=kv(escena=numero, error=str(exc)))
+            etapa.fallbacks.append(f"{FALLBACK_SIN_ELECCION}:{numero}")
+            return None
+        etapa.metricas.append(metrica)
+        eleccion = replace(eleccion, segundos=metrica.segundos)
+        logger.info(
+            "imagen_version_elegida",
+            extra=kv(escena=numero, elegida=eleccion.elegida + 1, detalle=eleccion.detalle),
+        )
+        return eleccion
+
     def _generar_escena(
         self,
         pipe: PipelineImagen,
@@ -402,54 +567,64 @@ class GeneradorImagenes:
             usar_bible=self.usar_bible,
             orden=self.cfg.prompt_orden,
             personajes=self.cfg.personajes_prompt,
+            max_tokens=self.max_tokens_prompt,
+            encoder_largo=self.cfg.arquitectura == "flux",
         )
         escala_ip = self._ajustar_ip(pipe, ip_embeds, prompt.ip_factor)
         ruta = carpeta / nombre_archivo_escena(numero)
         ultimo_error: str | None = None
         intentos = 0
-        for intento in (1, 2):
-            intentos = intento
-            try:
-                with track_stage(f"imagen_escena_{numero}") as metrica:
-                    imagen = self._llamar(
-                        pipe,
-                        prompt=prompt.prompt,
-                        negativo=prompt.negative_prompt,
-                        seed=seed,
-                        ancho=self.cfg.width,
-                        alto=self.cfg.height,
-                        ip_embeds=ip_embeds,
-                    )
-                    metrica.extra.update(
-                        seed=seed,
-                        tokens=prompt.tokens,
-                        intento=intento,
-                        ip=ip_embeds is not None,
-                        ip_escala=escala_ip,
-                        foco=prompt.foco,
-                    )
-                imagen.save(ruta)
-                etapa.metricas.append(metrica)
-                return ResultadoImagen(
-                    escena=numero,
-                    ruta=ruta,
-                    seed=seed,
-                    prompt=prompt,
-                    ip_adapter=ip_embeds is not None and escala_ip > 0,
-                    segundos=metrica.segundos,
-                    intentos=intento,
-                    ip_escala=escala_ip,
+        hechas: list[tuple[int, Image.Image, StageMetrics]] = []
+        for version, seed_v in enumerate(seeds_candidatos(seed, self.cfg.candidatos), start=1):
+            imagen, n, error, metrica = self._una_imagen(
+                pipe, prompt, seed_v, ip_embeds, escala_ip, numero, version
+            )
+            intentos += n
+            if imagen is None or metrica is None:
+                ultimo_error = error
+                break  # si una versión falla, las siguientes también fallarían
+            etapa.metricas.append(metrica)
+            hechas.append((seed_v, imagen, metrica))
+
+        if hechas:
+            eleccion = (
+                self._elegir(prompt, [i for _, i, _ in hechas], numero, etapa)
+                if len(hechas) > 1
+                else None
+            )
+            indice = eleccion.elegida if eleccion else 0
+            seed_elegida, imagen, _ = hechas[indice]
+            imagen.save(ruta)
+            versiones: list[dict[str, Any]] = []
+            for k, (seed_v, otra, metrica) in enumerate(hechas):
+                detalle = eleccion.detalle[k] if eleccion else {}
+                versiones.append(
+                    {
+                        "seed": seed_v,
+                        "segundos": metrica.segundos,
+                        "elegida": k == indice,
+                        **detalle,
+                    }
                 )
-            except Exception as exc:
-                ultimo_error = f"{type(exc).__name__}: {exc}"
-                oom = self.backend.es_oom(exc)
-                logger.error(
-                    "imagen_escena_fallo",
-                    extra=kv(escena=numero, intento=intento, oom=oom, error=ultimo_error),
-                )
-                if not oom:
-                    break
-                free_cuda_memory()
+                if k != indice:  # las descartadas quedan para comparar (más livianas)
+                    otras = carpeta / CARPETA_VERSIONES
+                    otras.mkdir(exist_ok=True)
+                    otra.convert("RGB").save(otras / f"scene_{numero}_v{k + 1}.jpg", quality=85)
+            segundos = sum(m.segundos for _, _, m in hechas)
+            if eleccion is not None:
+                segundos += eleccion.segundos
+            return ResultadoImagen(
+                escena=numero,
+                ruta=ruta,
+                seed=seed_elegida,
+                prompt=prompt,
+                ip_adapter=ip_embeds is not None and escala_ip > 0,
+                segundos=round(segundos, 3),
+                intentos=intentos,
+                ip_escala=escala_ip,
+                seed_escena=seed,
+                versiones=versiones if len(hechas) > 1 else [],
+            )
 
         imagen_respaldo(self.cfg.width, self.cfg.height, numero).save(ruta)
         etapa.fallbacks.append(f"{FALLBACK_RESPALDO}:{numero}")
@@ -464,6 +639,7 @@ class GeneradorImagenes:
             respaldo=True,
             intentos=intentos,
             error=ultimo_error,
+            seed_escena=seed,
         )
 
 
@@ -482,6 +658,9 @@ class SesionImagen:
         bible: StoryBible,
         carpeta: Path,
         reutilizar_sheet: bool = True,
+        *,
+        precarga: Future[tuple[PipelineImagen, StageMetrics]] | None = None,
+        diferir_referencia: bool = False,
     ) -> None:
         self.generador = generador
         self.carpeta = carpeta
@@ -490,34 +669,50 @@ class SesionImagen:
         self._pipe: PipelineImagen | None = None
         self._contar: ContadorTokens = estimar_tokens_clip
         self._ip_embeds: Any = None
+        self._precarga = precarga
+        # La referencia del protagonista queda pendiente hasta después de la 1.ª ilustración.
+        self._referencia_pendiente = diferir_referencia and generador.usar_ip_adapter
+
+    def _cargar(self) -> tuple[PipelineImagen, StageMetrics]:
+        gen = self.generador
+        try:
+            if self._precarga is not None:
+                return self._precarga.result()
+            with track_stage("imagen_carga") as m_carga:
+                pipe = gen.backend.cargar(gen.cfg)
+            return pipe, m_carga
+        except Exception as exc:
+            raise ImageModelError(
+                f"No se pudo cargar el modelo de imagen '{gen.cfg.model_id}': {exc}"
+            ) from exc
+        finally:
+            self._precarga = None
 
     def __enter__(self) -> SesionImagen:
         gen = self.generador
         self.carpeta.mkdir(parents=True, exist_ok=True)
         try:
-            with track_stage("imagen_carga") as m_carga:
-                try:
-                    self._pipe = gen.backend.cargar(gen.cfg)
-                except Exception as exc:
-                    raise ImageModelError(
-                        f"No se pudo cargar el modelo de imagen '{gen.cfg.model_id}': {exc}"
-                    ) from exc
+            self._pipe, m_carga = self._cargar()
             self.etapa.metricas.append(m_carga)
             self.etapa.backend = gen.backend.info()
             self._contar = gen._contador(self._pipe)
-            if gen.usar_ip_adapter:
-                self._ip_embeds = gen._preparar_ip_adapter(
-                    self._pipe,
-                    self.etapa.bible,
-                    self.carpeta,
-                    self._contar,
-                    self.etapa,
-                    self.reutilizar_sheet,
-                )
+            if gen.usar_ip_adapter and not self._referencia_pendiente:
+                self._preparar_referencia()
         except BaseException:
             self._cerrar()
             raise
         return self
+
+    def _preparar_referencia(self) -> None:
+        self._referencia_pendiente = False
+        self._ip_embeds = self.generador._preparar_ip_adapter(
+            self._pipe,
+            self.etapa.bible,
+            self.carpeta,
+            self._contar,
+            self.etapa,
+            self.reutilizar_sheet,
+        )
 
     def escena(self, bible: StoryBible, numero: int) -> ResultadoImagen:
         """Ilustra la escena ``numero`` de ``bible`` (puede traer solo las escenas escritas)."""
@@ -525,6 +720,8 @@ class SesionImagen:
             raise ImageError("La sesión de imagen no está abierta")
         bible = self.generador.asegurar_seeds(bible)
         self.etapa.bible = bible
+        if self._referencia_pendiente and self.etapa.imagenes:
+            self._preparar_referencia()  # la 1.ª escena ya está a la vista
         resultado = self.generador._generar_escena(
             self._pipe, bible, numero, self.carpeta, self._contar, self._ip_embeds, self.etapa
         )
@@ -534,9 +731,17 @@ class SesionImagen:
         return resultado
 
     def estacionar(self) -> None:
+        # FLUX deja CLIP-L y el VAE en la RAM entre escenas (su pipeline lo sabe hacer).
+        estacionar = getattr(self._pipe, "estacionar", None)
+        if callable(estacionar):
+            estacionar()
         free_cuda_memory()
 
     def _cerrar(self) -> None:
+        if self._precarga is not None:  # no se llegó a usar: se espera y se descarta
+            if not self._precarga.cancel():
+                self._precarga.exception()  # espera a que la carga termine
+            self._precarga = None
         self._pipe = None
         self._ip_embeds = None
         self.generador.backend.liberar()
@@ -548,6 +753,15 @@ class SesionImagen:
 # ---------------------------------------------------------------------------------------
 # Backend real (diffusers). Imports perezosos: solo se ejecuta en Windows con GPU.
 # ---------------------------------------------------------------------------------------
+def backend_para(cfg: ImageConfig) -> BackendImagen:
+    """FLUX (perfil Avanzada) o SD 1.5 / SDXL con diffusers."""
+    if cfg.arquitectura == "flux":
+        from storybook.image.flux import FluxBackend
+
+        return FluxBackend()
+    return DiffusersBackend()
+
+
 class DiffusersBackend:
     """SD 1.5 en fp16 desde la caché local, con LCM-LoRA o DPM++ 2M Karras e IP-Adapter.
 

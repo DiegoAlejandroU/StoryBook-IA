@@ -264,6 +264,8 @@ def test_agota_reintentos(bible_dict: dict) -> None:
         generar(c, max_reintentos=2)
     assert len(g.peticiones) == 3
     assert len(info.value.errores_por_intento) == 3
+    # 18 nov: el motivo queda en el mensaje (y así en el manifest de la historia fallida).
+    assert "(último: " in str(info.value) and "escenas" in str(info.value)
 
 
 def test_sin_reintentos_falla_de_inmediato() -> None:

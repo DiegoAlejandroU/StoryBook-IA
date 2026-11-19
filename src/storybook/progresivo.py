@@ -42,6 +42,7 @@ from storybook.storage import (
     guardar_bible,
     guardar_json,
 )
+from storybook.story.reparto import tipo
 
 if TYPE_CHECKING:
     from storybook.pipeline import Pipeline, Progreso
@@ -94,6 +95,7 @@ class PlanListo:
     resumenes: list[str]
     segundos: float
     personajes: dict[str, str] = field(default_factory=dict)  # id -> nombre
+    reparto: list[str] = field(default_factory=list)  # "Kai (boy)"
 
 
 AlEstarLista = Callable[[EscenaLista], None]
@@ -119,6 +121,7 @@ def bible_parcial(plan: PlanHistoria, escenas: list[Escena]) -> StoryBible:
         personajes=[p.model_copy(deep=True) for p in plan.personajes],
         escenas=[e.model_copy(deep=True) for e in escenas],
         canon=canon,
+        grupos=list(plan.grupos),
     )
 
 
@@ -170,6 +173,7 @@ class GeneracionPorEscenas:
         self.mezclas: list[Any] = []
         self.metricas_mezcla: list[Any] = []
         self.listas: list[dict[str, Any]] = []
+        self._precarga: Any = None
 
     # -- utilidades -------------------------------------------------------------------------
     def _transcurrido(self) -> float:
@@ -197,7 +201,12 @@ class GeneracionPorEscenas:
         cfg = self.p.cfg
         # Imagen con offload: entre escenas los pesos quedan en RAM y el LLM tiene la GPU.
         cfg_imagen = cfg.image.model_copy(update={"cpu_offload": True})
-        generador_img = GeneradorImagenes(cfg_imagen, cfg.consistency, self.p.deps.backend_imagen)
+        generador_img = GeneradorImagenes(
+            cfg_imagen,
+            cfg.consistency,
+            self.p.deps.backend_imagen,
+            evaluador=self.p.deps.evaluador_imagen,
+        )
         generador_snd = GeneradorSonido(
             cfg.sound, cfg.consistency.base_seed, self.p.deps.fabrica_sonido
         )
@@ -206,6 +215,9 @@ class GeneracionPorEscenas:
         # Al salir se cierra en orden inverso: imagen, sonido y por último el LLM.
         with ExitStack() as pila:
             escritor = pila.enter_context(EscritorPorEscenas(cfg.llm, self.p.deps.llm))
+            # El modelo de imagen se carga (disco -> RAM) mientras el LLM escribe el plan.
+            self._precarga = generador_img.precargar()
+            pila.callback(self._descartar_precarga, generador_img)
             sesion_snd = pila.enter_context(generador_snd.sesion(self.carpeta))
             try:
                 self.p._avisar(self.progreso, "texto", 0.0, "Planeando la historia (LLM local)")
@@ -261,18 +273,30 @@ class GeneracionPorEscenas:
                     resumenes=[e.resumen for e in plan.plan_escenas],
                     segundos=self._transcurrido(),
                     personajes={p.id: p.nombre for p in plan.personajes},
+                    reparto=[f"{p.nombre} ({tipo(p)})" for p in plan.personajes],
                 )
             )
+
+    def _descartar_precarga(self, generador: Any) -> None:
+        """Si la historia falló antes de la primera ilustración, el modelo precargado se suelta."""
+        if self._precarga is None:
+            return
+        if not self._precarga.cancel():
+            self._precarga.exception()  # espera a que la carga termine
+        self._precarga = None
+        generador.backend.liberar()
 
     def _abrir_imagen(self, pila: ExitStack, generador: Any, parcial: StoryBible) -> Any:
         """Carga el modelo, la character sheet y el IP-Adapter; ``None`` si no carga."""
         from storybook.image.generator import FALLBACK_RESPALDO, ImageModelError
 
         avance = PESO_PLAN + (1.0 - PESO_PLAN) / NUM_ESCENAS * PESOS_ESCENA[0][1]
-        self.p._avisar(
-            self.progreso, "imagen", avance, "Preparando el ilustrador y el personaje de referencia"
+        self.p._avisar(self.progreso, "imagen", avance, "Preparando el ilustrador")
+        # La character sheet y el IP-Adapter se preparan después de la primera ilustración.
+        sesion = generador.sesion(
+            parcial, self.carpeta, precarga=self._precarga, diferir_referencia=True
         )
-        sesion = generador.sesion(parcial, self.carpeta)
+        self._precarga = None  # ahora es de la sesión
         try:
             return self._medir("imagen", lambda: pila.enter_context(sesion))
         except ImageModelError as exc:
@@ -390,7 +414,12 @@ class GeneracionPorEscenas:
         if sesion_img is not None:
             usada = sesion_img.etapa.bible
             seeds_personajes = {p.id: p.seed for p in usada.personajes}
-            seeds_escenas = {r.escena: r.seed for r in sesion_img.etapa.imagenes}
+            # La seed de la escena (no la de la versión elegida): con ella se repiten las
+            # mismas versiones y la misma elección.
+            seeds_escenas = {
+                r.escena: r.seed_escena if r.seed_escena is not None else r.seed
+                for r in sesion_img.etapa.imagenes
+            }
             bible = bible.model_copy(
                 update={
                     "personajes": [
