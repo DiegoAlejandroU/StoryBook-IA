@@ -437,3 +437,49 @@ def test_con_flux_el_prompt_lleva_mas_detalle(bible_dict: dict) -> None:
     assert "with a cat (orange with red spots)" in largo.prompt and "torn ear" in largo.prompt
     assert largo.verificar == corto.verificar == ["a dog", "a cat"]
     assert not largo.truncado
+
+
+def test_con_flux_la_tecnica_abre_el_prompt(bible_dict: dict) -> None:
+    """20 nov: con todo el estilo al final, FLUX dibujó una escena como foto y no como
+    acuarela. La técnica va primero (una sola vez); paleta e iluminación, al final."""
+    plano = _plano("martillo", ("razor", "one"), accion="Martillo looks up at the rooftops")
+    bible = _bible(bible_dict, {2: plano}, grupo=None)
+    estilo = bible.estilo_visual
+    largo = construir_prompt(
+        bible, 2, personajes="foco", orden="accion_primero", max_tokens=254, encoder_largo=True
+    )
+    assert largo.prompt.startswith(f"{estilo.tecnica}, wide shot, a dog, with a cat (")
+    assert largo.prompt.count(estilo.tecnica) == 1
+    assert largo.prompt.endswith(estilo.iluminacion) and estilo.paleta in largo.prompt
+    corto = construir_prompt(bible, 2, personajes="foco", orden="accion_primero")
+    assert corto.prompt.startswith("wide shot, a dog") and estilo.tecnica in corto.prompt
+
+
+def _nino_y_nina(bible_dict: dict, principal: str) -> StoryBible:
+    datos = _perro_y_gatos(bible_dict, GATOS)
+    datos["grupos"] = []
+    datos["personajes"][0]["descripcion_visual_fija"] = f"{principal}, age 7, red hair, raincoat"
+    datos["personajes"][1]["descripcion_visual_fija"] = "girl, age 8, black braids, green dress"
+    datos["escenas"][1]["plano_visual"] = _plano(
+        "martillo", ("razor", "one"), accion="runs toward the swings", lugar="a sunny park"
+    )
+    return StoryBible.model_validate(datos)
+
+
+def test_un_child_con_una_nina_no_evita_dos_ninos(bible_dict: dict) -> None:
+    """20 nov: con el principal 'child' y una niña al lado se evitaba "two children"
+    (negative y elección de versión): justo lo que pedía la escena."""
+    from storybook.image.prompt_builder import misma_familia
+
+    generico = construir_prompt(
+        _nino_y_nina(bible_dict, "child"), 2, personajes="foco", orden="accion_primero"
+    )
+    assert generico.evitar == [] and "children" not in generico.negative_prompt
+    assert generico.verificar == ["a child", "a girl"]
+    nino = construir_prompt(
+        _nino_y_nina(bible_dict, "boy"), 2, personajes="foco", orden="accion_primero"
+    )
+    assert nino.evitar == ["two boys"] and "multiple boys" in nino.negative_prompt
+    assert misma_familia("child", "girl") and misma_familia("person", "man")
+    assert not misma_familia("boy", "girl") and not misma_familia("child", "dog")
+    assert not misma_familia("person", "robot")

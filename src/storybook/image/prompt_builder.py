@@ -33,7 +33,7 @@ from storybook.schemas import (
     StoryBible,
     estimar_tokens_clip,
 )
-from storybook.story.reparto import singular_ingles
+from storybook.story.reparto import NO_ANIMALES, singular_ingles
 
 logger = get_logger(__name__)
 
@@ -331,6 +331,10 @@ NEGATIVO_CLONES: Final = "duplicate character, clone, twins"
 # En una escena de grupo de otra especie, el descriptor del foco se acorta (tipo, edad y
 # color) para que no tape al grupo.
 DESCRIPTOR_EN_GRUPO: Final = 3
+# Personas que pueden ser la misma figura en el negative (ver ``misma_familia``).
+_NINOS: Final = frozenset({"boy", "girl", "child", "kid", "toddler", "baby"})
+_NINOS_GENERICOS: Final = frozenset({"child", "kid", "toddler", "baby"})
+_HUMANOS: Final = NO_ANIMALES - {"robot", "android", "cyborg", "machine"}
 
 
 def _personaje_o_none(bible: StoryBible, pid: str | None) -> Personaje | None:
@@ -443,6 +447,21 @@ def _agrupar_iguales(textos: list[str]) -> list[str]:
     return salida
 
 
+def misma_familia(a: str, b: str) -> bool:
+    """¿Dos sustantivos pueden ser la misma figura? 'child' cubre a 'girl' y a 'boy', y
+    'person' a cualquier persona.
+
+    20 nov: "Un niño en un parque" con el principal 'child' y una niña al lado puso "two
+    children" en el negative y en lo que se evita al elegir versión: justo la escena pedida.
+    """
+    if a == b:
+        return True
+    par = {a, b}
+    if par & _NINOS_GENERICOS and par <= _NINOS:
+        return True
+    return "person" in par and (par - {"person"}) <= _HUMANOS
+
+
 def componer_plano(bible: StoryBible, numero: int, encoder_largo: bool = False) -> Composicion:
     """El inicio del prompt según el plano del ilustrador (17 nov: "faltan o sobran personajes").
 
@@ -518,12 +537,13 @@ def componer_plano(bible: StoryBible, numero: int, encoder_largo: bool = False) 
     especie_grupo = grupo_usado.especie if grupo_usado else None
     # Varios de la especie del principal (dos perros, una manada, un grupo sin especie) no
     # son clones: ahí no van "two dogs" ni "clone" en el negative.
-    misma_especie = any(n == nucleo_principal for _, n in figuras) or bool(
+    misma_especie = any(misma_familia(n, nucleo_principal) for _, n in figuras) or bool(
         grupo_usado and especie_grupo in (None, nucleo_principal)
     )
     grupo_otra_especie = bool(especie_grupo and especie_grupo != nucleo_principal)
     varios_de_otra = any(
-        c != "one" and n != nucleo_principal for (_, n), c in zip(figuras, cantidades, strict=True)
+        c != "one" and not misma_familia(n, nucleo_principal)
+        for (_, n), c in zip(figuras, cantidades, strict=True)
     )
     hay_mas = bool(figuras or frase_grupo)
     es_protagonista = principal.rol is RolPersonaje.PROTAGONISTA
@@ -770,8 +790,17 @@ def construir_prompt(
                 evitar = [f"two {plural_ingles(nucleo)}"]
         if en_grupo is not None and en_grupo[0].plural:
             verificar.append(f"many {en_grupo[0].plural}")
+    bloque_tecnica: _Bloque | None = None
     if usar_bible:
-        bloques.append(_Bloque("estilo", frases(bible.estilo_visual.prompt())))
+        estilo = frases(bible.estilo_visual.prompt())
+        if encoder_largo and orden == "accion_primero":
+            # 20 nov (FLUX): con todo el estilo al final, una de cinco escenas salió como
+            # foto y no como acuarela. La técnica ("watercolor with fine linework") abre el
+            # prompt y no se recorta; paleta e iluminación siguen al final.
+            tecnica = frases(bible.estilo_visual.tecnica)
+            bloque_tecnica = _Bloque("estilo", tecnica, len(tecnica))
+            estilo = estilo[len(tecnica) :]
+        bloques.append(_Bloque("estilo", estilo))
         ids = _ids_ordenados(bible, escena.personajes_presentes)
         if personajes == "foco" and foco is not None:
             ids = [foco.foco] if foco.foco else []
@@ -792,6 +821,8 @@ def construir_prompt(
         bloques = [bloque_accion, *(b for b in bloques if b.segmento == "personajes")] + [
             b for b in bloques if b.segmento == "estilo"
         ]
+        if bloque_tecnica is not None:
+            bloques.insert(0, bloque_tecnica)
     else:
         bloques.append(bloque_accion)
 

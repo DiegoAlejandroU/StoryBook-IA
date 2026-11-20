@@ -24,6 +24,7 @@ el momento en que quedó lista cada escena.
 
 from __future__ import annotations
 
+import threading
 import time
 from collections.abc import Callable
 from contextlib import ExitStack
@@ -219,6 +220,13 @@ class GeneracionPorEscenas:
             self._precarga = generador_img.precargar()
             pila.callback(self._descartar_precarga, generador_img)
             sesion_snd = pila.enter_context(generador_snd.sesion(self.carpeta))
+            # 20 nov (perfil Avanzada): Stable Audio (~100 s de carga) después de la imagen,
+            # para no leer los dos del disco a la vez, y el proceso de XTTS desde ya.
+            if self._precarga is not None:
+                self._precarga.add_done_callback(lambda _: sesion_snd.precargar())
+            else:
+                sesion_snd.precargar()
+            self._precalentar_voz(cfg)
             try:
                 self.p._avisar(self.progreso, "texto", 0.0, "Planeando la historia (LLM local)")
                 plan = self._medir("texto", lambda: escritor.planificar(self.solicitud))
@@ -247,6 +255,22 @@ class GeneracionPorEscenas:
                 self.manifest["etapas"]["sonido"] = sesion_snd.etapa.a_dict()
                 self._registrar_texto(escritor)
         return self._bible_final(plan, escenas, sesion_img, generador_img)
+
+    def _precalentar_voz(self, cfg: Any) -> None:
+        """Arranca el proceso de XTTS en segundo plano (cargar el modelo tarda de 20 s a más
+        de 1 min); la escena 1 lo encuentra listo. Si falla, el narrador usa Piper."""
+        if cfg.voice.backend != "xtts" or self.p.deps.backend_voz is not None:
+            return
+
+        def arrancar() -> None:
+            from storybook.voice.xtts import trabajador
+
+            try:
+                trabajador(cfg.voice)
+            except Exception as exc:  # el narrador lo vuelve a intentar y cae a Piper
+                logger.warning("xtts_precalentado_fallo", extra=kv(error=str(exc)[:300]))
+
+        threading.Thread(target=arrancar, name="precarga_xtts", daemon=True).start()
 
     def _registrar_texto(self, escritor: Any) -> None:
         self.manifest["etapas"]["texto"] = escritor.info()

@@ -124,6 +124,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--historia", type=Path)
     parser.add_argument("--perfil", default="avanzada")
     parser.add_argument("--escenas", type=int, nargs="+", default=[1, 2, 3, 4, 5])
+    parser.add_argument("--solo-voz", action="store_true")
+    parser.add_argument("--solo-sonido", action="store_true")
     args = parser.parse_args(argv)
     setup_logging()
 
@@ -131,20 +133,30 @@ def main(argv: list[str] | None = None) -> int:
     bible = cargar_bible(historia)
     carpeta = EVIDENCIAS / "f10_audio" / historia.name
     carpeta.mkdir(parents=True, exist_ok=True)
-    voz = medir_voz(args.perfil, bible, carpeta, args.escenas)
-    log.info("voz_lista", extra=kv(backend=voz.get("backend"), error=voz.get("error")))
-    sonido = medir_sonido(args.perfil, bible, carpeta, args.escenas)
-    log.info("sonido_listo", extra=kv(fallbacks=sonido.get("fallbacks"), error=sonido.get("error")))
+    voz: dict[str, Any] = {"error": "no medida (--solo-sonido)"}
+    sonido: dict[str, Any] = {"error": "no medido (--solo-voz)"}
+    if not args.solo_sonido:
+        voz = medir_voz(args.perfil, bible, carpeta, args.escenas)
+        log.info("voz_lista", extra=kv(backend=voz.get("backend"), error=voz.get("error")))
+    if not args.solo_voz:
+        sonido = medir_sonido(args.perfil, bible, carpeta, args.escenas)
+        log.info(
+            "sonido_listo", extra=kv(fallbacks=sonido.get("fallbacks"), error=sonido.get("error"))
+        )
+    nombre = "f10_voz" if args.solo_voz else "f10_sonido" if args.solo_sonido else "f10_voz_sonido"
 
     EVIDENCIAS.mkdir(parents=True, exist_ok=True)
     datos = {"historia": historia.name, "perfil": args.perfil, "voz": voz, "sonido": sonido}
-    (EVIDENCIAS / "f10_voz_sonido.json").write_text(
+    (EVIDENCIAS / f"{nombre}.json").write_text(
         json.dumps(datos, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
     )
-    (EVIDENCIAS / "f10_voz_sonido.md").write_text(
-        reporte_md(historia, voz, sonido), encoding="utf-8"
-    )
-    return 0 if "error" not in voz and "error" not in sonido else 1
+    (EVIDENCIAS / f"{nombre}.md").write_text(reporte_md(historia, voz, sonido), encoding="utf-8")
+    medidas = ([] if args.solo_sonido else [voz]) + ([] if args.solo_voz else [sonido])
+    if any("error" in m for m in medidas):
+        return 1
+    # Con --solo-voz, que narre Piper (respaldo) también es un fallo: se quería probar XTTS.
+    respaldo = voz.get("backend", {}).get("respaldo_de") if not args.solo_sonido else None
+    return 1 if args.solo_voz and respaldo else 0
 
 
 if __name__ == "__main__":

@@ -30,6 +30,8 @@
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso sdxl
   Perfil Avanzada (18 nov; FLUX.1-schnell, XTTS-v2 y Stable Audio; ~65 GB; HF_TOKEN en .env):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso avanzada
+  Solo reparar y probar la voz XTTS-v2 (20 nov):
+      powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso xtts
   Experimento con Qwen3 8B (configs/experiments/llm_8b.yaml; evidencias con sufijo _llm_8b):
       powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso f1 -Generaciones 3 -Perfil llm_8b
 
@@ -38,7 +40,7 @@
   Texto sin tildes a proposito (compatibilidad con Windows PowerShell 5.1).
 #>
 param(
-    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos", "audioldm", "sdxl", "avanzada")]
+    [ValidateSet("todo", "git", "entorno", "modelos", "f1", "f2", "f2v", "f4", "offline", "muestras", "experimentos", "audioldm", "sdxl", "avanzada", "xtts")]
     [string]$Paso = "todo",
     [int]$Generaciones = 10,
     [ValidateRange(1, 4)]
@@ -95,6 +97,48 @@ function Requiere([string]$Comando, [string]$Ayuda) {
         return $false
     }
     return $true
+}
+
+# Entorno de XTTS-v2 (.venv-xtts): torch 2.11 + torchaudio (no existe torchaudio para el torch
+# de la app) y coqui-tts. 19 nov: a coqui-tts le faltaron modulos que no declara (torchcodec,
+# six): se verifica importando XTTS y se instala lo que falte, hasta 8 veces.
+function Instalar-Xtts {
+    $pyX = Join-Path $Raiz ".venv-xtts\Scripts\python.exe"
+    if (-not (Test-Path $pyX)) {
+        if ((Ejecutar "uv" @("venv", ".venv-xtts", "--python-preference", "only-system", "--python", "3.12")) -ne 0) { return 1 }
+    }
+    $torchOk = $false
+    foreach ($cu in @("cu130", "cu128", "cu126")) {
+        $codigo = Ejecutar "uv" @("pip", "install", "--python", $pyX, "torch==2.11.*", "torchaudio==2.11.*", "--index-url", "https://download.pytorch.org/whl/$cu")
+        if ($codigo -eq 0) { $torchOk = $true; Escribir "torch 2.11 ($cu) instalado en .venv-xtts" "Green"; break }
+    }
+    if (-not $torchOk) { Escribir "No se pudo instalar torch 2.11 en .venv-xtts." "Red"; return 1 }
+    if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, "coqui-tts==0.28.0", "soundfile", "six", "setuptools")) -ne 0) { return 1 }
+    # coqui-tts exige torchcodec con torch >= 2.9 aunque aqui no se lee audio (voces incluidas).
+    if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, "--no-deps", "torchcodec")) -ne 0) { return 1 }
+    $paquetes = @{ "pkg_resources" = "setuptools"; "yaml" = "pyyaml"; "sklearn" = "scikit-learn"; "PIL" = "pillow"; "google" = "protobuf" }
+    $worker = Join-Path $Raiz "scripts\xtts_worker.py"
+    $verif = Join-Path $env:TEMP "storybook_xtts_verificar.txt"
+    for ($i = 0; $i -lt 8; $i++) {
+        if (Test-Path $verif) { Remove-Item $verif }
+        $codigo = Ejecutar $pyX @("-I", $worker, "--verificar") $verif
+        if ($codigo -eq 0) { Escribir "XTTS: el entorno importa todo lo necesario" "Green"; return 0 }
+        $texto = ""
+        if (Test-Path $verif) { $texto = Get-Content $verif -Raw }
+        if ($texto -match "FALTA (\S+)") {
+            $modulo = $Matches[1]
+            if ($modulo -in @("torch", "torchaudio")) { Escribir "XTTS: falta $modulo en .venv-xtts (la instalacion de torch 2.11 fallo)." "Red"; return 1 }
+            $paquete = $paquetes[$modulo]
+            if (-not $paquete) { $paquete = $modulo }
+            Escribir "XTTS: falta el modulo '$modulo'; se instala '$paquete'" "Yellow"
+            if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, $paquete)) -ne 0) { return 1 }
+        } else {
+            Escribir "XTTS no importa (ver arriba)." "Red"
+            return 1
+        }
+    }
+    Escribir "XTTS: siguen faltando modulos despues de 8 intentos." "Red"
+    return 1
 }
 
 function Fin([int]$Codigo) {
@@ -467,6 +511,17 @@ if ($Paso -eq "sdxl") {
     Guardar-Evidencias "chore: evidencias de la prueba de SDXL Lightning frente a SD 1.5" | Out-Null
     if ($codigo -ne 0) { Fin $codigo }
 }
+if ($Paso -eq "xtts") {
+    Titulo "Voz XTTS-v2 (20 nov) - reparar .venv-xtts y probar la voz"
+    if ((Instalar-Xtts) -ne 0) { Fin 1 }
+    $salidaVoz = Join-Path $Evid "f10_voz.txt"
+    if (Test-Path $salidaVoz) { Remove-Item $salidaVoz }
+    $hist = Join-Path $Raiz "outputs\20261118_151141_un_elefante_en_la_sabana_afric"
+    $argsVoz = @("run", "python", "scripts/f10_voz_sonido.py", "--solo-voz")
+    if (Test-Path $hist) { $argsVoz += @("--historia", $hist) }
+    $codigo = Ejecutar "uv" $argsVoz $salidaVoz
+    if ($codigo -ne 0) { Fin $codigo }
+}
 if ($Paso -eq "avanzada") {
     Titulo "Perfil Avanzada (18 nov) - FLUX.1-schnell, XTTS-v2 y Stable Audio Open"
     # 0) FLUX y Stable Audio son gated: hace falta HF_TOKEN en .env (no se muestra).
@@ -488,20 +543,8 @@ if ($Paso -eq "avanzada") {
     # 2) Copia en fp8 de FLUX (una vez; ~17 GB en models\flux-schnell-fp8).
     $codigo = Ejecutar "uv" @("run", "python", "scripts/convertir_flux_fp8.py")
     if ($codigo -ne 0) { Fin $codigo }
-    # 3) Entorno de XTTS: torch 2.11 + torchaudio (no existe torchaudio para el torch de la app).
-    $pyX = Join-Path $Raiz ".venv-xtts\Scripts\python.exe"
-    if (-not (Test-Path $pyX)) {
-        if ((Ejecutar "uv" @("venv", ".venv-xtts", "--python-preference", "only-system", "--python", "3.12")) -ne 0) { Fin 1 }
-    }
-    $torchOk = $false
-    foreach ($cu in @("cu130", "cu128", "cu126")) {
-        $codigo = Ejecutar "uv" @("pip", "install", "--python", $pyX, "torch==2.11.*", "torchaudio==2.11.*", "--index-url", "https://download.pytorch.org/whl/$cu")
-        if ($codigo -eq 0) { $torchOk = $true; Escribir "torch 2.11 ($cu) instalado en .venv-xtts" "Green"; break }
-    }
-    if (-not $torchOk) { Escribir "No se pudo instalar torch 2.11 en .venv-xtts." "Red"; Fin 1 }
-    if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, "coqui-tts==0.28.0", "soundfile")) -ne 0) { Fin 1 }
-    # coqui-tts exige torchcodec con torch >= 2.9 aunque aqui no se lee audio (voces incluidas).
-    if ((Ejecutar "uv" @("pip", "install", "--python", $pyX, "--no-deps", "torchcodec")) -ne 0) { Fin 1 }
+    # 3) Entorno de XTTS (torch 2.11 + torchaudio + coqui-tts), con reparacion de modulos.
+    if ((Instalar-Xtts) -ne 0) { Fin 1 }
     # 4) Voz y ambiente de una historia guardada con XTTS y Stable Audio (tiempos y audios).
     $salidaVs = Join-Path $Evid "f10_voz_sonido.txt"
     if (Test-Path $salidaVs) { Remove-Item $salidaVs }

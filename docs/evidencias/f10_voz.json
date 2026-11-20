@@ -1,0 +1,68 @@
+{
+  "historia": "20261118_151141_un_elefante_en_la_sabana_afric",
+  "perfil": "avanzada",
+  "voz": {
+    "backend": {
+      "backend": "xtts",
+      "repo": "coqui/XTTS-v2",
+      "voz": "Ana Florence",
+      "idioma": "es",
+      "licencia": "CPML (Coqui Public Model License, uso no comercial)",
+      "dispositivo": "cuda",
+      "segundos_carga": 20.718,
+      "proceso": ".venv-xtts"
+    },
+    "segundos_total": 142.92,
+    "carga_s": 20.838,
+    "escenas": [
+      {
+        "escena": 1,
+        "archivo": "voice_1.wav",
+        "duracion_s": 47.897,
+        "sample_rate": 24000,
+        "segundos_sintesis": 24.613,
+        "rtf": 0.5139,
+        "caracteres": 624
+      },
+      {
+        "escena": 2,
+        "archivo": "voice_2.wav",
+        "duracion_s": 44.419,
+        "sample_rate": 24000,
+        "segundos_sintesis": 21.671,
+        "rtf": 0.4879,
+        "caracteres": 618
+      },
+      {
+        "escena": 3,
+        "archivo": "voice_3.wav",
+        "duracion_s": 38.159,
+        "sample_rate": 24000,
+        "segundos_sintesis": 18.471,
+        "rtf": 0.4841,
+        "caracteres": 503
+      },
+      {
+        "escena": 4,
+        "archivo": "voice_4.wav",
+        "duracion_s": 54.211,
+        "sample_rate": 24000,
+        "segundos_sintesis": 26.02,
+        "rtf": 0.48,
+        "caracteres": 690
+      },
+      {
+        "escena": 5,
+        "archivo": "voice_5.wav",
+        "duracion_s": 52.739,
+        "sample_rate": 24000,
+        "segundos_sintesis": 25.218,
+        "rtf": 0.4782,
+        "caracteres": 675
+      }
+    ]
+  },
+  "sonido": {
+    "error": "no medido (--solo-voz)"
+  }
+}

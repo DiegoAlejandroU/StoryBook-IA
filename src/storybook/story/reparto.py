@@ -16,6 +16,10 @@ personaje (la primera frase de ``descripcion_visual_fija``, en inglés):
   con un zorro y una rata). Ahora cada persona que nombra la idea ("un niño", "una chica",
   "un piloto") debe estar en el reparto, y si la idea no menciona animales, ningún
   personaje puede ser uno.
+* 20 nov: "Un niño en un parque infantil" salió con un 'child' con corona de flores y FLUX lo
+  dibujó como niña. "Un niño" pide un 'boy' y "una niña" una 'girl' (los plurales siguen
+  aceptando a cualquier niño); si el 4B escribió el genérico 'child', ``precisar_personas``
+  lo cambia sin otra llamada. "Un pequeño zorro" ya no pide un niño: 'pequeño' era adjetivo.
 
 El planificador usa los problemas para pedir una corrección al LLM (una vez).
 """
@@ -27,7 +31,7 @@ import unicodedata
 from collections.abc import Sequence
 from typing import Final
 
-from storybook.schemas import GrupoVisual, Personaje
+from storybook.schemas import GrupoVisual, Personaje, RolPersonaje
 
 # Tipos (en inglés) que no son animales.
 NO_ANIMALES: Final = frozenset(
@@ -103,8 +107,10 @@ ESPECIES: Final[tuple[tuple[str, frozenset[str]], ...]] = tuple(
 # Persona en español (regex sobre la idea sin tildes) -> tipos en inglés aceptados (una
 # palabra o dos, como "old man"). 18 nov.
 _PERSONAS_ORDEN: Final[tuple[tuple[str, tuple[str, ...]], ...]] = (
-    (r"nin[oa]s?|nen[ea]s?|chiquill[oa]s?|pequen[oa]s?",
+    (r"ninos|ninas|nenes|nenas|chiquill[oa]s",
      ("boy", "girl", "child", "kid", "children", "kids", "toddler")),
+    (r"nino|nene|chiquillo", ("boy", "child", "kid", "toddler")),
+    (r"nina|nena|chiquilla", ("girl", "child", "kid", "toddler")),
     (r"chicas?|muchachas?|jovencitas?",
      ("girl", "young woman", "teenage girl", "teen", "woman", "teenager")),
     (r"chicos?|muchachos?|jovencitos?",
@@ -203,6 +209,39 @@ def personas_pedidas(idea: str) -> list[tuple[str, tuple[str, ...]]]:
         if coincidencia and all(ingles != otra for _, otra in pedidas):
             pedidas.append((coincidencia.group(0), ingles))
     return pedidas
+
+
+# Singular con género -> el tipo preciso que reemplaza a un 'child' o 'kid' genérico.
+_PRECISION: Final[tuple[tuple[str, str], ...]] = (
+    (r"nino|nene|chiquillo", "boy"),
+    (r"nina|nena|chiquilla", "girl"),
+)
+_GENERICO: Final = re.compile(r"\b(?:child|kid)\b")
+
+
+def precisar_personas(idea: str, personajes: Sequence[Personaje]) -> list[Personaje]:
+    """'child, age 7, ...' -> 'boy, age 7, ...' si la idea dice "un niño" y nadie es 'boy'.
+
+    Se cambia el primer personaje genérico (el protagonista antes que los demás); el resto
+    del descriptor queda igual. Sin otra llamada al LLM: el 4B suele repetir 'child'.
+    """
+    salida = list(personajes)
+    texto = _normalizar(idea)
+    orden = sorted(range(len(salida)), key=lambda i: salida[i].rol != RolPersonaje.PROTAGONISTA)
+    for patron, preciso in _PRECISION:
+        if not re.search(rf"\b(?:{patron})\b", texto):
+            continue
+        if any(_es_tipo(p, (preciso,)) for p in salida):
+            continue
+        for i in orden:
+            personaje = salida[i]
+            primera, coma, resto = personaje.descripcion_visual_fija.partition(",")
+            if not _GENERICO.search(tipo(personaje)):
+                continue
+            nueva = _GENERICO.sub(preciso, primera, count=1) + coma + resto
+            salida[i] = personaje.model_copy(update={"descripcion_visual_fija": nueva})
+            break
+    return salida
 
 
 def _es_tipo(personaje: Personaje, aceptados: Sequence[str]) -> bool:

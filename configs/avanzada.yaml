@@ -37,4 +37,4 @@ voice:
 
 sound:
   backends: [sao, sa3, audioldm, library, procedural]
-  sao_steps: 30
+  sao_steps: 20                                # 20 nov: con 30 tardó 60-130 s por clip en la RTX 3050

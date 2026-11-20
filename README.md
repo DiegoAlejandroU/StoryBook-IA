@@ -114,9 +114,9 @@ uv run streamlit run app/streamlit_app.py -- --mock    # modo simulado, sin GPU 
 
 En la app (con forma de libro y sin scroll):
 
-1. Escribe una idea, elige el género y el perfil (rápido o calidad) y presiona
-   **Generar historia**. Primero aparece la portada con el índice de las 5 escenas. La
-   escena 1 se abre sola en cuanto tiene ilustración, texto, narración y ambiente, y las
+1. Escribe una idea, elige el género y el perfil (Avanzada viene marcado; SDXL y SD 1.5
+   son más rápidos) y presiona **Generar historia**. El libro abre de una vez en la
+   escena 1, que se completa en cuanto tiene ilustración, texto, narración y ambiente; las
    demás se generan mientras la lees: el botón de la escena en curso muestra un reloj de
    arena y se puede abrir para ver qué se está haciendo.
 2. Hojea el libro con **Anterior** y **Siguiente**, con los números de escena o con las
@@ -153,9 +153,9 @@ Lucian" (misterio), "La Biblia del Dragón" (fantasía) y "El Camino de los Amig
 
 ![El libro abierto en una escena: ilustración, texto, navegación, narración y detalles técnicos](docs/informe/capturas/visor_escena.jpg)
 
-| Portada e índice | Mientras se genera (modo simulado) |
+| Al presionar Generar (modo simulado) | Mientras se genera (modo simulado) |
 |---|---|
-| ![Portada con el título y el índice de las 5 escenas](docs/informe/capturas/inicio.jpg) | ![La escena 1 ya se lee mientras la 2 se genera](docs/informe/capturas/detalles_tecnicos.jpg) |
+| ![El libro abre en la escena 1 mientras se planea la historia](docs/informe/capturas/inicio.jpg) | ![La escena 1 ya se lee mientras la 2 se genera](docs/informe/capturas/detalles_tecnicos.jpg) |
 
 ## Resultados medidos (equipo de referencia)
 

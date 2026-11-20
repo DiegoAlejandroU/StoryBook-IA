@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import os
 import re
+import threading
 import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
@@ -422,29 +423,62 @@ class SesionSonido:
         self.etapa = EtapaSonido(sonidos=[])
         self._cargados: dict[str, BackendSonido] = {}
         self._descartados: set[str] = set()
+        self._precarga: threading.Thread | None = None
+        self._candado = threading.Lock()  # la precarga y la escena 1 no cargan dos veces
+        self._cerrada = False
+
+    def precargar(self) -> bool:
+        """Carga en segundo plano el primer backend si es Stable Audio (20 nov).
+
+        Stable Audio Open tardó ~100 s en cargar en la RTX 3050; así no se suma a la primera
+        escena. Solo los que usan offload (quedan en la RAM, no ocupan la GPU que usan el LLM
+        y el modelo de imagen); AudioLDM se carga entero en la GPU y sigue cargándose al
+        usarlo.
+        """
+        cadena = self.generador.cadena()
+        if self._cerrada or self._precarga is not None:
+            return False
+        if not cadena or cadena[0] not in ("sao", "sa3"):
+            return False
+        if not self.generador.cfg.cpu_offload:
+            return False
+        self._precarga = threading.Thread(
+            target=self._backend, args=(cadena[0],), name="precarga_sonido", daemon=True
+        )
+        self._precarga.start()
+        return True
+
+    def _esperar_precarga(self) -> None:
+        if self._precarga is not None:
+            self._precarga.join()
+            self._precarga = None
 
     def __enter__(self) -> SesionSonido:
         self.carpeta.mkdir(parents=True, exist_ok=True)
         return self
 
     def __exit__(self, *_: object) -> None:
+        self._cerrada = True
+        self._esperar_precarga()
         for backend in self._cargados.values():
             backend.liberar()
         self._cargados.clear()
 
     def _backend(self, nombre: str) -> BackendSonido | None:
-        if nombre in self._descartados:
-            return None
-        if nombre not in self._cargados:
-            backend = self.generador._cargar(nombre, self.etapa)
-            if backend is None:
-                self._descartados.add(nombre)
+        with self._candado:
+            if nombre in self._descartados:
                 return None
-            self._cargados[nombre] = backend
-        return self._cargados[nombre]
+            if nombre not in self._cargados:
+                backend = self.generador._cargar(nombre, self.etapa)
+                if backend is None:
+                    self._descartados.add(nombre)
+                    return None
+                self._cargados[nombre] = backend
+            return self._cargados[nombre]
 
     def escena(self, escena: Escena) -> ResultadoSonido:
         """Ambiente de ``escena`` con el primer backend de la cadena que lo logre."""
+        self._esperar_precarga()
         for nombre in self.generador.cadena():
             backend = self._backend(nombre)
             if backend is None:

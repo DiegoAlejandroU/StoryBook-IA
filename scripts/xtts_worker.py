@@ -138,6 +138,31 @@ class Voz:
         }
 
 
+def verificar() -> int:
+    """Importa lo que usa la voz. "FALTA <módulo>" si a coqui-tts le falta una dependencia
+    que no declara (19 nov: torchcodec, six); el paso de instalación la agrega y repite."""
+    try:
+        import soundfile  # noqa: F401
+        import torch  # noqa: F401
+        from TTS.tts.configs.xtts_config import XttsConfig  # noqa: F401
+        from TTS.tts.models.xtts import Xtts  # noqa: F401
+    except ModuleNotFoundError as exc:
+        sys.stdout.write(f"FALTA {exc.name}\n")
+        return 3
+    except ImportError as exc:
+        texto = str(exc)
+        if "torchcodec" in texto:
+            sys.stdout.write("FALTA torchcodec\n")
+            return 3
+        sys.stdout.write(f"ERROR ImportError: {texto}\n")
+        return 4
+    except Exception as exc:
+        sys.stdout.write(f"ERROR {type(exc).__name__}: {exc}\n")
+        return 4
+    sys.stdout.write("OK\n")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     # La app lo arranca con "python -I" (ignora PYTHONIOENCODING): UTF-8 explícito.
     for flujo in (sys.stdin, sys.stdout):
@@ -145,10 +170,17 @@ def main(argv: list[str] | None = None) -> int:
         if callable(reconfigurar):
             reconfigurar(encoding="utf-8")
     parser = argparse.ArgumentParser(description="Proceso de voz XTTS-v2 de StoryBook")
-    parser.add_argument("--modelo", type=Path, required=True, help="Carpeta de coqui/XTTS-v2")
+    parser.add_argument("--modelo", type=Path, help="Carpeta de coqui/XTTS-v2")
     parser.add_argument("--cpu", action="store_true", help="No usar la GPU")
     parser.add_argument("--voces", action="store_true", help="Listar las voces y salir")
+    parser.add_argument(
+        "--verificar", action="store_true", help="Solo importar XTTS (para reparar el entorno)"
+    )
     args = parser.parse_args(argv)
+    if args.verificar:
+        return verificar()
+    if args.modelo is None:
+        parser.error("falta --modelo")
     inicio = time.perf_counter()
     try:
         voz = Voz(args.modelo, gpu=not args.cpu)

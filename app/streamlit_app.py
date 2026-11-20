@@ -161,7 +161,7 @@ section[data-testid="stSidebar"] {{ width: 288px !important; min-width: 288px !i
     font-size: .8rem; margin: .4rem 0 0 0;
 }}
 
-/* Portada (página 0) y páginas en espera */
+/* Bienvenida (sin historia abierta) y páginas en espera */
 .lamina {{
     min-height: calc(var(--alto-pagina) - 2.2rem);
     background: var(--tela); border-radius: 2px;
@@ -186,27 +186,13 @@ section[data-testid="stSidebar"] {{ width: 288px !important; min-width: 288px !i
 }}
 .espera b {{ color: var(--tinta); font-family: Literata, Georgia, serif; font-weight: 600; }}
 .espera p {{ color: var(--tinta-suave); margin: 0; font-size: .9rem; }}
-.indice-titulo {{
+.espera p.idea {{
+    font-family: Literata, Georgia, serif; font-style: italic; color: var(--tinta);
+}}
+.instrucciones-titulo {{
     font-family: Literata, Georgia, serif; font-style: italic; color: var(--oro-sobre-papel);
     font-size: 1.15rem; margin: 0 0 .5rem 0;
 }}
-ol.indice {{ list-style: none; padding: 0; margin: 0; counter-reset: escena; }}
-ol.indice li {{
-    counter-increment: escena; display: grid; grid-template-columns: 1.5rem 1fr auto;
-    gap: .2rem .5rem; padding: .42rem 0; border-bottom: 1px solid #EAE1CB;
-    font-size: .86rem; line-height: 1.35; color: var(--tinta);
-}}
-ol.indice li::before {{
-    content: counter(escena); font-family: Literata, Georgia, serif; font-weight: 600;
-    color: var(--oro-sobre-papel); font-size: 1.05rem;
-}}
-ol.indice .fase {{
-    font-family: Literata, Georgia, serif; font-style: italic; color: var(--tinta);
-}}
-ol.indice .resumen {{ color: var(--tinta-suave); display: block; }}
-ol.indice .marca {{ color: var(--tinta-suave); font-size: .76rem; white-space: nowrap; }}
-ol.indice .marca.lista {{ color: #3F6B45; }}
-ol.indice .marca.curso {{ color: var(--oro-sobre-papel); font-weight: 700; }}
 .instrucciones p {{
     font-family: Literata, Georgia, serif; font-size: .98rem; line-height: 1.6;
     color: var(--tinta); margin: 0 0 .7em 0;
@@ -259,10 +245,10 @@ st.html(_css())
 def _estado() -> Any:
     estado = st.session_state
     estado.setdefault("historia", None)  # carpeta de la historia abierta (str)
-    estado.setdefault("escena", 0)  # 0 = portada e índice; 1..5 = escenas
+    # 20 nov: sin portada ni índice; el libro abre en la escena 1 (también al generar).
+    estado.setdefault("escena", 1)  # 1..5
     estado.setdefault("sentido", "adelante")
     estado.setdefault("generacion", None)  # GeneracionEnCurso
-    estado.setdefault("seguir_avance", True)  # pasar sola de la portada a la escena 1
     estado.setdefault("autonarrar", True)
     return estado
 
@@ -283,10 +269,9 @@ def _pipeline(perfil: str) -> Pipeline:
 
 def _ir_a(numero: int) -> None:
     estado = _estado()
-    numero = max(0, min(NUM_ESCENAS, numero))
+    numero = max(1, min(NUM_ESCENAS, numero))
     estado.sentido = "adelante" if numero >= estado.escena else "atras"
     estado.escena = numero
-    estado.seguir_avance = False
 
 
 def _abrir(carpeta: Path) -> None:
@@ -303,9 +288,8 @@ def _iniciar(idea: str, genero: str, otro: str | None, perfil: str) -> None:
     generar = functools.partial(pipeline.generar_por_escenas, idea, genero, otro)
     estado.generacion = GeneracionEnCurso(generar, perfil=perfil, idea=idea).iniciar()
     estado.historia = None
-    estado.escena = 0
+    estado.escena = 1
     estado.sentido = "adelante"
-    estado.seguir_avance = True
 
 
 # ---------------------------------------------------------------------------------------
@@ -384,39 +368,12 @@ def _fase(numero: int) -> str:
     return ui_logica.fase_legible(ui_logica.FASE_POR_ESCENA[numero])
 
 
-def _indice(vista: ui_logica.VistaLibro, en_vivo: Instantanea | None) -> str:
-    filas = []
-    for numero in range(1, NUM_ESCENAS + 1):
-        resumen = vista.resumenes[numero - 1] if len(vista.resumenes) >= numero else ""
-        situacion = vista.estado(numero)
-        marca, clase = "", ""
-        if situacion == "lista":
-            lista_en = vista.paginas[numero].lista_en_s
-            if lista_en is not None:
-                marca, clase = f"lista a los {ui_logica.segundos_legibles(lista_en)}", "lista"
-        elif situacion == "en_curso":
-            marca, clase = "en curso", "curso"
-        elif en_vivo is not None:
-            marca = "pendiente"
-        filas.append(
-            f"<li><span><span class='fase'>{_e(_fase(numero))}</span>"
-            f"<span class='resumen'>{_e(resumen)}</span></span>"
-            f"<span class='marca {clase}'>{_e(marca)}</span></li>"
-        )
-    return f"<p class='indice-titulo'>Índice</p><ol class='indice'>{''.join(filas)}</ol>"
-
-
 def _pagina_izquierda(
     vista: ui_logica.VistaLibro, numero: int, en_vivo: Instantanea | None
 ) -> None:
     pagina = vista.paginas.get(numero)
-    if numero == 0:
-        if vista.titulo:
-            cuerpo = f"<h2>{_e(vista.titulo)}</h2><p>{_e(ui_logica.subtitulo(vista))}</p>"
-        elif en_vivo is not None:
-            cuerpo = f"<h2>Una historia nueva</h2><p class='idea'>«{_e(en_vivo.idea)}»</p>"
-        else:
-            cuerpo = "<h2>StoryBook IA</h2><p>Cuentos ilustrados y narrados en este equipo</p>"
+    if numero == 0:  # bienvenida: todavía no hay historia
+        cuerpo = "<h2>StoryBook IA</h2><p>Cuentos ilustrados y narrados en este equipo</p>"
         st.html(f"<div class='lamina'>{cuerpo}</div>")
     elif pagina is not None and pagina.archivos.imagen is not None:
         st.image(str(pagina.archivos.imagen), width="stretch")
@@ -429,23 +386,14 @@ def _pagina_izquierda(
 
 def _pagina_derecha(vista: ui_logica.VistaLibro, numero: int, en_vivo: Instantanea | None) -> None:
     if numero == 0:
-        if vista.resumenes:
-            st.html(_indice(vista, en_vivo))
-        elif en_vivo is not None:
-            st.html(
-                "<div class='espera'><b>Planeando la historia</b>"
-                "<p>Primero se escriben el título, los personajes y el resumen de las cinco "
-                "escenas.</p></div>"
-            )
-        else:
-            st.html(
-                "<div class='instrucciones'><p class='indice-titulo'>Cómo empezar</p>"
-                "<p>Escribe una idea en el panel de la izquierda, elige el género y presiona "
-                "<b>Generar historia</b>.</p>"
-                "<p>La primera escena aparece en cuanto tiene texto, ilustración, narración y "
-                "ambiente sonoro; las demás se agregan mientras la lees.</p>"
-                "<p>También puedes abrir una historia guardada.</p></div>"
-            )
+        st.html(
+            "<div class='instrucciones'><p class='instrucciones-titulo'>Cómo empezar</p>"
+            "<p>Escribe una idea en el panel de la izquierda, elige el género y presiona "
+            "<b>Generar historia</b>.</p>"
+            "<p>La primera escena aparece en cuanto tiene texto, ilustración, narración y "
+            "ambiente sonoro; las demás se agregan mientras la lees.</p>"
+            "<p>También puedes abrir una historia guardada.</p></div>"
+        )
         return
     pagina = vista.paginas.get(numero)
     encabezado = (
@@ -453,6 +401,14 @@ def _pagina_derecha(vista: ui_logica.VistaLibro, numero: int, en_vivo: Instantan
         f"<p class='escena-numero'>Escena {numero} de {NUM_ESCENAS}</p>"
     )
     if pagina is None:
+        if en_vivo is not None and not vista.resumenes:
+            st.html(
+                f"{encabezado}<div class='espera'><b>Planeando la historia</b>"
+                f"<p class='idea'>«{_e(en_vivo.idea)}»</p>"
+                "<p>Primero se escriben el título, los personajes y el resumen de las cinco "
+                "escenas.</p></div>"
+            )
+            return
         resumen = vista.resumenes[numero - 1] if len(vista.resumenes) >= numero else ""
         st.html(
             f"{encabezado}<div class='espera'><b>Se está escribiendo</b><p>{_e(resumen)}</p></div>"
@@ -470,25 +426,18 @@ def _navegacion(vista: ui_logica.VistaLibro, numero: int) -> None:
         st.button(
             "Anterior",
             icon=":material/chevron_left:",
-            disabled=numero == 0,
+            disabled=numero <= 1,
             shortcut="Left",
             key="nav_anterior",
             on_click=_ir_a,
             args=(numero - 1,),
-        )
-        st.button(
-            "Índice",
-            key="nav_0",
-            type="primary" if numero == 0 else "secondary",
-            on_click=_ir_a,
-            args=(0,),
         )
         for n in range(1, NUM_ESCENAS + 1):
             st.button(
                 str(n),
                 key=f"nav_{n}",
                 type="primary" if n == numero else "secondary",
-                disabled=not vista.navegable(n),
+                disabled=n != numero and not vista.navegable(n),
                 icon=":material/hourglass_top:" if vista.estado(n) == "en_curso" else None,
                 help=_fase(n),
                 on_click=_ir_a,
@@ -514,9 +463,10 @@ def _navegacion(vista: ui_logica.VistaLibro, numero: int) -> None:
 
 def libro(vista: ui_logica.VistaLibro, en_vivo: Instantanea | None) -> None:
     estado = _estado()
-    numero = max(0, min(NUM_ESCENAS, int(estado.escena)))
-    if numero and not vista.navegable(numero):
-        numero = 0
+    bienvenida = en_vivo is None and vista.carpeta is None and not vista.paginas
+    numero = 0 if bienvenida else max(1, min(NUM_ESCENAS, int(estado.escena)))
+    if numero > 1 and not vista.navegable(numero):
+        numero = 1  # la escena 1 se muestra siempre, aunque todavía se esté generando
     columna_libro, columna_panel = st.columns([3.15, 1.0], gap="medium")
     with columna_libro:
         titulo = vista.titulo or ("Generando una historia" if en_vivo else "StoryBook IA")
@@ -531,7 +481,8 @@ def libro(vista: ui_logica.VistaLibro, en_vivo: Instantanea | None) -> None:
                 _pagina_izquierda(vista, numero, en_vivo)
             with derecha, st.container(key="pagina_der"):
                 _pagina_derecha(vista, numero, en_vivo)
-        _navegacion(vista, numero)
+        if not bienvenida:
+            _navegacion(vista, numero)
     with columna_panel, st.container(key="panel"):
         panel(vista, numero, en_vivo)
 
@@ -637,9 +588,6 @@ def _vista_generacion() -> None:
         st.rerun(scope="app")
         return
     vista = ui_logica.vista_en_vivo(instantanea, _configuracion(instantanea.perfil))
-    # Mientras el usuario no hojee, la portada pasa sola a la escena 1 cuando está lista.
-    if estado.seguir_avance and estado.escena == 0 and 1 in vista.paginas:
-        estado.escena, estado.sentido, estado.seguir_avance = 1, "adelante", False
     libro(vista, instantanea)
     if instantanea.terminada:
         st.rerun(scope="app")  # terminó con error: se deja de consultar

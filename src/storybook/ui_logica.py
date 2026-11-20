@@ -19,10 +19,10 @@ PERFILES: Final[dict[str, str]] = {
     # Opciones de la app (13 nov): el modelo grande que pidió el docente va primero. En la
     # prueba 9.3 (RTX 3050), SDXL tardó ~11 s por imagen frente a ~3,5 s de SD 1.5, y sigue
     # el estilo pedido mucho mejor. "calidad" (SD 1.5 con 25 pasos) queda para experimentos.
-    "sdxl": "Modelo grande (SDXL, más detalle)",
-    # 18 nov: la configuración "Avanzada" del resumen de modelos de clase. Más lenta; se
-    # deja de primera cuando la prueba en la RTX 3050 confirme los tiempos.
+    # 20 nov (Diego): la configuración "Avanzada" del resumen de modelos de clase abre por
+    # defecto. Medido en la RTX 3050: ~53 s por imagen con FLUX, ~1 min por ambiente.
     "avanzada": "Avanzada (FLUX, XTTS y Stable Audio; más lenta)",
+    "sdxl": "Modelo grande (SDXL, más rápido)",
     "rapido": "Rápido (SD 1.5)",
 }
 PERFILES_VALIDOS: Final = ("sdxl", "avanzada", "rapido", "calidad")

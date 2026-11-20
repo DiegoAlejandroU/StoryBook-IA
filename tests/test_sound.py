@@ -467,3 +467,42 @@ def test_demostracion_de_respaldo_sin_audio_generativo(
     assert etapa.fallbacks == ["sonido:audioldm:no_disponible"]
     assert falsos["audioldm"].cargas == 0
     assert any("desactivado para demostrar" in e for e in etapa.errores)
+
+
+# ---------------------------------------------------------------------------------------
+# 20 nov · Stable Audio se carga mientras se hace la imagen (perfil Avanzada)
+# ---------------------------------------------------------------------------------------
+class FakeLento(FakeSonido):
+    def cargar(self) -> None:
+        import time
+
+        time.sleep(0.2)  # la escena llega mientras todavía carga
+        super().cargar()
+
+
+def test_stable_audio_se_precarga_una_sola_vez(bible: StoryBible, tmp_path: Path) -> None:
+    falsos = {"sao": FakeLento("sao"), "audioldm": FakeSonido("audioldm")}
+    with _generador(falsos, ["sao", "audioldm"]).sesion(tmp_path) as sesion:
+        assert sesion.precargar() and not sesion.precargar()  # una sola precarga
+        resultado = sesion.escena(bible.escena(1))
+    assert resultado.backend == "sao" and falsos["sao"].cargas == 1
+    assert falsos["audioldm"].cargas == 0 and falsos["sao"].liberado == 1
+
+
+def test_audioldm_no_se_precarga(bible: StoryBible, tmp_path: Path) -> None:
+    """AudioLDM se carga entero en la GPU: precargarlo le quitaría VRAM al LLM y a la imagen."""
+    falsos = {"audioldm": FakeSonido("audioldm")}
+    with _generador(falsos, ["audioldm"]).sesion(tmp_path) as sesion:
+        assert not sesion.precargar() and falsos["audioldm"].cargas == 0
+    cerrada = _generador({"sao": FakeSonido("sao")}, ["sao"]).sesion(tmp_path)
+    with cerrada:
+        pass
+    assert not cerrada.precargar()  # la historia ya terminó
+
+
+def test_el_perfil_avanzada_abre_por_defecto() -> None:
+    from storybook import config, ui_logica
+
+    assert next(iter(ui_logica.PERFILES)) == "avanzada"
+    sonido = config.load_config("avanzada").sound
+    assert sonido.backends[0] == "sao" and sonido.sao_steps == 20 and sonido.cpu_offload

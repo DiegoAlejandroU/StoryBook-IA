@@ -154,7 +154,10 @@ Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté l
 - [x] 9.10 [AUTO] Grupos que pide la idea ("rodeado de gatos") en las ilustraciones, descriptores sin "<>", y primera escena más rápida (modelo de imagen precargado y referencia del protagonista después de la primera ilustración).
 - [ ] 9.11 [WINDOWS] Probar otra vez "Un perro rodeado de gatos en una ciudad" con SDXL: varios gatos en las imágenes y el tiempo de la primera escena. (dep: 9.10, 9.12) — 17 nov: primero `f7_sdxl_prueba.py --ilustrador` sobre la historia del 13 nov (ver bitácora) y después una historia nueva desde la app.
 - [x] 9.13 [AUTO] Reparto e ilustrador fieles a la idea (18 nov, "imágenes que nada que ver"): personas que nombra la idea en el reparto, sin animales que la idea no pide; el ilustrador ya no inventa figuras; sin "an a" en los prompts; el motivo de un fallo del LLM queda en el manifest.
-- [ ] 9.14 [WINDOWS] Perfil Avanzada (FLUX.1-schnell, XTTS-v2, Stable Audio Open): `setup_windows.ps1 -Paso avanzada` (descarga ~38 GB, copia fp8, entorno de XTTS y pruebas `f10_*`). Después, decidir si queda por defecto en la app según los tiempos. (dep: HF_TOKEN y licencias aceptadas)
+- [x] 9.14 [WINDOWS] Perfil Avanzada (FLUX.1-schnell, XTTS-v2, Stable Audio Open): descargado, FLUX en fp8, medido dos veces (19 nov). Diego decidió (20 nov) usarlo completo y por defecto.
+- [x] 9.15 [WINDOWS] Voz XTTS-v2: `setup_windows.ps1 -Paso xtts` (repara `.venv-xtts` y narra la historia del elefante), y después una historia nueva desde la app con el perfil Avanzada (tiempo de la primera escena y de la historia completa). — 20 nov: XTTS en la GPU (carga 21 s, 18–26 s por escena); "Un niño en un parque infantil super feliz" completa en 14 min 47 s, escena 1 a los 3 min 38 s, sin respaldos.
+- [ ] 9.16 [WINDOWS] Comprobar las correcciones del 20 nov con una historia nueva ("Un niño en un parque infantil super feliz"): el protagonista es un niño, las 5 imágenes en acuarela y el libro abre en la escena 1. Después, `setup_windows.ps1 -Paso git`. (dep: 9.17)
+- [x] 9.17 [AUTO] Correcciones del 20 nov: "un niño" pide 'boy' y "una niña" 'girl' (el 'child' genérico se cambia sin otra llamada al LLM), "un pequeño zorro" ya no pide un niño, 'child' con una niña al lado no pone "two children" en el negative, la técnica del estilo abre el prompt de FLUX y el libro abre directo en la escena 1 (sin portada ni índice).
 - [x] 9.12 [AUTO] Imágenes con los personajes que corresponden (17 nov, "faltan o sobran personajes"): el LLM describe aparte qué se ve en cada escena (`PlanoVisual`: principal, acompañantes y cuántos, acción, lugar, plano) y el prompt se arma con eso; cada escena se genera 2 veces y OpenCLIP elige la versión donde mejor se ve a todos (`image/seleccion.py`).
 
 ---
@@ -162,7 +165,7 @@ Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté l
 ## Pendientes para Diego
 - **Estado:** la app funciona de punta a punta desde la interfaz (prueba de Diego, 11 nov 12:37). El 12 nov se agregaron los pedidos del docente (F9): generación por escenas, interfaz tipo libro y personaje foco por escena.
 - **Pendiente:**
-  - 9.14: aceptar en huggingface.co las condiciones de FLUX.1-schnell y Stable Audio Open 1.0, poner `HF_TOKEN` en `.env` y correr `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso avanzada`.
+  - 9.16: con Ollama abierto y los demás programas cerrados, generar en la app "Un niño en un parque infantil super feliz" (Avanzada, infantil) y revisar que sea un niño y todo en acuarela; después `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso git`.
   - 9.11: con Ollama abierto, volver a ilustrar la historia de los gatos con el ilustrador y la mejor de 2 versiones, y después probar la app con una historia nueva:
     `uv run python scripts/f7_sdxl_prueba.py --historia outputs\20261113_150217_un_perro_rodeado_de_gatos_en_u --perfiles sdxl --ilustrador --nombre f9_ilustrador`;
   - 8.2 (ensayo cronometrado con idea y género al azar);
@@ -940,3 +943,31 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - `torchcodec` (sin dependencias) en `.venv-xtts` dentro de `-Paso avanzada`.
   - `torchsde` en `pyproject.toml` (el primer `uv run` actualiza `uv.lock` y lo instala).
 - **Siguiente (Diego):** cerrar VS Code y el navegador, abrir Ollama y repetir `-Paso avanzada` (ya no descarga ni convierte) para medir de nuevo.
+
+### 2026-11-20 11:30 · sesión interactiva (Claude) · 9.14 cerrada, 9.15 para Windows
+- **Segunda medición (19 nov, 17:40–17:51, con VS Code y el navegador cerrados):**
+  - FLUX: **53 s por imagen** (48–62 s; antes 148 s) con T5 por imagen y group offloading con stream. RAM del proceso hasta 17,9 GB y libre mínima 0,01 GB (el pico es al cargar T5); CLIP imagen-texto igual que antes (0,315 frente a 0,298 de SDXL).
+  - Stable Audio Open: funciona (con `torchsde`); **carga 100 s y 62–130 s por clip** de 8 s (30 pasos; un clip repitió por silencio). Las 5 escenas con Stable Audio, ninguna con respaldo.
+  - XTTS: no arrancó otra vez: a coqui-tts le faltó `six` (no la declara). Narró Piper.
+- **Decisión de Diego (20 nov):** perfil Avanzada completo (FLUX + XTTS + Stable Audio) y **por defecto en la app**, aunque cada historia tarde varios minutos.
+- **Cambios para que tarde menos:**
+  - Stable Audio con 20 pasos (antes 30) y precarga en segundo plano apenas termina de cargar FLUX (queda en la RAM con offload; la escena 1 no espera sus ~100 s). AudioLDM no se precarga: va entero a la GPU.
+  - El proceso de XTTS arranca mientras el LLM escribe el plan (y queda vivo entre historias).
+  - `setup_windows.ps1 -Paso xtts`: reinstala lo que falte en `.venv-xtts` importando XTTS y agregando cada módulo que falte (`six`, `setuptools`...), y prueba la voz con la historia del elefante (`docs/evidencias/f10_voz.md`).
+  - La app abre con "Avanzada (FLUX, XTTS y Stable Audio; más lenta)" seleccionado; SDXL y SD 1.5 siguen como opción.
+- Estimado con lo medido: ~2 min por escena (texto ~15 s, imagen ~55 s, voz ~10 s, ambiente ~40 s); la primera escena, ~2,5–3 min; la historia, ~10 min. Queda por medir en la app (9.15).
+- Verificación: 423 tests en verde y 1 que necesita torch; interfaz revisada en modo simulado con el perfil Avanzada por defecto.
+
+### 2026-11-20 12:45 · sesión interactiva (Claude) · 9.15 cerrada, correcciones de reparto, estilo e interfaz
+- **Historia de prueba en la app (9.15):** "Un niño en un parque infantil super feliz" (infantil, Avanzada), 11:21–11:36.
+  - Completa en **886,6 s (14 min 47 s)**; escena 1 lista a los **217,5 s**, después una cada ~2,5–3 min (390,6 / 545,9 / 721,2 / 886,6 s). Sin respaldos ni errores.
+  - FLUX en la GPU: carga 26,9 s y 63–89 s por imagen (pico de VRAM 4,05 de 4,10 GB). XTTS (Ana Florence) en la GPU: 31–37 s por escena. Stable Audio: carga 10,5 s (precargado) y 36–57 s por escena. Texto: 26 s el plan, 12 s la corrección del reparto y ~19 s por escena con su plano.
+  - Diego vio la PC "trabada" y la página sin terminar, pero la historia se guardó completa: con los cuatro modelos la RAM (24 GB) se llena y Windows pagina; la generación sigue aunque la página deje de actualizarse. Se abre desde **Historias guardadas**.
+  - Imágenes: el mismo protagonista en las 5 y la niña en 4 de 5, acordes con el texto. Tres fallas: (1) "un niño" quedó como 'child' con corona de flores y parece niña; (2) la escena 2 salió como foto y no como acuarela; (3) el texto inventó a un tercer niño ("Milo") que no está en el reparto (las imágenes no lo dibujan).
+- **Correcciones (pedido de Diego: "corrige cambios", "quita eso de índice, que de una aparezca la escena 1"):**
+  - `story/reparto.py`: "un niño" pide 'boy' y "una niña" 'girl' (los plurales aceptan cualquier niño). `precisar_personas` cambia el 'child'/'kid' genérico por 'boy'/'girl' sin otra llamada al LLM (el planificador lo aplica al plan y a la Bible). "Pequeño/pequeña" ya no cuenta como persona: con "Un pequeño zorro" se pedía un niño protagonista.
+  - `image/prompt_builder.py`: `misma_familia` ('child' cubre a 'boy' y 'girl'; 'person' a cualquier persona). Con un 'child' y una niña al lado ya no van "two children" al negative ni a lo que se evita al elegir versión.
+  - FLUX: la técnica del estilo ("watercolor with fine linework") abre el prompt y no se recorta; paleta e iluminación siguen al final. SD 1.5 y SDXL no cambian.
+  - Interfaz: sin portada ni índice. El libro abre en la escena 1 al generar (con "Planeando la historia" y la idea mientras se escribe el plan) y al abrir una historia guardada; la navegación va de 1 a 5. Capturas del README rehechas.
+- Verificación: ruff limpio; 430 tests en verde y 1 que necesita torch (en el entorno con torch, también los de FLUX); la interfaz revisada en modo simulado y con la historia de ejemplo real.
+- **Siguiente (Diego):** 9.16.

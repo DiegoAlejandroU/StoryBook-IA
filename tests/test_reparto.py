@@ -259,3 +259,52 @@ def test_la_regla_del_prompt_habla_de_personas_y_de_animales() -> None:
 
     assert "si NO menciona animales, los personajes son personas" in REGLA_REPARTO
     assert "si nombra una persona" in REGLA_REPARTO
+
+
+# ---------------------------------------------------------------------------------------
+# 20 nov: "Un niño" salió como 'child' con corona de flores y FLUX dibujó una niña
+# ---------------------------------------------------------------------------------------
+LUCAS = [
+    _personaje("lucas", "Lucas", "child, age 7, bright red hair, yellow raincoat", "protagonista"),
+    _personaje("sara", "Sara", "girl, age 8, black braids, green dress"),
+]
+
+
+def test_un_nino_es_boy_y_una_nina_es_girl() -> None:
+    from storybook.story.reparto import precisar_personas
+
+    nino = precisar_personas("Un niño en un parque infantil super feliz", LUCAS)
+    assert nino[0].descripcion_visual_fija == "boy, age 7, bright red hair, yellow raincoat"
+    assert nino[1] is LUCAS[1] and LUCAS[0].descripcion_visual_fija.startswith("child")
+    # Ya hay una niña: "una niña" no cambia a nadie; los plurales tampoco.
+    assert precisar_personas("Una niña y su amiga en el parque", LUCAS) == LUCAS
+    assert precisar_personas("Unos niños en la playa", LUCAS) == LUCAS
+    # Dos genéricos: el protagonista es el niño y el otro la niña.
+    dos = [LUCAS[0], _personaje("teo", "Teo", "little kid age 6, green cap")]
+    nino_y_nina = precisar_personas("Un niño y una niña buscan un tesoro", dos)
+    assert [tipo(p) for p in nino_y_nina] == ["boy", "little girl"]
+
+
+def test_el_genero_de_la_idea_se_respeta() -> None:
+    # Un niño varón no cumple "una niña" (antes 'boy' valía para "niña").
+    assert problemas_reparto("Una niña y su perro", [HUMANOS[0], ANIMALES[0]]) == [
+        "La idea nombra 'niña', pero ningún personaje lo es. El protagonista debe ser 'girl' "
+        "(el tipo en inglés al inicio del descriptor).",
+        "La idea nombra 'perro', pero ningún personaje lo es. Uno de los personajes (el "
+        "protagonista, si la idea gira en torno a él) debe ser 'dog'.",
+    ]
+    # 'child' se acepta (lo precisa el código) y no gasta una llamada de corrección.
+    assert problemas_reparto("Un niño en un parque infantil super feliz", LUCAS) == []
+
+
+def test_pequeno_es_adjetivo_no_un_nino() -> None:
+    zorro = [_personaje("pip", "Pip", "young fox age 2, orange fur, white tail", "protagonista")]
+    assert problemas_reparto("Un pequeño zorro en el bosque", zorro) == []
+
+
+def test_el_planificador_precisa_el_nino_sin_otra_llamada(bible_dict: dict[str, Any]) -> None:
+    llm = FakeLLM().encolar("PlanHistoria", _plan(bible_dict, LUCAS))
+    planificador = Planificador(llm, config.load_config("rapido").llm)
+    plan, _ = planificador.planificar(validar_entrada("Un niño en un parque infantil", "infantil"))
+    assert [tipo(p) for p in plan.personajes] == ["boy", "girl"]
+    assert [r.etapa for r in planificador.registro] == ["plan"]

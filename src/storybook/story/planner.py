@@ -44,6 +44,7 @@ from storybook.story.reparto import (
     grupos_pedidos,
     mencionado,
     mensaje_correccion,
+    precisar_personas,
     problemas_reparto,
     singular_ingles,
 )
@@ -248,6 +249,7 @@ class Planificador:
         )
         bible.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
         bible.grupos = grupos_pedidos(solicitud.idea)
+        bible.personajes = precisar_personas(solicitud.idea, bible.personajes)
         return ResultadoPlan(bible=bible, estrategia="una_llamada", llamadas=[registro])
 
     def planificar(self, solicitud: StoryRequest) -> tuple[PlanHistoria, RegistroLlamada]:
@@ -291,6 +293,7 @@ class Planificador:
                     plan, registro, problemas = corregido, registro_corr, restantes
             if problemas:
                 self.avisos.append(AVISO_REPARTO)
+        plan.personajes = precisar_personas(solicitud.idea, plan.personajes)  # 'child' -> 'boy'
         plan.genero = solicitud.genero_efectivo  # lo eligió el usuario, no el LLM
         plan.grupos = grupos_pedidos(solicitud.idea)  # "rodeado de gatos": lo pone el código
         return plan, registro
