@@ -156,9 +156,11 @@ Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté l
 - [x] 9.13 [AUTO] Reparto e ilustrador fieles a la idea (18 nov, "imágenes que nada que ver"): personas que nombra la idea en el reparto, sin animales que la idea no pide; el ilustrador ya no inventa figuras; sin "an a" en los prompts; el motivo de un fallo del LLM queda en el manifest.
 - [x] 9.14 [WINDOWS] Perfil Avanzada (FLUX.1-schnell, XTTS-v2, Stable Audio Open): descargado, FLUX en fp8, medido dos veces (19 nov). Diego decidió (20 nov) usarlo completo y por defecto.
 - [x] 9.15 [WINDOWS] Voz XTTS-v2: `setup_windows.ps1 -Paso xtts` (repara `.venv-xtts` y narra la historia del elefante), y después una historia nueva desde la app con el perfil Avanzada (tiempo de la primera escena y de la historia completa). — 20 nov: XTTS en la GPU (carga 21 s, 18–26 s por escena); "Un niño en un parque infantil super feliz" completa en 14 min 47 s, escena 1 a los 3 min 38 s, sin respaldos.
-- [ ] 9.16 [WINDOWS] Comprobar las correcciones del 20 nov con una historia nueva ("Un niño en un parque infantil super feliz"): el protagonista es un niño, las 5 imágenes en acuarela y el libro abre en la escena 1. Después, `setup_windows.ps1 -Paso git`. (dep: 9.17)
+- [x] 9.16 [WINDOWS] Comprobar las correcciones del 20 nov con una historia nueva ("Un niño en un parque infantil super feliz"): el protagonista es un niño, las 5 imágenes en acuarela y el libro abre en la escena 1. Después, `setup_windows.ps1 -Paso git`. (dep: 9.17)
 - [x] 9.18 [AUTO] Perfil Avanzada sin Stable Audio Open (23 nov, decisión de Diego): ambiente con AudioLDM (~2 s por escena en vez de ~38 s).
-- [ ] 9.19 [WINDOWS] Generar "Un niño en un parque infantil super feliz" con Avanzada tras el cambio de 9.18: que salga un niño (cierra 9.16), tiempo de la escena 1 y total; después `setup_windows.ps1 -Paso git`. (dep: 9.18)
+- [x] 9.19 [WINDOWS] Generar "Un niño en un parque infantil super feliz" con Avanzada tras el cambio de 9.18: que salga un niño (cierra 9.16), tiempo de la escena 1 y total; después `setup_windows.ps1 -Paso git`. (dep: 9.18) — 23 nov: commit `1a8b850`; un niño en las 5 imágenes, todas en acuarela; escena 1 a los 200 s, historia en 845 s.
+- [x] 9.20 [AUTO] Soltar la VRAM de la imagen antes de la voz (23 nov): XTTS tardó el doble en las escenas 2 y 4.
+- [ ] 9.21 [WINDOWS] Otra historia con Avanzada para medir 9.20 (voz ~30 s y ambiente ~2 s en todas las escenas) y `setup_windows.ps1 -Paso git`. (dep: 9.20)
 - [x] 9.17 [AUTO] Correcciones del 20 nov: "un niño" pide 'boy' y "una niña" 'girl' (el 'child' genérico se cambia sin otra llamada al LLM), "un pequeño zorro" ya no pide un niño, 'child' con una niña al lado no pone "two children" en el negative, la técnica del estilo abre el prompt de FLUX y el libro abre directo en la escena 1 (sin portada ni índice).
 - [x] 9.12 [AUTO] Imágenes con los personajes que corresponden (17 nov, "faltan o sobran personajes"): el LLM describe aparte qué se ve en cada escena (`PlanoVisual`: principal, acompañantes y cuántos, acción, lugar, plano) y el prompt se arma con eso; cada escena se genera 2 veces y OpenCLIP elige la versión donde mejor se ve a todos (`image/seleccion.py`).
 
@@ -167,7 +169,7 @@ Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté l
 ## Pendientes para Diego
 - **Estado:** la app funciona de punta a punta desde la interfaz (prueba de Diego, 11 nov 12:37). El 12 nov se agregaron los pedidos del docente (F9): generación por escenas, interfaz tipo libro y personaje foco por escena.
 - **Pendiente:**
-  - 9.19 (incluye 9.16): reabrir la app, generar "Un niño en un parque infantil super feliz" (Avanzada, infantil) con los demás programas cerrados, revisar que sea un niño y anotar los tiempos; después `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso git`.
+  - 9.21: subir con `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso git`, reabrir la app y generar otra historia con Avanzada para medir la voz y el ambiente.
   - 9.11: con Ollama abierto, volver a ilustrar la historia de los gatos con el ilustrador y la mejor de 2 versiones, y después probar la app con una historia nueva:
     `uv run python scripts/f7_sdxl_prueba.py --historia outputs\20261113_150217_un_perro_rodeado_de_gatos_en_u --perfiles sdxl --ilustrador --nombre f9_ilustrador`;
   - 8.2 (ensayo cronometrado con idea y género al azar);
@@ -983,3 +985,13 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - Etiqueta del perfil: "Avanzada (FLUX y XTTS; más lenta)". README, MODELS.md y CLAUDE.md al día. Sin precarga de sonido (solo aplica a Stable Audio).
   - Esperado: ~36 s menos por escena, ~12 min por historia y menos presión sobre la RAM.
 - **Siguiente (Diego):** 9.19.
+
+### 2026-11-23 11:55 · sesión interactiva (Claude) · 9.19 medida, VRAM suelta antes de la voz
+- Diego subió 9.18 (commit `1a8b850`) y generó "Un niño en un parque infantil super feliz" (infantil, Avanzada, 11:28).
+  - Completa en **845,5 s (14 min 5 s)**, escena 1 a los **200 s**; sin respaldos. Mismo plan que el 20 nov (misma seed) para comparar.
+  - Reparto: Lucas ahora es "boy, age 7…" (9.17 funcionó) y se ve como niño en las 5 imágenes; todas en acuarela (la técnica abre el prompt). Sara aparece en 3 de 5.
+  - Por escena: FLUX 66–103 s, texto ~19 s (sin reintentos), AudioLDM 2–4 s en las escenas 1, 3 y 5, pero **21–22 s en la 2 y la 4**; XTTS ~30 s en 1, 3 y 5 y **66–76 s en la 2 y la 4** (RTF 1,6–1,8).
+  - Causa: después de la imagen la GPU seguía con 4,05 de 4,10 GB ocupados (caché de torch del proceso de la app); XTTS, en su propio proceso, no tenía VRAM libre y Windows le daba memoria compartida (lenta). Solo se soltaba al empezar la escena siguiente, antes del LLM.
+- **Corrección:** `progresivo.py` estaciona la imagen (CLIP-L y VAE a la RAM y `empty_cache`) justo después de ilustrar y antes de narrar. En SD 1.5/SDXL no agrega trabajo: el mismo paso ya ocurría antes del LLM de la escena siguiente. Prueba `test_la_vram_de_la_imagen_se_suelta_antes_de_la_voz` (falla sin el cambio).
+  - Esperado: ~120 s menos por historia (voz ~30 s y ambiente ~2 s en todas las escenas): unos 12 min.
+- **Siguiente (Diego):** 9.21.

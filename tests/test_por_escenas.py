@@ -387,3 +387,38 @@ def test_si_falla_antes_de_ilustrar_se_suelta_el_modelo_precargado(
             cfg, tmp_path, llm=LLMQueFalla(falla_en=1), backend_imagen=imagen
         ).generar_por_escenas(IDEA, "misterio")
     assert len(imagen.cargas) == 1 and imagen.liberado >= 1
+
+
+def test_la_vram_de_la_imagen_se_suelta_antes_de_la_voz(
+    cfg: config.AppConfig, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """23 nov: con la caché de torch llena, XTTS (otro proceso) narró al doble de tiempo."""
+    from storybook.image.generator import SesionImagen
+
+    eventos: list[str] = []
+    escena_original, estacionar_original = SesionImagen.escena, SesionImagen.estacionar
+
+    def escena(self: SesionImagen, *args: Any, **kwargs: Any) -> Any:
+        eventos.append("imagen")
+        return escena_original(self, *args, **kwargs)
+
+    def estacionar(self: SesionImagen) -> None:
+        eventos.append("estacionar")
+        estacionar_original(self)
+
+    monkeypatch.setattr(SesionImagen, "escena", escena)
+    monkeypatch.setattr(SesionImagen, "estacionar", estacionar)
+    voz = VozSimulada()
+    sintetizar_original = voz.sintetizar
+
+    def sintetizar(texto: str) -> Any:
+        eventos.append("voz")
+        return sintetizar_original(texto)
+
+    voz.sintetizar = sintetizar  # type: ignore[method-assign]
+    _pipeline(cfg, tmp_path, backend_voz=voz).generar_por_escenas(IDEA, "misterio")
+    sin_repetidos = [e for i, e in enumerate(eventos) if i == 0 or e != eventos[i - 1]]
+    assert sin_repetidos.count("voz") == 5
+    for i, evento in enumerate(sin_repetidos):
+        if evento == "voz":
+            assert sin_repetidos[i - 1] == "estacionar", sin_repetidos

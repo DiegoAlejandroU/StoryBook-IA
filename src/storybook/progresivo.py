@@ -348,6 +348,10 @@ class GeneracionPorEscenas:
             parcial = sesion_img.etapa.bible
             self.manifest["etapas"]["imagen"] = sesion_img.etapa.a_dict()
             self._agregar_fallbacks(sesion_img.etapa.fallbacks)
+            # 23 nov: torch guardaba en caché la VRAM de la imagen (4,05 de 4,10 GB ocupados) y
+            # XTTS, en otro proceso, narraba sin GPU propia: 66-76 s en vez de ~30 s en las
+            # escenas 2 y 4, y AudioLDM 21 s en vez de 2 s. Se suelta antes de la voz.
+            sesion_img.estacionar()
         else:
             imagen_respaldo(cfg.image.width, cfg.image.height, numero).save(
                 self.carpeta / nombre_archivo_escena(numero)
