@@ -8,8 +8,10 @@
 #     GPU. Sin IP-Adapter (no hay uno oficial para FLUX) ni negative prompt (schnell no usa
 #     CFG): la consistencia viene del descriptor, que FLUX sigue mucho mejor que SD.
 #   * XTTS-v2: en su propio entorno (.venv-xtts) y en la GPU solo mientras narra.
-#   * Stable Audio Open 1.0: primero en la cadena de sonido; si no está, AudioLDM.
-# Tiempos: medir con scripts/f10_avanzada_prueba.py antes de usarlo en la sustentación.
+#   * Ambiente con AudioLDM (23 nov, decisión de Diego): Stable Audio Open 1.0 tardaba
+#     ~38 s por escena (para 8 s de fondo bajo la voz) y la historia llegaba a ~15 min;
+#     AudioLDM tarda ~2 s. Sigue descargado y se puede volver a poner primero en la cadena.
+# Tiempos medidos el 20 nov (con Stable Audio): escena 1 a los ~3,2 min, historia en ~15 min.
 extends: rapido
 
 image:
@@ -36,5 +38,5 @@ voice:
   xtts_speaker: Ana Florence
 
 sound:
-  backends: [sao, sa3, audioldm, library, procedural]
-  sao_steps: 20                                # 20 nov: con 30 tardó 60-130 s por clip en la RTX 3050
+  backends: [audioldm, library, procedural]    # 23 nov: sin Stable Audio Open (~38 s por escena)
+  sao_steps: 20                                # solo si se vuelve a poner "sao" en la cadena

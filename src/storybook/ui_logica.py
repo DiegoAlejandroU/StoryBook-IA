@@ -21,7 +21,7 @@ PERFILES: Final[dict[str, str]] = {
     # el estilo pedido mucho mejor. "calidad" (SD 1.5 con 25 pasos) queda para experimentos.
     # 20 nov (Diego): la configuración "Avanzada" del resumen de modelos de clase abre por
     # defecto. Medido en la RTX 3050: ~53 s por imagen con FLUX, ~1 min por ambiente.
-    "avanzada": "Avanzada (FLUX, XTTS y Stable Audio; más lenta)",
+    "avanzada": "Avanzada (FLUX y XTTS; más lenta)",
     "sdxl": "Modelo grande (SDXL, más rápido)",
     "rapido": "Rápido (SD 1.5)",
 }

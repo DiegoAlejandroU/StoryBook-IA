@@ -81,7 +81,7 @@ cada modelo, con la misma cuenta del token: `stabilityai/stable-audio-3-small-sf
 AudioLDM (`cvssp/audioldm`, no requiere token) y, si tampoco está, con la biblioteca CC0 y la
 síntesis procedural.
 
-### Perfil Avanzada (FLUX.1-schnell, XTTS-v2 y Stable Audio Open)
+### Perfil Avanzada (FLUX.1-schnell y XTTS-v2)
 
 Opcional y más lento. Además de lo anterior, acepta las condiciones de
 `black-forest-labs/FLUX.1-schnell` en Hugging Face (con la misma cuenta del token) y ejecuta:
@@ -92,9 +92,10 @@ powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso avanz
 
 Descarga ~38 GB, crea una copia de FLUX en fp8 (~17 GB en `models/flux-schnell-fp8`) y un
 entorno aparte para XTTS-v2 (`.venv-xtts`, porque necesita `torchaudio`). XTTS-v2 usa la
-licencia CPML de Coqui (solo uso no comercial). Si XTTS o Stable Audio no están, la app narra
-con Piper y ambienta con AudioLDM; FLUX, en cambio, debe estar descargado y convertido para
-elegir este perfil.
+licencia CPML de Coqui (solo uso no comercial). El ambiente lo genera AudioLDM: Stable Audio
+Open también se descarga, pero desde el 23 nov no se usa porque llevaba la historia a ~15 min.
+Si XTTS no arranca, la app narra con Piper; FLUX, en cambio, debe estar descargado y convertido
+para elegir este perfil. Una historia tarda ~12 min y la escena 1 sale hacia los 3 min.
 
 ## Usar la aplicación
 

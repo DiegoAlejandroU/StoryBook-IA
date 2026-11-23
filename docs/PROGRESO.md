@@ -157,6 +157,8 @@ Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté l
 - [x] 9.14 [WINDOWS] Perfil Avanzada (FLUX.1-schnell, XTTS-v2, Stable Audio Open): descargado, FLUX en fp8, medido dos veces (19 nov). Diego decidió (20 nov) usarlo completo y por defecto.
 - [x] 9.15 [WINDOWS] Voz XTTS-v2: `setup_windows.ps1 -Paso xtts` (repara `.venv-xtts` y narra la historia del elefante), y después una historia nueva desde la app con el perfil Avanzada (tiempo de la primera escena y de la historia completa). — 20 nov: XTTS en la GPU (carga 21 s, 18–26 s por escena); "Un niño en un parque infantil super feliz" completa en 14 min 47 s, escena 1 a los 3 min 38 s, sin respaldos.
 - [ ] 9.16 [WINDOWS] Comprobar las correcciones del 20 nov con una historia nueva ("Un niño en un parque infantil super feliz"): el protagonista es un niño, las 5 imágenes en acuarela y el libro abre en la escena 1. Después, `setup_windows.ps1 -Paso git`. (dep: 9.17)
+- [x] 9.18 [AUTO] Perfil Avanzada sin Stable Audio Open (23 nov, decisión de Diego): ambiente con AudioLDM (~2 s por escena en vez de ~38 s).
+- [ ] 9.19 [WINDOWS] Generar "Un niño en un parque infantil super feliz" con Avanzada tras el cambio de 9.18: que salga un niño (cierra 9.16), tiempo de la escena 1 y total; después `setup_windows.ps1 -Paso git`. (dep: 9.18)
 - [x] 9.17 [AUTO] Correcciones del 20 nov: "un niño" pide 'boy' y "una niña" 'girl' (el 'child' genérico se cambia sin otra llamada al LLM), "un pequeño zorro" ya no pide un niño, 'child' con una niña al lado no pone "two children" en el negative, la técnica del estilo abre el prompt de FLUX y el libro abre directo en la escena 1 (sin portada ni índice).
 - [x] 9.12 [AUTO] Imágenes con los personajes que corresponden (17 nov, "faltan o sobran personajes"): el LLM describe aparte qué se ve en cada escena (`PlanoVisual`: principal, acompañantes y cuántos, acción, lugar, plano) y el prompt se arma con eso; cada escena se genera 2 veces y OpenCLIP elige la versión donde mejor se ve a todos (`image/seleccion.py`).
 
@@ -165,7 +167,7 @@ Nota de voz del docente: generar por escenas (mostrar la escena 1 apenas esté l
 ## Pendientes para Diego
 - **Estado:** la app funciona de punta a punta desde la interfaz (prueba de Diego, 11 nov 12:37). El 12 nov se agregaron los pedidos del docente (F9): generación por escenas, interfaz tipo libro y personaje foco por escena.
 - **Pendiente:**
-  - 9.16: con Ollama abierto y los demás programas cerrados, generar en la app "Un niño en un parque infantil super feliz" (Avanzada, infantil) y revisar que sea un niño y todo en acuarela; después `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso git`.
+  - 9.19 (incluye 9.16): reabrir la app, generar "Un niño en un parque infantil super feliz" (Avanzada, infantil) con los demás programas cerrados, revisar que sea un niño y anotar los tiempos; después `powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso git`.
   - 9.11: con Ollama abierto, volver a ilustrar la historia de los gatos con el ilustrador y la mejor de 2 versiones, y después probar la app con una historia nueva:
     `uv run python scripts/f7_sdxl_prueba.py --historia outputs\20261113_150217_un_perro_rodeado_de_gatos_en_u --perfiles sdxl --ilustrador --nombre f9_ilustrador`;
   - 8.2 (ensayo cronometrado con idea y género al azar);
@@ -971,3 +973,13 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
   - Interfaz: sin portada ni índice. El libro abre en la escena 1 al generar (con "Planeando la historia" y la idea mientras se escribe el plan) y al abrir una historia guardada; la navegación va de 1 a 5. Capturas del README rehechas.
 - Verificación: ruff limpio; 430 tests en verde y 1 que necesita torch (en el entorno con torch, también los de FLUX); la interfaz revisada en modo simulado y con la historia de ejemplo real.
 - **Siguiente (Diego):** 9.16.
+
+### 2026-11-23 11:30 · sesión interactiva (Claude) · Avanzada sin Stable Audio
+- **Historia del 20 nov a las 15:00** ("Un avión cayendo hacia un edificio.", ciencia ficción, Avanzada, ya con las correcciones de 9.17): completa en **894,4 s (14 min 54 s)**, escena 1 a los **193,4 s**; sin respaldos. Las 5 imágenes con el mismo piloto y el mismo estilo (la técnica al principio del prompt funcionó).
+  - Por escena (~3 min): imagen FLUX 60–80 s, ambiente Stable Audio 35–40 s (para 8 s de audio), voz XTTS 31–42 s y texto ~29 s (escenas 2–4 con un reintento: "prompt_imagen debe estar en inglés").
+  - Diego: "siempre se demora". Opciones que se le dieron: dejarlo igual (~15 min), Avanzada sin Stable Audio (~11–12 min) o SDXL por defecto (~4,5 min, sin esperas entre escenas).
+- **Decisión de Diego (23 nov): "Hagamos entonces el cambio sin Stable".**
+  - `configs/avanzada.yaml`: sonido `[audioldm, library, procedural]` (AudioLDM tardó 1,5–2,4 s por escena en las historias SDXL). Stable Audio sigue descargado; para volver basta con poner `sao` primero en la cadena.
+  - Etiqueta del perfil: "Avanzada (FLUX y XTTS; más lenta)". README, MODELS.md y CLAUDE.md al día. Sin precarga de sonido (solo aplica a Stable Audio).
+  - Esperado: ~36 s menos por escena, ~12 min por historia y menos presión sobre la RAM.
+- **Siguiente (Diego):** 9.19.

@@ -356,6 +356,7 @@ Resumen (Fase 0):
 - Stable Audio Open Small: depende de `stable-audio-tools`, incompatible con el entorno.
 - FLUX: no cabe en 4 GB. SDXL (DreamShaper XL Lightning con UNet fp8 + offload) está en prueba desde el 12 nov (tarea 9.3). **18 nov:** FLUX.1-schnell entra en el perfil `avanzada` con copia local en fp8 en la RAM y group offloading (tarea 9.14).
 - XTTS-v2: compite por VRAM y su licencia CPML restringe el uso. **18 nov:** Diego aceptó la CPML; va en el perfil `avanzada`, en `.venv-xtts` y en la GPU solo mientras narra (respaldo: Piper).
+- Stable Audio Open 1.0 en `avanzada`: **23 nov**, Diego lo quitó (≈38 s por escena, historia de ≈15 min); el ambiente de `avanzada` es AudioLDM → biblioteca → procedural.
 
 **Fuentes de los pesos:**
 - Usar solo repositorios y tags oficiales: `stabilityai/*`, `Lykon/dreamshaper-8`, `latent-consistency/*`, `h94/IP-Adapter`, `rhasspy/piper-voices`, `Systran/*` y `laion/*` en Hugging Face, y la librería oficial de Ollama (comprobar el tag exacto con `ollama pull` / `ollama show`).

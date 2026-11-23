@@ -73,7 +73,7 @@ El curso entregó un resumen orientativo de modelos y combinaciones ("Accesible"
 | XTTS-v2 | **Perfil Avanzada** (18 nov, en prueba) | Voz más natural que Piper. Se usa una voz incluida en el modelo (sin clonar a nadie). Corre en su propio entorno porque necesita `torchaudio`. |
 | AudioLDM | **Backend de sonido en uso** | 421M parámetros, cabe en 4 GB y no exige aceptar licencias; garantiza sonido generado aunque falte el acceso a Stable Audio. |
 | MusicGen Small | No incluido | El enunciado pide ambientes y efectos por escena, no música; su licencia es CC BY-NC 4.0. Queda como trabajo futuro. |
-| Stable Audio Open 1.0 | Primero en la cadena del perfil Avanzada (por defecto desde el 20 nov) y en la del perfil calidad | Mejor calidad que AudioLDM. Medido en la RTX 3050: 100 s de carga (se precarga mientras se hace la imagen) y 62–130 s por clip de 8 s con 30 pasos (ahora 20). Exige aceptar su licencia (HF_TOKEN). |
+| Stable Audio Open 1.0 | Descargado; fuera del perfil Avanzada desde el 23 nov (sigue en la cadena del perfil calidad) | Mejor calidad que AudioLDM, pero lento en la RTX 3050: 62–130 s por clip de 8 s con 30 pasos y ~38 s con 20 dentro de la app, la cuarta parte de una historia de 15 min. Diego decidió (23 nov) ambientar Avanzada con AudioLDM (~2 s por escena). Exige aceptar su licencia (HF_TOKEN). |
 | — (posterior al resumen) Stable Audio 3 Small-SFX | Primera opción de la cadena de sonido | Publicado en mayo de 2026 y pensado para efectos de sonido en portátiles de consumo. Exige aceptar su licencia: en el equipo de referencia no está, así que se usa AudioLDM. |
 
 Herramientas del resumen usadas: Transformers, Diffusers, Ollama, Piper y Streamlit. No se usan

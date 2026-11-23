@@ -505,4 +505,6 @@ def test_el_perfil_avanzada_abre_por_defecto() -> None:
 
     assert next(iter(ui_logica.PERFILES)) == "avanzada"
     sonido = config.load_config("avanzada").sound
-    assert sonido.backends[0] == "sao" and sonido.sao_steps == 20 and sonido.cpu_offload
+    # 23 nov: sin Stable Audio (38 s por escena); AudioLDM primero, sin precarga.
+    assert sonido.backends == ["audioldm", "library", "procedural"]
+    assert "sao" not in sonido.backends and "sa3" not in sonido.backends
