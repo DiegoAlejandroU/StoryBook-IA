@@ -130,8 +130,9 @@ Este archivo es el estado compartido entre todas las sesiones de trabajo: Diego,
   - Hecho en la sesión interactiva del 11 nov (ver la bitácora). Sin `[DATO PENDIENTE]`: las mediciones ya existen.
 - [x] 7.2 [AUTO] Borrador del informe técnico en `docs/informe/informe.md` con las 12 secciones de CLAUDE.md §16, marcando `[DATO PENDIENTE]` donde falten resultados reales. (dep: 7.1)
   - Hecho el 11 nov: `docs/informe/informe.md` y un primer `informe.pdf` (21 páginas). Quedan 3 `[DATO PENDIENTE]`: nombre del docente, lista 1–5 y enlace del video.
-- [ ] 7.3 [WINDOWS] Completar el informe con los datos reales y exportarlo a PDF; grabar el video demo. (dep: 6.2, 7.2)
+- [x] 7.3 [WINDOWS] Completar el informe con los datos reales y exportarlo a PDF; grabar el video demo. (dep: 6.2, 7.2)
   - **Video pospuesto** por decisión de Diego (11 nov): por ahora la prioridad es que la app funcione para mostrársela al docente.
+  - 23 nov: informe reescrito para la versión final (tres perfiles, generación por escenas, ilustrador, FLUX en 4 GB, XTTS, comparación del 23 nov, revisión manual por conteos) y PDF regenerado (24 páginas). Diego grabó el video con el perfil Rápido. Con el docente (Diego Alejandro Vela Beltrán) y el video (<https://youtu.be/Me1E_QfSmLE>, perfil Rápido) en la portada del informe y en el README.
 
 ## F8 · Sustentación
 - [x] 8.1 [AUTO] `docs/sustentacion.md`: guion de la demo, plan B, 30 preguntas probables del jurado con respuestas cortas y fundamentadas. (dep: 7.1)
@@ -995,3 +996,31 @@ Seguido de: archivos creados o modificados · resultado de pytest y ruff · pend
 - **Corrección:** `progresivo.py` estaciona la imagen (CLIP-L y VAE a la RAM y `empty_cache`) justo después de ilustrar y antes de narrar. En SD 1.5/SDXL no agrega trabajo: el mismo paso ya ocurría antes del LLM de la escena siguiente. Prueba `test_la_vram_de_la_imagen_se_suelta_antes_de_la_voz` (falla sin el cambio).
   - Esperado: ~120 s menos por historia (voz ~30 s y ambiente ~2 s en todas las escenas): unos 12 min.
 - **Siguiente (Diego):** 9.21.
+
+### 2026-11-23 12:30 · sesión interactiva (Claude) · la misma historia con los tres perfiles y material de la presentación
+- 9.20 medido: "Una chica en un edificio esta en un pasillo con demasiadas puertas" (fantasía, Avanzada, 11:57) completa en **674,2 s (11 min 14 s)**, escena 1 a los 190,7 s. XTTS 27–34 s y AudioLDM 2–3 s en todas las escenas (antes 66–76 s y 21 s en dos de ellas); FLUX 54–79 s por imagen.
+- Pedido de Diego: "una historia con cada modelo y hacer una presentación". La misma idea y el mismo género con Rápido (12:16) y Modelo grande (12:22); el LLM escribió la misma historia ("Las Puertas Olvidadas", Luna y Sara) en las tres:
+
+| Perfil | Escena 1 lista | Historia completa | Imagen por escena | Voz por escena |
+|---|---|---|---|---|
+| Rápido (SD 1.5) | 92,1 s | 258,7 s (4 min 19 s) | ~10 s (2 versiones) | 1,3–3,1 s (Piper) |
+| Modelo grande (SDXL) | 97,9 s | 360,9 s (6 min 1 s) | ~30 s (2 versiones) | 1,3–1,9 s (Piper) |
+| Avanzada (FLUX) | 190,7 s | 674,2 s (11 min 14 s) | 54–79 s (1 versión) | 27–34 s (XTTS) |
+
+  - Sara debía aparecer en las escenas 2, 3 y 4: SD 1.5 0 de 3, SDXL 0 de 3, FLUX 3 de 3. La caja de madera de Luna, en las 5 escenas solo con FLUX. SD 1.5 se acerca a una foto; SDXL y FLUX respetan la acuarela.
+  - Rápido y Modelo grande terminan "con respaldos" por `sonido:sa3:no_disponible` (Stable Audio 3 no está descargado; el ambiente lo hace AudioLDM).
+- `docs/presentacion/`: imágenes para las diapositivas (portada, captura de la app, la misma historia con los tres modelos, tiras por modelo, antes y después del niño, historia de ciencia ficción, gráfica de consistencia) y `prompt_claude_design.md` (12 diapositivas con los datos reales y notas del orador).
+
+### 2026-11-23 15:10 · sesión interactiva (Claude) · entregables: informe, README y diagramas
+- Diego pidió revisar la sección 7 del enunciado (entregables). Estado:
+  - repositorio público con licencia MIT ✓; no hay claves, modelos, salidas ni enunciado en git ✓;
+  - el informe y el README estaban en el estado del 11 nov ✗; el video no estaba grabado ✗.
+- **Informe** (`docs/informe/informe.md` → `informe.pdf`, 24 páginas):
+  - tres perfiles y por qué cada modelo; FLUX.1-schnell en 4 GB (fp8, group offloading, T5 por imagen); XTTS en su propio entorno;
+  - generación por escenas, reparto, ilustrador, mejor de 2 versiones;
+  - secciones 8.7 (modelos más grandes), 8.8 (la misma historia con los tres perfiles) y 8.9 (optimización de Avanzada: 14 min 54 s → 11 min 14 s);
+  - la lista 1–5 pendiente se reemplazó por una revisión manual con conteos verificables (Sara 0/3, 0/3, 3/3; caja 0/5, 1/5, 5/5; estilo 0/5, 5/5, 5/5);
+  - CPU (i5-11400H), versiones, memoria y disco por perfil; limitaciones, ética y licencias al día (XTTS-v2 CPML, FLUX Apache 2.0); 7 referencias nuevas (SDXL, SDXL-Lightning, rectified flow, LADD, FLUX, T5, FP8, XTTS).
+- **Diagramas** (`docs/informe/diagramas/` y los Mermaid de `docs/arquitectura.md`): flujo de datos por escenas, componentes, secuencia por escena con el proceso de XTTS y alternativas por etapa.
+- **README:** estado del 23 nov, CPU, RAM y disco por perfil, versiones, ejemplo de uso con los tiempos de los tres perfiles y la imagen comparativa, resultados de los tres perfiles.
+- 14:55: docente y enlace del video agregados al informe y al README; PDF regenerado. Siguiente (Diego): `setup_windows.ps1 -Paso git`.

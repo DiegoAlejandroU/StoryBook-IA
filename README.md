@@ -6,28 +6,37 @@ con voz sintética en español y ambientación sonora. Todos los modelos se ejec
 local; no se usan APIs de pago ni servicios de inferencia remotos.
 
 Proyecto integrador · Electiva Ingeniería Aplicada – Inteligencia Artificial Generativa ·
-Ingeniería de Sistemas · Universidad Santo Tomás, Seccional Tunja · 2026.
+Ingeniería de Sistemas · Universidad Santo Tomás, Seccional Tunja · 2026. Docente: Diego Alejandro
+Vela Beltrán.
 
-> **Estado (11 nov 2026):** aplicación completa y probada en el equipo de referencia: texto,
-> imagen, voz, sonido, mezcla, interfaz, verificación sin conexión, historias de ejemplo y
-> batería de experimentos. En curso: informe técnico, video y ensayo de la sustentación.
+> **Estado (23 nov 2026):** versión final, probada en el equipo de referencia. Tres perfiles
+> de modelos: **Avanzada** (por defecto: FLUX.1-schnell y XTTS-v2), **Modelo grande** (SDXL)
+> y **Rápido** (SD 1.5). Documento técnico: [`docs/informe/informe.pdf`](docs/informe/informe.pdf).
+> Video demo: <https://youtu.be/Me1E_QfSmLE>.
 
 | Documento | Contenido |
 |---|---|
+| [`docs/informe/informe.pdf`](docs/informe/informe.pdf) | Documento técnico: problema, arquitectura, modelos, consistencia, experimentos, resultados, limitaciones y ética |
 | [`docs/arquitectura.md`](docs/arquitectura.md) | Componentes, flujo de datos, uso de la GPU, alternativas automáticas y decisiones de diseño, con diagramas |
 | [`docs/informe/analisis_experimentos.md`](docs/informe/analisis_experimentos.md) | Resultados de los experimentos (consistencia visual, tiempos, sonido y LLM) |
 | [`MODELS.md`](MODELS.md) | Modelos, revisiones, licencias y mediciones |
 | [`docs/PROGRESO.md`](docs/PROGRESO.md) | Tareas y bitácora de cada prueba |
+| [`docs/sustentacion.md`](docs/sustentacion.md) · [`docs/presentacion/`](docs/presentacion/) | Guion de la sustentación, preguntas probables e imágenes de la presentación |
 
 ## Requisitos
 
 | | Mínimo | Equipo de referencia (pruebas y sustentación) |
 |---|---|---|
 | SO | Windows 10/11 x64 | Windows 11 Home x64 (build 26200) |
-| GPU | NVIDIA con 4 GB de VRAM (Ampere o superior), driver con CUDA 13.2 | RTX 3050 Laptop 4 GB |
-| RAM | 16 GB | 24 GB |
-| Disco | 25 GB libres | — |
-| Software | [uv](https://docs.astral.sh/uv/), [Ollama](https://ollama.com), Git | — |
+| CPU | x64 con 4 núcleos | Intel Core i5-11400H, 6 núcleos / 12 hilos |
+| GPU | NVIDIA con 4 GB de VRAM (Ampere o superior), driver con CUDA 13.2 | RTX 3050 Laptop 4 GB (75 W), driver 617.42 |
+| RAM | 16 GB para Rápido y Modelo grande; **24 GB para Avanzada** | 24 GB |
+| Disco | ~10 GB (Rápido) + ~7 GB (Modelo grande) + ~53 GB (Avanzada) | — |
+| Software | [uv](https://docs.astral.sh/uv/), [Ollama](https://ollama.com), Git | Python 3.12.10, Ollama 0.40.16 |
+
+Versiones de referencia: torch 2.15.0+cu132, diffusers 0.42.1, transformers 5.22.2, accelerate
+1.15.0, piper-tts 1.8.0 y, en el entorno de XTTS (`.venv-xtts`), torch 2.11 con coqui-tts
+0.28.0. El `manifest.json` de cada historia guarda las versiones exactas usadas.
 
 Sin GPU NVIDIA, la aplicación solo funciona en modo simulado (`--mock`) y para abrir las
 historias de ejemplo de `samples/`: generar texto, imágenes y sonido reales requiere la GPU.
@@ -90,12 +99,13 @@ Opcional y más lento. Además de lo anterior, acepta las condiciones de
 powershell -ExecutionPolicy Bypass -File .\scripts\setup_windows.ps1 -Paso avanzada
 ```
 
-Descarga ~38 GB, crea una copia de FLUX en fp8 (~17 GB en `models/flux-schnell-fp8`) y un
+Descarga ~34 GB, crea una copia de FLUX en fp8 (~19 GB en `models/flux-schnell-fp8`) y un
 entorno aparte para XTTS-v2 (`.venv-xtts`, porque necesita `torchaudio`). XTTS-v2 usa la
 licencia CPML de Coqui (solo uso no comercial). El ambiente lo genera AudioLDM: Stable Audio
 Open también se descarga, pero desde el 23 nov no se usa porque llevaba la historia a ~15 min.
 Si XTTS no arranca, la app narra con Piper; FLUX, en cambio, debe estar descargado y convertido
-para elegir este perfil. Una historia tarda ~12 min y la escena 1 sale hacia los 3 min.
+para elegir este perfil. Una historia tarda ~11 min y la escena 1 sale hacia los 3 min.
+Mientras genera, el proceso usa hasta ~18 GB de RAM: conviene cerrar los demás programas.
 
 ## Usar la aplicación
 
@@ -131,6 +141,18 @@ En la app (con forma de libro y sin scroll):
 5. En **Historias guardadas** se abren las historias anteriores (`outputs/`) y los
    ejemplos (`samples/`).
 
+**Ejemplo de uso.** Idea "Una chica en un edificio esta en un pasillo con demasiadas
+puertas", género **Fantasía**. Con cada perfil sale la misma historia, "Las Puertas
+Olvidadas", con 5 escenas ilustradas, narradas y ambientadas:
+
+| Perfil | Escena 1 lista | Historia completa |
+|---|---|---|
+| Rápido (SD 1.5 + Piper) | 92 s | 4 min 19 s |
+| Modelo grande (SDXL + Piper) | 98 s | 6 min 1 s |
+| Avanzada (FLUX.1-schnell + XTTS-v2) | 191 s | 11 min 14 s |
+
+![La misma historia con SD 1.5, SDXL y FLUX.1-schnell](docs/informe/capturas/misma_historia_tres_modelos.jpg)
+
 Cada historia queda en `outputs/<run_id>/` con `story.json`, las imágenes, los audios y
 `manifest.json`. El manifest registra modelos, seeds, parámetros, hardware, tiempos,
 alternativas usadas y errores.
@@ -160,12 +182,25 @@ Lucian" (misterio), "La Biblia del Dragón" (fantasía) y "El Camino de los Amig
 
 ## Resultados medidos (equipo de referencia)
 
-RTX 3050 Laptop de 4 GB, perfil rápido, batería de 4 historias (una por género). El detalle
-está en [`docs/informe/analisis_experimentos.md`](docs/informe/analisis_experimentos.md).
+**Los tres perfiles** (23 nov; la misma idea, así que el LLM escribe la misma historia):
+
+| Perfil | Imagen por escena | Voz por escena | Historia completa | Sara (2.ª protagonista) en las escenas 2–4 |
+|---|---|---|---|---|
+| Rápido · SD 1.5 | ~10 s (2 versiones) | 1–3 s (Piper) | 4 min 19 s | 0 de 3 |
+| Modelo grande · SDXL | ~30 s (2 versiones) | 1–2 s (Piper) | 6 min 1 s | 0 de 3 |
+| Avanzada · FLUX.1-schnell | 54–79 s (1 versión) | 27–34 s (XTTS-v2) | 11 min 14 s | 3 de 3 |
+
+Con CLIP, la pertinencia (imagen frente a su texto) sube con el tamaño del modelo: SD 1.5
+0,282 → SDXL 0,348 (13 nov) y SDXL 0,298 → FLUX 0,315 (19 nov), cada comparación con la
+misma historia y las mismas seeds. Los detalles están en el
+[documento técnico](docs/informe/informe.pdf) (secciones 8.7 a 8.9).
+
+**Batería de consistencia** (perfil rápido, 4 historias, una por género; 11 nov). El
+detalle está en [`docs/informe/analisis_experimentos.md`](docs/informe/analisis_experimentos.md).
 
 | Medida | Valor |
 |---|---|
-| Tiempo por historia completa (5 escenas con imagen, voz, ambiente y mezcla) | 124–129 s (mediana 128 s) |
+| Tiempo por historia completa (generación de una sola vez, sin versiones) | 124–129 s (mediana 128 s) |
 | Texto (Qwen3 4B, por etapas + auditor) | 74–90 s; 9 de 10 Story Bibles válidas en la tarea 1.4 |
 | Imágenes (SD 1.5 + LCM 6 pasos + IP-Adapter) | ~27 s por historia; 3,2 GB asignados en la GPU |
 | Consistencia visual (CLIP img-img, media) | 0,765 con C3, frente a 0,616 con C2 y 0,501 con C1 |

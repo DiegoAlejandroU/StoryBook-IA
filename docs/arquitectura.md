@@ -8,74 +8,63 @@ La arquitectura responde a tres restricciones:
 2. **Coherencia entre modalidades:** hay una sola fuente de verdad, la **Story Bible**. Es un JSON validado con Pydantic v2 del que salen el texto, los prompts de imagen y los de sonido.
 3. **Robustez en la demo:** cada etapa tiene una alternativa automática (*fallback*), y todo queda registrado en un `manifest.json`.
 
+> **Versión final (23 nov):** la generación es escena por escena (`progresivo.py`), con un ilustrador que describe cada plano y tres perfiles de modelos (Rápido · SD 1.5, Modelo grande · SDXL, Avanzada · FLUX.1-schnell + XTTS-v2). Los diagramas reflejan esa versión; las tablas de memoria de las secciones 3 y 5 son de la batería del perfil rápido (11 nov). Las mediciones de los tres perfiles están en `docs/informe/informe.pdf`, secciones 8.7 a 8.9.
+
 ## 1. Componentes
 
 ```mermaid
 flowchart TB
     subgraph UI["Interfaz"]
-        APP["app/streamlit_app.py<br/>(solo dibuja)"]
+        APP["app/streamlit_app.py<br/>(libro, solo dibuja)"]
         UIL["ui_logica.py<br/>(lógica testeable)"]
         CMD["StoryBook.cmd<br/>(lanzador)"]
     end
-
     subgraph ORQ["Orquestación"]
-        PIPE["pipeline.py<br/>Pipeline · Dependencias"]
-        CFG["config.py<br/>configs/*.yaml"]
-        GPU["gpu.py<br/>track_stage · NVML"]
+        PROG["progresivo.py<br/>generación escena por escena"]
+        GEC["generacion_en_curso.py<br/>un trabajo de GPU a la vez"]
+        PIPE["pipeline.py<br/>Dependencias · regenerar"]
+        CFG["config.py<br/>rapido · sdxl · avanzada"]
+        GPU["gpu.py<br/>NVML · liberar VRAM"]
         STO["storage.py<br/>outputs/ · samples/"]
         MOCK["mock.py<br/>dependencias simuladas"]
     end
-
     subgraph TXT["Texto · GPU (Ollama)"]
-        PLAN["story/planner.py<br/>plan + 5 escenas"]
+        PLAN["story/planner.py<br/>plan · escenas · ilustrador"]
+        REPA["story/reparto.py<br/>reparto fiel a la idea"]
         LLM["story/llm_client.py<br/>JSON Schema · reparación"]
-        AUD["story/auditor.py<br/>coherencia"]
-        SCH["schemas.py<br/>Story Bible (Pydantic)"]
+        SCH["schemas.py<br/>Story Bible · PlanoVisual"]
     end
-
-    subgraph IMG["Imagen · GPU (diffusers)"]
-        PB["image/prompt_builder.py<br/>límite de 77 tokens"]
-        CON["image/consistency.py<br/>seeds"]
-        IGEN["image/generator.py<br/>SD 1.5 + LCM + IP-Adapter"]
+    subgraph IMG["Imagen · GPU"]
+        PB["image/prompt_builder.py<br/>presupuesto de tokens"]
+        IGEN["image/generator.py<br/>SD 1.5 · SDXL + IP-Adapter"]
+        FLX["image/flux.py<br/>FLUX fp8 · group offloading"]
+        SEL["image/seleccion.py<br/>mejor de 2 con OpenCLIP"]
     end
-
     subgraph AUD2["Voz y sonido"]
         TTS["voice/tts.py<br/>Piper · CPU"]
-        SGEN["sound/generator.py<br/>AudioLDM · GPU → respaldo"]
-        LIB["sound/library.py<br/>CC0"]
-        PROC["sound/procedural.py<br/>síntesis propia"]
+        XT["voice/xtts.py<br/>proceso .venv-xtts · GPU"]
+        SGEN["sound/generator.py<br/>AudioLDM → respaldos"]
         MIX["sound/mixer.py<br/>LUFS · ducking"]
     end
-
-    subgraph EVAL["Evaluación (CPU)"]
-        CLIP["evaluation/clip_metrics.py"]
-        ASR["evaluation/asr_check.py"]
-        REP["evaluation/report.py<br/>graficas.py · contact_sheet.py"]
-    end
-
     OLL[("Ollama<br/>localhost:11434")]
-
-    CMD --> APP
-    APP --> UIL
-    APP --> PIPE
-    APP --> STO
-    PIPE --> CFG
-    PIPE --> GPU
-    PIPE --> STO
+    CMD --> APP --> UIL
+    APP --> GEC --> PROG
+    PROG --> PIPE
+    PROG --> CFG
+    PROG --> GPU
+    PROG --> STO
     MOCK -.-> PIPE
-    PIPE --> PLAN --> LLM --> OLL
+    PROG --> PLAN --> LLM --> OLL
+    PLAN --> REPA
     PLAN --> SCH
-    PIPE --> AUD --> LLM
-    PIPE --> IGEN
+    PROG --> IGEN
     IGEN --> PB
-    IGEN --> CON
-    PIPE --> TTS
-    PIPE --> SGEN
-    SGEN --> LIB
-    SGEN --> PROC
-    PIPE --> MIX
-    REP --> CLIP
-    REP --> ASR
+    IGEN --> FLX
+    IGEN --> SEL
+    PROG --> TTS
+    TTS --> XT
+    PROG --> SGEN
+    PROG --> MIX
 ```
 
 | Módulo | Responsabilidad | Dónde corre |
@@ -92,36 +81,41 @@ flowchart TB
 
 **La lógica no depende de la interfaz:** la app solo dibuja. Todo lo testeable vive en `ui_logica.py`, `pipeline.py` y `storage.py`.
 
-**Las dependencias pesadas se inyectan** (`Dependencias`): Ollama, diffusers y Piper se reemplazan por dobles simulados (`mock.py`). Así se prueban la UI y el pipeline completo sin GPU: 315 tests en Linux sin torch.
+**Las dependencias pesadas se inyectan** (`Dependencias`): Ollama, diffusers y Piper se reemplazan por dobles simulados (`mock.py`). Así se prueban la UI y el pipeline completo sin GPU: 431 pruebas en Linux sin torch.
 
 ## 2. Flujo de datos
 
 ```mermaid
-flowchart TD
-    IN["Idea + género + perfil"] --> VAL{"Validación de entrada<br/>(StoryRequest)"}
-    VAL -- inválida --> ERR["Mensaje claro en la UI"]
-    VAL --> P1["LLM · plan<br/>título, tono, estilo visual,<br/>escenario, personajes, canon"]
-    P1 --> P2["LLM · escenas 1 a 5<br/>(cada una ve el canon y los resúmenes previos)"]
-    P2 --> AU["LLM · auditor<br/>(contradicciones → corregir escena)"]
-    AU --> BIB[("Story Bible<br/>story.json")]
-
-    BIB -- "estilo + descriptores + prompt_imagen" --> IM["SD 1.5 + LCM + IP-Adapter<br/>character sheet → 5 escenas"]
-    BIB -- texto_narrativo --> VO["Piper TTS<br/>5 narraciones"]
-    BIB -- "prompt_sonido + etiquetas" --> SO["AudioLDM → biblioteca → procedural<br/>5 clips"]
-
-    IM --> PNG["scene_N.png"]
-    VO --> WAV["voice_N.wav"]
-    SO --> SFX["sfx_N.wav"]
-    WAV --> MX["Mezcla 44,1 kHz<br/>voz −18 LUFS · ambiente −12 dB · ducking 6 dB"]
-    SFX --> MX
-    MX --> AMB["ambience_N.wav"]
-    MX --> MIXF["mix_N.wav"]
-
-    PNG --> MAN[("manifest.json<br/>modelos · seeds · parámetros · hardware<br/>tiempos · VRAM · fallbacks · errores")]
-    WAV --> MAN
-    AMB --> MAN
-    MIXF --> MAN
-    MAN --> UIV["Visor: escena n/5<br/>imagen · texto · 3 reproductores"]
+flowchart TB
+    subgraph A["1 · Plan de la historia (una vez)"]
+        direction LR
+        IN["Idea + género<br/>+ perfil"] --> VAL{"Validación<br/>StoryRequest"}
+        VAL -- inválida --> ERR["Mensaje claro<br/>en la UI"]
+        VAL --> PLAN["LLM · plan (Qwen3 4B)<br/>estilo, personajes con<br/>descriptor fijo, canon"]
+        PLAN --> REP{"¿Reparto fiel<br/>a la idea?"}
+        REP -- no --> FIX["LLM corrige el reparto<br/>niño → boy · niña → girl"]
+        FIX --> BIB
+        REP -- sí --> BIB[("Story Bible<br/>story.json")]
+    end
+    subgraph B["2 · Por cada escena n = 1…5"]
+        direction LR
+        TX["LLM · escena n<br/>(canon + escenas previas)"] --> PV["LLM · ilustrador<br/>quién, cuántos, acción,<br/>lugar, encuadre"]
+        PV --> PR["prompt_builder<br/>estilo + acción<br/>+ descriptores"]
+        PR --> IM["Imagen<br/>SD 1.5 · SDXL<br/>FLUX.1-schnell"]
+        IM --> SEL["OpenCLIP elige<br/>1 de 2 versiones<br/>(SD 1.5 y SDXL)"]
+        TX --> VO["Voz<br/>Piper · XTTS-v2"]
+        TX --> SO["Ambiente<br/>AudioLDM → CC0<br/>→ procedural"]
+        VO --> MX["Mezcla<br/>voz −18 LUFS<br/>ambiente −12 dB"]
+        SO --> MX
+        SEL --> OUT["scene_n.png<br/>voice_n.wav · mix_n.wav"]
+        MX --> OUT
+    end
+    subgraph C["3 · Resultado"]
+        direction LR
+        MAN[("manifest.json<br/>modelos · seeds · tiempos<br/>VRAM · fallbacks")]
+        UI["Libro en la UI: la escena n<br/>se lee mientras se genera la n+1"]
+    end
+    A --> B --> C
 ```
 
 **Idioma por campo:** el texto narrativo, el título y los resúmenes van en español. Los prompts para el ilustrador y el sonidista van en inglés, porque SD 1.5 y AudioLDM se entrenaron con descripciones en inglés. El esquema rechaza cada campo escrito en el idioma equivocado y devuelve el error al modelo para que lo repare.
@@ -132,27 +126,30 @@ flowchart TD
 sequenceDiagram
     autonumber
     participant U as Usuario (Streamlit)
-    participant P as Pipeline
+    participant P as progresivo.py (hilo)
     participant O as Ollama (GPU)
-    participant D as diffusers (GPU)
-    participant C as CPU (Piper, mezcla)
-    participant S as storage
-
+    participant I as Imagen (GPU)
+    participant X as Proceso XTTS (GPU)
+    participant A as AudioLDM (GPU)
+    participant S as Disco
     U->>P: generar(idea, género, perfil)
-    P->>S: crear outputs/run_id/
-    P->>O: plan + 5 escenas + auditor (JSON Schema)
-    O-->>P: Story Bible validada
-    P->>O: unload (keep_alive 0) → VRAM libre
-    P->>D: cargar SD 1.5 + LCM + IP-Adapter
-    D-->>P: character sheet + 5 ilustraciones
-    P->>D: liberar pipe + empty_cache
-    P->>C: 5 narraciones (Piper)
-    P->>D: cargar AudioLDM
-    D-->>P: 5 clips (control de nivel y silencio)
-    P->>D: liberar
-    P->>C: mezcla y normalización
-    P->>S: manifest.json (también si algo falla)
-    P-->>U: progreso por etapa → historia lista
+    Note over P,I: el modelo de imagen se precarga en la RAM mientras el LLM escribe el plan
+    P->>O: plan + reparto (JSON Schema)
+    O-->>P: plan validado
+    loop escena n = 1…5
+        P->>O: escena n + plano visual
+        O-->>P: texto y plano validados
+        P->>O: descargar el modelo (keep_alive 0)
+        P->>I: ilustrar (FLUX: bloque a bloque desde la RAM)
+        I-->>P: scene_n.png
+        P->>I: estacionar (empty_cache): GPU libre
+        P->>X: narrar (una línea JSON por stdin)
+        X-->>P: voice_n.wav (el modelo vuelve a la RAM)
+        P->>A: ambiente de la escena n
+        A-->>P: sfx_n.wav (control de nivel y silencio)
+        P->>S: mezcla + manifest
+        P-->>U: escena n lista (se puede leer)
+    end
 ```
 
 **Memoria medida** (batería de experimentos, `docs/informe/analisis_experimentos.md`):
@@ -169,24 +166,29 @@ Una historia completa con el perfil rápido tarda unos 2 minutos (124–129 s): 
 ## 4. Alternativas automáticas (*fallbacks*)
 
 ```mermaid
-flowchart LR
-    subgraph V["Voz"]
-        V1["Piper"] -->|falla| V2["Escena sin narración<br/>voz:sin_narracion"]
-    end
-    subgraph SND["Sonido (por escena)"]
-        S1["Stable Audio 3 Small-SFX"] -->|no descargado| S2["Stable Audio Open 1.0<br/>(perfil calidad)"]
-        S2 -->|no disponible| S3["AudioLDM<br/>+ sufijo de calidad"]
-        S3 -->|"clip mudo o con huecos<br/>(2 intentos)"| S4["Biblioteca CC0"]
-        S4 -->|sin clip para la etiqueta| S5["Síntesis procedural<br/>(nunca falla)"]
+flowchart TB
+    subgraph T["Texto"]
+        direction LR
+        T1["Llamada con<br/>JSON Schema"] -->|inválida| T2["Reparación con el<br/>error de validación"]
+        T2 -->|vuelve a fallar| T3["Intento limpio<br/>con otra seed"]
+        T3 -->|agota intentos| T4["Mensaje claro<br/>en la UI"]
     end
     subgraph I["Imagen"]
-        I1["SD 1.5 + IP-Adapter"] -->|el modelo no carga| I2["5 ilustraciones de respaldo<br/>imagen:respaldo"]
+        direction LR
+        I1["SD 1.5 · SDXL · FLUX"] -->|"falta de memoria o<br/>el modelo no carga"| I2["Ilustración de respaldo<br/>imagen:respaldo"]
     end
-    subgraph T["Texto"]
-        T1["Llamada con JSON Schema"] -->|inválida| T2["Reparación con el error<br/>de validación"]
-        T2 -->|vuelve a fallar| T3["Intento limpio<br/>con otra seed"]
-        T3 -->|agota intentos| T4["PipelineError:<br/>mensaje claro"]
+    subgraph V["Voz"]
+        direction LR
+        V1["XTTS-v2<br/>(Avanzada)"] -->|el proceso falla| V2["Piper"]
+        V2 -->|falla| V3["Escena sin narración<br/>voz:sin_narracion"]
     end
+    subgraph SND["Ambiente (por escena)"]
+        direction LR
+        S1["Stable Audio 3<br/>(Rápido y SDXL)"] -->|no descargado| S3["AudioLDM<br/>+ sufijo de calidad"]
+        S3 -->|"clip mudo o con<br/>huecos (2 intentos)"| S4["Biblioteca CC0"]
+        S4 -->|sin clip para<br/>la etiqueta| S5["Síntesis procedural<br/>(nunca falla)"]
+    end
+    T ~~~ I ~~~ V ~~~ SND
 ```
 
 - **Texto:** es la única etapa sin la que no hay historia. Por eso tiene reparación y reintentos, y si aun así falla, un mensaje claro (por ejemplo, "Ollama no responde…").
@@ -255,7 +257,7 @@ outputs/<AAAAMMDD_HHMMSS>_<idea>/
 
 ## 9. Calidad del software
 
-- **Pruebas:** 315 tests con pytest. Corren sin GPU y sin red gracias a las dependencias inyectadas; cubren esquemas, prompts, pipeline completo simulado, sonido, mezcla, almacenamiento, UI, experimentos y verificación sin conexión.
+- **Pruebas:** 431 pruebas con pytest. Corren sin GPU y sin red gracias a las dependencias inyectadas; cubren esquemas, prompts, pipeline completo simulado, sonido, mezcla, almacenamiento, UI, experimentos y verificación sin conexión.
 - **Estilo:** ruff (lint y formato) con tipado estricto en las firmas.
 - **Sin conexión:** `scripts/verify_offline.py` bloquea y registra cualquier conexión que no sea a `localhost` mientras corre el pipeline. La prueba real con el Wi-Fi apagado registró 0 intentos (tarea 5.4).
 - **Trazabilidad:** cada ejecución deja su `manifest.json`. Cada prueba en Windows deja su evidencia en `docs/evidencias/` y una entrada en `docs/PROGRESO.md`.
